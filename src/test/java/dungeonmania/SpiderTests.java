@@ -49,6 +49,7 @@ public class SpiderTests {
         assertEquals(actualSpider1Pos, expectedPos);
         assertEquals(actualSpider2Pos, expectedPos);
     }
+    
 
 
     // Spider movement tests:
