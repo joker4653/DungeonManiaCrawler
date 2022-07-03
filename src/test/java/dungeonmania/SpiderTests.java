@@ -45,12 +45,12 @@ public class SpiderTests {
         assertEquals(actualSpider1Pos, expectedPos);
 
         dmc.tick(Direction.UP);
-        Position actualSpider2Pos = getEntities(res, "spider").get(0).getPosition();
+        Position actualSpider2Pos = getEntities(res, "spider").get(1).getPosition();
         assertEquals(actualSpider1Pos, expectedPos);
         assertEquals(actualSpider2Pos, expectedPos);
     }
 
-    
+
     // Spider movement tests:
 
 }
