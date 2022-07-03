@@ -48,8 +48,9 @@ public class SpiderTests {
         Position actualSpider2Pos = getEntities(res, "spider").get(1).getPosition();
         assertEquals(actualSpider1Pos, expectedPos);
         assertEquals(actualSpider2Pos, expectedPos);
+        
     }
-    
+
 
 
     // Spider movement tests:
