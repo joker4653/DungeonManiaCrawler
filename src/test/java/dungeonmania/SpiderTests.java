@@ -97,7 +97,7 @@ public class SpiderTests {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_spiderTest_spawn5Ticks", "c_spiderTest_spawn5Ticks");
         Position playerPos = new Position(0, 0);
-        int spiderCount = 0;
+        int spiderCount = 1; // there is already 1 spider at position (2, 0) on the map
 
         for (int i = 0; i < 50; i++) {
             dmc.tick(Direction.UP);
@@ -116,6 +116,63 @@ public class SpiderTests {
 
 
     // Spider movement tests:
-    
+    @Test
+    @DisplayName("Test spider initial clockwise movement")
+    public void testSpiderInitialMovement() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_spiderTest_basicMovement", "c_spiderTest_basicMovement");
+        Position pos = getEntities(res, "spider").get(0).getPosition();
+
+        List<Position> movementTrajectory = new ArrayList<Position>();
+        int x = pos.getX();
+        int y = pos.getY();
+        int nextPositionElement = 0;
+        movementTrajectory.add(new Position(x  , y-1));
+        movementTrajectory.add(new Position(x+1, y-1));
+        movementTrajectory.add(new Position(x+1, y));
+        movementTrajectory.add(new Position(x+1, y+1));
+        movementTrajectory.add(new Position(x  , y+1));
+        movementTrajectory.add(new Position(x-1, y+1));
+        movementTrajectory.add(new Position(x-1, y));
+        movementTrajectory.add(new Position(x-1, y-1));
+
+        // Assert Circular Movement of Spider
+        for (int i = 0; i <= 20; ++i) {
+            res = dmc.tick(Direction.UP);
+            assertEquals(movementTrajectory.get(nextPositionElement), getEntities(res, "spider").get(0).getPosition());
+            
+            nextPositionElement++;
+            if (nextPositionElement == 8){
+                nextPositionElement = 0;
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("Test spider running into boulder and then reversing direction")
+    public void testSpiderSwitchingDirections() {
+
+    }
+
+    @Test
+    @DisplayName("Test spider can't move at all if there is a boulder above it")
+    public void testSpiderCantMoveWhenBoulderIsAboveIt() {
+
+    }
+
+    @Test
+    @DisplayName("Test spider can move if there is a boulder above it AFTER it is pushed by the player")
+    public void testSpiderCanMoveIfBoulderAboveItIsMoved() {
+
+    }
+
+
+    /* TODO (do this when others finish their implementation!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!)
+    @Test
+    @DisplayName("Test spiders running into each other, Player, door, switch, wall, exit, other MovingEntities") {
+
+    }*/
+
+
 
 }
