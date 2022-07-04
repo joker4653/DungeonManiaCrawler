@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Spider extends MovingEntity {
+public class Spider extends MovingEntity implements MovingStrategy {
     private boolean isClockwise = true;
     private Position nextPosition;
     private int currHealth;
