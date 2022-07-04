@@ -50,8 +50,72 @@ public class SpiderTests {
         assertEquals(actualSpider2Pos, expectedPos);
     }
 
+    @Test
+    @DisplayName("Test multiple spiders spawning when spawn_rate is 1 tick")
+    public void testMultipleSpidersSpawnEvery1Tick() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_spiderTest_spawnEveryTick", "c_spiderTest_spawnEveryTick");
+
+        // spiders can only spawn at (0, 0) (where the player is) or at (1,1)
+        Position expectedPos2 = new Position(1, 1);
+
+        int spiderCountNotOnPlayer = 0;
+
+        // create 20 spiders, including the ones that will die from the player's attack
+        for (int numTicks = 0; numTicks < 20; numTicks++) {
+            dmc.tick(Direction.UP);
+
+            // if the spider spawns at (0, 0), they automatically die to the player's attack. Thus, the total spiderCount should be
+            // the number of spiders on (1, 1) only.
+            Position actualSpiderPos = getEntities(res, "spider").get(numTicks).getPosition();
+            
+            if (actualSpiderPos.equals(expectedPos2)) {
+                spiderCountNotOnPlayer++;
+            }
+
+            assertEquals(spiderCountNotOnPlayer, getEntities(res, "spider").size());
+        }
+    }
+
+    @Test
+    @DisplayName("Test multiple spiders spawning when spawn_rate is 0 ticks")
+    public void testMultipleSpidersSpawnEvery0Ticks() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_spiderTest_spawn0Ticks", "c_spiderTest_spawn0Ticks");
+
+        for (int i = 0; i < 50; i++) {
+            dmc.tick(Direction.UP);
+        }
+
+        assertEquals(0, getEntities(res, "spider").size());
+    }
+
+
+    @Test
+    @DisplayName("Test multiple spiders spawning when spawn_rate is 5 ticks and ensure they spawn within the map boundaries")
+    public void testMultipleSpidersSpawnEvery5Ticks() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_spiderTest_spawn5Ticks", "c_spiderTest_spawn5Ticks");
+        Position playerPos = new Position(0, 0);
+        int spiderCount = 0;
+
+        for (int i = 0; i < 50; i++) {
+            dmc.tick(Direction.UP);
+            Position actualSpiderPos = getEntities(res, "spider").get(i).getPosition();
+            // check that the x and y coordinates are within the map's boundaries
+            assertTrue(actualSpiderPos.getX() >= 0 && actualSpiderPos.getX() <= 2);
+            assertTrue(actualSpiderPos.getY() >= 0 && actualSpiderPos.getX() <= 1);
+
+            if (!actualSpiderPos.equals(playerPos)) {
+                spiderCount++;
+            }
+        }
+
+        assertEquals(spiderCount, getEntities(res, "spider").size());
+    }
 
 
     // Spider movement tests:
+    
 
 }
