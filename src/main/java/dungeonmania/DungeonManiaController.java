@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DungeonManiaController {
+
     public String getSkin() {
         return "default";
     }
@@ -37,6 +38,8 @@ public class DungeonManiaController {
      * /game/new
      */
     public DungeonResponse newGame(String dungeonName, String configName) throws IllegalArgumentException {
+
+
         return null;
     }
 

@@ -114,13 +114,13 @@ public class SpiderTests {
         assertEquals(spiderCount, getEntities(res, "spider").size());
     }
 
-
     // Spider movement tests:
+
     @Test
-    @DisplayName("Test spider initial clockwise movement")
-    public void testSpiderInitialMovement() {
+    @DisplayName("Test spider running into boulder and then reversing direction")
+    public void testSpiderSwitchingDirections() {
         DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_spiderTest_basicMovement", "c_spiderTest_basicMovement");
+        DungeonResponse res = dmc.newGame("d_spiderTest_changeSpiderDirections", "c_spiderTest_basicMovement");
         Position pos = getEntities(res, "spider").get(0).getPosition();
 
         List<Position> movementTrajectory = new ArrayList<Position>();
@@ -131,10 +131,10 @@ public class SpiderTests {
         movementTrajectory.add(new Position(x+1, y-1));
         movementTrajectory.add(new Position(x+1, y));
         movementTrajectory.add(new Position(x+1, y+1));
-        movementTrajectory.add(new Position(x  , y+1));
-        movementTrajectory.add(new Position(x-1, y+1));
-        movementTrajectory.add(new Position(x-1, y));
-        movementTrajectory.add(new Position(x-1, y-1));
+        movementTrajectory.add(new Position(x+2 ,y+1));
+        movementTrajectory.add(new Position(x+2, y));
+        movementTrajectory.add(new Position(x+2, y-1));
+        movementTrajectory.add(new Position(x+1, y-1));
 
         // Assert Circular Movement of Spider
         for (int i = 0; i <= 20; ++i) {
@@ -149,15 +149,16 @@ public class SpiderTests {
     }
 
     @Test
-    @DisplayName("Test spider running into boulder and then reversing direction")
-    public void testSpiderSwitchingDirections() {
-
-    }
-
-    @Test
     @DisplayName("Test spider can't move at all if there is a boulder above it")
     public void testSpiderCantMoveWhenBoulderIsAboveIt() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_spiderTest_boulderIsAbove", "c_spiderTest_boulders");
 
+        dmc.tick(Direction.UP);
+        
+        int actualSpider1Row = getEntities(res, "spider").get(0).getPosition().getX();
+        assertNotEquals(actualSpider1Row, 0);
+        assertNotEquals(actualSpider1Row, 2);
     }
 
     @Test
@@ -172,6 +173,7 @@ public class SpiderTests {
     @DisplayName("Test spiders running into each other, Player, door, switch, wall, exit, other MovingEntities") {
 
     }*/
+
 
 
 
