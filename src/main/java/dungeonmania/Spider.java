@@ -19,11 +19,17 @@ public class Spider extends MovingEntity implements MovingStrategy {
     private int yMax;
     private Position spawnLocation;
 
+    public Spider(int x, int y) {
+        this.spawnLocation = new Position(x, y); // or should I do super.super.currentLocation = new Position(x, y); ?????????????????????????? (obv method forwarding when referring to currLocaiton)
+        super.setCanSpiderBeOnThisEntity(true);
+    }
+
     public Spider(int xMin, int xMax, int yMin, int yMax) {
         this.xMin = xMin;
         this.xMax = xMax;
         this.yMin = yMin;
         this.yMax = yMax;
+        super.setCanSpiderBeOnThisEntity(true);
     }
 
     public void spawn(List<Entity> listOfEntities) {

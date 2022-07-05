@@ -98,16 +98,23 @@ public class SpiderTests {
         DungeonResponse res = dmc.newGame("d_spiderTest_spawn5Ticks", "c_spiderTest_spawn5Ticks");
         Position playerPos = new Position(0, 0);
         int spiderCount = 1; // there is already 1 spider at position (2, 0) on the map
-
-        for (int i = 0; i < 50; i++) {
+        int spiderIndex = 0;
+    
+        for (int i = 1; i <= 50; i++) {
             dmc.tick(Direction.UP);
-            Position actualSpiderPos = getEntities(res, "spider").get(i).getPosition();
-            // check that the x and y coordinates are within the map's boundaries
-            assertTrue(actualSpiderPos.getX() >= 0 && actualSpiderPos.getX() <= 2);
-            assertTrue(actualSpiderPos.getY() >= 0 && actualSpiderPos.getX() <= 1);
 
-            if (!actualSpiderPos.equals(playerPos)) {
-                spiderCount++;
+            if (i % 5 == 0) {
+                Position actualSpiderPos = getEntities(res, "spider").get((i % 5) + spiderIndex).getPosition();
+                // check that the x and y coordinates are within the map's boundaries
+                assertTrue(actualSpiderPos.getX() >= 0 && actualSpiderPos.getX() <= 2);
+                assertTrue(actualSpiderPos.getY() >= 0 && actualSpiderPos.getX() <= 1);
+
+                if (!actualSpiderPos.equals(playerPos)) {
+                    spiderCount++;
+                    assertEquals(spiderCount, getEntities(res, "spider").size());
+                }
+
+                spiderIndex++;
             }
         }
 
