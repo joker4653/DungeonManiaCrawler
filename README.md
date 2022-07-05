@@ -28,6 +28,7 @@ This specification is broken into four parts:
 - Mon 4 Jul 9pm - Clarify square blast radius for bombs and mercenary bribing
 - Mon 4 Jul 11pm - Nesting of compound goals
 - Tue 5 Jul 7pm - Fix wording of complex goals in 3.7.2
+- Tue 5 Jul 10pm - Fix provided config files for allies
 
 ## 1. Aims
 
