@@ -97,7 +97,11 @@ public class DungeonManiaController {
                 int x = jsonObjElement.get("x").getAsInt();
                 int y = jsonObjElement.get("y").getAsInt();
 
-                listOfEntities.add(createEntity(type, x, y));
+                Entity entityCreated = createEntity(type, x, y);
+                if (entityCreated != null) {
+                    listOfEntities.add(entityCreated);
+                }
+                
                 if (type.equalsIgnoreCase("mercenary") || type.equalsIgnoreCase("zombie_toast_spawner")) {
                     listOfEntityResponses.add(new EntityResponse(UUID.randomUUID().toString(), type, new Position(x, y), true));
                 } else {
@@ -180,7 +184,9 @@ public class DungeonManiaController {
         return createDungeonResponse();
     }
 
-    private DungeonResponse createDungeonResponse(){
+    // helper function that creates a new DungeonResponse because some entities can change positions. This new information needs to
+    // be included in the listOfEntities and DungeonResponse.
+    private DungeonResponse createDungeonResponse() {
         List<EntityResponse> entities = new ArrayList<>();
         for (Entity currEntity : listOfEntities) {
             entities.add(new EntityResponse(currEntity.getEntityID(), currEntity.getEntityType(), currEntity.getCurrentLocation(), currEntity.isInteractable()));
