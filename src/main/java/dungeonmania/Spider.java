@@ -5,8 +5,9 @@ import dungeonmania.util.Position;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
-public class Spider extends MovingEntity implements MovingStrategy {
+public class Spider extends MovingEntity {
     private boolean isClockwise = true;
     private Position nextPosition;
     private int currHealth;
@@ -22,6 +23,7 @@ public class Spider extends MovingEntity implements MovingStrategy {
     public Spider(int x, int y) {
         this.spawnLocation = new Position(x, y); // or should I do super.super.currentLocation = new Position(x, y); ?????????????????????????? (obv method forwarding when referring to currLocaiton)
         super.setCanSpiderBeOnThisEntity(true);
+        super.setEntityID(UUID.randomUUID().toString());
     }
 
     public Spider(int xMin, int xMax, int yMin, int yMax) {
@@ -30,6 +32,7 @@ public class Spider extends MovingEntity implements MovingStrategy {
         this.yMin = yMin;
         this.yMax = yMax;
         super.setCanSpiderBeOnThisEntity(true);
+        super.setEntityID(UUID.randomUUID().toString());
     }
 
     public void spawn(List<Entity> listOfEntities) {
@@ -61,8 +64,6 @@ public class Spider extends MovingEntity implements MovingStrategy {
     }
 
     public void move(List<Entity> listOfEntities) {
-        // If spider is currently at spawnLocation, move up.
-        // Otherwise, check the isClockwise boolean and move in that direction accordingly.
         Position nextPosition = getNextPosition();
 
         // Get the next position and check if it's a boulder. If so, change direction and move. Else, move normally.
@@ -76,6 +77,9 @@ public class Spider extends MovingEntity implements MovingStrategy {
                 super.setCurrentLocation(newPosition);
             }
         }
+
+        // TODO
+    //    listOfEntities.get(getEntityID());
 
     }
 

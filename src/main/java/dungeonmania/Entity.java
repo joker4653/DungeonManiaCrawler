@@ -1,5 +1,7 @@
 package dungeonmania;
 
+import java.util.UUID;
+
 import dungeonmania.util.Position;
 
 public abstract class Entity {
@@ -7,9 +9,17 @@ public abstract class Entity {
     private Position currentLocation;
     private String entityType;
     private boolean canSpiderBeOnThisEntity;
-
+    private UUID entityID;
 
     /* Getters and Setters */
+
+    public UUID getEntityID() {
+        return entityID;
+    }
+
+    public void setEntityID(UUID entityID) {
+        this.entityID = entityID;
+    }
 
     public String getEntityType() {
         return entityType;

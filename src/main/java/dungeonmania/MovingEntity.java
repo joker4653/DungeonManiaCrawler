@@ -2,7 +2,9 @@ package dungeonmania;
 
 import dungeonmania.util.Position;
 
-public abstract class MovingEntity extends Entity {
+public abstract class MovingEntity extends Entity implements MovingStrategy {
+
+    public abstract void move();
 
     public MovingEntity() {
         super.setCanSpiderBeOnThisEntity(true);
@@ -15,8 +17,6 @@ public abstract class MovingEntity extends Entity {
 
     public void setCurrentLocation(Position currentLocation) {
         super.setCurrentLocation(currentLocation);
-    }
-
-    
+    }    
 
 }

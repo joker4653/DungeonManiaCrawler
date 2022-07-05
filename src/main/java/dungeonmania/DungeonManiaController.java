@@ -33,6 +33,7 @@ public class DungeonManiaController {
     private List<Entity> listOfEntities = new ArrayList<>();
     private List<String> listOfGoals = new ArrayList<>();
     private HashMap<String, String> configMap = new HashMap<>();
+    private DungeonResponse dungeonResp;
 
     // main function to test newGame()
     public static void main(String args[]) {
@@ -112,7 +113,9 @@ public class DungeonManiaController {
             }
 
             // TODO!!!!! replace the "null" inventory, battles and buildables with your lists.
-            return new DungeonResponse(UUID.randomUUID().toString(), dungeonName, listOfEntityResponses, null, null, null, null);
+            dungeonResp = new DungeonResponse(UUID.randomUUID().toString(), dungeonName, listOfEntityResponses, null, null, null, null);
+            
+            return dungeonResp;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -153,16 +156,58 @@ public class DungeonManiaController {
      * /game/tick/movement
      */
     public DungeonResponse tick(Direction movementDirection) {
-        /*Spider s = new Spider(xMin, xMax, yMin, yMax);
+        setTickCount(getTickCount() + 1);
+
+        int x = Integer.parseInt(configMap.get("spider_spawn_rate"));
+        HashMap<String, Integer> mapOfMinAndMaxValues = findMinAndMaxValues();
 
         if (getTickCount() % x == 0) {
-            s.spawn(listOfEntities);
+            Spider newSpider = new Spider(mapOfMinAndMaxValues.get("minX"), mapOfMinAndMaxValues.get("maxX"), mapOfMinAndMaxValues.get("minY"), mapOfMinAndMaxValues.get("maxY"));
+            newSpider.spawn(listOfEntities);
         } else {
-            s.move(listOfEntities);
-        }*/
+            // all moving entities must move
+            for (Entity currEntity : listOfEntities) {
+                ((MovingEntity)currEntity).move();
+            }
+        }
 
+        // update listOfEntities and then dungeonResp
+        
 
-        return null;
+        return dungeonResp;
+    }
+
+    // finds minX, maxX, minY and maxY based on the Dungeon map's coordinates.
+    public HashMap<String, Integer> findMinAndMaxValues() {
+        HashMap<String, Integer> mapOfMinAndMaxValues = new HashMap<>();
+        int minX = 0;
+        int maxX = 0;
+        int minY = 0;
+        int maxY = 0;
+
+        for (Entity currEntity : listOfEntities) {
+            int currPositionX = currEntity.getCurrentLocation().getX();
+            int currPositionY = currEntity.getCurrentLocation().getY();
+
+            if (currPositionX < minX)
+                minX = currPositionX;
+
+            if (currPositionX > maxX)
+                maxX = currPositionX;
+            
+            if (currPositionY < minY)
+                minY = currPositionY;
+
+            if (currPositionY > maxY)
+                maxY = currPositionY;
+        }
+
+        mapOfMinAndMaxValues.put("minX", minX);
+        mapOfMinAndMaxValues.put("maxX", maxX);
+        mapOfMinAndMaxValues.put("minY", minY);
+        mapOfMinAndMaxValues.put("maxY", maxY);
+
+        return mapOfMinAndMaxValues;
     }
 
     /**
