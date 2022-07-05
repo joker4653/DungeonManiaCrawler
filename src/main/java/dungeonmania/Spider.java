@@ -24,6 +24,7 @@ public class Spider extends MovingEntity {
         this.spawnLocation = new Position(x, y); // or should I do super.super.currentLocation = new Position(x, y); ?????????????????????????? (obv method forwarding when referring to currLocaiton)
         super.setCanSpiderBeOnThisEntity(true);
         super.setEntityID(UUID.randomUUID().toString());
+        super.setInteractable(false);
     }
 
     public Spider(int xMin, int xMax, int yMin, int yMax) {
@@ -59,6 +60,8 @@ public class Spider extends MovingEntity {
         super.setCurrentLocation(spawnLocation);
         setSpawnLocation(spawnLocation);
 
+        //add to entity list
+        listOfEntities.add(this);
         // From the spec: "When the spider spawns, they immediately move the 1 square upwards"
         move(listOfEntities);
     }
@@ -72,14 +75,16 @@ public class Spider extends MovingEntity {
             super.setCurrentLocation(nextPosition);
         } else {
             isClockwise = !isClockwise;
-            Position newPosition = getNextPosition();
-            if (checkIfNextPositionIsAllowed(newPosition, listOfEntities)) {
-                super.setCurrentLocation(newPosition);
+            nextPosition = getNextPosition();
+            if (checkIfNextPositionIsAllowed(nextPosition, listOfEntities)) {
+                super.setCurrentLocation(nextPosition);
             }
         }
 
         // TODO
-    //    listOfEntities.get(getEntityID());
+        Entity entity = listOfEntities.stream().filter(e -> e.getEntityID() == this.getEntityID()).findFirst().get();
+        if (entity != null)
+            entity.setCurrentLocation(nextPosition);
 
     }
 

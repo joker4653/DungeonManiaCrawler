@@ -33,7 +33,10 @@ public class DungeonManiaController {
     private List<Entity> listOfEntities = new ArrayList<>();
     private List<String> listOfGoals = new ArrayList<>();
     private HashMap<String, String> configMap = new HashMap<>();
-    private DungeonResponse dungeonResp;
+    private String dungeonId;
+    private String dungeonName;
+    private String goals = "";
+    //private DungeonResponse dungeonResp;
 
     // main function to test newGame()
     public static void main(String args[]) {
@@ -113,7 +116,9 @@ public class DungeonManiaController {
             }
 
             // TODO!!!!! replace the "null" inventory, battles and buildables with your lists.
-            dungeonResp = new DungeonResponse(UUID.randomUUID().toString(), dungeonName, listOfEntityResponses, null, null, null, null);
+            this.dungeonId = UUID.randomUUID().toString();
+            this.dungeonName = dungeonName;
+            DungeonResponse dungeonResp = new DungeonResponse(UUID.randomUUID().toString(), dungeonName, listOfEntityResponses, null, null, null, "");
             
             return dungeonResp;
         } catch (IOException e) {
@@ -167,13 +172,21 @@ public class DungeonManiaController {
         } else {
             // all moving entities must move
             for (Entity currEntity : listOfEntities) {
-                ((MovingEntity)currEntity).move();
+                ((MovingEntity)currEntity).move(listOfEntities);
             }
         }
 
         // update listOfEntities and then dungeonResp
-        
+        return createDungeonResponse();
+    }
 
+    private DungeonResponse createDungeonResponse(){
+        List<EntityResponse> entities = new ArrayList<>();
+        for (Entity currEntity : listOfEntities) {
+            entities.add(new EntityResponse(currEntity.getEntityID(), currEntity.getEntityType(), currEntity.getCurrentLocation(), currEntity.isInteractable()));
+        }
+
+        DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, entities, null, null, null, goals);
         return dungeonResp;
     }
 

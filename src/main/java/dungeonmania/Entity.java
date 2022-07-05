@@ -9,15 +9,16 @@ public abstract class Entity {
     private Position currentLocation;
     private String entityType;
     private boolean canSpiderBeOnThisEntity;
-    private UUID entityID;
-
+    private String entityID;
+    private boolean isInteractable;
+    
     /* Getters and Setters */
 
-    public UUID getEntityID() {
+    public String getEntityID() {
         return entityID;
     }
 
-    public void setEntityID(UUID entityID) {
+    public void setEntityID(String entityID) {
         this.entityID = entityID;
     }
 
@@ -45,4 +46,12 @@ public abstract class Entity {
         this.currentLocation = currentLocation;
     }
     
+    public boolean isInteractable() {
+        return isInteractable;
+    }
+
+    public void setInteractable(boolean isInteractable) {
+        this.isInteractable = isInteractable;
+    }
+
 }
