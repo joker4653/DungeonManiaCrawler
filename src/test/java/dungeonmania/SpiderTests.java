@@ -37,22 +37,152 @@ public class SpiderTests {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_spiderTest_boulders", "c_spiderTest_boulders");
 
-        dmc.tick(Direction.UP);
+        res = dmc.tick(Direction.LEFT);
         
-        // spiders should only spawn at (0, 0)
-        Position expectedPos = new Position(0, 0);
+        // spiders should only spawn at (0, 0). Since as soon as they spawn, they move up immediately, their new
+        // position should be (-1, 0).
+        Position expectedPos = new Position(-1, 0);
         Position actualSpider1Pos = getEntities(res, "spider").get(0).getPosition();
         assertEquals(actualSpider1Pos, expectedPos);
 
-        dmc.tick(Direction.UP);
+        res = dmc.tick(Direction.LEFT);
         Position actualSpider2Pos = getEntities(res, "spider").get(1).getPosition();
         assertEquals(actualSpider1Pos, expectedPos);
         assertEquals(actualSpider2Pos, expectedPos);
-        
+    }
+
+    /*@Test
+    @DisplayName("Test multiple spiders spawning when spawn_rate is 1 tick")
+    public void testMultipleSpidersSpawnEvery1Tick() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_spiderTest_spawnEveryTick", "c_spiderTest_spawnEveryTick");
+
+        // spiders can only spawn at (0, 0) (where the player is) or at (1,1)
+        Position expectedPos2 = new Position(1, 1);
+
+        int spiderCountNotOnPlayer = 0;
+
+        // create 20 spiders, including the ones that will die from the player's attack
+        for (int numTicks = 0; numTicks < 20; numTicks++) {
+            res = dmc.tick(Direction.UP);
+
+            // if the spider spawns at (0, 0), they automatically die to the player's attack. Thus, the total spiderCount should be
+            // the number of spiders on (1, 1) only.
+            Position actualSpiderPos = getEntities(res, "spider").get(numTicks).getPosition();
+            
+            if (actualSpiderPos.equals(expectedPos2)) {
+                spiderCountNotOnPlayer++;
+            }
+
+            assertEquals(spiderCountNotOnPlayer, getEntities(res, "spider").size());
+        }
+    }*/
+
+    @Test
+    @DisplayName("Test multiple spiders spawning when spawn_rate is 0 ticks")
+    public void testMultipleSpidersSpawnEvery0Ticks() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_spiderTest_spawn0Ticks", "c_spiderTest_spawn0Ticks");
+
+        for (int i = 0; i < 50; i++) {
+            res = dmc.tick(Direction.UP);
+        }
+
+        assertEquals(0, getEntities(res, "spider").size());
     }
 
 
+    /*@Test
+    @DisplayName("Test multiple spiders spawning when spawn_rate is 5 ticks and ensure they spawn within the map boundaries")
+    public void testMultipleSpidersSpawnEvery5Ticks() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_spiderTest_spawn5Ticks", "c_spiderTest_spawn5Ticks");
+        Position playerPos = new Position(0, 0);
+        int spiderCount = 1; // there is already 1 spider at position (2, 0) on the map
+        int spiderIndex = 0;
+    
+        for (int i = 1; i <= 50; i++) {
+            res = dmc.tick(Direction.UP);
+
+            if (i % 5 == 0) {
+                Position actualSpiderPos = getEntities(res, "spider").get((i % 5) + spiderIndex).getPosition();
+                // check that the x and y coordinates are within the map's boundaries
+                assertTrue(actualSpiderPos.getX() >= 0 && actualSpiderPos.getX() <= 2);
+                assertTrue(actualSpiderPos.getY() >= 0 && actualSpiderPos.getX() <= 1);
+
+                if (!actualSpiderPos.equals(playerPos)) {
+                    spiderCount++;
+                    assertEquals(spiderCount, getEntities(res, "spider").size());
+                }
+
+                spiderIndex++;
+            }
+        }
+
+        assertEquals(spiderCount, getEntities(res, "spider").size());
+    }
 
     // Spider movement tests:
+
+    @Test
+    @DisplayName("Test spider running into boulder and then reversing direction")
+    public void testSpiderSwitchingDirections() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_spiderTest_changeSpiderDirections", "c_spiderTest_basicMovement");
+        Position pos = getEntities(res, "spider").get(0).getPosition();
+
+        List<Position> movementTrajectory = new ArrayList<Position>();
+        int x = pos.getX();
+        int y = pos.getY();
+        int nextPositionElement = 0;
+        movementTrajectory.add(new Position(x  , y-1));
+        movementTrajectory.add(new Position(x+1, y-1));
+        movementTrajectory.add(new Position(x+1, y));
+        movementTrajectory.add(new Position(x+1, y+1));
+        movementTrajectory.add(new Position(x+2 ,y+1));
+        movementTrajectory.add(new Position(x+2, y));
+        movementTrajectory.add(new Position(x+2, y-1));
+        movementTrajectory.add(new Position(x+1, y-1));
+
+        // Assert Circular Movement of Spider
+        for (int i = 0; i <= 20; ++i) {
+            res = dmc.tick(Direction.UP);
+            assertEquals(movementTrajectory.get(nextPositionElement), getEntities(res, "spider").get(0).getPosition());
+            
+            nextPositionElement++;
+            if (nextPositionElement == 8){
+                nextPositionElement = 0;
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("Test spider can't move at all if there is a boulder above it")
+    public void testSpiderCantMoveWhenBoulderIsAboveIt() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_spiderTest_boulderIsAbove", "c_spiderTest_boulders");
+
+        res = dmc.tick(Direction.UP);
+        
+        int actualSpider1Row = getEntities(res, "spider").get(0).getPosition().getX();
+        assertNotEquals(actualSpider1Row, 0);
+        assertNotEquals(actualSpider1Row, 2);
+    }
+
+    @Test
+    @DisplayName("Test spider can move if there is a boulder above it AFTER it is pushed by the player")
+    public void testSpiderCanMoveIfBoulderAboveItIsMoved() {
+
+    }
+
+
+    TODO (do this when others finish their implementation!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!)
+    @Test
+    @DisplayName("Test spiders running into each other, Player, door, switch, wall, exit, other MovingEntities") {
+
+    }
+
+    */
+
 
 }

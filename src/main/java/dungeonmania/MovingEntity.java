@@ -1,5 +1,31 @@
 package dungeonmania;
 
-public abstract class MovingEntity {
+import java.util.List;
+
+import dungeonmania.util.Position;
+
+public abstract class MovingEntity extends Entity {
+
+    public abstract void move(List<Entity> listOfEntities);
+
+    public MovingEntity() {
+        super.setCanSpiderBeOnThisEntity(true);
+    }
+
+    public Position getCurrentLocation() {
+        return super.getCurrentLocation();
+    }
+
+    public void setCurrentLocation(Position currentLocation) {
+        super.setCurrentLocation(currentLocation);
+    }  
     
+    public void setEntityID(String entityID) {
+        super.setEntityID(entityID);
+    }
+    
+    public void setInteractable(boolean isInteractable) {
+        super.setInteractable(isInteractable);
+    }
+
 }
