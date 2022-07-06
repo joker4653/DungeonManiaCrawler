@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import dungeonmania.util.Position;
 
-public abstract class MovingEntity extends Entity implements MovingStrategy {
+public abstract class MovingEntity extends Entity {
 
     public abstract void move(List<Entity> listOfEntities);
 
