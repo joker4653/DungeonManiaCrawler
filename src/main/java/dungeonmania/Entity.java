@@ -1,7 +1,5 @@
 package dungeonmania;
 
-import java.util.UUID;
-
 import dungeonmania.util.Position;
 
 public abstract class Entity {
