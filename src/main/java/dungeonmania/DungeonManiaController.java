@@ -172,7 +172,7 @@ public class DungeonManiaController {
 
         int x = Integer.parseInt(configMap.get("spider_spawn_rate"));
 
-        if (getTickCount() % x == 0) {
+        if (x != 0 && getTickCount() % x == 0) {
             Spider newSpider = new Spider(mapOfMinAndMaxValues.get("minX"), mapOfMinAndMaxValues.get("maxX"), mapOfMinAndMaxValues.get("minY"), mapOfMinAndMaxValues.get("maxY"));
             newSpider.spawn(listOfEntities);
         } else {

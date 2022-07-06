@@ -22,9 +22,7 @@ public class Spider extends MovingEntity {
 
     public Spider(int x, int y) {
         this.spawnLocation = new Position(x, y); // or should I do super.super.currentLocation = new Position(x, y); ?????????????????????????? (obv method forwarding when referring to currLocaiton)
-        super.setCanSpiderBeOnThisEntity(true);
-        super.setEntityID(UUID.randomUUID().toString());
-        super.setInteractable(false);
+        initialiseSpider();
     }
 
     public Spider(int xMin, int xMax, int yMin, int yMax) {
@@ -32,8 +30,14 @@ public class Spider extends MovingEntity {
         this.xMax = xMax;
         this.yMin = yMin;
         this.yMax = yMax;
+        initialiseSpider();
+    }
+
+    private void initialiseSpider() {
         super.setCanSpiderBeOnThisEntity(true);
         super.setEntityID(UUID.randomUUID().toString());
+        super.setInteractable(false);
+        super.setEntityType("spider");
     }
 
     public void spawn(List<Entity> listOfEntities) {
