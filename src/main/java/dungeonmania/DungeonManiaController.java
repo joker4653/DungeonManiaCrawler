@@ -177,7 +177,7 @@ public class DungeonManiaController {
         return createDungeonResponse();
     }
 
-    // helper function that creates a new DungeonResponse because some entities can change positions. This new information needs to
+    // Helper function that creates a new DungeonResponse because some entities can change positions. This new information needs to
     // be included in the listOfEntities and DungeonResponse.
     private DungeonResponse createDungeonResponse() {
         List<EntityResponse> entities = new ArrayList<>();
