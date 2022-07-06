@@ -37,15 +37,6 @@ public class DungeonManiaController {
     private String dungeonName;
     private String goals = "";
     private HashMap<String, Integer> mapOfMinAndMaxValues;
-    //private DungeonResponse dungeonResp;
-
-    // main function to test newGame()
-    public static void main(String args[]) {
-        DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("advanced", "bomb_radius_2");
-
-        dmc.tick(Direction.UP);
-    }
 
     public int getTickCount() {
         return tickCount;
