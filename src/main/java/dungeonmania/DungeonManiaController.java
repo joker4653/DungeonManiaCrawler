@@ -36,6 +36,7 @@ public class DungeonManiaController {
     private String dungeonId;
     private String dungeonName;
     private String goals = "";
+    private HashMap<String, Integer> mapOfMinAndMaxValues;
     //private DungeonResponse dungeonResp;
 
     // main function to test newGame()
@@ -124,12 +125,14 @@ public class DungeonManiaController {
             this.dungeonName = dungeonName;
             DungeonResponse dungeonResp = new DungeonResponse(UUID.randomUUID().toString(), dungeonName, listOfEntityResponses, null, null, null, "");
             
+            mapOfMinAndMaxValues = findMinAndMaxValues();
+
             return dungeonResp;
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
+        
         return null;
     }
 
@@ -168,7 +171,6 @@ public class DungeonManiaController {
         setTickCount(getTickCount() + 1);
 
         int x = Integer.parseInt(configMap.get("spider_spawn_rate"));
-        HashMap<String, Integer> mapOfMinAndMaxValues = findMinAndMaxValues();
 
         if (getTickCount() % x == 0) {
             Spider newSpider = new Spider(mapOfMinAndMaxValues.get("minX"), mapOfMinAndMaxValues.get("maxX"), mapOfMinAndMaxValues.get("minY"), mapOfMinAndMaxValues.get("maxY"));
