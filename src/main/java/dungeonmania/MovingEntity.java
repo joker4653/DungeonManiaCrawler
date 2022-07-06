@@ -1,7 +1,6 @@
 package dungeonmania;
 
 import java.util.List;
-import java.util.UUID;
 
 import dungeonmania.util.Position;
 
