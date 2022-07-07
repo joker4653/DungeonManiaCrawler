@@ -36,7 +36,7 @@ public class DungeonManiaController {
     private String dungeonId;
     private String dungeonName;
     private String goals = "";
-    private HashMap<String, Integer> mapOfMinAndMaxValues;
+    private HashMap<String, Integer> mapOfMinAndMaxValues = new HashMap<>();
 
     public int getTickCount() {
         return tickCount;
@@ -191,11 +191,12 @@ public class DungeonManiaController {
 
     // finds minX, maxX, minY and maxY based on the Dungeon map's coordinates.
     public HashMap<String, Integer> findMinAndMaxValues() {
-        HashMap<String, Integer> mapOfMinAndMaxValues = new HashMap<>();
         int minX = 0;
-        int maxX = 0;
+        //int minX = listOfEntities.get(0).getCurrentLocation().getX(); // uncomment this when player is ready!!!!!!!!!!!!!!!!!!!!
+        int maxX = minX;
         int minY = 0;
-        int maxY = 0;
+        //int minY = listOfEntities.get(0).getCurrentLocation().getY(); // uncomment this when player is ready!!!!!!!!!!!!!!!!!!!!
+        int maxY = minY;
 
         for (Entity currEntity : listOfEntities) {
             int currPositionX = currEntity.getCurrentLocation().getX();

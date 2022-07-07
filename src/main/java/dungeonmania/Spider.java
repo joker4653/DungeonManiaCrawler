@@ -21,7 +21,8 @@ public class Spider extends MovingEntity {
     private Position spawnLocation;
 
     public Spider(int x, int y) {
-        this.spawnLocation = new Position(x, y); // or should I do super.super.currentLocation = new Position(x, y); ?????????????????????????? (obv method forwarding when referring to currLocaiton)
+        this.spawnLocation = new Position(x, y);
+        super.setCurrentLocation(spawnLocation); // or should I do super.super.currentLocation = new Position(x, y); ?????????????????????????? (obv method forwarding when referring to currLocaiton)
         initialiseSpider();
     }
 
@@ -85,7 +86,6 @@ public class Spider extends MovingEntity {
             }
         }
 
-        // TODO
         Entity entity = listOfEntities.stream().filter(e -> e.getEntityID() == this.getEntityID()).findFirst().get();
         if (entity != null)
             entity.setCurrentLocation(nextPosition);
