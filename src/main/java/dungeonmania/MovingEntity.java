@@ -3,14 +3,16 @@ package dungeonmania;
 import java.util.List;
 
 import dungeonmania.util.Position;
+import dungeonmania.util.Direction;
 
 public abstract class MovingEntity extends Entity {
-
-    public abstract void move(List<Entity> listOfEntities);
 
     public MovingEntity() {
         super.setCanSpiderBeOnThisEntity(true);
     }
+
+    public abstract void move(List<Entity> listOfEntities, Direction dir);
+
 
     public Position getCurrentLocation() {
         return super.getCurrentLocation();
