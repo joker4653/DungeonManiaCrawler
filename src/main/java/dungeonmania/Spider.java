@@ -1,6 +1,7 @@
 package dungeonmania;
 
 import dungeonmania.util.Position;
+import dungeonmania.util.Direction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,10 +69,10 @@ public class Spider extends MovingEntity {
         //add to entity list
         listOfEntities.add(this);
         // From the spec: "When the spider spawns, they immediately move the 1 square upwards"
-        move(listOfEntities);
+        move(listOfEntities,Direction.DOWN);
     }
 
-    public void move(List<Entity> listOfEntities) {
+    public void move(List<Entity> listOfEntities, Direction dir) {
         Position nextPosition = getNextPosition();
 
         // Get the next position and check if it's a boulder. If so, change direction and move. Else, move normally.

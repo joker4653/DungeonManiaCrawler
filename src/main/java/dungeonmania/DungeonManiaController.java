@@ -129,7 +129,9 @@ public class DungeonManiaController {
 
     // helper function that creates entities, which will later be stored in the list of entities
     private Entity createEntity(String type, int x, int y) {
-        if (type.equalsIgnoreCase("Spider")) {
+        if (type.equalsIgnoreCase("Player")) {
+            return new Player(x, y);
+        } else if (type.equalsIgnoreCase("Spider")) {
             return new Spider(x, y);
             // when spiders are already present on the map, do they automatically move up from their spawn location?????????????????????????????????????????
         } else if (type.equalsIgnoreCase("Boulder")) {
@@ -161,6 +163,10 @@ public class DungeonManiaController {
     public DungeonResponse tick(Direction movementDirection) {
         setTickCount(getTickCount() + 1);
 
+        // Move player.
+        Player player = getPlayer(listOfEntities);
+        player.move(listOfEntities, movementDirection); 
+
         int x = Integer.parseInt(configMap.get("spider_spawn_rate"));
 
         if (x != 0 && getTickCount() % x == 0) {
@@ -169,7 +175,10 @@ public class DungeonManiaController {
         } else {
             // all moving entities must move
             for (Entity currEntity : listOfEntities) {
-                ((MovingEntity)currEntity).move(listOfEntities);
+                if (currEntity.getEntityType() == "player") {
+                    continue;
+                }
+                ((MovingEntity) currEntity).move(listOfEntities, movementDirection);
             }
         }
 
@@ -189,13 +198,23 @@ public class DungeonManiaController {
         return dungeonResp;
     }
 
+    private Player getPlayer(List<Entity> entities) {
+        for (Entity entity : entities) {
+            if (entity.getEntityType() == "player") {
+                Player player = (Player) entity;
+                return player;
+            }
+        }
+        return null;
+    }
+
     // finds minX, maxX, minY and maxY based on the Dungeon map's coordinates.
     public HashMap<String, Integer> findMinAndMaxValues() {
-        int minX = 0;
-        //int minX = listOfEntities.get(0).getCurrentLocation().getX(); // uncomment this when player is ready!!!!!!!!!!!!!!!!!!!!
+        // int minX = 0;
+        int minX = listOfEntities.get(0).getCurrentLocation().getX(); // uncomment this when player is ready!!!!!!!!!!!!!!!!!!!!
         int maxX = minX;
-        int minY = 0;
-        //int minY = listOfEntities.get(0).getCurrentLocation().getY(); // uncomment this when player is ready!!!!!!!!!!!!!!!!!!!!
+        // int minY = 0;
+        int minY = listOfEntities.get(0).getCurrentLocation().getY(); // uncomment this when player is ready!!!!!!!!!!!!!!!!!!!!
         int maxY = minY;
 
         for (Entity currEntity : listOfEntities) {
