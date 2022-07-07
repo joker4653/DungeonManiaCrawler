@@ -5,11 +5,11 @@ import dungeonmania.util.Position;
 public abstract class Entity {
 
     private Position currentLocation;
-    private boolean canSpiderBeOnThisEntity;
-    private boolean canZombieBeOnThisEntity;
     private String entityID;
     private String entityType;
     private boolean isInteractable;
+    private boolean canSpiderBeOnThisEntity;
+    private boolean canZombieBeOnThisEntity;
     
     /* Getters and Setters */
 
