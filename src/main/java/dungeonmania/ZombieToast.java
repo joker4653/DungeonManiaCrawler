@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class ZombieToast extends MovingEntity {
@@ -14,7 +15,6 @@ public class ZombieToast extends MovingEntity {
     private Position spawnerLocation;
 
     public ZombieToast(int zombieSpawnerX, int zombieSpawnerY) {
-        super.setCanZombieBeOnThisEntity(false);
         this.spawnerLocation = new Position(zombieSpawnerX, zombieSpawnerY);
     }
 
@@ -51,7 +51,7 @@ public class ZombieToast extends MovingEntity {
     }
 
     @Override
-    public void move(List<Entity> listOfEntities) {
+    public void move(List<Entity> listOfEntities, Direction dir) {
         Position locationAboveCurrPos = new Position(getCurrentLocation().getX(), getCurrentLocation().getY() - 1);
         Position locationBelowCurrPos = new Position(getCurrentLocation().getX(), getCurrentLocation().getY() + 1);
         Position locationLeftCurrPos = new Position(getCurrentLocation().getX() - 1, getCurrentLocation().getY());
@@ -80,7 +80,6 @@ public class ZombieToast extends MovingEntity {
         }
 
     }
-
 
     /* Getters and Setters */
 
