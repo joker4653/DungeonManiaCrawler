@@ -9,6 +9,7 @@ public abstract class MovingEntity extends Entity {
 
     public MovingEntity() {
         super.setCanSpiderBeOnThisEntity(true);
+        super.setCanZombieBeOnThisEntity(true);
     }
 
     public abstract void move(List<Entity> listOfEntities, Direction dir);

@@ -9,4 +9,8 @@ public abstract class StaticEntity extends Entity {
         super.setCanSpiderBeOnThisEntity(canSpiderBeOnThisEntity);
     }
 
+    public void setCanZombieBeOnThisEntity(boolean canZombieBeOnThisEntity) {
+        super.setCanZombieBeOnThisEntity(canZombieBeOnThisEntity);
+    }
+
 }
