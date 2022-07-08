@@ -10,6 +10,7 @@ public abstract class Entity {
     private boolean isInteractable;
     private boolean canSpiderBeOnThisEntity;
     private boolean canZombieBeOnThisEntity;
+    private boolean isMovingEntity;
     
     /* Getters and Setters */
 
@@ -59,5 +60,13 @@ public abstract class Entity {
 
     public boolean getCanZombieBeOnThisEntityBool() {
         return canZombieBeOnThisEntity;
+    }
+
+    public boolean isMovingEntity() {
+        return isMovingEntity;
+    }
+
+    public void setMovingEntity(boolean isMovingEntity) {
+        this.isMovingEntity = isMovingEntity;
     }
 }

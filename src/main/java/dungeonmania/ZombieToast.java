@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -13,9 +14,22 @@ public class ZombieToast extends MovingEntity {
     private int damagePoints;
     private Position spawnLocation;
     private Position spawnerLocation;
+    
+    public ZombieToast(int x, int y) {
+        this.spawnLocation = new Position(x, y);
+        super.setCurrentLocation(spawnLocation);
+        initialise();
+    }
 
-    public ZombieToast(int zombieSpawnerX, int zombieSpawnerY) {
+    public ZombieToast(int zombieSpawnerX, int zombieSpawnerY, boolean hasSpawned) {
         this.spawnerLocation = new Position(zombieSpawnerX, zombieSpawnerY);
+        initialise();
+    }
+
+    private void initialise() {
+        super.setEntityID(UUID.randomUUID().toString());
+        super.setInteractable(false);
+        super.setEntityType("zombie_toast");
     }
 
     public void spawn(List<Entity> listOfEntities) {
@@ -26,7 +40,7 @@ public class ZombieToast extends MovingEntity {
 
 
         // REFACTORING: COMMON FUNCTION CALLED getListOfSpawnableEntities which returns a list checking if the next positions are valid FOR MOVING ENTITIES BELOW?????????????????????????????????????????????????????????????????????????????????????????????
-        List<Position> spawnablePositions = Arrays.asList(positionAboveSpawner, positionBelowSpawner, positionLeftSpawner, positionRightSpawner);
+        ArrayList<Position> spawnablePositions = new ArrayList<>(Arrays.asList(positionAboveSpawner, positionBelowSpawner, positionLeftSpawner, positionRightSpawner));
 
         for (Entity currEntity : listOfEntities) {
             Position currEntityPosition = currEntity.getCurrentLocation();
@@ -56,13 +70,12 @@ public class ZombieToast extends MovingEntity {
         Position locationBelowCurrPos = new Position(getCurrentLocation().getX(), getCurrentLocation().getY() + 1);
         Position locationLeftCurrPos = new Position(getCurrentLocation().getX() - 1, getCurrentLocation().getY());
         Position locationRightCurrPos = new Position(getCurrentLocation().getX() + 1, getCurrentLocation().getY());
+        ArrayList<Position> moveLocations = new ArrayList<>(Arrays.asList(locationAboveCurrPos, locationBelowCurrPos, locationLeftCurrPos, locationRightCurrPos, getCurrentLocation()));
 
-        List<Position> moveLocations = Arrays.asList(locationAboveCurrPos, locationBelowCurrPos, locationLeftCurrPos, locationRightCurrPos, getCurrentLocation());
-        
         // REFACTORING: can also create a common function in MovingEntity --> it checks if the positions are any of the ones in the moveLocations list and if the zombieToast can move there. Then, it returns the modified list
         for (Entity currEntity : listOfEntities) {
             Position currEntityPosition = currEntity.getCurrentLocation();
-            if (moveLocations.contains(currEntityPosition) && !getCanZombieBeOnThisEntityBool()) {
+            if (moveLocations.contains(currEntityPosition) && !currEntity.getCanZombieBeOnThisEntityBool()) {
                 moveLocations.remove(currEntityPosition);
             }
         }

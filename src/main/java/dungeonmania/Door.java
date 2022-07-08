@@ -1,10 +1,19 @@
 package dungeonmania;
 
+import java.util.UUID;
+
+import dungeonmania.util.Position;
+
 public class Door extends StaticEntity {
     private boolean isLocked;
 
-    public Door() {
+    public Door(int x, int y) {
         super.setCanZombieBeOnThisEntity(false);
+        super.setCanSpiderBeOnThisEntity(true);
+        super.setEntityID(UUID.randomUUID().toString());
+        super.setInteractable(false);
+        super.setEntityType("door");
+        super.setCurrentLocation(new Position(x, y));
     }
 
     public boolean isLocked() {

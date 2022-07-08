@@ -1,5 +1,6 @@
 package dungeonmania;
 
+import java.util.List;
 import java.util.UUID;
 
 import dungeonmania.util.Position;
@@ -16,8 +17,8 @@ public class ZombieToastSpawner extends StaticEntity {
         super.setInteractable(true);
     }
 
-    public void spawnZombie() {
-        new ZombieToast(getCurrentLocation().getX(), getCurrentLocation().getY());
+    public void spawnZombie(List<Entity> listOfEntities) {
+        new ZombieToast(getCurrentLocation().getX(), getCurrentLocation().getY(), false).spawn(listOfEntities);
     }
 
 }

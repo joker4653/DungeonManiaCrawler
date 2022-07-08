@@ -2,6 +2,9 @@ package dungeonmania;
 
 public abstract class StaticEntity extends Entity {
 
+    public StaticEntity() {
+        super.setMovingEntity(false);
+    }
 
     // Note: all Entities (except for Boulder) must have "super.setCanSpiderBeOnThisEntity(true);" in their constructors
     @Override

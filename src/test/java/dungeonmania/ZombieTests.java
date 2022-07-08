@@ -16,6 +16,7 @@ import static dungeonmania.TestUtils.getValueFromConfigFile;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,22 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class ZombieTests {
+    // Helper function that gets position of a zombie
+    public Position getZombPos(int i, DungeonResponse res) {
+        return getEntities(res, "zombie_toast").stream()
+                                                    .filter(it -> it.getType().equalsIgnoreCase("zombie_toast"))
+                                                    .collect(Collectors.toList())
+                                                    .get(i)
+                                                    .getPosition();
+    }
+
+    // Helper function that gets size of the zombie list
+    public int getZombSize(DungeonResponse res) {
+        return getEntities(res, "zombie_toast").stream()
+                                            .filter(it -> it.getType().equalsIgnoreCase("zombie_toast"))
+                                            .collect(Collectors.toList())
+                                            .size();
+    }
 
     // Helper function that returns a list of zombie spawn locations
     public List<Position> getSpawnLocations(DungeonResponse res, Position spawnerPos) {
@@ -54,12 +71,17 @@ public class ZombieTests {
 
         Position spawnerPos = getEntities(res, "zombie_toast_spawner").get(0).getPosition();
         List<Position> possibleSpawnPos = getSpawnLocations(res, spawnerPos);
-
-        for (int i = 0; i < 30; i++) {
+        Position currZombiePos = null;
+        int numZombs = 0;
+        for (int i = 1; i < 31; i++) {
             res = dmc.tick(Direction.DOWN);
-            Position currZombiePos = getEntities(res, "zombie_toast").get(i).getPosition();
-            assertTrue(possibleSpawnPos.contains(currZombiePos));
-            assertTrue(currZombiePos != spawnerPos); // zombies can spawn on top of their spawners
+
+            if (i % 3 == 0) {
+                currZombiePos = getZombPos(numZombs, res);
+                assertTrue(possibleSpawnPos.contains(currZombiePos));
+                assertTrue(currZombiePos != spawnerPos); // zombies can spawn on top of their spawners
+                numZombs++;
+            }
         }
     }
 
@@ -73,7 +95,7 @@ public class ZombieTests {
             res = dmc.tick(Direction.DOWN);
         }
 
-        assertEquals(getEntities(res, "zombie_toast").size(), 0);
+        assertEquals(getZombSize(res), 0);
     }
 
     @Test
@@ -86,7 +108,7 @@ public class ZombieTests {
             res = dmc.tick(Direction.DOWN);
         }
 
-        assertEquals(getEntities(res, "zombie_toast").size(), 0);
+        assertEquals(getZombSize(res), 0);
     }
 
     @Test
@@ -99,20 +121,20 @@ public class ZombieTests {
             res = dmc.tick(Direction.DOWN);
         }
 
-        assertEquals(getEntities(res, "zombie_toast").size(), 10);
+        assertEquals(getZombSize(res), 10);
     }
 
     @Test
     @DisplayName("Test correct no. of zombies spawn when zombie_spawn_rate = 10")
     public void testZombiesSpawnEvery10Ticks() {
         DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_zombieTest_spawnEveryTick", "c_spiderTest_spawnEvery10Ticks");
+        DungeonResponse res = dmc.newGame("d_zombieTest_spawnEvery10Ticks", "c_zombieTest_spawnEvery10Ticks");
         
         for (int i = 0; i < 50; i++) {
             res = dmc.tick(Direction.DOWN);
         }
 
-        assertEquals(getEntities(res, "zombie_toast").size(), 5);
+        assertEquals(getZombSize(res), 5);
     }
 
     @Test
@@ -125,7 +147,7 @@ public class ZombieTests {
             res = dmc.tick(Direction.UP);
         }
 
-        assertEquals(getEntities(res, "zombie_toast").size(), 1);
+        assertEquals(getZombSize(res), 1);
     }
 
     @Test
@@ -135,7 +157,7 @@ public class ZombieTests {
         DungeonResponse res = dmc.newGame("d_zombieTest_multiSpawners", "c_zombieTest_spawnEveryTick");
         int currZombCount = 2;
 
-        assertEquals(getEntities(res, "zombie_toast").size(), currZombCount);
+        assertEquals(getZombSize(res), currZombCount);
 
         for (int i = 0; i < 10; i++) {
             res = dmc.tick(Direction.UP);
@@ -143,7 +165,7 @@ public class ZombieTests {
             currZombCount += 3;
         }
 
-        assertEquals(getEntities(res, "zombie_toast").size(), currZombCount);
+        assertEquals(getZombSize(res), currZombCount);
     }
 
     // Zombie movement tests:
@@ -155,21 +177,22 @@ public class ZombieTests {
         DungeonResponse res = dmc.newGame("d_zombieTest_moveRestrictions", "c_zombieTest_spawnEveryTick");
 
         res = dmc.tick(Direction.DOWN);
-        Position z1Pos1 = getEntities(res, "zombie_toast").get(0).getPosition();
+
+        Position z1Pos1 = getZombPos(0, res);
         assertTrue(z1Pos1.equals(new Position(2, 2)));
 
         res = dmc.tick(Direction.DOWN);
-        Position z1Pos2 = getEntities(res, "zombie_toast").get(0).getPosition();
-        assertTrue(z1Pos2.equals(new Position(3, 2)));
+        Position z1Pos2 = getZombPos(0, res);
+        assertTrue(z1Pos2.equals(new Position(3, 2)) || z1Pos2.equals(new Position(2, 2)));
 
-        Position z2Pos1 = getEntities(res, "zombie_toast").get(1).getPosition();
+        Position z2Pos1 = getZombPos(1, res);
         assertTrue(z2Pos1.equals(new Position(2, 2)));
 
         res = dmc.tick(Direction.DOWN);
-        Position z2Pos2 = getEntities(res, "zombie_toast").get(1).getPosition();
-        assertTrue(z2Pos2.equals(new Position(3, 2)));
+        Position z2Pos2 = getZombPos(1, res);
+        assertTrue(z2Pos2.equals(new Position(3, 2)) || z2Pos2.equals(new Position(2, 2)));
 
-        Position z3Pos1 = getEntities(res, "zombie_toast").get(2).getPosition();
+        Position z3Pos1 = getZombPos(2, res);
         assertTrue(z3Pos1.equals(new Position(2, 2)));
 
     }
@@ -186,25 +209,25 @@ public class ZombieTests {
     @DisplayName("Test zombies can only move up, down, right, left or stay where they are")
     public void testZombieCardinalMovements() {
         DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_zombieToast_spawnSuccess", "c_zombieToast_spawnEveryTick");
+        DungeonResponse res = dmc.newGame("d_zombieTest_spawnSuccess", "c_zombieTest_spawnEveryTick");
 
         Position spawnerPos = getEntities(res, "zombie_toast_spawner").get(0).getPosition();
         List<Position> possibleSpawnPos = getSpawnLocations(res, spawnerPos);
 
         res = dmc.tick(Direction.DOWN);
-        Position z1Pos1 = getEntities(res, "zombie").get(0).getPosition();
+        Position z1Pos1 = getZombPos(0, res);
         assertTrue(possibleSpawnPos.contains(z1Pos1));
 
         res = dmc.tick(Direction.DOWN);
-        Position z1Pos2 = getEntities(res, "zombie").get(0).getPosition();
-        Position z2Pos1 = getEntities(res, "zombie").get(1).getPosition();
+        Position z1Pos2 = getZombPos(0, res);
+        Position z2Pos1 = getZombPos(1, res);
         assertTrue(possibleSpawnPos.contains(z2Pos1));
         assertTrue(Position.isAdjacent(z1Pos1, z1Pos2) || z1Pos1 == z1Pos2);
 
         res = dmc.tick(Direction.DOWN);
-        Position z1Pos3 = getEntities(res, "zombie").get(0).getPosition();
-        Position z2Pos2 = getEntities(res, "zombie").get(1).getPosition();
-        Position z3Pos1 = getEntities(res, "zombie").get(2).getPosition();
+        Position z1Pos3 = getZombPos(0, res);
+        Position z2Pos2 = getZombPos(1, res);
+        Position z3Pos1 = getZombPos(2, res);
         assertTrue(possibleSpawnPos.contains(z3Pos1));
         assertTrue(Position.isAdjacent(z1Pos2, z1Pos3) || z1Pos2 == z1Pos3);
         assertTrue(Position.isAdjacent(z2Pos1, z2Pos2) || z2Pos1 == z2Pos2);
