@@ -36,7 +36,6 @@ public class ZombieTests {
         Position up = new Position(spawnerPos.getX(), spawnerPos.getY() - 1);
         Position below = new Position(spawnerPos.getX(), spawnerPos.getY() + 1);
 
-        // if zombies can spawn on their spawner, add this to the list
         List<Position> possibleZombiePos = Arrays.asList(left, right, up, below);
 
         return possibleZombiePos;
@@ -47,12 +46,11 @@ public class ZombieTests {
     @Test
     @DisplayName("Test zombies can only spawn on cardinally adjacent open squares")
     public void testZombiesSpawnSuccess() {
-        /* Test zombies spawn on a cardinally adjacent (current location, up, down, left, right) “open square” (i.e. no wall or boulder).
-        ??? Also ensure no zombies spawn on top of the spawner (assert that the no. of zombies on the spawner = 0) */
-        // if zombies can spawn on their spawner, add this to the list
+        /* Test zombies spawn on a cardinally adjacent (up, down, left, right) “open square” (i.e. no wall or boulder).
+        Also ensure no zombies spawn on top of the spawner (assert that the no. of zombies on the spawner = 0) */
 
         DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_zombieToast_spawnSuccess", "c_zombieToast_spawnSuccess");
+        DungeonResponse res = dmc.newGame("d_zombieTest_spawnSuccess", "c_zombieTest_spawnSuccess");
 
         Position spawnerPos = getEntities(res, "zombie_toast_spawner").get(0).getPosition();
         List<Position> possibleSpawnPos = getSpawnLocations(res, spawnerPos);
@@ -61,11 +59,12 @@ public class ZombieTests {
             res = dmc.tick(Direction.DOWN);
             Position currZombiePos = getEntities(res, "zombie_toast").get(i).getPosition();
             assertTrue(possibleSpawnPos.contains(currZombiePos));
+            assertTrue(currZombiePos != spawnerPos); // zombies can spawn on top of their spawners
         }
     }
 
     @Test
-    @DisplayName("Test zombies can't ? CHECK FORUJMDMG<NDN<SF spawn on walls, boulders and locked doors")
+    @DisplayName("Test zombies can't ??? CHECK FORUMMMMMMMM<NDN<SF spawn on walls, boulders and locked doors")
     public void testZombiesCantSpawn() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_zombieTest_spawnBlocked", "c_zombieTest_spawnBlocked");
@@ -90,40 +89,88 @@ public class ZombieTests {
         assertEquals(getEntities(res, "zombie_toast").size(), 0);
     }
 
-    //TODO
     @Test
-    @DisplayName("Test zombies spawn when zombie_spawn_rate = 1")
+    @DisplayName("Test correct no. of zombies spawn when zombie_spawn_rate = 1")
     public void testZombiesSpawnEveryTick() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_zombieTest_spawnEveryTick", "c_zombieTest_spawnEveryTick");
         
+        for (int i = 0; i < 10; i++) {
+            res = dmc.tick(Direction.DOWN);
+        }
+
+        assertEquals(getEntities(res, "zombie_toast").size(), 10);
     }
 
-    //TODO
     @Test
-    @DisplayName("Test zombies spawn when zombie_spawn_rate = 10")
+    @DisplayName("Test correct no. of zombies spawn when zombie_spawn_rate = 10")
     public void testZombiesSpawnEvery10Ticks() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_zombieTest_spawnEveryTick", "c_spiderTest_spawnEvery10Ticks");
         
+        for (int i = 0; i < 50; i++) {
+            res = dmc.tick(Direction.DOWN);
+        }
+
+        assertEquals(getEntities(res, "zombie_toast").size(), 5);
     }
 
-    //TODO
     @Test
-    @DisplayName("Test zombies can't be spawned without a zombie spawner")
+    @DisplayName("Test more zombies can't be spawned without a zombie spawner")
     public void testNoNewZombiesWithoutSpawner() {
-        
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_zombieTest_cantSpawnWithNoSpawner", "c_zombieTest_spawnEveryTick");
+
+        for (int i = 0; i < 50; i++) {
+            res = dmc.tick(Direction.UP);
+        }
+
+        assertEquals(getEntities(res, "zombie_toast").size(), 1);
     }
 
-    //TODO
     @Test
     @DisplayName("Test multiple zombies can spawn from many different spawners")
     public void testMultipleZombieSpawners() {
-        // Test zombies can exist already in dungeon map
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_zombieTest_multiSpawners", "c_zombieTest_spawnEveryTick");
+        int currZombCount = 2;
+
+        assertEquals(getEntities(res, "zombie_toast").size(), currZombCount);
+
+        for (int i = 0; i < 10; i++) {
+            res = dmc.tick(Direction.UP);
+            // since there are 3 zombie toast spawners and the spawn_rate is 1, 3 new zombies should be created per tick.
+            currZombCount += 3;
+        }
+
+        assertEquals(getEntities(res, "zombie_toast").size(), currZombCount);
     }
 
     // Zombie movement tests:
 
-    //TODO
     @Test
     @DisplayName("Test zombies cannot move through walls, boulders and locked doors")
     public void testZombieMoveRestrictions() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_zombieTest_moveRestrictions", "c_zombieTest_spawnEveryTick");
+
+        res = dmc.tick(Direction.DOWN);
+        Position z1Pos1 = getEntities(res, "zombie_toast").get(0).getPosition();
+        assertTrue(z1Pos1.equals(new Position(2, 2)));
+
+        res = dmc.tick(Direction.DOWN);
+        Position z1Pos2 = getEntities(res, "zombie_toast").get(0).getPosition();
+        assertTrue(z1Pos2.equals(new Position(3, 2)));
+
+        Position z2Pos1 = getEntities(res, "zombie_toast").get(1).getPosition();
+        assertTrue(z2Pos1.equals(new Position(2, 2)));
+
+        res = dmc.tick(Direction.DOWN);
+        Position z2Pos2 = getEntities(res, "zombie_toast").get(1).getPosition();
+        assertTrue(z2Pos2.equals(new Position(3, 2)));
+
+        Position z3Pos1 = getEntities(res, "zombie_toast").get(2).getPosition();
+        assertTrue(z3Pos1.equals(new Position(2, 2)));
 
     }
 
@@ -131,7 +178,7 @@ public class ZombieTests {
     @Test
     @DisplayName("Test zombies can move through open doors")
     public void testZombieMoveThruOpenDoor() {
-
+        
     }
     */
 

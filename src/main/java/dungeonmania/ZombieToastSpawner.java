@@ -8,7 +8,7 @@ public class ZombieToastSpawner extends StaticEntity {
     
     public ZombieToastSpawner(int x, int y) {
         super.setCanSpiderBeOnThisEntity(true);
-        super.setCanZombieBeOnThisEntity(false); // i think zombies cant spawn on these zombie toast spawners... but they can move through them (screenshots)
+        super.setCanZombieBeOnThisEntity(false);
 
         super.setCurrentLocation(new Position(x, y));
         super.setEntityID(UUID.randomUUID().toString());
