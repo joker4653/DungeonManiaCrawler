@@ -1,5 +1,7 @@
 package dungeonmania;
 
+import java.util.List;
+
 import dungeonmania.util.Position;
 
 public abstract class CollectableEntity extends Entity {
@@ -31,5 +33,13 @@ public abstract class CollectableEntity extends Entity {
     
     public void setInteractable(boolean isInteractable) {
         super.setInteractable(isInteractable);
+    }
+
+    public void PlaceObject(List<Entity> entities) {
+        entities.add(this);
+    }
+
+    public void removeObject(List<Entity> inventory) {
+        inventory.add(this);
     }
 }

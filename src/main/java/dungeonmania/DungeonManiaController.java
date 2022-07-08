@@ -31,6 +31,7 @@ import com.google.gson.JsonParser;
 public class DungeonManiaController {
     private int tickCount;
     private List<Entity> listOfEntities = new ArrayList<>();
+    private List<Entity> Inventory = new ArrayList<>();
     private List<String> listOfGoals = new ArrayList<>();
     private HashMap<String, String> configMap = new HashMap<>();
     private String dungeonId;
@@ -167,6 +168,8 @@ public class DungeonManiaController {
             return new ZombieToast(x, y);
         } else if (type.equalsIgnoreCase("mercenary")) {
             return new Mercenary(x, y);
+        } else if (type.equalsIgnoreCase("Treasure")) {
+            return new Treasure(x, y);
         }
 
         // add other entities here
