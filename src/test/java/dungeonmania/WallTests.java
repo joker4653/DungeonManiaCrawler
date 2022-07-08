@@ -64,7 +64,7 @@ public class WallTests {
         assertEquals(actualZombiePos, expectedPos);     
     }
 
-    // Implement this test after implementing Boulder
+    // Implement this test after implementing Boulder and Player 
     @Test
     public void testBoulderMovementBlockage() {
         
