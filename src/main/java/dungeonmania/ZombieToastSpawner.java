@@ -15,6 +15,7 @@ public class ZombieToastSpawner extends StaticEntity {
         super.setEntityID(UUID.randomUUID().toString());
         super.setEntityType("zombie_toast_spawner");
         super.setInteractable(true);
+        super.setCanMercBeOnThisEntity(true);
     }
 
     public void spawnZombie(List<Entity> listOfEntities) {

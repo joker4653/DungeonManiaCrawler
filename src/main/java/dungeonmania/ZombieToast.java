@@ -65,7 +65,7 @@ public class ZombieToast extends MovingEntity {
     }
 
     @Override
-    public void move(List<Entity> listOfEntities, Direction dir) {
+    public void move(List<Entity> listOfEntities, Direction dir, Player player) {
         Position locationAboveCurrPos = new Position(getCurrentLocation().getX(), getCurrentLocation().getY() - 1);
         Position locationBelowCurrPos = new Position(getCurrentLocation().getX(), getCurrentLocation().getY() + 1);
         Position locationLeftCurrPos = new Position(getCurrentLocation().getX() - 1, getCurrentLocation().getY());

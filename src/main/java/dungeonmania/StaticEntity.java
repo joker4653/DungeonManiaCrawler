@@ -16,4 +16,7 @@ public abstract class StaticEntity extends Entity {
         super.setCanZombieBeOnThisEntity(canZombieBeOnThisEntity);
     }
 
+    public void setCanMercBeOnThisEntity(boolean canMercBeOnThisEntity) {
+        super.setCanMercBeOnThisEntity(canMercBeOnThisEntity);
+    }
 }

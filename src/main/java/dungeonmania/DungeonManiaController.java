@@ -147,6 +147,10 @@ public class DungeonManiaController {
             return new Door(x, y);
         } else if (type.equalsIgnoreCase("zombie_toast")) {
             return new ZombieToast(x, y);
+        } else if (type.equalsIgnoreCase("mercenary")) {
+            return new Mercenary(x, y);
+        } else if (type.equalsIgnoreCase("Treasure")) {
+            return new Treasure(x, y);
         }
 
         // add other entities here
@@ -176,24 +180,25 @@ public class DungeonManiaController {
 
         // Move player.
         Player player = getPlayer(listOfEntities);
-        player.move(listOfEntities, movementDirection); 
+        player.move(listOfEntities, movementDirection, player); 
 
         int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
         int xZomb = Integer.parseInt(configMap.get("zombie_spawn_rate"));
+        Spider newSpider = null;
 
         if (xSpi != 0 && getTickCount() % xSpi == 0) {
-            Spider newSpider = new Spider(mapOfMinAndMaxValues.get("minX"), mapOfMinAndMaxValues.get("maxX"), mapOfMinAndMaxValues.get("minY"), mapOfMinAndMaxValues.get("maxY"));
-            newSpider.spawn(listOfEntities);
-        } else {
-            // all existing moving entities must move
-            for (Entity currEntity : listOfEntities) {
-                if (currEntity.getEntityType() == "player") {
-                    continue;
-                }
+            newSpider = new Spider(mapOfMinAndMaxValues.get("minX"), mapOfMinAndMaxValues.get("maxX"), mapOfMinAndMaxValues.get("minY"), mapOfMinAndMaxValues.get("maxY"));
+            newSpider.spawn(listOfEntities, player);
+        }
 
-                if (currEntity.isMovingEntity())
-                    ((MovingEntity) currEntity).move(listOfEntities, movementDirection);
+        // all existing moving entities must move
+        for (Entity currEntity : listOfEntities) {
+            if (currEntity.getEntityType() == "player" || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID()))) {
+                continue;
             }
+
+            if (currEntity.isMovingEntity())
+                ((MovingEntity) currEntity).move(listOfEntities, movementDirection, player);
         }
 
         if (xZomb != 0 && getTickCount() % xZomb == 0) {

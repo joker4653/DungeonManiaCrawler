@@ -10,10 +10,11 @@ public abstract class MovingEntity extends Entity {
     public MovingEntity() {
         super.setCanSpiderBeOnThisEntity(true);
         super.setCanZombieBeOnThisEntity(true);
+        super.setCanMercBeOnThisEntity(true);
         super.setMovingEntity(true);
     }
 
-    public abstract void move(List<Entity> listOfEntities, Direction dir);
+    public abstract void move(List<Entity> listOfEntities, Direction dir, Player player);
 
 
     public Position getCurrentLocation() {

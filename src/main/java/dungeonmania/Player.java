@@ -17,7 +17,7 @@ public class Player extends MovingEntity {
     }
 
 
-    public void move(List<Entity> listOfEntities, Direction dir) {
+    public void move(List<Entity> listOfEntities, Direction dir, Player player) {
         Position curr = super.getCurrentLocation();
         Position next = curr.translateBy(dir);
 
