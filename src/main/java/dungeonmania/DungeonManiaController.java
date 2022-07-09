@@ -39,27 +39,6 @@ public class DungeonManiaController {
     private String goals = "";
     private HashMap<String, Integer> mapOfMinAndMaxValues = new HashMap<>();
 
-    public static void main(String[] args){
-        DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_mercenaryTest_followPlayer", "c_mercenaryTest_followPlayer");
-
-        Position pos = test.getEntities(res, "mercenary").get(0).getPosition();
-        //assertEquals(pos, new Position(8, 1));
-
-        res = dmc.tick(Direction.LEFT);
-
-        Position expectedPos = new Position(7, 1);
-        Position mPos = test.getEntities(res, "mercenary").get(0).getPosition();      
-       // assertEquals(mPos, expectedPos);
-
-        for (int i = 0; i < 3; i++)
-            res = dmc.tick(Direction.UP);
-        
-        expectedPos = new Position(4, 1);
-        mPos = test.getEntities(res, "mercenary").get(0).getPosition();      
-        //assertEquals(mPos, expectedPos);
-
-    }
     public int getTickCount() {
         return tickCount;
     }

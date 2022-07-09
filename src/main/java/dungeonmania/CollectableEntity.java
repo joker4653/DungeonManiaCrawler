@@ -8,6 +8,8 @@ public abstract class CollectableEntity extends Entity {
     private boolean isConsumable;
 
     public CollectableEntity() {
+        super.setMovingEntity(false);
+
         // NEED TO WAIT FOR TUTOR RESPONSE FROM FORUM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         super.setCanSpiderBeOnThisEntity(true);
         super.setCanZombieBeOnThisEntity(true);
