@@ -31,6 +31,7 @@ import com.google.gson.JsonParser;
 public class DungeonManiaController {
     private int tickCount;
     private List<Entity> listOfEntities = new ArrayList<>();
+    private List<Entity> Inventory = new ArrayList<>();
     private List<String> listOfGoals = new ArrayList<>();
     private HashMap<String, String> configMap = new HashMap<>();
     private String dungeonId;
@@ -136,6 +137,8 @@ public class DungeonManiaController {
             // when spiders are already present on the map, do they automatically move up from their spawn location?????????????????????????????????????????
         } else if (type.equalsIgnoreCase("Boulder")) {
             return new Boulder(x, y);
+        } else if (type.equalsIgnoreCase("Treasure")) {
+            return new Treasure(x, y);
         } else if (type.equalsIgnoreCase("zombie_toast_spawner")) {
             return new ZombieToastSpawner(x, y);
         } else if (type.equalsIgnoreCase("wall")) {
