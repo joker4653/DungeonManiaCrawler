@@ -11,7 +11,8 @@ public abstract class Entity {
     private boolean canSpiderBeOnThisEntity;
     private boolean canZombieBeOnThisEntity;
     private boolean isMovingEntity;
-    
+    private boolean canMercBeOnThisEntity;
+
     /* Getters and Setters */
 
     public String getEntityID() {
@@ -68,5 +69,13 @@ public abstract class Entity {
 
     public void setMovingEntity(boolean isMovingEntity) {
         this.isMovingEntity = isMovingEntity;
+    }
+
+    public boolean getCanMercBeOnThisEntityBool() {
+        return canMercBeOnThisEntity;
+    }
+
+    public void setCanMercBeOnThisEntity(boolean canMercBeOnThisEntity) {
+        this.canMercBeOnThisEntity = canMercBeOnThisEntity;
     }
 }

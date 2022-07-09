@@ -42,7 +42,7 @@ public class Spider extends MovingEntity {
         super.setEntityType("spider");
     }
 
-    public void spawn(List<Entity> listOfEntities) {
+    public void spawn(List<Entity> listOfEntities, Player player) {
         List<Position> possibleSpiderLocations = new ArrayList<>();
 
         // get a list of possible spawn locations within the map
@@ -69,10 +69,10 @@ public class Spider extends MovingEntity {
         //add to entity list
         listOfEntities.add(this);
         // From the spec: "When the spider spawns, they immediately move the 1 square upwards"
-        move(listOfEntities,Direction.DOWN);
+        move(listOfEntities, Direction.DOWN, player);
     }
 
-    public void move(List<Entity> listOfEntities, Direction dir) {
+    public void move(List<Entity> listOfEntities, Direction dir, Player player) {
         Position nextPosition = getNextPosition();
 
         // Get the next position and check if it's a boulder. If so, change direction and move. Else, move normally.

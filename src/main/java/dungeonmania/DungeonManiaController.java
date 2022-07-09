@@ -38,6 +38,27 @@ public class DungeonManiaController {
     private String goals = "";
     private HashMap<String, Integer> mapOfMinAndMaxValues = new HashMap<>();
 
+    public static void main(String[] args){
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_mercenaryTest_followPlayer", "c_mercenaryTest_followPlayer");
+
+        Position pos = test.getEntities(res, "mercenary").get(0).getPosition();
+        //assertEquals(pos, new Position(8, 1));
+
+        res = dmc.tick(Direction.LEFT);
+
+        Position expectedPos = new Position(7, 1);
+        Position mPos = test.getEntities(res, "mercenary").get(0).getPosition();      
+       // assertEquals(mPos, expectedPos);
+
+        for (int i = 0; i < 3; i++)
+            res = dmc.tick(Direction.UP);
+        
+        expectedPos = new Position(4, 1);
+        mPos = test.getEntities(res, "mercenary").get(0).getPosition();      
+        //assertEquals(mPos, expectedPos);
+
+    }
     public int getTickCount() {
         return tickCount;
     }
@@ -144,6 +165,8 @@ public class DungeonManiaController {
             return new Door(x, y);
         } else if (type.equalsIgnoreCase("zombie_toast")) {
             return new ZombieToast(x, y);
+        } else if (type.equalsIgnoreCase("mercenary")) {
+            return new Mercenary(x, y);
         }
 
         // add other entities here
@@ -173,24 +196,25 @@ public class DungeonManiaController {
 
         // Move player.
         Player player = getPlayer(listOfEntities);
-        player.move(listOfEntities, movementDirection); 
+        player.move(listOfEntities, movementDirection, player); 
 
         int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
         int xZomb = Integer.parseInt(configMap.get("zombie_spawn_rate"));
+        Spider newSpider = null;
 
         if (xSpi != 0 && getTickCount() % xSpi == 0) {
-            Spider newSpider = new Spider(mapOfMinAndMaxValues.get("minX"), mapOfMinAndMaxValues.get("maxX"), mapOfMinAndMaxValues.get("minY"), mapOfMinAndMaxValues.get("maxY"));
-            newSpider.spawn(listOfEntities);
-        } else {
-            // all existing moving entities must move
-            for (Entity currEntity : listOfEntities) {
-                if (currEntity.getEntityType() == "player") {
-                    continue;
-                }
+            newSpider = new Spider(mapOfMinAndMaxValues.get("minX"), mapOfMinAndMaxValues.get("maxX"), mapOfMinAndMaxValues.get("minY"), mapOfMinAndMaxValues.get("maxY"));
+            newSpider.spawn(listOfEntities, player);
+        }
 
-                if (currEntity.isMovingEntity())
-                    ((MovingEntity) currEntity).move(listOfEntities, movementDirection);
+        // all existing moving entities must move
+        for (Entity currEntity : listOfEntities) {
+            if (currEntity.getEntityType() == "player" || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID()))) {
+                continue;
             }
+
+            if (currEntity.isMovingEntity())
+                ((MovingEntity) currEntity).move(listOfEntities, movementDirection, player);
         }
 
         if (xZomb != 0 && getTickCount() % xZomb == 0) {

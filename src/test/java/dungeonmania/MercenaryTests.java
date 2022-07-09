@@ -44,14 +44,14 @@ public class MercenaryTests {
 
         Position expectedPos = new Position(7, 1);
         Position mPos = getEntities(res, "mercenary").get(0).getPosition();      
-        assertEquals(mPos, expectedPos);
+        assertEquals(expectedPos, mPos);
 
         for (int i = 0; i < 3; i++)
             res = dmc.tick(Direction.UP);
         
         expectedPos = new Position(4, 1);
         mPos = getEntities(res, "mercenary").get(0).getPosition();      
-        assertEquals(mPos, expectedPos);
+        assertEquals(expectedPos, mPos);
     }
 
     @Test
@@ -67,14 +67,14 @@ public class MercenaryTests {
 
         Position expectedPos = new Position(2, 2);
         Position mPos = getEntities(res, "mercenary").get(0).getPosition();      
-        assertEquals(mPos, expectedPos);
+        assertEquals(expectedPos, mPos);
 
         for (int i = 0; i < 3; i++)
             res = dmc.tick(Direction.UP);
         
         expectedPos = new Position(2, 2);
         mPos = getEntities(res, "mercenary").get(0).getPosition();      
-        assertEquals(mPos, expectedPos);
+        assertEquals(expectedPos, mPos);
     
     }
 
@@ -87,16 +87,18 @@ public class MercenaryTests {
         //Position pos = getEntities(res, "mercenary").get(0).getPosition();
         res = dmc.tick(Direction.UP);
 
-        Position expectedPos = new Position(1, 0);
+        Position expectedPos1 = new Position(1, 0);
+        Position expectedPos2 = new Position(0, 1);
+
         Position mPos = getEntities(res, "mercenary").get(0).getPosition();      
-        assertEquals(mPos, expectedPos);
+        assertTrue(mPos.equals(expectedPos1) || mPos.equals(expectedPos2));
 
     /*     for (int i = 0; i < 3; i++)
             res = dmc.tick(Direction.UP);
         
         expectedPos = new Position(2, 2);
         mPos = getEntities(res, "mercenary").get(0).getPosition();      
-        assertEquals(mPos, expectedPos);*/
+        assertEquals(expectedPos, mPos);*/
     
     }
 

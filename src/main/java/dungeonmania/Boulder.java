@@ -14,5 +14,7 @@ public class Boulder extends StaticEntity {
         super.setEntityID(UUID.randomUUID().toString());
         super.setEntityType("boulder");
         super.setInteractable(false);
+        super.setCanMercBeOnThisEntity(false);
+
     }
 }

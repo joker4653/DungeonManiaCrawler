@@ -14,6 +14,7 @@ public class Door extends StaticEntity {
         super.setInteractable(false);
         super.setEntityType("door");
         super.setCurrentLocation(new Position(x, y));
+        super.setCanMercBeOnThisEntity(false);
     }
 
     public boolean isLocked() {
@@ -23,8 +24,10 @@ public class Door extends StaticEntity {
     public void setLocked(boolean isLocked) {
         if (isLocked) {
             super.setCanZombieBeOnThisEntity(false);
+            super.setCanMercBeOnThisEntity(false);
         } else {
             super.setCanZombieBeOnThisEntity(true);
+            super.setCanMercBeOnThisEntity(true);
         }
 
         this.isLocked = isLocked;
