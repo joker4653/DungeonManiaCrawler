@@ -137,6 +137,8 @@ public class DungeonManiaController {
             // when spiders are already present on the map, do they automatically move up from their spawn location?????????????????????????????????????????
         } else if (type.equalsIgnoreCase("Boulder")) {
             return new Boulder(x, y);
+        } else if (type.equalsIgnoreCase("Treasure")) {
+            return new Treasure(x, y);
         } else if (type.equalsIgnoreCase("zombie_toast_spawner")) {
             return new ZombieToastSpawner(x, y);
         } else if (type.equalsIgnoreCase("wall")) {
