@@ -12,7 +12,7 @@ public class Treasure extends CollectableEntity {
     public Treasure(int x, int y) {
         location = new Position(x, y);
 
-        super.setCanSpiderBeOnThisEntity(false);
+        super.setCanSpiderBeOnThisEntity(true);
         super.setEntityID(UUID.randomUUID().toString());
         super.setInteractable(false);
         super.setEntityType("treasure");
@@ -25,4 +25,7 @@ public class Treasure extends CollectableEntity {
         return location;
     }
 
+    public void onPickup() {
+        
+    }
 }
