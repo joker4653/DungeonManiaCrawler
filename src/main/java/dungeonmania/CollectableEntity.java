@@ -8,7 +8,10 @@ public abstract class CollectableEntity extends Entity {
     private boolean isConsumable;
 
     public CollectableEntity() {
+        // NEED TO WAIT FOR TUTOR RESPONSE FROM FORUM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         super.setCanSpiderBeOnThisEntity(true);
+        super.setCanZombieBeOnThisEntity(true);
+        super.setCanMercBeOnThisEntity(true);
     }
 
     public void setIsConsumable(boolean boo) {
