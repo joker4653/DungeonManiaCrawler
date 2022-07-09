@@ -4,15 +4,15 @@ import java.util.UUID;
 
 import dungeonmania.util.Position;
 
-public class Boulder extends StaticEntity {
+public class Wall extends StaticEntity {
     
-    public Boulder(int x, int y) {
-        super.setCanSpiderBeOnThisEntity(false);
+    public Wall(int x, int y) {
         super.setCanZombieBeOnThisEntity(false);
-
-        super.setCurrentLocation(new Position(x, y));
+        super.setCanSpiderBeOnThisEntity(true);
         super.setEntityID(UUID.randomUUID().toString());
-        super.setEntityType("boulder");
         super.setInteractable(false);
+        super.setEntityType("wall");
+        super.setCurrentLocation(new Position(x, y));
     }
+    
 }

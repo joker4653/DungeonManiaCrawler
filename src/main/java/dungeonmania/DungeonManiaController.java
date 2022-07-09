@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,7 +29,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class DungeonManiaController {
-
     private int tickCount;
     private List<Entity> listOfEntities = new ArrayList<>();
     private List<Entity> Inventory = new ArrayList<>();
@@ -139,6 +139,14 @@ public class DungeonManiaController {
             return new Boulder(x, y);
         } else if (type.equalsIgnoreCase("Treasure")) {
             return new Treasure(x, y);
+        } else if (type.equalsIgnoreCase("zombie_toast_spawner")) {
+            return new ZombieToastSpawner(x, y);
+        } else if (type.equalsIgnoreCase("wall")) {
+            return new Wall(x, y);
+        } else if (type.equalsIgnoreCase("door")) {
+            return new Door(x, y);
+        } else if (type.equalsIgnoreCase("zombie_toast")) {
+            return new ZombieToast(x, y);
         }
 
         // add other entities here
@@ -170,23 +178,39 @@ public class DungeonManiaController {
         Player player = getPlayer(listOfEntities);
         player.move(listOfEntities, movementDirection); 
 
-        int x = Integer.parseInt(configMap.get("spider_spawn_rate"));
+        int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
+        int xZomb = Integer.parseInt(configMap.get("zombie_spawn_rate"));
 
-        if (x != 0 && getTickCount() % x == 0) {
+        if (xSpi != 0 && getTickCount() % xSpi == 0) {
             Spider newSpider = new Spider(mapOfMinAndMaxValues.get("minX"), mapOfMinAndMaxValues.get("maxX"), mapOfMinAndMaxValues.get("minY"), mapOfMinAndMaxValues.get("maxY"));
             newSpider.spawn(listOfEntities);
         } else {
-            // all moving entities must move
+            // all existing moving entities must move
             for (Entity currEntity : listOfEntities) {
                 if (currEntity.getEntityType() == "player") {
                     continue;
                 }
-                ((MovingEntity) currEntity).move(listOfEntities, movementDirection);
+
+                if (currEntity.isMovingEntity())
+                    ((MovingEntity) currEntity).move(listOfEntities, movementDirection);
             }
+        }
+
+        if (xZomb != 0 && getTickCount() % xZomb == 0) {
+            processZombieSpawner();            
         }
 
         // update listOfEntities and then dungeonResp
         return createDungeonResponse();
+    }
+
+    private void processZombieSpawner() {
+        List<Entity> originalList = new ArrayList<>(listOfEntities);
+        for (Entity currEntity : originalList) {
+            if (currEntity.getEntityType().equalsIgnoreCase("zombie_toast_spawner")) {
+                ((ZombieToastSpawner)currEntity).spawnZombie(listOfEntities);
+            }
+        }
     }
 
     // Helper function that creates a new DungeonResponse because some entities can change positions. This new information needs to
