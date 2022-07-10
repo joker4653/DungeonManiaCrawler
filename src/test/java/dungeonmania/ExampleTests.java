@@ -28,7 +28,7 @@ import dungeonmania.util.Position;
 
 
 public class ExampleTests {
-    /*@Test
+    @Test
     @DisplayName("Test the player can move down")
     public void testMovementDown() {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -45,7 +45,8 @@ public class ExampleTests {
         // assert after movement
         assertEquals(expectedPlayer, actualPlayer);
     }
-    
+   
+    /* 
     @Test
     @DisplayName("Test player can use a key to open and walk through a door")
     public void useKeyWalkThroughOpenDoor() {
@@ -63,7 +64,7 @@ public class ExampleTests {
         assertEquals(0, getInventory(res, "key").size());
         assertNotEquals(pos, getEntities(res, "player").get(0).getPosition());
     }
-    
+
     @Test
     @DisplayName("Test basic movement of spiders")
     public void basicMovement() {

@@ -93,12 +93,7 @@ public class DungeonManiaController {
                 Entity entityCreated = createEntity(type, x, y);
                 if (entityCreated != null) {
                     listOfEntities.add(entityCreated);
-                }
-                
-                if (type.equalsIgnoreCase("mercenary") || type.equalsIgnoreCase("zombie_toast_spawner")) {
-                    listOfEntityResponses.add(new EntityResponse(UUID.randomUUID().toString(), type, new Position(x, y), true));
-                } else {
-                    listOfEntityResponses.add(new EntityResponse(UUID.randomUUID().toString(), type, new Position(x, y), false));
+                    listOfEntityResponses.add(new EntityResponse(entityCreated.getEntityID(), entityCreated.getEntityType(), entityCreated.getCurrentLocation(), entityCreated.isInteractable()));
                 }
             }
 
