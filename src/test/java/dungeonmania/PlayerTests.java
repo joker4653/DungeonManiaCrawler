@@ -52,6 +52,20 @@ public class PlayerTests {
         assertEquals(actualPlayerPos, expectedPos);
     }
 
+    @Test
+    @DisplayName("Test player can't move through walls.")
+    public void testPlayerVSWall() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_playerTest_basicMovement", "c_playerTest_basicMovement");
+
+        res = dmc.tick(Direction.UP);
+        res = dmc.tick(Direction.UP);
+        
+        Position expectedPos = new Position(2, 1);
+        Position actualPlayerPos = getPlayer(res).get().getPosition();
+        assertEquals(actualPlayerPos, expectedPos);
+    }
+
 
     @Test
     @DisplayName("Test player movement [down].")
@@ -93,6 +107,19 @@ public class PlayerTests {
         Position actualPlayerPos = getPlayer(res).get().getPosition();
         assertEquals(actualPlayerPos, expectedPos);
     }
+
+    @Test
+    @DisplayName("Test player inventory adding.")
+    public void testPlayerInventoryAdding() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_playerTest_inventoryAdding", "c_playerTest_inventoryAdding");
+        assertEquals(0, res.getInventory().size());
+
+        res = dmc.tick(Direction.LEFT);
+      
+        assertEquals(1, getInventory(res, "treasure").size());
+    }
+
 
 }
 
