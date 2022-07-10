@@ -30,6 +30,13 @@ import dungeonmania.util.Position;
 
 public class MercenaryTests {
 
+    // Helper function for testing ally movement
+    private boolean checkAllyPos(Direction dir, DungeonResponse res, DungeonManiaController dmc) {
+        Position playerPrevPos = getPlayer(res).get().getPosition();
+        res = dmc.tick(dir);
+        return getEntities(res, "mercenary").get(0).getPosition().equals(playerPrevPos);
+    }
+
     // Mercenary enemy movement tests:
     @Test
     @DisplayName("Test mercenary follows the player")
@@ -102,11 +109,31 @@ public class MercenaryTests {
     
     }
 
-    // TODO: mercenary moves through open door !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // TODO: mercenary moves through open door !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
     // Mercenary ally movement tests:
 
-    // “once it reaches the Player it simply follows the Player around, occupying the square the player was previously in."
+    @Test
+    @DisplayName("Test the movement of a bribed mercenary")
+    public void testMercenaryAllyMovement() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_mercenaryTest_followPlayer", "c_mercenaryTest_followPlayer");
+
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+
+        Position mercPos = getEntities(res, "mercenary").get(0).getPosition();
+        assertEquals(mercPos, new Position(5, 1));
+                
+        for (int i = 0; i < 5; i++) {
+            assertTrue(checkAllyPos(Direction.UP, res, dmc));
+            assertTrue(checkAllyPos(Direction.DOWN, res, dmc));
+            assertTrue(checkAllyPos(Direction.LEFT, res, dmc));
+            assertTrue(checkAllyPos(Direction.RIGHT, res, dmc));
+        }
+
+    }
 
 }
