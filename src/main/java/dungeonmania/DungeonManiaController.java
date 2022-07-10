@@ -143,7 +143,6 @@ public class DungeonManiaController {
             return new Player(x, y);
         } else if (type.equalsIgnoreCase("Spider")) {
             return new Spider(x, y);
-            // when spiders are already present on the map, do they automatically move up from their spawn location?????????????????????????????????????????
         } else if (type.equalsIgnoreCase("Boulder")) {
             return new Boulder(x, y);
         } else if (type.equalsIgnoreCase("Treasure")) {
@@ -189,6 +188,7 @@ public class DungeonManiaController {
 
         // Move player.
         Player player = getPlayer(listOfEntities);
+        player.setPrevPos(player.getCurrentLocation()); // a bribed mercenary occupies the player's previous position
         player.move(listOfEntities, movementDirection, player); 
 
         int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
