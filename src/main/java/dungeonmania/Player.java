@@ -14,11 +14,15 @@ public class Player extends MovingEntity {
     ArrayList<Entity> inventory = new ArrayList<Entity>();
     HashMap<String, Integer> ActiveStates = new HashMap<String, Integer>();
 
+    Position prevPos;
+
     public Player(int x, int y) {
         super.setEntityID(UUID.randomUUID().toString());
         super.setInteractable(false);
         super.setEntityType("player");
         super.setCurrentLocation(new Position(x, y));
+
+        setPrevPos(new Position(x, y));
     }
 
     public ArrayList<Entity> getInventory() {
@@ -109,6 +113,14 @@ public class Player extends MovingEntity {
         return false;
     }
 
+
+    public Position getPrevPos() {
+        return prevPos;
+    }
+
+    public void setPrevPos(Position prevPos) {
+        this.prevPos = prevPos;
+    }
 }
 
 

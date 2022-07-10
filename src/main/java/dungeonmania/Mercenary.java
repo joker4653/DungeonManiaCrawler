@@ -28,6 +28,20 @@ public class Mercenary extends MovingEntity {
     public void move(List<Entity> listOfEntities, Direction dir, Player player) {
         if (!isAlly) {
             enemyMovement(listOfEntities, player);
+        } else {
+            allyMovement(listOfEntities, player);
+        }
+    }
+
+    // If the ally is in any of the player's neighbouring positions, they move to the player's previous position.
+    // Otherwise, the ally still moves like an enemy (it still moves towards the player).
+    private void allyMovement(List<Entity> listOfEntities, Player player) {
+        List<Position> playerAdjPos = getAdjacentPos(player.getCurrentLocation(), listOfEntities);
+
+        if (playerAdjPos.contains(this.getCurrentLocation())) {
+            super.setCurrentLocation(player.getPrevPos());
+        } else {
+            enemyMovement(listOfEntities, player);
         }
     }
 
