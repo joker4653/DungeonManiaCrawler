@@ -94,6 +94,8 @@ public class DungeonManiaController {
                 if (entityCreated != null) {
                     listOfEntities.add(entityCreated);
                     listOfEntityResponses.add(new EntityResponse(entityCreated.getEntityID(), entityCreated.getEntityType(), entityCreated.getCurrentLocation(), entityCreated.isInteractable()));
+                } else {
+                    listOfEntityResponses.add(new EntityResponse(UUID.randomUUID().toString(), type, new Position(x, y), false));
                 }
             }
 
