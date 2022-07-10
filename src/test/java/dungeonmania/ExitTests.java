@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import static dungeonmania.TestUtils.getPlayer;
 import static dungeonmania.TestUtils.getEntities;
-import static dungeonmania.TestUtils.getInventory;
+import static dungeonmania.TestUtils.getInventory; 
 import static dungeonmania.TestUtils.getGoals;
 import static dungeonmania.TestUtils.countEntityOfType;
 import static dungeonmania.TestUtils.getValueFromConfigFile;
