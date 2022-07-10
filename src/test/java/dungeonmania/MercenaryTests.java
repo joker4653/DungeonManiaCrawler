@@ -114,7 +114,7 @@ public class MercenaryTests {
 
     // Mercenary ally movement tests:
 
-    @Test
+    /*@Test
     @DisplayName("Test the movement of a bribed mercenary")
     public void testMercenaryAllyMovement() {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -134,6 +134,6 @@ public class MercenaryTests {
             assertTrue(checkAllyPos(Direction.RIGHT, res, dmc));
         }
 
-    }
+    }*/
 
 }
