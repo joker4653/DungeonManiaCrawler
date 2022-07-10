@@ -39,11 +39,10 @@ public class SpiderTests {
 
         res = dmc.tick(Direction.LEFT);
         
-        // spiders should only spawn at (0, 0). Since as soon as they spawn, they move up immediately, their new
-        // position should be (-1, 0).
-        Position expectedPos = new Position(-1, 0);
+        // spiders should only spawn at (0, 0).
+        Position expectedPos = new Position(0, 0);
         Position actualSpider1Pos = getEntities(res, "spider").get(0).getPosition();
-        assertEquals(actualSpider1Pos, expectedPos);
+        assertEquals(expectedPos, actualSpider1Pos);
 
         res = dmc.tick(Direction.LEFT);
         Position actualSpider2Pos = getEntities(res, "spider").get(1).getPosition();
@@ -51,7 +50,7 @@ public class SpiderTests {
         assertEquals(actualSpider2Pos, expectedPos);
     }
 
-    /*@Test
+    @Test
     @DisplayName("Test multiple spiders spawning when spawn_rate is 1 tick")
     public void testMultipleSpidersSpawnEvery1Tick() {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -76,7 +75,7 @@ public class SpiderTests {
 
             assertEquals(spiderCountNotOnPlayer, getEntities(res, "spider").size());
         }
-    }*/
+    }
 
     @Test
     @DisplayName("Test multiple spiders spawning when spawn_rate is 0 ticks")
@@ -92,7 +91,7 @@ public class SpiderTests {
     }
 
 
-    /*@Test
+    @Test
     @DisplayName("Test multiple spiders spawning when spawn_rate is 5 ticks and ensure they spawn within the map boundaries")
     public void testMultipleSpidersSpawnEvery5Ticks() {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -108,7 +107,7 @@ public class SpiderTests {
                 Position actualSpiderPos = getEntities(res, "spider").get((i % 5) + spiderIndex).getPosition();
                 // check that the x and y coordinates are within the map's boundaries
                 assertTrue(actualSpiderPos.getX() >= 0 && actualSpiderPos.getX() <= 2);
-                assertTrue(actualSpiderPos.getY() >= 0 && actualSpiderPos.getX() <= 1);
+                assertTrue(actualSpiderPos.getY() >= 0 && actualSpiderPos.getX() <= 2);
 
                 if (!actualSpiderPos.equals(playerPos)) {
                     spiderCount++;
@@ -136,23 +135,20 @@ public class SpiderTests {
         int y = pos.getY();
         int nextPositionElement = 0;
         movementTrajectory.add(new Position(x  , y-1));
-        movementTrajectory.add(new Position(x+1, y-1));
+        movementTrajectory.add(new Position(x-1, y-1));
+        movementTrajectory.add(new Position(x-1, y));
+        movementTrajectory.add(new Position(x-1, y+1));
+        movementTrajectory.add(new Position(x,   y+1));
+        movementTrajectory.add(new Position(x+1, y+1));
         movementTrajectory.add(new Position(x+1, y));
         movementTrajectory.add(new Position(x+1, y+1));
-        movementTrajectory.add(new Position(x+2 ,y+1));
-        movementTrajectory.add(new Position(x+2, y));
-        movementTrajectory.add(new Position(x+2, y-1));
-        movementTrajectory.add(new Position(x+1, y-1));
 
         // Assert Circular Movement of Spider
-        for (int i = 0; i <= 20; ++i) {
+        for (int i = 0; i <= 7; ++i) {
             res = dmc.tick(Direction.UP);
             assertEquals(movementTrajectory.get(nextPositionElement), getEntities(res, "spider").get(0).getPosition());
             
             nextPositionElement++;
-            if (nextPositionElement == 8){
-                nextPositionElement = 0;
-            }
         }
     }
 
@@ -168,7 +164,7 @@ public class SpiderTests {
         assertNotEquals(actualSpider1Row, 0);
         assertNotEquals(actualSpider1Row, 2);
     }
-
+/* 
     @Test
     @DisplayName("Test spider can move if there is a boulder above it AFTER it is pushed by the player")
     public void testSpiderCanMoveIfBoulderAboveItIsMoved() {
@@ -181,8 +177,8 @@ public class SpiderTests {
     @DisplayName("Test spiders running into each other, Player, door, switch, wall, exit, other MovingEntities") {
 
     }
-
-    */
+*/
+    
 
 
 }
