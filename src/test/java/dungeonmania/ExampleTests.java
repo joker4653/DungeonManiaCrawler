@@ -28,7 +28,7 @@ import dungeonmania.util.Position;
 
 
 public class ExampleTests {
-    /*@Test
+    @Test
     @DisplayName("Test the player can move down")
     public void testMovementDown() {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -220,6 +220,6 @@ public class ExampleTests {
        DungeonResponse postBattleResponse = genericMercenarySequence(controller, "c_battleTests_basicMercenaryMercenaryDies");
        BattleResponse battle = postBattleResponse.getBattles().get(0);
        assertBattleCalculations("mercenary", battle, true, "c_battleTests_basicMercenaryMercenaryDies");
-    }*/
+    }
 
 }
