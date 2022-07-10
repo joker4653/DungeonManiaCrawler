@@ -115,7 +115,10 @@ public class MercenaryTests {
     // Mercenary ally movement tests:
 
     /*@Test
+<<<<<<< HEAD
     @Test
+=======
+>>>>>>> 08e951f (commented out ally test because bribing hasnt been implemented yet)
     @DisplayName("Test the movement of a bribed mercenary")
     public void testMercenaryAllyMovement() {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -136,6 +139,9 @@ public class MercenaryTests {
         }
 
     }*/
+<<<<<<< HEAD
     }
+=======
+>>>>>>> 08e951f (commented out ally test because bribing hasnt been implemented yet)
 
 
