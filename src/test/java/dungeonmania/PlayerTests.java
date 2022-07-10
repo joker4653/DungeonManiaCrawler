@@ -94,6 +94,19 @@ public class PlayerTests {
         assertEquals(actualPlayerPos, expectedPos);
     }
 
+    @Test
+    @DisplayName("Test player inventory adding.")
+    public void testPlayerInventoryAdding() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_playerTest_basicMovement", "c_playerTest_basicMovement");
+        assertEquals(0, res.getInventory().size());
+
+        res = dmc.tick(Direction.LEFT);
+      
+        assertEquals(1, getInventory(res, "wood").size());
+    }
+
+
 }
 
 // Player Things To Test!
