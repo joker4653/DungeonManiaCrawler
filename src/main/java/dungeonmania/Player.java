@@ -33,6 +33,26 @@ public class Player extends MovingEntity {
         inventory.remove(item);
     }
 
+    public boolean itemExists(Entity item) {
+        for (Entity entity : inventory) {
+            if (entity.equals(item)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // For checking if a certain type of entity (e.g. a sword) exists.
+    public boolean itemExists(String type) {
+        for (Entity entity : inventory) {
+            if (entity.getEntityType().equalsIgnoreCase(type)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     public void move(List<Entity> listOfEntities, Direction dir, Player player) {
         Position curr = super.getCurrentLocation();
