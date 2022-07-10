@@ -27,11 +27,6 @@ public class Player extends MovingEntity {
         setPrevPos(new Position(x, y));
     }
 
-
-    public ArrayList<Entity> getInventory() {
-        return inventory;
-    } 
-
     public void addItem(Entity item) {
         inventory.add(item);
     }
@@ -39,6 +34,11 @@ public class Player extends MovingEntity {
     public void removeItem(Entity item) {
         inventory.remove(item);
     }
+
+
+    public ArrayList<Entity> getInventory() {
+        return inventory;
+    } 
 
     public boolean itemExists(Entity item) {
         for (Entity entity : inventory) {
@@ -73,11 +73,13 @@ public class Player extends MovingEntity {
 
     private boolean legalMove(List<Entity> listOfEntities, Position next) {
 
+
         List<Entity> entitiesHere = listOfEntities.stream().filter(e -> e.getCurrentLocation().equals(next)).collect(Collectors.toList());
 
         ArrayList<Entity> items = new ArrayList<Entity>();
         for (Entity currEntity : entitiesHere) {
             if (!super.canStep(currEntity.getEntityType())) {
+            if (!canStepOn(currEntity.getEntityType())) {
                 return false;
             } else if (currEntity instanceof CollectableEntity) {
                 items.add(currEntity);
@@ -91,7 +93,24 @@ public class Player extends MovingEntity {
 
         return true;
     }
+        return false;
+    }
 
+    // TEMPORARY FUNCTION!!!
+    private boolean canStepOn(String type) {
+        ArrayList<String> legal = new ArrayList<String>();
+        legal.add("floor");
+        legal.add("player");
+        legal.add("exit");
+        legal.add("switch");
+        legal.add("portal");
+        legal.add("door_open");
+        legal.add("spider");
+        legal.add("mercenary");
+        legal.add("treasure");
+
+        return false;
+    }
 
 
     public Position getPrevPos() {
