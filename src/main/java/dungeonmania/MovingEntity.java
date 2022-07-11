@@ -1,11 +1,14 @@
 package dungeonmania;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import dungeonmania.util.Position;
 import dungeonmania.util.Direction;
 
 public abstract class MovingEntity extends Entity {
+
+    ArrayList<String> canStepOn;
 
     public MovingEntity() {
         super.setCanSpiderBeOnThisEntity(true);
@@ -32,5 +35,20 @@ public abstract class MovingEntity extends Entity {
     public void setInteractable(boolean isInteractable) {
         super.setInteractable(isInteractable);
     }
+
+    public void setCanStepOn(String type) {
+        this.canStepOn = StepOnJson.getStepLogic(type);
+    }
+
+    public boolean canStep(String type) {
+        for (String legalType : this.canStepOn) {
+            if (type.equals(legalType)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
 
 }
