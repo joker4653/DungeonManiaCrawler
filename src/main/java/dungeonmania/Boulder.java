@@ -18,11 +18,15 @@ public class Boulder extends StaticEntity {
     }
 
     // Should only be allowed on cardinally adjacent squares
-    public boolean checkIfNextPositionIsAllowed(Position nextPosition, List<Entity> listOfEntities) {
-        if (Position.isAdjacent(this.getCurrentLocation(), nextPosition)) {
-            return true;
+    public boolean checkIfNextPositionIsAllowed(Position nextPosition, List<Entity> listOfEntities) {   
+        // Loop checks if entity on next position is also a boulder (player can't push more than one boulder).
+        for (Entity currEntity : listOfEntities) {
+            Position currPosition = currEntity.getCurrentLocation();
+            if ((currPosition.equals(nextPosition) && currEntity.getEntityType().equals("boulder")) ||  !(Position.isAdjacent(this.getCurrentLocation(), nextPosition))) {
+                return false;    
+            }
         }
 
-        return false;
+        return true;
     }
 }
