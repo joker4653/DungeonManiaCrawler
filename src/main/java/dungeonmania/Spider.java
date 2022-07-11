@@ -66,10 +66,10 @@ public class Spider extends MovingEntity {
         super.setCurrentLocation(spawnLocation);
         setSpawnLocation(spawnLocation);
 
-        //add to entity list
+        // add to entity list
         listOfEntities.add(this);
         // From the spec: "When the spider spawns, they immediately move the 1 square upwards"
-        move(listOfEntities, Direction.DOWN, player);
+        //move(listOfEntities, Direction.DOWN, player);
     }
 
     public void move(List<Entity> listOfEntities, Direction dir, Player player) {
@@ -99,40 +99,40 @@ public class Spider extends MovingEntity {
         int currPositionX = super.getCurrentLocation().getX();
         int currPositionY = super.getCurrentLocation().getY();
 
-        if (currPositionX == spawnPositionX - 1 && currPositionY == spawnPositionY) {
-            return isClockwise ? new Position(spawnPositionX - 1, spawnPositionY + 1) : new Position(spawnPositionX - 1, spawnPositionY - 1);
-        }
-
-        if (currPositionX == spawnPositionX - 1 && currPositionY == spawnPositionY + 1) {
-            return isClockwise ? new Position(spawnPositionX, spawnPositionY + 1) : new Position(spawnPositionX - 1, spawnPositionY);
-        }
-
-        if (currPositionX == spawnPositionX && currPositionY == spawnPositionY + 1) {
-            return isClockwise ? new Position(spawnPositionX + 1, spawnPositionY + 1) : new Position(spawnPositionX - 1, spawnPositionY + 1);
-        }
-
-        if (currPositionX == spawnPositionX + 1 && currPositionY == spawnPositionY + 1) {
-            return isClockwise ? new Position(spawnPositionX + 1, spawnPositionY) : new Position(spawnPositionX, spawnPositionY + 1);
-        }
-
-        if (currPositionX == spawnPositionX + 1 && currPositionY == spawnPositionY) {
-            return isClockwise ? new Position(spawnPositionX + 1, spawnPositionY - 1) : new Position(spawnPositionX + 1, spawnPositionY + 1);
+        if (currPositionX == spawnPositionX && currPositionY == spawnPositionY - 1) {
+            return isClockwise ? new Position(spawnPositionX + 1, spawnPositionY - 1) : new Position(spawnPositionX - 1, spawnPositionY - 1);
         }
 
         if (currPositionX == spawnPositionX + 1 && currPositionY == spawnPositionY - 1) {
-            return isClockwise ? new Position(spawnPositionX, spawnPositionY - 1) : new Position(spawnPositionX + 1, spawnPositionY);
+            return isClockwise ? new Position(spawnPositionX + 1, spawnPositionY) : new Position(spawnPositionX, spawnPositionY - 1);
         }
 
-        if (currPositionX == spawnPositionX && currPositionY == spawnPositionY - 1) {
-            return isClockwise ? new Position(spawnPositionX - 1, spawnPositionY - 1) : new Position(spawnPositionX + 1, spawnPositionY - 1);
+        if (currPositionX == spawnPositionX + 1 && currPositionY == spawnPositionY) {
+            return isClockwise ? new Position(spawnPositionX + 1, spawnPositionY + 1) : new Position(spawnPositionX + 1, spawnPositionY - 1);
+        }
+
+        if (currPositionX == spawnPositionX + 1 && currPositionY == spawnPositionY + 1) {
+            return isClockwise ? new Position(spawnPositionX, spawnPositionY + 1) : new Position(spawnPositionX + 1, spawnPositionY);
+        }
+
+        if (currPositionX == spawnPositionX && currPositionY == spawnPositionY + 1) {
+            return isClockwise ? new Position(spawnPositionX - 1, spawnPositionY + 1) : new Position(spawnPositionX + 1, spawnPositionY + 1);
+        }
+
+        if (currPositionX == spawnPositionX - 1 && currPositionY == spawnPositionY + 1) {
+            return isClockwise ? new Position(spawnPositionX - 1, spawnPositionY) : new Position(spawnPositionX, spawnPositionY + 1);
+        }
+
+        if (currPositionX == spawnPositionX - 1 && currPositionY == spawnPositionY) {
+            return isClockwise ? new Position(spawnPositionX - 1, spawnPositionY - 1) : new Position(spawnPositionX - 1, spawnPositionY + 1);
         }
 
         if (currPositionX == spawnPositionX - 1 && currPositionY == spawnPositionY - 1) {
-            return isClockwise ? new Position(spawnPositionX - 1, spawnPositionY) : new Position(spawnPositionX, spawnPositionY - 1);
+            return isClockwise ? new Position(spawnPositionX, spawnPositionY - 1) : new Position(spawnPositionX - 1, spawnPositionY);
         }
 
         // this means we are currently at the spawnLocation, so go up
-        return new Position(spawnPositionX - 1, spawnPositionY);
+        return new Position(spawnPositionX, spawnPositionY - 1);
     }
 
     public boolean checkIfNextPositionIsAllowed(Position nextPosition, List<Entity> listOfEntities) {

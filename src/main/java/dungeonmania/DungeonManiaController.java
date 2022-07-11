@@ -3,13 +3,13 @@ package dungeonmania;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
+import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 import dungeonmania.util.Position;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -31,7 +31,6 @@ import com.google.gson.JsonParser;
 public class DungeonManiaController {
     private int tickCount;
     private List<Entity> listOfEntities = new ArrayList<>();
-    private List<Entity> Inventory = new ArrayList<>();
     private List<String> listOfGoals = new ArrayList<>();
     private HashMap<String, String> configMap = new HashMap<>();
     private String dungeonId;
@@ -114,7 +113,7 @@ public class DungeonManiaController {
             // TODO!!!!! replace the "null" inventory, battles and buildables with your lists.
             this.dungeonId = UUID.randomUUID().toString();
             this.dungeonName = dungeonName;
-            DungeonResponse dungeonResp = new DungeonResponse(UUID.randomUUID().toString(), dungeonName, listOfEntityResponses, null, null, null, "");
+            DungeonResponse dungeonResp = new DungeonResponse(UUID.randomUUID().toString(), dungeonName, listOfEntityResponses, getInventoryResponse(), null, null, "");
             
             mapOfMinAndMaxValues = findMinAndMaxValues();
 
@@ -127,13 +126,25 @@ public class DungeonManiaController {
         return null;
     }
 
+    private List<ItemResponse> getInventoryResponse() {
+        Player player = getPlayer(listOfEntities);
+        ArrayList<Entity> inventory = player.getInventory();
+        
+        List<ItemResponse> invResponse = new ArrayList<ItemResponse>();
+
+        for (Entity entity : inventory) {
+            invResponse.add(new ItemResponse(entity.getEntityID(), entity.getEntityType()));
+        }
+
+        return invResponse;
+    }
+
     // helper function that creates entities, which will later be stored in the list of entities
     private Entity createEntity(String type, int x, int y) {
         if (type.equalsIgnoreCase("Player")) {
             return new Player(x, y);
         } else if (type.equalsIgnoreCase("Spider")) {
             return new Spider(x, y);
-            // when spiders are already present on the map, do they automatically move up from their spawn location?????????????????????????????????????????
         } else if (type.equalsIgnoreCase("Boulder")) {
             return new Boulder(x, y);
         } else if (type.equalsIgnoreCase("Treasure")) {
@@ -181,6 +192,7 @@ public class DungeonManiaController {
 
         // Move player.
         Player player = getPlayer(listOfEntities);
+        player.setPrevPos(player.getCurrentLocation()); // a bribed mercenary occupies the player's previous position
         player.move(listOfEntities, movementDirection, player); 
 
         int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
@@ -227,7 +239,8 @@ public class DungeonManiaController {
             entities.add(new EntityResponse(currEntity.getEntityID(), currEntity.getEntityType(), currEntity.getCurrentLocation(), currEntity.isInteractable()));
         }
 
-        DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, entities, null, null, null, goals);
+        // TODO replace nulls with correct values as inventory etc are created.
+        DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, entities, getInventoryResponse(), null, null, goals);
         return dungeonResp;
     }
 
