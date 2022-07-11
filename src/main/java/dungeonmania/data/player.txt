@@ -1,0 +1,9 @@
+floor
+player
+exit
+switch
+portal
+door_open
+spider
+mercenary
+treasure

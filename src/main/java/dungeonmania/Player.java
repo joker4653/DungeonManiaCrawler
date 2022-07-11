@@ -12,7 +12,9 @@ import dungeonmania.util.Direction;
 public class Player extends MovingEntity {
 
     ArrayList<Entity> inventory = new ArrayList<Entity>();
+    ArrayList<String> canStepOn;
     HashMap<String, Integer> ActiveStates = new HashMap<String, Integer>();
+
 
     Position prevPos;
 
@@ -23,7 +25,9 @@ public class Player extends MovingEntity {
         super.setCurrentLocation(new Position(x, y));
 
         setPrevPos(new Position(x, y));
+        this.canStepOn = StepOnJson.getStepLogic("player");
     }
+
 
     public ArrayList<Entity> getInventory() {
         return inventory;
@@ -69,14 +73,12 @@ public class Player extends MovingEntity {
 
 
     private boolean legalMove(List<Entity> listOfEntities, Position next) {
-        // TODO Reimplement the checking w/ duck typing from jsons, or alternate. Currently dodge.
-
 
         List<Entity> entitiesHere = listOfEntities.stream().filter(e -> e.getCurrentLocation().equals(next)).collect(Collectors.toList());
 
         ArrayList<Entity> items = new ArrayList<Entity>();
         for (Entity currEntity : entitiesHere) {
-            if (!canStepOn(currEntity.getEntityType())) {
+            if (!canStep(currEntity.getEntityType())) {
                 return false;
             } else if (currEntity instanceof CollectableEntity) {
                 items.add(currEntity);
@@ -91,21 +93,9 @@ public class Player extends MovingEntity {
         return true;
     }
 
-    // TEMPORARY FUNCTION!!!
-    private boolean canStepOn(String type) {
-        ArrayList<String> legal = new ArrayList<String>();
-        legal.add("floor");
-        legal.add("player");
-        legal.add("exit");
-        legal.add("switch");
-        legal.add("portal");
-        legal.add("door_open");
-        legal.add("spider");
-        legal.add("mercenary");
-        legal.add("treasure");
-
-        for (String legalType : legal) {
-            if (type == legalType) {
+    private boolean canStep(String type) {
+        for (String legalType : this.canStepOn) {
+            if (type.equals(legalType)) {
                 return true;
             }
         }
