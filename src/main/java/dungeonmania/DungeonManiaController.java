@@ -84,6 +84,7 @@ public class DungeonManiaController {
 
             JsonArray jsonEntities = dungeonJsonObj.get("entities").getAsJsonArray();
 
+            // MOVED CONFIG TO HERE
             JsonElement jsonGoal = dungeonJsonObj.get("goal-condition");
 
             JsonObject configJsonObj = JsonParser.parseString(configJSONString).getAsJsonObject();
@@ -108,8 +109,6 @@ public class DungeonManiaController {
                     listOfEntityResponses.add(new EntityResponse(UUID.randomUUID().toString(), type, new Position(x, y), false));
                 }
             }
-
-            // TODO!!!!! Add goals to listOfGoals or however you want to store them
             
 
             // TODO!!!!! replace the "null" inventory, battles and buildables with your lists.
