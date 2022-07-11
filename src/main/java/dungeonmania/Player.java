@@ -12,6 +12,7 @@ import dungeonmania.util.Direction;
 public class Player extends MovingEntity {
 
     ArrayList<Entity> inventory = new ArrayList<Entity>();
+    ArrayList<String> canStepOn;
     HashMap<String, Integer> ActiveStates = new HashMap<String, Integer>();
 
 
@@ -25,7 +26,13 @@ public class Player extends MovingEntity {
         super.setCanStepOn("player");
 
         setPrevPos(new Position(x, y));
+        this.canStepOn = StepOnJson.getStepLogic("player");
     }
+
+
+    public ArrayList<Entity> getInventory() {
+        return inventory;
+    } 
 
     public void addItem(Entity item) {
         inventory.add(item);
@@ -44,11 +51,6 @@ public class Player extends MovingEntity {
 
         return false;
     }
-
-
-    public ArrayList<Entity> getInventory() {
-        return inventory;
-    } 
 
 
     // For checking if a certain type of entity (e.g. a sword) exists.
@@ -80,7 +82,6 @@ public class Player extends MovingEntity {
         ArrayList<Entity> items = new ArrayList<Entity>();
         for (Entity currEntity : entitiesHere) {
             if (!super.canStep(currEntity.getEntityType())) {
-            if (!canStepOn(currEntity.getEntityType())) {
                 return false;
             } else if (currEntity instanceof CollectableEntity) {
                 items.add(currEntity);
@@ -94,22 +95,28 @@ public class Player extends MovingEntity {
 
         return true;
     }
-        return false;
-    }
 
-    // TEMPORARY FUNCTION!!!
-    private boolean canStepOn(String type) {
-        ArrayList<String> legal = new ArrayList<String>();
-        legal.add("floor");
-        legal.add("player");
-        legal.add("exit");
-        legal.add("switch");
-        legal.add("portal");
-        legal.add("door_open");
-        legal.add("spider");
-        legal.add("mercenary");
-        legal.add("treasure");
+    // // TEMPORARY FUNCTION!!!
+    // private boolean canStepOn(String type) {
+    //     ArrayList<String> legal = new ArrayList<String>();
+    //     legal.add("floor");
+    //     legal.add("player");
+    //     legal.add("exit");
+    //     legal.add("switch");
+    //     legal.add("portal");
+    //     legal.add("door_open");
+    //     legal.add("spider");
+    //     legal.add("mercenary");
+    //     legal.add("treasure");
+    // }
 
+    public boolean canStep(String type) {
+        for (String legalType : this.canStepOn) {
+            if (type.equals(legalType)) {
+                return true;
+            }
+        }
+        
         return false;
     }
 
