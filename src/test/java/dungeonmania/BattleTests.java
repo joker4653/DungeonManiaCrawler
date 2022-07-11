@@ -27,8 +27,17 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class BattleTests {
-    
+    @Test
+    @DisplayName("Test spiders battling with an unarmed player")
+    public void testSpiderBasicBattle() {
 
+    }
+
+    @Test
+    @DisplayName("Test zombie toasts battling with an unarmed player")
+    public void testZombieBasicBattle() {
+        
+    }
 
 
 
