@@ -34,16 +34,13 @@ public class WallTests {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_WallTest_movementBlockage", "c_WallTest_movementBlockage");
         
-        Position expectedPos = new Position(1, 1);
+        Position expectedPos = new Position(3, 1);
         Position actualPlayerPos = getEntities(res, "player").get(0).getPosition();
 
-        // Player should not be able to move in any direction due to being boxed in by walls and should stay in its
+        // Player should not be able to move in this direction due to being blocked by walls and should stay in its
         // original position.
         dmc.tick(Direction.UP);
-        dmc.tick(Direction.DOWN);
-        dmc.tick(Direction.LEFT);
-        dmc.tick(Direction.RIGHT);
-        assertEquals(actualPlayerPos, expectedPos);
+        assertEquals(expectedPos, actualPlayerPos);
     }
 
     @Test
@@ -55,12 +52,9 @@ public class WallTests {
         Position expectedPos = new Position(3, 1);
         Position actualZombiePos = getEntities(res, "zombie").get(0).getPosition();
 
-        // Zombie should not be able to move in any direction due to being boxed in by walls and should stay in its
+        // Zombie should not be able to move in this direction due to being blocked by walls and should stay in its
         // original position.
         dmc.tick(Direction.UP);
-        dmc.tick(Direction.DOWN);
-        dmc.tick(Direction.LEFT);
-        dmc.tick(Direction.RIGHT);
         assertEquals(actualZombiePos, expectedPos);     
     }
 

@@ -40,8 +40,8 @@ public class BoulderTests {
 
         // Player should be able to push boulder
         dmc.tick(Direction.RIGHT);
-        assertEquals(actualPlayerPos, expectedPlayerPos);
-        assertEquals(actualBoulderPos, expectedBoulderPos);
+        assertEquals(expectedPlayerPos, actualPlayerPos);
+        assertEquals(expectedBoulderPos, actualBoulderPos);
     }
 
     @Test
