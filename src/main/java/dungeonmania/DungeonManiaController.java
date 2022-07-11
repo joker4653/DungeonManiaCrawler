@@ -83,6 +83,16 @@ public class DungeonManiaController {
             JsonObject dungeonJsonObj = JsonParser.parseString(dungeonJSONString).getAsJsonObject();
 
             JsonArray jsonEntities = dungeonJsonObj.get("entities").getAsJsonArray();
+
+            JsonElement jsonGoal = dungeonJsonObj.get("goal-condition");
+
+            JsonObject configJsonObj = JsonParser.parseString(configJSONString).getAsJsonObject();
+            Set<String> configKeySet = configJsonObj.keySet();
+
+            for (String key : configKeySet) {
+                configMap.put(key, configJsonObj.get(key).toString());
+            }
+
             List<EntityResponse> listOfEntityResponses = new ArrayList<>(); 
             for (JsonElement currElement : jsonEntities) {
                 JsonObject jsonObjElement = currElement.getAsJsonObject();
@@ -100,14 +110,7 @@ public class DungeonManiaController {
             }
 
             // TODO!!!!! Add goals to listOfGoals or however you want to store them
-            JsonElement jsonGoal = dungeonJsonObj.get("goal-condition");
-
-            JsonObject configJsonObj = JsonParser.parseString(configJSONString).getAsJsonObject();
-            Set<String> configKeySet = configJsonObj.keySet();
-
-            for (String key : configKeySet) {
-                configMap.put(key, configJsonObj.get(key).toString());
-            }
+            
 
             // TODO!!!!! replace the "null" inventory, battles and buildables with your lists.
             this.dungeonId = UUID.randomUUID().toString();
@@ -148,6 +151,8 @@ public class DungeonManiaController {
             return new Mercenary(x, y);
         } else if (type.equalsIgnoreCase("Treasure")) {
             return new Treasure(x, y);
+        } else if (type.equalsIgnoreCase("sword")) {
+            return new Sword(x, y, Integer.parseInt(configMap.get("sword_durability")), Integer.parseInt(configMap.get("sword_attack")));
         }
 
         // add other entities here
