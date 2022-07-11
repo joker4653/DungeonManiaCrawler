@@ -12,7 +12,6 @@ import dungeonmania.util.Direction;
 public class Player extends MovingEntity {
 
     ArrayList<Entity> inventory = new ArrayList<Entity>();
-    ArrayList<String> canStepOn;
     HashMap<String, Integer> ActiveStates = new HashMap<String, Integer>();
 
 
@@ -23,9 +22,9 @@ public class Player extends MovingEntity {
         super.setInteractable(false);
         super.setEntityType("player");
         super.setCurrentLocation(new Position(x, y));
+        super.setCanStepOn("player");
 
         setPrevPos(new Position(x, y));
-        this.canStepOn = StepOnJson.getStepLogic("player");
     }
 
 
@@ -78,7 +77,7 @@ public class Player extends MovingEntity {
 
         ArrayList<Entity> items = new ArrayList<Entity>();
         for (Entity currEntity : entitiesHere) {
-            if (!canStep(currEntity.getEntityType())) {
+            if (!super.canStep(currEntity.getEntityType())) {
                 return false;
             } else if (currEntity instanceof CollectableEntity) {
                 items.add(currEntity);
@@ -93,15 +92,6 @@ public class Player extends MovingEntity {
         return true;
     }
 
-    private boolean canStep(String type) {
-        for (String legalType : this.canStepOn) {
-            if (type.equals(legalType)) {
-                return true;
-            }
-        }
-        
-        return false;
-    }
 
 
     public Position getPrevPos() {
