@@ -12,7 +12,6 @@ import dungeonmania.util.Direction;
 public class Player extends MovingEntity {
 
     ArrayList<Entity> inventory = new ArrayList<Entity>();
-    ArrayList<String> canStepOn;
     HashMap<String, Integer> ActiveStates = new HashMap<String, Integer>();
 
 
@@ -26,7 +25,6 @@ public class Player extends MovingEntity {
         super.setCanStepOn("player");
 
         setPrevPos(new Position(x, y));
-        this.canStepOn = StepOnJson.getStepLogic("player");
     }
 
 
