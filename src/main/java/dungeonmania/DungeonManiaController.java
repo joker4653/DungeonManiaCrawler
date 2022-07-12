@@ -100,7 +100,7 @@ public class DungeonManiaController {
                 int x = jsonObjElement.get("x").getAsInt();
                 int y = jsonObjElement.get("y").getAsInt();
 
-                Entity entityCreated = createEntity(type, x, y);
+                Entity entityCreated = createEntity(type, x, y, jsonObjElement);
                 if (entityCreated != null) {
                     listOfEntities.add(entityCreated);
                     listOfEntityResponses.add(new EntityResponse(entityCreated.getEntityID(), entityCreated.getEntityType(), entityCreated.getCurrentLocation(), entityCreated.isInteractable()));
@@ -140,7 +140,7 @@ public class DungeonManiaController {
     }
 
     // helper function that creates entities, which will later be stored in the list of entities
-    private Entity createEntity(String type, int x, int y) {
+    private Entity createEntity(String type, int x, int y, JsonObject jsonObjElement) {
         if (type.equalsIgnoreCase("Player")) {
             return new Player(x, y);
         } else if (type.equalsIgnoreCase("Spider")) {
@@ -163,6 +163,8 @@ public class DungeonManiaController {
             return new Treasure(x, y);
         } else if (type.equalsIgnoreCase("sword")) {
             return new Sword(x, y, Integer.parseInt(configMap.get("sword_durability")), Integer.parseInt(configMap.get("sword_attack")));
+        } else if (type.equalsIgnoreCase("portal")) {
+            return new Portal(x, y, jsonObjElement.get("key").getAsString());
         }
 
         // add other entities here
