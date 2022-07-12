@@ -5,10 +5,7 @@ import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
-<<<<<<< HEAD
 import dungeonmania.response.models.RoundResponse;
-=======
->>>>>>> origin/master
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 import dungeonmania.util.Position;
@@ -97,17 +94,6 @@ public class DungeonManiaController {
             JsonObject dungeonJsonObj = JsonParser.parseString(dungeonJSONString).getAsJsonObject();
 
             JsonArray jsonEntities = dungeonJsonObj.get("entities").getAsJsonArray();
-
-            // MOVED CONFIG TO HERE
-            JsonElement jsonGoal = dungeonJsonObj.get("goal-condition");
-
-            JsonObject configJsonObj = JsonParser.parseString(configJSONString).getAsJsonObject();
-            Set<String> configKeySet = configJsonObj.keySet();
-
-            for (String key : configKeySet) {
-                configMap.put(key, configJsonObj.get(key).toString());
-            }
-
             List<EntityResponse> listOfEntityResponses = new ArrayList<>(); 
             for (JsonElement currElement : jsonEntities) {
                 JsonObject jsonObjElement = currElement.getAsJsonObject();
@@ -129,24 +115,16 @@ public class DungeonManiaController {
                     listOfEntityResponses.add(new EntityResponse(UUID.randomUUID().toString(), type, new Position(x, y), false));
                 }
             }
-<<<<<<< HEAD
 
             // TODO!!!!! Holly already added the simple goal, BUT NOT the complex goals!!!!!!!!!!!!!!!!!!!!!!!!!!
             JsonElement jsonGoal = dungeonJsonObj.get("goal-condition");
             JsonObject jsonObj = jsonGoal.getAsJsonObject();
             goals = jsonObj.get("goal").getAsString();
-=======
-            
->>>>>>> origin/master
 
             // TODO!!!!! replace the "null" inventory, battles and buildables with your lists.
             this.dungeonId = UUID.randomUUID().toString();
             this.dungeonName = dungeonName;
-<<<<<<< HEAD
             DungeonResponse dungeonResp = new DungeonResponse(UUID.randomUUID().toString(), dungeonName, listOfEntityResponses, getInventoryResponse(), getBattleResponse(), null, goals);
-=======
-            DungeonResponse dungeonResp = new DungeonResponse(UUID.randomUUID().toString(), dungeonName, listOfEntityResponses, getInventoryResponse(), null, null, "");
->>>>>>> origin/master
             
             mapOfMinAndMaxValues = findMinAndMaxValues();
 
@@ -154,7 +132,6 @@ public class DungeonManiaController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         
         return null;
     }
@@ -199,29 +176,12 @@ public class DungeonManiaController {
         return invResponse;
     }
 
-    private List<ItemResponse> getInventoryResponse() {
-        Player player = getPlayer(listOfEntities);
-        ArrayList<Entity> inventory = player.getInventory();
-        
-        List<ItemResponse> invResponse = new ArrayList<ItemResponse>();
-
-        for (Entity entity : inventory) {
-            invResponse.add(new ItemResponse(entity.getEntityID(), entity.getEntityType()));
-        }
-
-        return invResponse;
-    }
-
     // helper function that creates entities, which will later be stored in the list of entities
     private Entity createEntity(String type, int x, int y, int key) {
         if (type.equalsIgnoreCase("Player")) {
             return new Player(x, y, configMap);
         } else if (type.equalsIgnoreCase("Spider")) {
-<<<<<<< HEAD
             return new Spider(x, y, configMap);
-=======
-            return new Spider(x, y);
->>>>>>> origin/master
         } else if (type.equalsIgnoreCase("Boulder")) {
             return new Boulder(x, y);
         } else if (type.equalsIgnoreCase("Treasure")) {
@@ -241,10 +201,7 @@ public class DungeonManiaController {
         } else if (type.equalsIgnoreCase("sword")) {
             return new Sword(x, y, Integer.parseInt(configMap.get("sword_durability")), Integer.parseInt(configMap.get("sword_attack")));
         }
-
-        /* else if (type.equalsIgnoreCase("door")) {
-            return new Door(x, y, key);
-        }  */
+        
         // add other entities here
 
         return null;
@@ -320,11 +277,7 @@ public class DungeonManiaController {
             entities.add(new EntityResponse(currEntity.getEntityID(), currEntity.getEntityType(), currEntity.getCurrentLocation(), currEntity.isInteractable()));
         }
 
-<<<<<<< HEAD
         // TODO replace nulls with correct values as battles and buildables are created!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-=======
-        // TODO replace nulls with correct values as inventory etc are created.
->>>>>>> origin/master
         DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, entities, getInventoryResponse(), null, null, goals);
         return dungeonResp;
     }
