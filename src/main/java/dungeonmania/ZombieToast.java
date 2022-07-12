@@ -2,10 +2,12 @@ package dungeonmania;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import dungeonmania.EnemyBattleStrategy.ZombieBattlingStrategy;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -15,21 +17,23 @@ public class ZombieToast extends MovingEntity {
     private Position spawnLocation;
     private Position spawnerLocation;
     
-    public ZombieToast(int x, int y) {
+    public ZombieToast(int x, int y, HashMap<String, String> configMap) {
         this.spawnLocation = new Position(x, y);
         super.setCurrentLocation(spawnLocation);
-        initialise();
+        initialise(configMap);
     }
 
-    public ZombieToast(int zombieSpawnerX, int zombieSpawnerY, boolean hasSpawned) {
+    public ZombieToast(int zombieSpawnerX, int zombieSpawnerY, boolean hasSpawned, HashMap<String, String> configMap) {
         this.spawnerLocation = new Position(zombieSpawnerX, zombieSpawnerY);
-        initialise();
+        initialise(configMap);
     }
 
-    private void initialise() {
+    private void initialise(HashMap<String, String> configMap) {
         super.setEntityID(UUID.randomUUID().toString());
         super.setInteractable(false);
         super.setEntityType("zombie_toast");
+        super.enemyChangeStrategy(new ZombieBattlingStrategy(configMap));
+        super.setEnemyHealth(Double.parseDouble(configMap.get("zombie_health")));
     }
 
     public void spawn(List<Entity> listOfEntities) {
