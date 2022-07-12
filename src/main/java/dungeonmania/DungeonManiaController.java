@@ -94,7 +94,10 @@ public class DungeonManiaController {
             JsonObject dungeonJsonObj = JsonParser.parseString(dungeonJSONString).getAsJsonObject();
 
             JsonArray jsonEntities = dungeonJsonObj.get("entities").getAsJsonArray();
+<<<<<<< HEAD
 
+=======
+>>>>>>> e938162 (overwrote original newGame())
             List<EntityResponse> listOfEntityResponses = new ArrayList<>(); 
             for (JsonElement currElement : jsonEntities) {
                 JsonObject jsonObjElement = currElement.getAsJsonObject();
@@ -116,7 +119,10 @@ public class DungeonManiaController {
                     listOfEntityResponses.add(new EntityResponse(UUID.randomUUID().toString(), type, new Position(x, y), false));
                 }
             }
+<<<<<<< HEAD
             
+=======
+>>>>>>> e938162 (overwrote original newGame())
 
             // TODO!!!!! Holly already added the simple goal, BUT NOT the complex goals!!!!!!!!!!!!!!!!!!!!!!!!!!
             JsonElement jsonGoal = dungeonJsonObj.get("goal-condition");
@@ -134,7 +140,6 @@ public class DungeonManiaController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         
         return null;
     }
@@ -206,10 +211,7 @@ public class DungeonManiaController {
         } else if (type.equalsIgnoreCase("switch")) {
             return new FloorSwitch(x, y);
         }
-
-        /* else if (type.equalsIgnoreCase("door")) {
-            return new Door(x, y, key);
-        }  */
+        
         // add other entities here
 
         return null;
