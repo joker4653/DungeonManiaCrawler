@@ -22,19 +22,27 @@ public class Portal extends StaticEntity {
         this.colour = colour;
     }
 
-    public void teleport(List<Entity> listOfEntities, Player player) {
-        for (Entity currEntity : listOfEntities) {
-            if (currEntity.getEntityType().equals("portal"))
-                if ((Portal)currEntity.) {
-            }
-        }
-    }
-
     public String getColour() {
         return colour;
     }
 
     public void setColour(String colour) {
         this.colour = colour;
+    }
+    
+    public void teleport(List<Entity> listOfEntities, Player player) {
+        List<Portal> listOfPortals = new ArrayList<>();
+
+        for (Entity currEntity : listOfEntities) {
+            if (currEntity.getEntityType().equals("portal")) {
+                listOfPortals.add((Portal)currEntity);
+            }
+        }
+
+        for (Portal portal : listOfPortals) {
+            if (portal.getColour().equals(this.getColour())) {
+                player.setCurrentLocation(portal.getCurrentLocation());
+            }
+        }
     }
 }
