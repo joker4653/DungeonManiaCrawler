@@ -32,22 +32,8 @@ This specification is broken into four parts:
 - Mon 11 Jul 1pm - Fix `getEntitiesStream` in `TestUtils` to check prefixes instead of entire entity type
 - Sun 10 Jul 9am - Fix confusing exception and add precondiction in the JavaDoc for `FileLoader.loadResourceFile()`
 - Tue 12 Jul 4pm - Fix sample battle test to have positive delta instead of negative for health in `RoundResponse`
-- Tue 12 Jul 6pm - Add image for green portal
 - Tue 12 Jul 6pm - Clarify `isInteractable` behaviour with allies, zombie toast spawner behaviour if there's no open square and removal of items from inventory
 - Tue 12 Jul 8pm - If a spider is stuck between two boulders in its movement path, it should remain still
-- Tue 12 Jul 10pm - Improve wording of effects of bows in battles
-- Wed 13 Jul 9am - Fix the typo in the example battle test
-- Tue 12 Jul 6pm - Clarify `isInteractable` behaviour with allies, zombie toast spawner behaviour if there's no open square and removal of items from inventory
-- Tue 12 Jul 8pm - If a spider is stuck between two boulders in its movement path, it should remain still
-- Tue 12 Jul 10pm - Improve wording of effects of bows in battles
-- Thu 14 Jul 6am - Add image for green portal
-- Tue 12 Jul 6pm - Add image for green portal
-- Tue 12 Jul 6pm - Clarify `isInteractable` behaviour with allies, zombie toast spawner behaviour if there's no open square and removal of items from inventory
-- Tue 12 Jul 8pm - If a spider is stuck between two boulders in its movement path, it should remain still
-- Tue 12 Jul 10pm - Improve wording of effects of bows in battles
-- Tue 12 Jul 6pm - Clarify `isInteractable` behaviour with allies, zombie toast spawner behaviour if there's no open square and removal of items from inventory
-- Tue 12 Jul 8pm - If a spider is stuck between two boulders in its movement path, it should remain still
-- Tue 12 Jul 10pm - Improve wording of effects of bows in battles
 
 ## 1. Aims
 
