@@ -118,6 +118,7 @@ public class DungeonManiaController {
             }
             
 
+            // TODO!!!!! Holly already added the simple goal, BUT NOT the complex goals!!!!!!!!!!!!!!!!!!!!!!!!!!
             JsonElement jsonGoal = dungeonJsonObj.get("goal-condition");
             JsonObject jsonObj = jsonGoal.getAsJsonObject();
             goals = jsonObj.get("goal").getAsString();
