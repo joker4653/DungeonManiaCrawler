@@ -17,7 +17,7 @@ public class Player extends MovingEntity {
 
     Position prevPos;
 
-    public Player(int x, int y) {
+    public Player(int x, int y, HashMap<String, String> configMap) {
         super.setEntityID(UUID.randomUUID().toString());
         super.setInteractable(false);
         super.setEntityType("player");
@@ -25,6 +25,7 @@ public class Player extends MovingEntity {
         super.setCanStepOn("player");
 
         setPrevPos(new Position(x, y));
+        super.setPlayerHealth(Double.parseDouble(configMap.get("player_health")));
     }
 
 

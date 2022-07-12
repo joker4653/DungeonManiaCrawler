@@ -29,6 +29,8 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class ZombieTests {
+    // TODO: @Before method for creating zombies!!!!!!!!!
+
     // Helper function that gets position of a zombie
     public Position getZombPos(int i, DungeonResponse res) {
         return getEntities(res, "zombie_toast").stream()

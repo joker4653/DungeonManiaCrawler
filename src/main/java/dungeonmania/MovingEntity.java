@@ -4,11 +4,16 @@ import java.util.List;
 import java.util.ArrayList;
 
 import dungeonmania.util.Position;
+import dungeonmania.EnemyBattleStrategy.EnemyBattlingStrategy;
+import dungeonmania.EnemyBattleStrategy.NoBattlingStrategy;
 import dungeonmania.util.Direction;
 
 public abstract class MovingEntity extends Entity {
 
-    ArrayList<String> canStepOn;
+    private ArrayList<String> canStepOn;
+    private EnemyBattlingStrategy enemyStrategy;
+    private double playerHealth;
+    private double enemyHealth;
 
     public MovingEntity() {
         super.setCanSpiderBeOnThisEntity(true);
@@ -18,7 +23,6 @@ public abstract class MovingEntity extends Entity {
     }
 
     public abstract void move(List<Entity> listOfEntities, Direction dir, Player player);
-
 
     public Position getCurrentLocation() {
         return super.getCurrentLocation();
@@ -50,5 +54,32 @@ public abstract class MovingEntity extends Entity {
         return false;
     }
 
+    public double enemyAttackModifier() {
+        return enemyStrategy.attackModifier();
+    }
+
+    public double calculateEnemyHealth(double playerDmg) {
+        return enemyStrategy.calculateEnemyHealth(playerDmg);
+    }
+
+    public void enemyChangeStrategy(EnemyBattlingStrategy newStrategy) {
+        this.enemyStrategy = newStrategy;
+    }
+
+    public double getPlayerHealth() {
+        return playerHealth;
+    }
+
+    public void setPlayerHealth(double playerHealth) {
+        this.playerHealth = playerHealth;
+    }
+
+    public double getEnemyHealth() {
+        return enemyHealth;
+    }
+
+    public void setEnemyHealth(double enemyHealth) {
+        this.enemyHealth = enemyHealth;
+    }
 
 }

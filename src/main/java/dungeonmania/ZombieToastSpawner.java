@@ -1,5 +1,6 @@
 package dungeonmania;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,8 +19,8 @@ public class ZombieToastSpawner extends StaticEntity {
         super.setCanMercBeOnThisEntity(true);
     }
 
-    public void spawnZombie(List<Entity> listOfEntities) {
-        new ZombieToast(getCurrentLocation().getX(), getCurrentLocation().getY(), false).spawn(listOfEntities);
+    public void spawnZombie(List<Entity> listOfEntities, HashMap<String, String> configMap) {
+        new ZombieToast(getCurrentLocation().getX(), getCurrentLocation().getY(), false, configMap).spawn(listOfEntities);
     }
 
 }

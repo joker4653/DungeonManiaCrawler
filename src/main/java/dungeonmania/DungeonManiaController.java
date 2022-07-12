@@ -1,9 +1,11 @@
 package dungeonmania;
 
 import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
+import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 import dungeonmania.util.Position;
@@ -35,8 +37,9 @@ public class DungeonManiaController {
     private HashMap<String, String> configMap = new HashMap<>();
     private String dungeonId;
     private String dungeonName;
-    private String goals = "";
+    private String goals;
     private HashMap<String, Integer> mapOfMinAndMaxValues = new HashMap<>();
+    List<Battle> listOfBattles = new ArrayList<>(); // must store history of battles :(
 
     public int getTickCount() {
         return tickCount;
@@ -79,6 +82,15 @@ public class DungeonManiaController {
             String dungeonJSONString = FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json");
             String configJSONString = FileLoader.loadResourceFile("/configs/" + configName + ".json");
 
+            /* Reading Config file */
+            JsonObject configJsonObj = JsonParser.parseString(configJSONString).getAsJsonObject();
+            Set<String> configKeySet = configJsonObj.keySet();
+
+            for (String key : configKeySet) {
+                configMap.put(key, configJsonObj.get(key).toString());
+            }
+
+            /* Reading Dungeon JSON file */
             JsonObject dungeonJsonObj = JsonParser.parseString(dungeonJSONString).getAsJsonObject();
 
             JsonArray jsonEntities = dungeonJsonObj.get("entities").getAsJsonArray();
@@ -88,8 +100,14 @@ public class DungeonManiaController {
                 String type = jsonObjElement.get("type").getAsString();
                 int x = jsonObjElement.get("x").getAsInt();
                 int y = jsonObjElement.get("y").getAsInt();
+                
+                // fixing key issue
+                int key = Integer.MAX_VALUE;
+                if (jsonObjElement.get("key") != null) {
+                    key = jsonObjElement.get("key").getAsInt();
+                }
 
-                Entity entityCreated = createEntity(type, x, y);
+                Entity entityCreated = createEntity(type, x, y, key);
                 if (entityCreated != null) {
                     listOfEntities.add(entityCreated);
                     listOfEntityResponses.add(new EntityResponse(entityCreated.getEntityID(), entityCreated.getEntityType(), entityCreated.getCurrentLocation(), entityCreated.isInteractable()));
@@ -98,20 +116,14 @@ public class DungeonManiaController {
                 }
             }
 
-            // TODO!!!!! Add goals to listOfGoals or however you want to store them
             JsonElement jsonGoal = dungeonJsonObj.get("goal-condition");
-
-            JsonObject configJsonObj = JsonParser.parseString(configJSONString).getAsJsonObject();
-            Set<String> configKeySet = configJsonObj.keySet();
-
-            for (String key : configKeySet) {
-                configMap.put(key, configJsonObj.get(key).toString());
-            }
+            JsonObject jsonObj = jsonGoal.getAsJsonObject();
+            goals = jsonObj.get("goal").getAsString();
 
             // TODO!!!!! replace the "null" inventory, battles and buildables with your lists.
             this.dungeonId = UUID.randomUUID().toString();
             this.dungeonName = dungeonName;
-            DungeonResponse dungeonResp = new DungeonResponse(UUID.randomUUID().toString(), dungeonName, listOfEntityResponses, getInventoryResponse(), null, null, "");
+            DungeonResponse dungeonResp = new DungeonResponse(UUID.randomUUID().toString(), dungeonName, listOfEntityResponses, getInventoryResponse(), getBattleResponse(), null, goals);
             
             mapOfMinAndMaxValues = findMinAndMaxValues();
 
@@ -122,6 +134,33 @@ public class DungeonManiaController {
 
         
         return null;
+    }
+    
+    private List<BattleResponse> getBattleResponse() {
+        List<BattleResponse> battleRespList = new ArrayList<>();
+        Player player = getPlayer(listOfEntities);
+        Position playerPos = player.getCurrentLocation();
+
+        for (Entity currEntity : listOfEntities) {
+            if (currEntity.getCurrentLocation().equals(playerPos) && currEntity.isMovingEntity() && !currEntity.getEntityID().equals(player.getEntityID())) {
+                listOfBattles.add(new Battle(player, currEntity));
+            }
+        }
+
+        for (Battle currBattle : listOfBattles) {
+            battleRespList.add(new BattleResponse(currBattle.getEnemyType(), getRoundsResponse(), currBattle.getInitPlayerHealth(), currBattle.getInitEnemyHealth()));
+        }
+
+        return battleRespList;
+    }
+
+    private List<RoundResponse> getRoundsResponse() {
+        // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        List<RoundResponse> roundRespList = new ArrayList<>();
+
+        
+
+        return roundRespList;
     }
 
     private List<ItemResponse> getInventoryResponse() {
@@ -138,11 +177,11 @@ public class DungeonManiaController {
     }
 
     // helper function that creates entities, which will later be stored in the list of entities
-    private Entity createEntity(String type, int x, int y) {
+    private Entity createEntity(String type, int x, int y, int key) {
         if (type.equalsIgnoreCase("Player")) {
-            return new Player(x, y);
+            return new Player(x, y, configMap);
         } else if (type.equalsIgnoreCase("Spider")) {
-            return new Spider(x, y);
+            return new Spider(x, y, configMap);
         } else if (type.equalsIgnoreCase("Boulder")) {
             return new Boulder(x, y);
         } else if (type.equalsIgnoreCase("Treasure")) {
@@ -152,15 +191,18 @@ public class DungeonManiaController {
         } else if (type.equalsIgnoreCase("wall")) {
             return new Wall(x, y);
         } else if (type.equalsIgnoreCase("door")) {
-            return new Door(x, y);
+            return new Door(x, y, key);
         } else if (type.equalsIgnoreCase("zombie_toast")) {
-            return new ZombieToast(x, y);
+            return new ZombieToast(x, y, configMap);
         } else if (type.equalsIgnoreCase("mercenary")) {
-            return new Mercenary(x, y);
+            return new Mercenary(x, y, configMap);
         } else if (type.equalsIgnoreCase("Treasure")) {
             return new Treasure(x, y);
         }
 
+        /* else if (type.equalsIgnoreCase("door")) {
+            return new Door(x, y, key);
+        }  */
         // add other entities here
 
         return null;
@@ -196,7 +238,8 @@ public class DungeonManiaController {
         Spider newSpider = null;
 
         if (xSpi != 0 && getTickCount() % xSpi == 0) {
-            newSpider = new Spider(mapOfMinAndMaxValues.get("minX"), mapOfMinAndMaxValues.get("maxX"), mapOfMinAndMaxValues.get("minY"), mapOfMinAndMaxValues.get("maxY"));
+            newSpider = new Spider(mapOfMinAndMaxValues.get("minX"), mapOfMinAndMaxValues.get("maxX"),
+                            mapOfMinAndMaxValues.get("minY"), mapOfMinAndMaxValues.get("maxY"), configMap);
             newSpider.spawn(listOfEntities, player);
         }
 
@@ -222,7 +265,7 @@ public class DungeonManiaController {
         List<Entity> originalList = new ArrayList<>(listOfEntities);
         for (Entity currEntity : originalList) {
             if (currEntity.getEntityType().equalsIgnoreCase("zombie_toast_spawner")) {
-                ((ZombieToastSpawner)currEntity).spawnZombie(listOfEntities);
+                ((ZombieToastSpawner)currEntity).spawnZombie(listOfEntities, configMap);
             }
         }
     }
@@ -235,7 +278,7 @@ public class DungeonManiaController {
             entities.add(new EntityResponse(currEntity.getEntityID(), currEntity.getEntityType(), currEntity.getCurrentLocation(), currEntity.isInteractable()));
         }
 
-        // TODO replace nulls with correct values as inventory etc are created.
+        // TODO replace nulls with correct values as battles and buildables are created!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, entities, getInventoryResponse(), null, null, goals);
         return dungeonResp;
     }
@@ -252,11 +295,9 @@ public class DungeonManiaController {
 
     // finds minX, maxX, minY and maxY based on the Dungeon map's coordinates.
     public HashMap<String, Integer> findMinAndMaxValues() {
-        // int minX = 0;
-        int minX = listOfEntities.get(0).getCurrentLocation().getX(); // uncomment this when player is ready!!!!!!!!!!!!!!!!!!!!
+        int minX = listOfEntities.get(0).getCurrentLocation().getX();
         int maxX = minX;
-        // int minY = 0;
-        int minY = listOfEntities.get(0).getCurrentLocation().getY(); // uncomment this when player is ready!!!!!!!!!!!!!!!!!!!!
+        int minY = listOfEntities.get(0).getCurrentLocation().getY();
         int maxY = minY;
 
         for (Entity currEntity : listOfEntities) {

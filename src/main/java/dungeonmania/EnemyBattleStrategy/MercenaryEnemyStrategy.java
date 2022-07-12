@@ -2,11 +2,11 @@ package dungeonmania.EnemyBattleStrategy;
 
 import java.util.HashMap;
 
-public class SpiderBattlingStrategy extends EnemyBattlingStrategy {
-    
-    public SpiderBattlingStrategy(HashMap<String, String> configMap) {
-        super.setDamage(Double.parseDouble(configMap.get("spider_attack")));
-        super.setHealth(Double.parseDouble(configMap.get("spider_health")));
+public class MercenaryEnemyStrategy extends EnemyBattlingStrategy {
+
+    public MercenaryEnemyStrategy(HashMap<String, String> configMap) {
+        super.setDamage(Double.parseDouble(configMap.get("mercenary_attack")));
+        super.setHealth(Double.parseDouble(configMap.get("mercenary_health")));
     }
 
     @Override
@@ -15,9 +15,7 @@ public class SpiderBattlingStrategy extends EnemyBattlingStrategy {
         return super.getHealth();
     }
 
-    @Override
     public double attackModifier() {
         return super.getDamage();
     }
-    
 }
