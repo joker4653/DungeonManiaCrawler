@@ -34,6 +34,7 @@ This specification is broken into four parts:
 - Tue 12 Jul 4pm - Fix sample battle test to have positive delta instead of negative for health in `RoundResponse`
 - Tue 12 Jul 6pm - Clarify `isInteractable` behaviour with allies, zombie toast spawner behaviour if there's no open square and removal of items from inventory
 - Tue 12 Jul 8pm - If a spider is stuck between two boulders in its movement path, it should remain still
+- Tue 12 Jul 10pm - Improve wording of effects of bows in battles
 
 ## 1. Aims
 
