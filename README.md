@@ -35,6 +35,7 @@ This specification is broken into four parts:
 - Tue 12 Jul 6pm - Add image for green portal
 - Tue 12 Jul 6pm - Clarify `isInteractable` behaviour with allies, zombie toast spawner behaviour if there's no open square and removal of items from inventory
 - Tue 12 Jul 8pm - If a spider is stuck between two boulders in its movement path, it should remain still
+- Tue 12 Jul 10pm - Improve wording of effects of bows in battles
 
 ## 1. Aims
 
@@ -125,7 +126,7 @@ Some entities can be built using a 'recipe' by the player, where entities are co
 
 | Entity    | Image         | Description       |
 | --------- | --------------| ------------------|
-| Bow  | <img src="images/bow.png" width="40" />| Can be crafted with 1 wood + 3 arrows. The bow has a durability which deteriorates after a certain number of battles. Bows give the Player double damage in a single round, to simulate being able to attack an enemy at range (it can't actually attack an enemy at range). |
+| Bow  | <img src="images/bow.png" width="40" />| Can be crafted with 1 wood + 3 arrows. The bow has a durability which deteriorates after a certain number of battles. Bows give the Player double damage in each round, to simulate being able to attack an enemy at range (it can't actually attack an enemy at range). |
 | Shield    | <img src="images/shield.png" /> | Can be crafted with 2 wood + (1 treasure OR 1 key). Shields decrease the effect of enemy attacks. Each shield has a specific durability that dictates the number of battles it can be used before it deteriorates. |
 
 ### 3.6 Battles
