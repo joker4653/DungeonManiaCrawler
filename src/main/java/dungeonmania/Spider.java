@@ -1,9 +1,11 @@
 package dungeonmania;
 
 import dungeonmania.util.Position;
+import dungeonmania.EnemyBattleStrategy.SpiderBattlingStrategy;
 import dungeonmania.util.Direction;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -21,25 +23,27 @@ public class Spider extends MovingEntity {
     private int yMax;
     private Position spawnLocation;
 
-    public Spider(int x, int y) {
+    public Spider(int x, int y, HashMap<String, String> configMap) {
         this.spawnLocation = new Position(x, y);
         super.setCurrentLocation(spawnLocation); // or should I do super.super.currentLocation = new Position(x, y); ?????????????????????????? (obv method forwarding when referring to currLocaiton)
-        initialiseSpider();
+        initialiseSpider(configMap);
     }
 
-    public Spider(int xMin, int xMax, int yMin, int yMax) {
+    public Spider(int xMin, int xMax, int yMin, int yMax, HashMap<String, String> configMap) {
         this.xMin = xMin;
         this.xMax = xMax;
         this.yMin = yMin;
         this.yMax = yMax;
-        initialiseSpider();
+        initialiseSpider(configMap);
     }
 
-    private void initialiseSpider() {
+    private void initialiseSpider(HashMap<String, String> configMap) {
         super.setCanSpiderBeOnThisEntity(true);
         super.setEntityID(UUID.randomUUID().toString());
         super.setInteractable(false);
         super.setEntityType("spider");
+        super.setEnemyHealth(Double.parseDouble(configMap.get("spider_health")));
+        super.enemyChangeStrategy(new SpiderBattlingStrategy(configMap));
     }
 
     public void spawn(List<Entity> listOfEntities, Player player) {

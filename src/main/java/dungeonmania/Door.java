@@ -2,12 +2,17 @@ package dungeonmania;
 
 import java.util.UUID;
 
+import com.google.gson.JsonObject;
+
 import dungeonmania.util.Position;
 
 public class Door extends StaticEntity {
     private boolean isLocked;
 
-    public Door(int x, int y) {
+    // remove!!!!!!!!!!!!!!!
+    private int key;
+
+    public Door(int x, int y, int key) {
         super.setCanZombieBeOnThisEntity(false);
         super.setCanSpiderBeOnThisEntity(true);
         super.setEntityID(UUID.randomUUID().toString());
@@ -15,6 +20,9 @@ public class Door extends StaticEntity {
         super.setEntityType("door");
         super.setCurrentLocation(new Position(x, y));
         super.setCanMercBeOnThisEntity(false);
+
+        // remove
+        this.key = key;
     }
 
     public boolean isLocked() {
