@@ -34,6 +34,6 @@ public class FloorSwitchTests {
         dmc.tick(Direction.RIGHT);
 
         // TODO: When goals has been implemented, check if boulder goal has been met.
-
+        
     }
 }
