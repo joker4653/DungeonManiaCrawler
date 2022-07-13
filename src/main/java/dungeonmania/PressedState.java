@@ -11,15 +11,24 @@ public class PressedState implements State {
     }
 
     @Override
-    public void trigger(List<Entity> listOfEntities, Player player) {
+    public void trigger(List<Entity> listOfEntities) {
     
     }
 
     @Override
-    public void untrigger(List<Entity> listOfEntities, Player player) {
-        
+    public void untrigger(List<Entity> listOfEntities) {
+        List<Boulder> listOfBoulders = new ArrayList<>();
 
+        for (Entity currEntity : listOfEntities) {
+            if (currEntity.getEntityType().equals("boulder")) {
+                listOfBoulders.add((Boulder)currEntity);
+            }
+        }
 
-        floorSwitch.setState(floorSwitch.getDepressedState());
+        for (Boulder boulder : listOfBoulders) {
+            if (!(boulder.getCurrentLocation().equals(floorSwitch.getCurrentLocation()))) {
+                floorSwitch.setState(floorSwitch.getDepressedState());
+            }
+        }
     }
 }

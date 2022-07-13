@@ -1,7 +1,6 @@
 package dungeonmania;
 
 import java.util.List;
-import java.util.ArrayList;
 import java.util.UUID;
 import dungeonmania.util.Position;
 
@@ -25,12 +24,12 @@ public class FloorSwitch extends StaticEntity {
         state = depressedState;
     }
 
-    public void trigger(List<Entity> listOfEntities, Player player) {
-        state.trigger(listOfEntities, player);
+    public void trigger(List<Entity> listOfEntities) {
+        state.trigger(listOfEntities);
     }
 
-    public void untrigger(List<Entity> listOfEntities, Player player) {
-        state.untrigger(listOfEntities, player);
+    public void untrigger(List<Entity> listOfEntities) {
+        state.untrigger(listOfEntities);
     }
 
     public State getState() {
