@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import dungeonmania.EnemyBattleStrategy.MercenaryAllyStrategy;
+import dungeonmania.EnemyBattleStrategy.MercenaryEnemyStrategy;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -14,14 +16,17 @@ public class Mercenary extends MovingEntity {
     private int currHealth;
     private int damagePoints;
     private boolean isAlly;
+
     private static final int UPPER_LIMIT = 60;
 
-    public Mercenary(int x, int y) {
+    public Mercenary(int x, int y, HashMap<String, String> configMap) {
         this.isAlly = false;
         super.setCurrentLocation(new Position(x, y));
         super.setEntityID(UUID.randomUUID().toString());
         super.setInteractable(true);
         super.setEntityType("mercenary");
+        super.setEnemyHealth(Double.parseDouble(configMap.get("mercenary_health")));
+        super.enemyChangeStrategy(new MercenaryEnemyStrategy(configMap));
     }
 
     public void makeAlly() {
@@ -119,5 +124,15 @@ public class Mercenary extends MovingEntity {
         }
 
         return possiblePos;
+    }
+    
+
+    /* Getters & Setters */
+    public boolean isAlly() {
+        return isAlly;
+    }
+
+    public void setAlly(boolean isAlly) {
+        this.isAlly = isAlly;
     }
 }
