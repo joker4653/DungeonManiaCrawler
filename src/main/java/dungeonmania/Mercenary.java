@@ -16,6 +16,7 @@ import dungeonmania.util.Position;
 public class Mercenary extends MovingEntity {
     private boolean isAlly;
     private static final int UPPER_LIMIT = 60;
+    private boolean isNeighbour;
 
     public Mercenary(int x, int y, HashMap<String, String> configMap) {
         this.isAlly = false;
@@ -25,6 +26,7 @@ public class Mercenary extends MovingEntity {
         super.setEntityType("mercenary");
         super.setEnemyHealth(Double.parseDouble(configMap.get("mercenary_health")));
         super.enemyChangeStrategy(new MercenaryEnemyStrategy(configMap));
+        this.isNeighbour = false;
     }
 
     @Override
@@ -39,9 +41,7 @@ public class Mercenary extends MovingEntity {
     // If the ally is in any of the player's neighbouring positions, they move to the player's previous position.
     // Otherwise, the ally still moves like an enemy (it still moves towards the player).
     private void allyMovement(List<Entity> listOfEntities, Player player) {
-        List<Position> playerAdjPos = getAdjacentPos(player.getCurrentLocation(), listOfEntities);
-
-        if (playerAdjPos.contains(this.getCurrentLocation())) {
+        if (this.isNeighbour) {
             super.setCurrentLocation(player.getPrevPos());
         } else {
             enemyMovement(listOfEntities, player);
@@ -68,6 +68,11 @@ public class Mercenary extends MovingEntity {
             setMercNextPos(reachablePos, listOfEntities);
             // TODO: call the battle function if mercenary is at player's position!!!!!!!!!!!
         }
+
+        List<Position> playerAdjPos = getAdjacentPos(player.getCurrentLocation(), listOfEntities);
+        if (playerAdjPos.contains(this.getCurrentLocation()))
+            this.isNeighbour = true;
+
     }
 
     private boolean processAdjPosAndCheckIfMerc(Map<Position, Integer> reachablePos, Position front, List<Entity> listOfEntities, List<Position> queue, int distance) {
