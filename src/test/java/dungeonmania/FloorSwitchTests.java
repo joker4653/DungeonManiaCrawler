@@ -40,10 +40,10 @@ public class FloorSwitchTests {
         Position actualBoulderPos = getEntities(res, "boulder").get(0).getPosition();
         assertEquals(expectedBoulderPos, actualBoulderPos);
 
-        // for (Entity currEntity : list) {
-        //     if (currEntity.getEntityType().equals("switch")) {
-        //         assertEquals(((FloorSwitch) currEntity).getPressedState(), ((FloorSwitch) currEntity).getState());
-        //     }
-        // }
+        for (Entity currEntity : list) {
+            if (currEntity.getEntityType().equals("switch")) {
+                assertEquals(((FloorSwitch) currEntity).getPressedState(), ((FloorSwitch) currEntity).getState());
+            }
+        }
     }
 }
