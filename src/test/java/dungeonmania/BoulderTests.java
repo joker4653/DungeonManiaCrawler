@@ -28,7 +28,7 @@ import java.util.ArrayList;
 public class BoulderTests {
     @Test
     @DisplayName("Basic boulder push right")
-    public void basicBoulderPushRight() {
+    public void basicBoulderPush() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_boulderTest_basicPush", "c_playerTest_basicMovement");
 
@@ -65,5 +65,5 @@ public class BoulderTests {
 //         Position actualPlayerPos = getEntities(res, "player").get(0).getPosition();
 //         assertEquals(expectedBoulderPos, actualBoulderPos);    
 //         assertEquals(expectedPlayerPos, actualPlayerPos);
-//     }
+// 
 }
