@@ -174,7 +174,7 @@ public class DungeonManiaController {
     }
 
     private List<ItemResponse> getInventoryResponse() {
-        Player player = getPlayer(listOfEntities);
+        Player player = getPlayer();
         ArrayList<Entity> inventory = player.getInventory();
         
         List<ItemResponse> invResponse = new ArrayList<ItemResponse>();
@@ -240,7 +240,7 @@ public class DungeonManiaController {
         setTickCount(getTickCount() + 1);
 
         // Move player.
-        Player player = getPlayer(listOfEntities);
+        Player player = getPlayer();
         player.setPrevPos(player.getCurrentLocation()); // a bribed mercenary occupies the player's previous position
         player.move(listOfEntities, movementDirection, player); 
 
@@ -311,8 +311,8 @@ public class DungeonManiaController {
         return dungeonResp;
     }
 
-    private Player getPlayer(List<Entity> entities) {
-        for (Entity entity : entities) {
+    private Player getPlayer() {
+        for (Entity entity : listOfEntities) {
             if (entity.getEntityType() == "player") {
                 Player player = (Player) entity;
                 return player;
@@ -320,6 +320,16 @@ public class DungeonManiaController {
         }
         return null;
     }
+
+    private Entity getEntity(String id) {
+        for (Entity entity : listOfEntities) {
+            if (entity.getEntityID() == id) {
+                return entity;
+            }
+        }
+        return null;
+    }
+
 
     // finds minX, maxX, minY and maxY based on the Dungeon map's coordinates.
     public HashMap<String, Integer> findMinAndMaxValues() {
@@ -350,6 +360,51 @@ public class DungeonManiaController {
      * /game/interact
      */
     public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {
-        return null;
+        Player player = getPlayer();
+        // Get the entity.
+        Entity entity = getEntity(entityId);
+        if (entity == null) {
+            throw new IllegalArgumentException("EntityId does not refer to a valid entity.");
+        }
+        Mercenary merc = (Mercenary) entity;
+
+        // Check player is within radius of mercenary.
+        int radius = Integer.parseInt(configMap.get("bribe_radius"));
+        if (getDistance(player.getCurrentLocation(), merc.getCurrentLocation()) > radius) {
+            throw new InvalidActionException("Mercenary is too far away to bribe.");
+        }
+
+        // Check player has sufficient gold - if so, deduct the right amount of gold from player.
+        ArrayList<Entity> inventory = player.getInventory();
+        List<Entity> treasure = inventory.stream().filter(e -> e.getEntityType().equals("treasure")).collect(Collectors.toList());
+
+        int bribe = Integer.parseInt(configMap.get("bribe_amount"));
+        if (treasure.size() < bribe) {
+            throw new InvalidActionException("Player lacks the requisite funds to bribe.");
+        }
+
+        // Remove gold from inventory.
+        for (int i = 0; i < bribe; i++) {
+            player.removeItem(treasure.get(i));
+        } 
+
+        // Make mercenary into ally.
+        merc.makeAlly();
+
+        return createDungeonResponse();
+    }
+
+    /*
+     * @returns int distance, indicating the distance between the two x coordinates, or y
+     * coordinates, depending on which is larger.
+     */
+    private int getDistance(Position a, Position b) {
+        int x_diff = Math.abs(a.getX() - b.getX());
+        int y_diff = Math.abs(a.getY() - b.getY());
+        if (x_diff > y_diff) {
+            return x_diff;
+        } else {
+            return y_diff;
+        }
     }
 }

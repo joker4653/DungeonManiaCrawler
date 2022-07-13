@@ -27,6 +27,10 @@ public class Mercenary extends MovingEntity {
         super.enemyChangeStrategy(new MercenaryEnemyStrategy(configMap));
     }
 
+    public void makeAlly() {
+        this.isAlly = true;
+    }
+
     @Override
     public void move(List<Entity> listOfEntities, Direction dir, Player player) {
         if (!isAlly) {
@@ -115,6 +119,7 @@ public class Mercenary extends MovingEntity {
 
         return possiblePos;
     }
+<<<<<<< HEAD
     
 
     /* Getters & Setters */
@@ -125,4 +130,6 @@ public class Mercenary extends MovingEntity {
     public void setAlly(boolean isAlly) {
         this.isAlly = isAlly;
     }
+=======
+>>>>>>> d72761b (Implemented mercenary bribery, one test failing.)
 }
