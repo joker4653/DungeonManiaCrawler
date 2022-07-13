@@ -9,8 +9,6 @@ public abstract class CollectableEntity extends Entity {
 
     public CollectableEntity() {
         super.setMovingEntity(false);
-
-        // NEED TO WAIT FOR TUTOR RESPONSE FROM FORUM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         super.setCanSpiderBeOnThisEntity(true);
         super.setCanZombieBeOnThisEntity(true);
         super.setCanMercBeOnThisEntity(true);
