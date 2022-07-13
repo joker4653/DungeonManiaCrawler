@@ -42,7 +42,7 @@ public class DungeonManiaController {
     private HashMap<String, Integer> mapOfMinAndMaxValues = new HashMap<>();
     List<Battle> listOfBattles = new ArrayList<>();
     List<String> buildables = new ArrayList<>();
-
+    
     public List<Entity> getListOfEntities() {
         return listOfEntities;
     }
@@ -214,8 +214,6 @@ public class DungeonManiaController {
             return new Treasure(x, y);
         } else if (type.equalsIgnoreCase("sword")) {
             return new Sword(x, y, Integer.parseInt(configMap.get("sword_durability")), Integer.parseInt(configMap.get("sword_attack")));
-        } else if (type.equalsIgnoreCase("switch")) {
-            return new FloorSwitch(x, y);
         }
         
         // add other entities here
@@ -227,14 +225,14 @@ public class DungeonManiaController {
      * /game/dungeonResponseModel
      */
     public DungeonResponse getDungeonResponseModel() {
-        return createDungeonResponse();
+        return null;
     }
 
     /**
      * /game/tick/item
      */
     public DungeonResponse tick(String itemUsedId) throws IllegalArgumentException, InvalidActionException {
-        return createDungeonResponse();
+        return null;
     }
 
     /**
@@ -242,16 +240,18 @@ public class DungeonManiaController {
      */
     public DungeonResponse tick(Direction movementDirection) {
         setTickCount(getTickCount() + 1);
-
         // Move player.
         Player player = getPlayer();
         player.setPrevPos(player.getCurrentLocation()); // a bribed mercenary occupies the player's previous position
 
         for (Entity currEntity : listOfEntities) {
-            if (currEntity.getEntityType().equals("boulder")) {
-                ((Boulder) currEntity).move(listOfEntities, movementDirection, player);
+            if (currEntity.getEntityType() == "boulder") {
+                if (getDistance(player.getCurrentLocation(), currEntity.getCurrentLocation()) == 1) {
+                    currEntity.setCurrentLocation(currEntity.getCurrentLocation().translateBy(movementDirection));
+                }
             }
         }
+        
         player.move(listOfEntities, movementDirection, player); 
 
         int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
@@ -266,7 +266,7 @@ public class DungeonManiaController {
 
         // all existing moving entities must move
         for (Entity currEntity : listOfEntities) {
-            if (currEntity.getEntityType().equalsIgnoreCase("player") || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID()))) {
+            if (currEntity.getEntityType() == "player" || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID()))) {
                 continue;
             }
 
@@ -289,7 +289,6 @@ public class DungeonManiaController {
                 }
             }
         }
-
 
         if (xZomb != 0 && getTickCount() % xZomb == 0) {
             processZombieSpawner();            
@@ -323,7 +322,7 @@ public class DungeonManiaController {
 
     private Player getPlayer() {
         for (Entity entity : listOfEntities) {
-            if (entity.getEntityType().equalsIgnoreCase("player")) {
+            if (entity.getEntityType() == "player") {
                 Player player = (Player) entity;
                 return player;
             }
@@ -333,7 +332,7 @@ public class DungeonManiaController {
 
     private Entity getEntity(String id) {
         for (Entity entity : listOfEntities) {
-            if (entity.getEntityID().equals(id)) {
+            if (entity.getEntityID() == id) {
                 return entity;
             }
         }
@@ -363,7 +362,7 @@ public class DungeonManiaController {
      * /game/build
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
-        return createDungeonResponse();
+        return null;
     }
 
     /**
