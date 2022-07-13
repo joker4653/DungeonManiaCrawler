@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import dungeonmania.exceptions.InvalidActionException;
 
 import static dungeonmania.TestUtils.getPlayer;
 import static dungeonmania.TestUtils.getEntities;
@@ -99,22 +102,85 @@ public class MercenaryTests {
 
         Position mPos = getEntities(res, "mercenary").get(0).getPosition();      
         assertTrue(mPos.equals(expectedPos1) || mPos.equals(expectedPos2));
-
-    /*     for (int i = 0; i < 3; i++)
+/*
+        for (int i = 0; i < 3; i++)
             res = dmc.tick(Direction.UP);
         
         expectedPos = new Position(2, 2);
         mPos = getEntities(res, "mercenary").get(0).getPosition();      
-        assertEquals(expectedPos, mPos);*/
-    
+        assertEquals(expectedPos, mPos);
+ */   
     }
 
     // TODO: mercenary moves through open door !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+    @Test
+    @DisplayName("Test Mercenary Bribery invalid id.")
+    public void testBriberyInvalidId() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_mercenaryTest_followPlayer", "c_mercenaryTest_followPlayer");
+
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            dmc.interact("abcd");
+        });
+    }
+
+    @Test
+    @DisplayName("Test mercenary bribery too far away.")
+    public void testBriberyOutsideRadius() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_mercenaryTest_followPlayer", "c_mercenaryTest_followPlayer");
+
+        res = dmc.tick(Direction.RIGHT);
+
+        EntityResponse merc = getEntities(res, "mercenary").get(0);
+
+        assertThrows(InvalidActionException.class, () -> {
+            dmc.interact(merc.getId());
+        });
+    }
+
+    @Test
+    @DisplayName("Test bribery insufficient gold.")
+    public void testBriberyInsufficientGold() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_mercenaryTest_nogold", "c_mercenaryTest_followPlayer");
+
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+
+        
+
+        EntityResponse merc = getEntities(res, "mercenary").get(0);
+
+        assertThrows(InvalidActionException.class, () -> {
+            dmc.interact(merc.getId());
+        });
+    }
+
+
+
+
+
+
+
+    /* Bribery tests:
+     * - entity id is not real
+     * - player is not within radius of mercenary (indicated by entity id).
+     * - player does not have enough gold.
+     *
+     * - [Spawner] Player is not cardinally adjacent to spawner.
+     * - [Spawner] Player does not have a weapon for destroying spawner.
+     * - [Spawner] Destruction success.
+     */
 
     // Mercenary ally movement tests:
-
-    /*@Test
+    @Test
     @DisplayName("Test the movement of a bribed mercenary")
     public void testMercenaryAllyMovement() {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -124,9 +190,12 @@ public class MercenaryTests {
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.RIGHT);
 
-        Position mercPos = getEntities(res, "mercenary").get(0).getPosition();
-        assertEquals(mercPos, new Position(5, 1));
-                
+        EntityResponse merc = getEntities(res, "mercenary").get(0);
+
+        assertDoesNotThrow(() -> {
+            dmc.interact(merc.getId());
+        });
+
         for (int i = 0; i < 5; i++) {
             assertTrue(checkAllyPos(Direction.UP, res, dmc));
             assertTrue(checkAllyPos(Direction.DOWN, res, dmc));
@@ -134,6 +203,6 @@ public class MercenaryTests {
             assertTrue(checkAllyPos(Direction.RIGHT, res, dmc));
         }
 
-    }*/
+    }
 
 }
