@@ -246,7 +246,7 @@ public class DungeonManiaController {
 
         // all existing moving entities must move
         for (Entity currEntity : listOfEntities) {
-            if (currEntity.getEntityType() == "player" || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID()))) {
+            if (currEntity.getEntityType().equalsIgnoreCase("player") || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID()))) {
                 continue;
             }
 
@@ -286,7 +286,7 @@ public class DungeonManiaController {
 
     private Player getPlayer() {
         for (Entity entity : listOfEntities) {
-            if (entity.getEntityType() == "player") {
+            if (entity.getEntityType().equalsIgnoreCase("player")) {
                 Player player = (Player) entity;
                 return player;
             }
@@ -296,7 +296,7 @@ public class DungeonManiaController {
 
     private Entity getEntity(String id) {
         for (Entity entity : listOfEntities) {
-            if (entity.getEntityID() == id) {
+            if (entity.getEntityID().equals(id)) {
                 return entity;
             }
         }
