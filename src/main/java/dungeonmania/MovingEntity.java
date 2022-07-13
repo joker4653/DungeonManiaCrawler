@@ -108,7 +108,7 @@ public abstract class MovingEntity extends Entity {
     // after a moving entity moves, update its position in listOfEntities
     public void updatePosAfterMove(List<Entity> listOfEntities, Position nextPosition, String id) {
         Entity entity = listOfEntities.stream()
-                                      .filter(e -> e.getEntityID() == id)
+                                      .filter(e -> e.getEntityID().equalsIgnoreCase(id))
                                       .findFirst()
                                       .get();
 
