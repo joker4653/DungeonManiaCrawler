@@ -232,6 +232,12 @@ public class DungeonManiaController {
         // Move player.
         Player player = getPlayer();
         player.setPrevPos(player.getCurrentLocation()); // a bribed mercenary occupies the player's previous position
+
+        for (Entity currEntity : listOfEntities) {
+            if (currEntity.getEntityType().equals("boulder")) {
+                ((Boulder) currEntity).move(listOfEntities, movementDirection, player);
+            }
+        }
         player.move(listOfEntities, movementDirection, player); 
 
         int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
@@ -251,7 +257,7 @@ public class DungeonManiaController {
             }
 
             if (currEntity.isMovingEntity())
-                ((MovingEntity) currEntity).move(listOfEntities, movementDirection, player);
+                ((MovingEntity) currEntity).move(listOfEntities, movementDirection, player); 
         }
 
         if (xZomb != 0 && getTickCount() % xZomb == 0) {
