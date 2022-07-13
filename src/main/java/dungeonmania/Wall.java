@@ -14,6 +14,7 @@ public class Wall extends StaticEntity {
         super.setEntityType("wall");
         super.setCurrentLocation(new Position(x, y));
         super.setCanMercBeOnThisEntity(false);
+        this.setCanBlockPlayerMovement(true);
     }
     
 }
