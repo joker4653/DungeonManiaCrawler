@@ -301,6 +301,30 @@ public class DungeonManiaController {
                     .forEach((ent) -> ((ZombieToastSpawner)ent).spawnZombie(listOfEntities, configMap));
     }
 
+    /*
+     * Find and fulfill all burgeoning battles.
+     */
+    private void checkBattles() {
+        List<Entity> monstersHere = getMonstersHere();
+        Player player = getPlayer();
+
+        for (Entity monster : monstersHere) {
+            Battle battle = new Battle(player, monster);
+            boolean alive = battle.doBattle();
+
+            listOfBattles.add(battle);
+
+            if (!alive) {
+                // TODO Player Death?!
+                break;
+            } else {
+                // Monster died.
+                listOfEntities.remove(monster);
+            }
+        }
+    }
+
+
     // Helper function that creates a new DungeonResponse because some entities can change positions. This new information needs to
     // be included in the listOfEntities and DungeonResponse.
     private DungeonResponse createDungeonResponse() {
@@ -312,9 +336,18 @@ public class DungeonManiaController {
         return dungeonResp;
     }
 
+    private List<Entity> getMonstersHere() {
+        Player player = getPlayer();
+        List<Entity> entitiesHere = listOfEntities.stream().filter(e -> e.getCurrentLocation().equals(player.getCurrentLocation()) && !e.getEntityType().equals(player)).collect(Collectors.toList());
+
+        List<Entity> monstersHere = entitiesHere.stream().filter(e -> e.isMovingEntity()).collect(Collectors.toList());
+
+        return monstersHere;
+    }
+
     private Player getPlayer() {
         for (Entity entity : listOfEntities) {
-            if (entity.getEntityType().equalsIgnoreCase("player")) {
+            if (entity.getEntityType() == "player") {
                 Player player = (Player) entity;
                 return player;
             }

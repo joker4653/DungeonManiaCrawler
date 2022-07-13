@@ -12,6 +12,7 @@ import dungeonmania.util.Direction;
 public class Player extends MovingEntity {
 
     HashMap<String, Integer> ActiveStates = new HashMap<String, Integer>();
+    int allies = 0;
 
     Position prevPos;
 
@@ -26,6 +27,9 @@ public class Player extends MovingEntity {
         super.setPlayerHealth(Double.parseDouble(configMap.get("player_health")));
     }
 
+    public void addAlly() {
+        this.allies += 1;
+    }
 
     public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory) {
         Position curr = super.getCurrentLocation();
