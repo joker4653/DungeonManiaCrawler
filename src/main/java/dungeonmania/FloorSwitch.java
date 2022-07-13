@@ -1,22 +1,36 @@
 package dungeonmania;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.UUID;
+import dungeonmania.util.Position;
+
 public class FloorSwitch extends StaticEntity {
     private State depressedState;
     private State pressedState;
     private State state;
 
-    public FloorSwitch() {
+    public FloorSwitch(int x, int y) {
+        super.setCanSpiderBeOnThisEntity(false);
+        super.setCanZombieBeOnThisEntity(false);
+        super.setCurrentLocation(new Position(x, y));
+        super.setEntityID(UUID.randomUUID().toString());
+        super.setEntityType("boulder");
+        super.setInteractable(false);
+        super.setCanMercBeOnThisEntity(false);
+        this.setCanBlockPlayerMovement(false);
+
         depressedState = new DepressedState(this);
         pressedState = new PressedState(this);
         state = depressedState;
     }
 
-    public void trigger() {
-        state.trigger();
+    public void trigger(List<Entity> listOfEntities, Player player) {
+        state.trigger(listOfEntities, player);
     }
 
-    public void untrigger() {
-        state.untrigger();
+    public void untrigger(List<Entity> listOfEntities, Player player) {
+        state.untrigger(listOfEntities, player);
     }
 
     public State getState() {

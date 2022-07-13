@@ -1,6 +1,7 @@
 package dungeonmania;
 
 public abstract class StaticEntity extends Entity {
+    private boolean canBlockPlayerMovement;
 
     public StaticEntity() {
         super.setMovingEntity(false);
@@ -18,5 +19,13 @@ public abstract class StaticEntity extends Entity {
 
     public void setCanMercBeOnThisEntity(boolean canMercBeOnThisEntity) {
         super.setCanMercBeOnThisEntity(canMercBeOnThisEntity);
+    }
+
+    public boolean isCanBlockPlayerMovement() {
+        return canBlockPlayerMovement;
+    }
+
+    public void setCanBlockPlayerMovement(boolean canBlockPlayerMovement) {
+        this.canBlockPlayerMovement = canBlockPlayerMovement;
     }
 }
