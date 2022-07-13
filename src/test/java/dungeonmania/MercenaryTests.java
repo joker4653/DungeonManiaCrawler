@@ -178,7 +178,7 @@ public class MercenaryTests {
      * - [Spawner] Player does not have a weapon for destroying spawner.
      * - [Spawner] Destruction success.
      */
-
+/*
     // Mercenary ally movement tests:
 <<<<<<< HEAD
 
@@ -216,6 +216,7 @@ public class MercenaryTests {
     }*/
 <<<<<<< HEAD
     }
+<<<<<<< HEAD
 =======
 >>>>>>> 08e951f (commented out ally test because bribing hasnt been implemented yet)
 
@@ -223,3 +224,7 @@ public class MercenaryTests {
     }
 >>>>>>> e9d4292 (Wrote tests for mercenary bribery.)
 
+=======
+*/
+}
+>>>>>>> b27dd58 (Removed non-working merc test.)
