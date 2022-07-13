@@ -163,6 +163,8 @@ public class DungeonManiaController {
             return new Treasure(x, y);
         } else if (type.equalsIgnoreCase("sword")) {
             return new Sword(x, y, Integer.parseInt(configMap.get("sword_durability")), Integer.parseInt(configMap.get("sword_attack")));
+        } else if (type.equalsIgnoreCase("switch")) {
+            return new FloorSwitch(x, y);
         }
 
         // add other entities here
