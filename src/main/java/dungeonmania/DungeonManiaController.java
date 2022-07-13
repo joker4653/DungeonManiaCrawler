@@ -12,6 +12,7 @@ import dungeonmania.util.Position;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -39,7 +40,8 @@ public class DungeonManiaController {
     private String dungeonName;
     private String goals;
     private HashMap<String, Integer> mapOfMinAndMaxValues = new HashMap<>();
-    List<Battle> listOfBattles = new ArrayList<>(); // must store history of battles :(
+    List<Battle> listOfBattles = new ArrayList<>();
+    List<String> buildables = new ArrayList<>();
 
     public int getTickCount() {
         return tickCount;
@@ -124,7 +126,7 @@ public class DungeonManiaController {
             // TODO!!!!! replace the "null" inventory, battles and buildables with your lists.
             this.dungeonId = UUID.randomUUID().toString();
             this.dungeonName = dungeonName;
-            DungeonResponse dungeonResp = new DungeonResponse(UUID.randomUUID().toString(), dungeonName, listOfEntityResponses, getInventoryResponse(), getBattleResponse(), null, goals);
+            DungeonResponse dungeonResp = new DungeonResponse(UUID.randomUUID().toString(), dungeonName, listOfEntityResponses, getInventoryResponse(), getBattleResponse(), buildables, goals);
             
             mapOfMinAndMaxValues = findMinAndMaxValues();
 
@@ -138,7 +140,7 @@ public class DungeonManiaController {
     
     private List<BattleResponse> getBattleResponse() {
         List<BattleResponse> battleRespList = new ArrayList<>();
-        Player player = getPlayer(listOfEntities);
+        Player player = getPlayer();
         Position playerPos = player.getCurrentLocation();
 
         for (Entity currEntity : listOfEntities) {
@@ -164,7 +166,7 @@ public class DungeonManiaController {
     }
 
     private List<ItemResponse> getInventoryResponse() {
-        Player player = getPlayer(listOfEntities);
+        Player player = getPlayer();
         ArrayList<Entity> inventory = player.getInventory();
         
         List<ItemResponse> invResponse = new ArrayList<ItemResponse>();
@@ -228,7 +230,7 @@ public class DungeonManiaController {
         setTickCount(getTickCount() + 1);
 
         // Move player.
-        Player player = getPlayer(listOfEntities);
+        Player player = getPlayer();
         player.setPrevPos(player.getCurrentLocation()); // a bribed mercenary occupies the player's previous position
         player.move(listOfEntities, movementDirection, player); 
 
@@ -278,12 +280,12 @@ public class DungeonManiaController {
         }
 
         // TODO replace nulls with correct values as battles and buildables are created!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, entities, getInventoryResponse(), null, null, goals);
+        DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, entities, getInventoryResponse(), getBattleResponse(), buildables, goals);
         return dungeonResp;
     }
 
-    private Player getPlayer(List<Entity> entities) {
-        for (Entity entity : entities) {
+    private Player getPlayer() {
+        for (Entity entity : listOfEntities) {
             if (entity.getEntityType() == "player") {
                 Player player = (Player) entity;
                 return player;
@@ -292,34 +294,30 @@ public class DungeonManiaController {
         return null;
     }
 
+    private Entity getEntity(String id) {
+        for (Entity entity : listOfEntities) {
+            if (entity.getEntityID() == id) {
+                return entity;
+            }
+        }
+        return null;
+    }
+
+
     // finds minX, maxX, minY and maxY based on the Dungeon map's coordinates.
     public HashMap<String, Integer> findMinAndMaxValues() {
-        int minX = listOfEntities.get(0).getCurrentLocation().getX();
-        int maxX = minX;
-        int minY = listOfEntities.get(0).getCurrentLocation().getY();
-        int maxY = minY;
+        List<Integer> listOfXPositions = listOfEntities.stream()
+                                                       .map(e -> e.getCurrentLocation().getX())
+                                                       .collect(Collectors.toList());
 
-        for (Entity currEntity : listOfEntities) {
-            int currPositionX = currEntity.getCurrentLocation().getX();
-            int currPositionY = currEntity.getCurrentLocation().getY();
+        List<Integer> listOfYPositions = listOfEntities.stream()
+                                                       .map(e -> e.getCurrentLocation().getY())
+                                                       .collect(Collectors.toList());
 
-            if (currPositionX < minX)
-                minX = currPositionX;
-
-            if (currPositionX > maxX)
-                maxX = currPositionX;
-            
-            if (currPositionY < minY)
-                minY = currPositionY;
-
-            if (currPositionY > maxY)
-                maxY = currPositionY;
-        }
-
-        mapOfMinAndMaxValues.put("minX", minX);
-        mapOfMinAndMaxValues.put("maxX", maxX);
-        mapOfMinAndMaxValues.put("minY", minY);
-        mapOfMinAndMaxValues.put("maxY", maxY);
+        mapOfMinAndMaxValues.put("minX", Collections.min(listOfXPositions));
+        mapOfMinAndMaxValues.put("maxX", Collections.max(listOfXPositions));
+        mapOfMinAndMaxValues.put("minY", Collections.min(listOfYPositions));
+        mapOfMinAndMaxValues.put("maxY", Collections.max(listOfYPositions));
 
         return mapOfMinAndMaxValues;
     }
@@ -335,6 +333,52 @@ public class DungeonManiaController {
      * /game/interact
      */
     public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {
-        return null;
+        Player player = getPlayer();
+        // Get the entity.
+        Entity entity = getEntity(entityId);
+        if (entity == null) {
+            throw new IllegalArgumentException("EntityId does not refer to a valid entity.");
+        }
+        Mercenary merc = (Mercenary) entity;
+
+        // Check player is within radius of mercenary.
+        int radius = Integer.parseInt(configMap.get("bribe_radius"));
+        if (getDistance(player.getCurrentLocation(), merc.getCurrentLocation()) > radius) {
+            throw new InvalidActionException("Mercenary is too far away to bribe.");
+        }
+
+        // Check player has sufficient gold - if so, deduct the right amount of gold from player.
+        ArrayList<Entity> inventory = player.getInventory();
+        List<Entity> treasure = inventory.stream().filter(e -> e.getEntityType().equals("treasure")).collect(Collectors.toList());
+
+        int bribe = Integer.parseInt(configMap.get("bribe_amount"));
+        if (treasure.size() < bribe) {
+            throw new InvalidActionException("Player lacks the requisite funds to bribe.");
+        }
+
+        // Remove gold from inventory.
+        for (int i = 0; i < bribe; i++) {
+            player.removeItem(treasure.get(i));
+        } 
+
+        // Make mercenary into ally.
+        merc.setAlly(true);
+        merc.setInteractable(false); // according to the spec
+
+        return createDungeonResponse();
+    }
+
+    /*
+     * @returns int distance, indicating the distance between the two x coordinates, or y
+     * coordinates, depending on which is larger.
+     */
+    private int getDistance(Position a, Position b) {
+        int x_diff = Math.abs(a.getX() - b.getX());
+        int y_diff = Math.abs(a.getY() - b.getY());
+        if (x_diff > y_diff) {
+            return x_diff;
+        } else {
+            return y_diff;
+        }
     }
 }
