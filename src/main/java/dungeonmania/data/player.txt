@@ -7,3 +7,4 @@ door_open
 spider
 mercenary
 treasure
+boulder
