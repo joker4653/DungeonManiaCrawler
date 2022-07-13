@@ -254,9 +254,9 @@ public class DungeonManiaController {
         return createDungeonResponse();
     }
 
+    // Checks all floor switches if they have a boulder on them. If they do, it updates the state of the switch to trigger it. It they don't it updates
+    // the switch to untrigger.
     private void boulderCheck() {
-        // Checks all floor switches if they have a boulder on them. If they do, if updates the state of the switch to trigger it. It they don't it updates
-        // the switch to untrigger.
         for (Entity currSwitch : listOfEntities) {
             if (currSwitch.getEntityType() == "switch") {
                 for (Entity currBoulder : listOfEntities) {
