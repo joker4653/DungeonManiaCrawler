@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import dungeonmania.EnemyBattleStrategy.MercenaryAllyStrategy;
 import dungeonmania.EnemyBattleStrategy.MercenaryEnemyStrategy;
@@ -13,10 +14,7 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Mercenary extends MovingEntity {
-    private int currHealth;
-    private int damagePoints;
     private boolean isAlly;
-
     private static final int UPPER_LIMIT = 60;
 
     public Mercenary(int x, int y, HashMap<String, String> configMap) {
@@ -68,6 +66,7 @@ public class Mercenary extends MovingEntity {
         // next, find the path from mercenary to player
         if (mercFound) {
             setMercNextPos(reachablePos, listOfEntities);
+            // TODO: call the battle function if mercenary is at player's position!!!!!!!!!!!
         }
     }
 
@@ -107,12 +106,7 @@ public class Mercenary extends MovingEntity {
 
     // gets cardinally adjacent possible positions
     private List<Position> getAdjacentPos(Position currPos, List<Entity> listOfEntities) {
-        Position up = new Position(currPos.getX(), currPos.getY() - 1);
-        Position down = new Position(currPos.getX(), currPos.getY() + 1);
-        Position left = new Position(currPos.getX() - 1, currPos.getY());
-        Position right = new Position(currPos.getX() + 1, currPos.getY());
-
-        List<Position> possiblePos = new ArrayList<>(Arrays.asList(left, right, up, down));
+        List<Position> possiblePos = createListOfCardinalPos(currPos);
 
         for (Entity currEntity : listOfEntities) {
             if (possiblePos.contains(currEntity.getCurrentLocation()) && !currEntity.getCanMercBeOnThisEntityBool())
