@@ -40,7 +40,8 @@ public class DungeonManiaController {
     private String dungeonName;
     private String goals;
     private HashMap<String, Integer> mapOfMinAndMaxValues = new HashMap<>();
-    List<Battle> listOfBattles = new ArrayList<>(); // must store history of battles :(
+    List<Battle> listOfBattles = new ArrayList<>();
+    List<String> buildables = new ArrayList<>();
 
     public int getTickCount() {
         return tickCount;
@@ -133,7 +134,7 @@ public class DungeonManiaController {
             // TODO!!!!! replace the "null" inventory, battles and buildables with your lists.
             this.dungeonId = UUID.randomUUID().toString();
             this.dungeonName = dungeonName;
-            DungeonResponse dungeonResp = new DungeonResponse(UUID.randomUUID().toString(), dungeonName, listOfEntityResponses, getInventoryResponse(), getBattleResponse(), null, goals);
+            DungeonResponse dungeonResp = new DungeonResponse(UUID.randomUUID().toString(), dungeonName, listOfEntityResponses, getInventoryResponse(), getBattleResponse(), buildables, goals);
             
             mapOfMinAndMaxValues = findMinAndMaxValues();
 
@@ -306,7 +307,7 @@ public class DungeonManiaController {
         }
 
         // TODO replace nulls with correct values as battles and buildables are created!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, entities, getInventoryResponse(), getBattleResponse(), null, goals);
+        DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, entities, getInventoryResponse(), getBattleResponse(), buildables, goals);
         return dungeonResp;
     }
 
