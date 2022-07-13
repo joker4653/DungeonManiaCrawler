@@ -43,6 +43,10 @@ public class DungeonManiaController {
     List<Battle> listOfBattles = new ArrayList<>();
     List<String> buildables = new ArrayList<>();
 
+    public List<Entity> getListOfEntities() {
+        return listOfEntities;
+    }
+
     public int getTickCount() {
         return tickCount;
     }

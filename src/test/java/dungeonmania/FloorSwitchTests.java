@@ -22,6 +22,8 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
+import java.util.List;
+import java.util.ArrayList;
 
 public class FloorSwitchTests {
     @Test
@@ -29,11 +31,19 @@ public class FloorSwitchTests {
     public void testFloorSwitchBoulderPress() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_floorswitchTest_basicPress", "c_playerTest_basicMovement");
+        List<Entity> list = dmc.getListOfEntities();
+
 
         // This will push boulder onto the switch
-        dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        Position expectedBoulderPos = new Position(3, 1);
+        Position actualBoulderPos = getEntities(res, "boulder").get(0).getPosition();
+        assertEquals(expectedBoulderPos, actualBoulderPos);
 
-        // TODO: When goals has been implemented, check if boulder goal has been met.
-        
+        // for (Entity currEntity : list) {
+        //     if (currEntity.getEntityType().equals("switch")) {
+        //         assertEquals(((FloorSwitch) currEntity).getPressedState(), ((FloorSwitch) currEntity).getState());
+        //     }
+        // }
     }
 }
