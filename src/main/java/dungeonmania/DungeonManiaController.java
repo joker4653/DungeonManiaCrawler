@@ -148,7 +148,7 @@ public class DungeonManiaController {
     
     private List<BattleResponse> getBattleResponse() {
         List<BattleResponse> battleRespList = new ArrayList<>();
-        Player player = getPlayer(listOfEntities);
+        Player player = getPlayer();
         Position playerPos = player.getCurrentLocation();
 
         for (Entity currEntity : listOfEntities) {
