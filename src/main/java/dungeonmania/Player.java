@@ -13,7 +13,7 @@ public class Player extends MovingEntity {
 
     ArrayList<Entity> inventory = new ArrayList<Entity>();
     HashMap<String, Integer> ActiveStates = new HashMap<String, Integer>();
-
+    int allies = 0;
 
     Position prevPos;
 
@@ -28,6 +28,9 @@ public class Player extends MovingEntity {
         super.setPlayerHealth(Double.parseDouble(configMap.get("player_health")));
     }
 
+    public void addAlly() {
+        this.allies += 1;
+    }
 
     public ArrayList<Entity> getInventory() {
         return inventory;

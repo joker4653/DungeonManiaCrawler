@@ -138,7 +138,7 @@ public class DungeonManiaController {
     
     private List<BattleResponse> getBattleResponse() {
         List<BattleResponse> battleRespList = new ArrayList<>();
-        Player player = getPlayer(listOfEntities);
+        Player player = getPlayer();
         Position playerPos = player.getCurrentLocation();
 
         for (Entity currEntity : listOfEntities) {
@@ -164,7 +164,7 @@ public class DungeonManiaController {
     }
 
     private List<ItemResponse> getInventoryResponse() {
-        Player player = getPlayer(listOfEntities);
+        Player player = getPlayer();
         ArrayList<Entity> inventory = player.getInventory();
         
         List<ItemResponse> invResponse = new ArrayList<ItemResponse>();
@@ -228,7 +228,7 @@ public class DungeonManiaController {
         setTickCount(getTickCount() + 1);
 
         // Move player.
-        Player player = getPlayer(listOfEntities);
+        Player player = getPlayer();
         player.setPrevPos(player.getCurrentLocation()); // a bribed mercenary occupies the player's previous position
         player.move(listOfEntities, movementDirection, player); 
 
@@ -256,6 +256,9 @@ public class DungeonManiaController {
             processZombieSpawner();            
         }
 
+        // Process any battles.
+        checkBattles();
+
         // update listOfEntities and then dungeonResp
         return createDungeonResponse();
     }
@@ -268,6 +271,30 @@ public class DungeonManiaController {
             }
         }
     }
+
+    /*
+     * Find and fulfill all burgeoning battles.
+     */
+    private void checkBattles() {
+        List<Entity> monstersHere = getMonstersHere();
+        Player player = getPlayer();
+
+        for (Entity monster : monstersHere) {
+            Battle battle = new Battle(player, monster);
+            boolean alive = battle.doBattle();
+
+            listOfBattles.add(battle);
+
+            if (!alive) {
+                // TODO Player Death?!
+                break;
+            } else {
+                // Monster died.
+                listOfEntities.remove(monster);
+            }
+        }
+    }
+
 
     // Helper function that creates a new DungeonResponse because some entities can change positions. This new information needs to
     // be included in the listOfEntities and DungeonResponse.
@@ -282,8 +309,17 @@ public class DungeonManiaController {
         return dungeonResp;
     }
 
-    private Player getPlayer(List<Entity> entities) {
-        for (Entity entity : entities) {
+    private List<Entity> getMonstersHere() {
+        Player player = getPlayer();
+        List<Entity> entitiesHere = listOfEntities.stream().filter(e -> e.getCurrentLocation().equals(player.getCurrentLocation()) && !e.getEntityType().equals(player)).collect(Collectors.toList());
+
+        List<Entity> monstersHere = entitiesHere.stream().filter(e -> e.isMovingEntity()).collect(Collectors.toList());
+
+        return monstersHere;
+    }
+
+    private Player getPlayer() {
+        for (Entity entity : listOfEntities) {
             if (entity.getEntityType() == "player") {
                 Player player = (Player) entity;
                 return player;
