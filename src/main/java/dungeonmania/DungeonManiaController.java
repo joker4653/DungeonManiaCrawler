@@ -213,14 +213,14 @@ public class DungeonManiaController {
      * /game/dungeonResponseModel
      */
     public DungeonResponse getDungeonResponseModel() {
-        return null;
+        return createDungeonResponse();
     }
 
     /**
      * /game/tick/item
      */
     public DungeonResponse tick(String itemUsedId) throws IllegalArgumentException, InvalidActionException {
-        return null;
+        return createDungeonResponse();
     }
 
     /**
@@ -326,7 +326,7 @@ public class DungeonManiaController {
      * /game/build
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
-        return null;
+        return createDungeonResponse();
     }
 
     /**
