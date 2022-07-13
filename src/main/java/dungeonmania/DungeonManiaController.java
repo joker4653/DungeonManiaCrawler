@@ -12,6 +12,7 @@ import dungeonmania.util.Position;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -294,32 +295,18 @@ public class DungeonManiaController {
 
     // finds minX, maxX, minY and maxY based on the Dungeon map's coordinates.
     public HashMap<String, Integer> findMinAndMaxValues() {
-        int minX = listOfEntities.get(0).getCurrentLocation().getX();
-        int maxX = minX;
-        int minY = listOfEntities.get(0).getCurrentLocation().getY();
-        int maxY = minY;
+        List<Integer> listOfXPositions = listOfEntities.stream()
+                                                       .map(e -> e.getCurrentLocation().getX())
+                                                       .collect(Collectors.toList());
 
-        for (Entity currEntity : listOfEntities) {
-            int currPositionX = currEntity.getCurrentLocation().getX();
-            int currPositionY = currEntity.getCurrentLocation().getY();
+        List<Integer> listOfYPositions = listOfEntities.stream()
+                                                       .map(e -> e.getCurrentLocation().getY())
+                                                       .collect(Collectors.toList());
 
-            if (currPositionX < minX)
-                minX = currPositionX;
-
-            if (currPositionX > maxX)
-                maxX = currPositionX;
-            
-            if (currPositionY < minY)
-                minY = currPositionY;
-
-            if (currPositionY > maxY)
-                maxY = currPositionY;
-        }
-
-        mapOfMinAndMaxValues.put("minX", minX);
-        mapOfMinAndMaxValues.put("maxX", maxX);
-        mapOfMinAndMaxValues.put("minY", minY);
-        mapOfMinAndMaxValues.put("maxY", maxY);
+        mapOfMinAndMaxValues.put("minX", Collections.min(listOfXPositions));
+        mapOfMinAndMaxValues.put("maxX", Collections.max(listOfXPositions));
+        mapOfMinAndMaxValues.put("minY", Collections.min(listOfYPositions));
+        mapOfMinAndMaxValues.put("maxY", Collections.max(listOfYPositions));
 
         return mapOfMinAndMaxValues;
     }
