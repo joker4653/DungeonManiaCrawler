@@ -29,6 +29,6 @@ public class DepressedState implements State {
 
     @Override
     public void untrigger(List<Entity> listOfEntities) {
-        
+    
     }
 }
