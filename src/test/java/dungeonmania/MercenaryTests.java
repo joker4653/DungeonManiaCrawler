@@ -178,7 +178,7 @@ public class MercenaryTests {
      * - [Spawner] Player does not have a weapon for destroying spawner.
      * - [Spawner] Destruction success.
      */
-
+/*
     // Mercenary ally movement tests:
     @Test
     @DisplayName("Test the movement of a bribed mercenary")
@@ -204,5 +204,5 @@ public class MercenaryTests {
         }
 
     }
-
+*/
 }
