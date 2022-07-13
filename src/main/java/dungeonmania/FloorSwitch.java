@@ -14,7 +14,7 @@ public class FloorSwitch extends StaticEntity {
         super.setCanZombieBeOnThisEntity(false);
         super.setCurrentLocation(new Position(x, y));
         super.setEntityID(UUID.randomUUID().toString());
-        super.setEntityType("boulder");
+        super.setEntityType("switch");
         super.setInteractable(false);
         super.setCanMercBeOnThisEntity(false);
         this.setCanBlockPlayerMovement(false);
