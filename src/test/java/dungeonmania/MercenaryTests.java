@@ -178,7 +178,8 @@ public class MercenaryTests {
      * - [Spawner] Player does not have a weapon for destroying spawner.
      * - [Spawner] Destruction success.
      */
-/*
+
+    
     // Mercenary ally movement tests:
 <<<<<<< HEAD
 
@@ -205,12 +206,21 @@ public class MercenaryTests {
             dmc.interact(merc.getId());
         });
 
-        for (int i = 0; i < 5; i++) {
-            assertTrue(checkAllyPos(Direction.UP, res, dmc));
-            assertTrue(checkAllyPos(Direction.DOWN, res, dmc));
-            assertTrue(checkAllyPos(Direction.LEFT, res, dmc));
-            assertTrue(checkAllyPos(Direction.RIGHT, res, dmc));
+        for (int i = 0; i < 2; i++) {
+            Position playerPrevPos = getPlayer(res).get().getPosition();
+            res = dmc.tick(Direction.UP);
+            assertTrue(getEntities(res, "mercenary").get(0).getPosition().equals(playerPrevPos));
+            playerPrevPos = getPlayer(res).get().getPosition();
+            res = dmc.tick(Direction.DOWN);
+            assertTrue(getEntities(res, "mercenary").get(0).getPosition().equals(playerPrevPos));
+            playerPrevPos = getPlayer(res).get().getPosition();
+            res = dmc.tick(Direction.LEFT);
+            assertTrue(getEntities(res, "mercenary").get(0).getPosition().equals(playerPrevPos));
+            playerPrevPos = getPlayer(res).get().getPosition();
+            res = dmc.tick(Direction.RIGHT);
+            assertTrue(getEntities(res, "mercenary").get(0).getPosition().equals(playerPrevPos));
         }
+<<<<<<< HEAD
 
 <<<<<<< HEAD
     }*/
@@ -226,5 +236,8 @@ public class MercenaryTests {
 
 =======
 */
+=======
+    }    
+>>>>>>> 6a3744c (fixed tests and implementation for merc ally)
 }
 >>>>>>> b27dd58 (Removed non-working merc test.)
