@@ -43,6 +43,10 @@ public class DungeonManiaController {
     List<Battle> listOfBattles = new ArrayList<>();
     List<String> buildables = new ArrayList<>();
 
+    public List<Entity> getListOfEntities() {
+        return listOfEntities;
+    }
+
     public int getTickCount() {
         return tickCount;
     }
@@ -202,6 +206,8 @@ public class DungeonManiaController {
             return new Treasure(x, y);
         } else if (type.equalsIgnoreCase("sword")) {
             return new Sword(x, y, Integer.parseInt(configMap.get("sword_durability")), Integer.parseInt(configMap.get("sword_attack")));
+        } else if (type.equalsIgnoreCase("switch")) {
+            return new FloorSwitch(x, y);
         }
         
         // add other entities here
@@ -258,6 +264,22 @@ public class DungeonManiaController {
 
             if (currEntity.isMovingEntity())
                 ((MovingEntity) currEntity).move(listOfEntities, movementDirection, player); 
+        }
+
+    // Checks all floor switches if they have a boulder on them. If they do, if updates the state of the switch to trigger it. It they don't it updates
+        // the switch to untrigger.
+        for (Entity currSwitch : listOfEntities) {
+            if (currSwitch.getEntityType() == "switch") {
+                for (Entity currBoulder : listOfEntities) {
+                    if (currBoulder.getEntityType() == "boulder") {
+                        if (currSwitch.getCurrentLocation().equals(currBoulder.getCurrentLocation())) {
+                            ((FloorSwitch) currSwitch).trigger(listOfEntities);
+                        } else {
+                            ((FloorSwitch) currSwitch).untrigger(listOfEntities);
+                        }
+                    }
+                }
+            }
         }
 
         if (xZomb != 0 && getTickCount() % xZomb == 0) {
