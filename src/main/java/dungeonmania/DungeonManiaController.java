@@ -216,6 +216,23 @@ public class DungeonManiaController {
                 ((MovingEntity) currEntity).move(listOfEntities, movementDirection, player);
         }
 
+        // Checks all floor switches if they have a boulder on them. If they do, if updates the state of the switch to trigger it. It they don't it updates
+        // the switch to untrigger.
+        for (Entity currSwitch : listOfEntities) {
+            if (currSwitch.getEntityType() == "switch") {
+                for (Entity currBoulder : listOfEntities) {
+                    if (currBoulder.getEntityType() == "boulder") {
+                        if (currSwitch.getCurrentLocation().equals(currBoulder.getCurrentLocation())) {
+                            ((FloorSwitch) currSwitch).trigger(listOfEntities);
+                        } else {
+                            ((FloorSwitch) currSwitch).untrigger(listOfEntities);
+                        }
+                    }
+                }
+            }
+        }
+
+
         if (xZomb != 0 && getTickCount() % xZomb == 0) {
             processZombieSpawner();            
         }
