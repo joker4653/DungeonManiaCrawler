@@ -27,10 +27,6 @@ public class Mercenary extends MovingEntity {
         super.enemyChangeStrategy(new MercenaryEnemyStrategy(configMap));
     }
 
-    public void makeAlly() {
-        this.isAlly = true;
-    }
-
     @Override
     public void move(List<Entity> listOfEntities, Direction dir, Player player) {
         if (!isAlly) {

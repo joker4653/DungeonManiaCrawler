@@ -389,7 +389,7 @@ public class DungeonManiaController {
         } 
 
         // Make mercenary into ally.
-        merc.makeAlly();
+        merc.setAlly(true);
 
         return createDungeonResponse();
     }
