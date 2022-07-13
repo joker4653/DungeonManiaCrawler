@@ -38,14 +38,13 @@ public class ZombieToast extends MovingEntity {
         List<Position> spawnablePositions = createListOfCardinalPos(spawnerLocation);
         updateZombAvailablePos(listOfEntities, spawnablePositions);
 
-        // if spawnablePositions IS empty, don't spawn any zombies.
+        // if spawnablePositions is empty, don't spawn any zombies.
+        // Otherwise, get the zombie's random spawn location and add the newly spawned zombie to listOfEntities.
         if (spawnablePositions.size() == 0)
             return;
 
         Position spawnLocation = super.getRandPos(spawnablePositions); 
         setSpawnLocation(spawnLocation);
-
-        // add newly spawned zombie to listOfEntities
         listOfEntities.add(this);
 
         // TODO: call the battle function if mercenary is at player's position!!!!!!!!!!!
