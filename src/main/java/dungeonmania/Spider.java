@@ -42,9 +42,8 @@ public class Spider extends MovingEntity {
     }
 
     public void spawn(List<Entity> listOfEntities, Player player) {
-        List<Position> possibleSpiderLocations = new ArrayList<>();
-
         // get a list of possible spawn locations within the map
+        List<Position> possibleSpiderLocations = new ArrayList<>();
         for (int row = xMin; row <= xMax; row++) {
             for (int col = yMin; col <= yMax; col++) {
                 possibleSpiderLocations.add(new Position(row, col));
@@ -65,9 +64,8 @@ public class Spider extends MovingEntity {
     }
 
     public void move(List<Entity> listOfEntities, Direction dir, Player player) {
-        Position nextPosition = getNextPosition();
-
         // Get the next position and check if it's a boulder. If so, change direction and move. Otherwise, move normally.
+        Position nextPosition = getNextPosition();
         if (checkIfNextPositionIsAllowed(nextPosition, listOfEntities)) {
             super.setCurrentLocation(nextPosition);
         } else {
@@ -85,13 +83,11 @@ public class Spider extends MovingEntity {
     private Position getNextPosition() {
         int spawnPosX = spawnLocation.getX();
         int spawnPosY = spawnLocation.getY();
-
         HashMap<Position, Position> clockwisePos = generateClockwisePosMap(spawnPosX, spawnPosY);
         HashMap<Position, Position> anticlockwisePos = generateAntiClockwisePosMap(spawnPosX, spawnPosY);
 
+        // if nextPos is null, this means the spider is currently at its spawnLocation. Thus, spider moves up next.
         Position nextPos = isClockwise ? clockwisePos.get(getCurrentLocation()) : anticlockwisePos.get(getCurrentLocation());
-
-        // if nextPos is null, this means we are currently at the spawnLocation, so spider goes up
         return nextPos != null ? nextPos : new Position(spawnPosX, spawnPosY - 1);
     }
 
