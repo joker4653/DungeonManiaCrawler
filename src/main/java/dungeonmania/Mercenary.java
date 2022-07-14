@@ -65,14 +65,13 @@ public class Mercenary extends MovingEntity {
 
         // next, find the path from mercenary to player
         if (mercFound) {
-            setMercNextPos(reachablePos, listOfEntities);
-            // TODO: call the battle function if mercenary is at player's position!!!!!!!!!!!
+            setMercNextPos(reachablePos, listOfEntities, player.getCurrentLocation());
+            List<Position> playerAdjPos = getAdjacentPos(player.getCurrentLocation(), listOfEntities);
+            if (playerAdjPos.contains(this.getCurrentLocation()))
+                this.isNeighbour = true;
+            
+            // TODO: call the battle function if mercenary is at player's position AND merc is NOT an ally!!!!!!!!!!!
         }
-
-        List<Position> playerAdjPos = getAdjacentPos(player.getCurrentLocation(), listOfEntities);
-        if (playerAdjPos.contains(this.getCurrentLocation()))
-            this.isNeighbour = true;
-
     }
 
     private boolean processAdjPosAndCheckIfMerc(Map<Position, Integer> reachablePos, Position front, List<Entity> listOfEntities, List<Position> queue, int distance) {
@@ -93,9 +92,12 @@ public class Mercenary extends MovingEntity {
         return false;
     }
 
-    private void setMercNextPos(HashMap<Position, Integer> reachablePos, List<Entity> listOfEntities) {
+    private void setMercNextPos(HashMap<Position, Integer> reachablePos, List<Entity> listOfEntities, Position playerPos) {
         // find the merc's neighbour that has the minimum distance in the map
         List<Position> mercNeighbours = getAdjacentPos(this.getCurrentLocation(), listOfEntities);
+
+        if (this.isAlly && mercNeighbours.contains(playerPos))
+            mercNeighbours.remove(playerPos);
 
         int minDistance = UPPER_LIMIT;
         Position minPosition = this.getCurrentLocation();
