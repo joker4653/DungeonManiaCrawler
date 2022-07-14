@@ -55,7 +55,6 @@ public class Mercenary extends MovingEntity {
         
         int distance = 1;
         boolean mercFound = false;
-
         while (queue.size() != 0 && !mercFound && distance <= UPPER_LIMIT) {
             Position front = queue.get(0);
             queue.remove(0);
