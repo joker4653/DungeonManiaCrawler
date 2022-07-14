@@ -213,8 +213,6 @@ public class DungeonManiaController {
             return new FloorSwitch(x, y);
         }
         
-        // add other entities here
-
         return null;
     }
 
@@ -237,39 +235,33 @@ public class DungeonManiaController {
      */
     public DungeonResponse tick(Direction movementDirection) {
         setTickCount(getTickCount() + 1);
+        int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
+        int xZomb = Integer.parseInt(configMap.get("zombie_spawn_rate"));
 
         // Move player.
         Player player = getPlayer();
         player.setPrevPos(player.getCurrentLocation()); // a bribed mercenary occupies the player's previous position
-
-        for (Entity currEntity : listOfEntities) {
-            if (currEntity.getEntityType().equals("boulder")) {
-                ((Boulder) currEntity).move(listOfEntities, movementDirection, player);
-            }
-        }
+        playerMovesBoulder(movementDirection, player);
         player.move(listOfEntities, movementDirection, player, inventory); 
+        boulderCheck();
 
-        int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
-        int xZomb = Integer.parseInt(configMap.get("zombie_spawn_rate"));
-        Spider newSpider = null;
-
-        if (xSpi != 0 && getTickCount() % xSpi == 0) {
-            newSpider = new Spider(mapOfMinAndMaxValues.get("minX"), mapOfMinAndMaxValues.get("maxX"),
-                            mapOfMinAndMaxValues.get("minY"), mapOfMinAndMaxValues.get("maxY"), configMap);
-            newSpider.spawn(listOfEntities, player);
-        }
-
-        // all existing moving entities must move
+        Spider newSpider = spawnASpider(xSpi, player);
         for (Entity currEntity : listOfEntities) {
-            if (currEntity.getEntityType().equalsIgnoreCase("player") || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID()))) {
+            if (currEntity.getEntityType().equalsIgnoreCase("player") || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID())))
                 continue;
-            }
 
             if (currEntity.isMovingEntity())
                 ((MovingEntity) currEntity).move(listOfEntities, movementDirection, player, inventory); 
         }
 
-    // Checks all floor switches if they have a boulder on them. If they do, if updates the state of the switch to trigger it. It they don't it updates
+        if (xZomb != 0 && getTickCount() % xZomb == 0)
+            processZombieSpawner();
+
+        return createDungeonResponse();
+    }
+
+    private void boulderCheck() {
+        // Checks all floor switches if they have a boulder on them. If they do, if updates the state of the switch to trigger it. It they don't it updates
         // the switch to untrigger.
         for (Entity currSwitch : listOfEntities) {
             if (currSwitch.getEntityType() == "switch") {
@@ -284,15 +276,29 @@ public class DungeonManiaController {
                 }
             }
         }
-
-        if (xZomb != 0 && getTickCount() % xZomb == 0) {
-            processZombieSpawner();            
-        }
-
-        // update listOfEntities and then dungeonResp
-        return createDungeonResponse();
     }
 
+    private void playerMovesBoulder(Direction movementDirection, Player player) {
+        for (Entity currEntity : listOfEntities) {
+            if (currEntity.getEntityType().equals("boulder")) {
+                ((Boulder) currEntity).move(listOfEntities, movementDirection, player);
+            }
+        }
+    }
+
+    // Spawns a spider within the specified box (from minX to maxX and from minY to maxY)
+    private Spider spawnASpider(int xSpi, Player player) {
+        Spider newSpider = null;
+        if (xSpi != 0 && getTickCount() % xSpi == 0) {
+            newSpider = new Spider(mapOfMinAndMaxValues.get("minX"), mapOfMinAndMaxValues.get("maxX"),
+                            mapOfMinAndMaxValues.get("minY"), mapOfMinAndMaxValues.get("maxY"), configMap);
+            newSpider.spawn(listOfEntities, player);
+        }
+
+        return newSpider;
+    }
+
+    // Spawner creates a new zombie
     private void processZombieSpawner() {
         List<Entity> originalList = new ArrayList<>(listOfEntities);
         for (Entity currEntity : originalList) {
