@@ -32,14 +32,6 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class MercenaryTests {
-
-    // Helper function for testing ally movement
-    private boolean checkAllyPos(Direction dir, DungeonResponse res, DungeonManiaController dmc) {
-        Position playerPrevPos = getPlayer(res).get().getPosition();
-        res = dmc.tick(dir);
-        return getEntities(res, "mercenary").get(0).getPosition().equals(playerPrevPos);
-    }
-
     // Mercenary enemy movement tests:
     @Test
     @DisplayName("Test mercenary follows the player")
@@ -102,17 +94,29 @@ public class MercenaryTests {
 
         Position mPos = getEntities(res, "mercenary").get(0).getPosition();      
         assertTrue(mPos.equals(expectedPos1) || mPos.equals(expectedPos2));
-/*
-        for (int i = 0; i < 3; i++)
-            res = dmc.tick(Direction.UP);
-        
-        expectedPos = new Position(2, 2);
-        mPos = getEntities(res, "mercenary").get(0).getPosition();      
-        assertEquals(expectedPos, mPos);
- */   
     }
 
-    // TODO: mercenary moves through open door !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    /*@Test
+    @DisplayName("Test mercenary walk through open door")
+    public void testMercenaryWalkThroughOpenDoor() {
+        //
+        //  player        key      door    
+        //  mercenary     wall          
+        //                exit     
+        //
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_mercenaryTest_throughOpenDoor", "c_mercenaryTest_followPlayer");
+
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+
+        Position mPos = getEntities(res, "mercenary").get(0).getPosition();
+        Position expectedPos = new Position(4, 1);
+     
+        assertTrue(mPos.equals(expectedPos));
+    }*/
 
     @Test
     @DisplayName("Test Mercenary Bribery invalid id.")
