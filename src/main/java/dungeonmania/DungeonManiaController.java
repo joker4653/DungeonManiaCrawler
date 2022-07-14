@@ -140,27 +140,31 @@ public class DungeonManiaController {
     
     private List<BattleResponse> getBattleResponse() {
         List<BattleResponse> battleRespList = new ArrayList<>();
-        Player player = getPlayer();
-        Position playerPos = player.getCurrentLocation();
-
-        for (Entity currEntity : listOfEntities) {
-            if (currEntity.getCurrentLocation().equals(playerPos) && currEntity.isMovingEntity() && !currEntity.getEntityID().equals(player.getEntityID())) {
-                listOfBattles.add(new Battle(player, currEntity));
-            }
-        }
 
         for (Battle currBattle : listOfBattles) {
-            battleRespList.add(new BattleResponse(currBattle.getEnemyType(), getRoundsResponse(), currBattle.getInitPlayerHealth(), currBattle.getInitEnemyHealth()));
+            battleRespList.add(new BattleResponse(currBattle.getEnemyType(), getRoundsResponse(currBattle.getRounds()), currBattle.getInitPlayerHealth(), currBattle.getInitEnemyHealth()));
         }
 
         return battleRespList;
     }
 
-    private List<RoundResponse> getRoundsResponse() {
-        // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    private List<RoundResponse> getRoundsResponse(ArrayList<Round> rounds) {
         List<RoundResponse> roundRespList = new ArrayList<>();
 
-        
+        for (Round round : rounds) {
+            ArrayList<ItemResponse> items = new ArrayList<>();
+            for (Entity weapon : round.getWeaponryUsed()) {
+                items.add(new ItemResponse(weapon.getEntityID(), weapon.getEntityType()));
+            }
+
+            roundRespList.add(new RoundResponse(round.getDeltaCharacterHealth(), round.getDeltaEnemyHealth(), items));
+            
+            return roundRespList;
+        }
+
+
+
+
 
         return roundRespList;
     }
@@ -289,12 +293,13 @@ public class DungeonManiaController {
 
         for (Entity monster : monstersHere) {
             Battle battle = new Battle(player, monster);
-            boolean alive = battle.doBattle();
+            boolean alive = battle.doBattle(configMap);
 
             listOfBattles.add(battle);
 
             if (!alive) {
                 // TODO Player Death?!
+                listOfEntities.remove(player);
                 break;
             } else {
                 // Monster died.
@@ -319,7 +324,7 @@ public class DungeonManiaController {
 
     private List<Entity> getMonstersHere() {
         Player player = getPlayer();
-        List<Entity> entitiesHere = listOfEntities.stream().filter(e -> e.getCurrentLocation().equals(player.getCurrentLocation()) && !e.getEntityType().equals(player)).collect(Collectors.toList());
+        List<Entity> entitiesHere = listOfEntities.stream().filter(e -> e.getCurrentLocation().equals(player.getCurrentLocation()) && !e.getEntityType().equals("player")).collect(Collectors.toList());
 
         List<Entity> monstersHere = entitiesHere.stream().filter(e -> e.isMovingEntity()).collect(Collectors.toList());
 
@@ -405,6 +410,7 @@ public class DungeonManiaController {
 
         // Make mercenary into ally.
         merc.setAlly(true);
+        player.addAlly();
         merc.setInteractable(false); // according to the spec
 
         return createDungeonResponse();

@@ -28,6 +28,10 @@ public class Player extends MovingEntity {
         super.setPlayerHealth(Double.parseDouble(configMap.get("player_health")));
     }
 
+    public int getAllies() {
+        return allies;
+    }
+
     public void addAlly() {
         this.allies += 1;
     }
@@ -63,6 +67,16 @@ public class Player extends MovingEntity {
         }
 
         return false;
+    }
+
+    public Entity getItem(String type) {
+        for (Entity entity : inventory) {
+            if (entity.getEntityType().equalsIgnoreCase(type)) {
+                return entity;
+            }
+        }
+
+        return null;
     }
 
     public void move(List<Entity> listOfEntities, Direction dir, Player player) {
