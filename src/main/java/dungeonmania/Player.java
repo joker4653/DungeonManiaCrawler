@@ -27,6 +27,10 @@ public class Player extends MovingEntity {
         super.setPlayerHealth(Double.parseDouble(configMap.get("player_health")));
     }
 
+    public int getAllies() {
+        return allies;
+    }
+
     public void addAlly() {
         this.allies += 1;
     }
