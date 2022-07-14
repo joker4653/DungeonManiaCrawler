@@ -30,7 +30,7 @@ public class Mercenary extends MovingEntity {
     }
 
     @Override
-    public void move(List<Entity> listOfEntities, Direction dir, Player player) {
+    public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory) {
         if (!isAlly) {
             enemyMovement(listOfEntities, player);
         } else {
