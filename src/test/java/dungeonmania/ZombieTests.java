@@ -151,6 +151,19 @@ public class ZombieTests {
     }
 
     @Test
+    @DisplayName("Test zombies can't be spawned at all")
+    public void testNoZombiesAtAll() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_zombieTest_cantSpawnAtAll", "c_zombieTest_spawnEveryTick");
+
+        for (int i = 0; i < 3; i++) {
+            res = dmc.tick(Direction.UP);
+        }
+        
+        assertEquals(getZombSize(res), 0);
+    }
+
+    @Test
     @DisplayName("Test multiple zombies can spawn from many different spawners")
     public void testMultipleZombieSpawners() {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -169,6 +182,18 @@ public class ZombieTests {
     }
 
     // Zombie movement tests:
+
+    @Test
+    @DisplayName("Test zombies can only move in one position")
+    public void testZombieCanOnlyMoveInOnePos() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_zombieTest_moveOnlyOnePos", "c_zombieTest_moveOnlyOnePos");
+
+        res = dmc.tick(Direction.LEFT);
+        res = dmc.tick(Direction.LEFT);
+        
+        assertEquals(getZombSize(res), 2);
+    }
 
     @Test
     @DisplayName("Test zombies cannot move through walls, boulders and locked doors")
