@@ -51,10 +51,9 @@ public class Spider extends MovingEntity {
         }
         
         // exclude locations of boulders since spiders can't spawn on top of them
-        for (Entity currEntity : listOfEntities) {
-            if (!currEntity.getCanSpiderBeOnThisEntityBool() && possibleSpiderLocations.contains(currEntity.getCurrentLocation()))
-                possibleSpiderLocations.remove(currEntity.getCurrentLocation());
-        }
+        listOfEntities.stream()
+                      .filter((currEntity) -> !currEntity.getCanSpiderBeOnThisEntityBool() && possibleSpiderLocations.contains(currEntity.getCurrentLocation()))
+                      .forEach((ent) -> possibleSpiderLocations.remove(ent.getCurrentLocation()));
 
         Position spawnLocation = super.getRandPos(possibleSpiderLocations);
         setSpawnLocation(spawnLocation);
@@ -120,12 +119,8 @@ public class Spider extends MovingEntity {
     }
 
     private boolean checkIfNextPositionIsAllowed(Position nextPosition, List<Entity> listOfEntities) {
-        for (Entity currEntity : listOfEntities) {
-            if (currEntity.getCurrentLocation().equals(nextPosition) && !currEntity.getCanSpiderBeOnThisEntityBool())
-                return false;
-        }
-
-        return true;
+        return !listOfEntities.stream()
+                              .anyMatch((currEntity) -> currEntity.getCurrentLocation().equals(nextPosition) && !currEntity.getCanSpiderBeOnThisEntityBool());
     }
 
     /* Getters and Setters */
