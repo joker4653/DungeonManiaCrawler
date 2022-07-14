@@ -27,6 +27,7 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class BattleTests {
+
     // Helper function taken from ExampleTests.java. All credit goes to the COMP2511 team who wrote ExampleTests.java.
     private void assertBattleCalculations(String enemyType, BattleResponse battle, boolean enemyDies, String configFilePath) {
         List<RoundResponse> rounds = battle.getRounds();
@@ -49,52 +50,60 @@ public class BattleTests {
         }
     }
 
-    private static DungeonResponse genericSpiderSequence(DungeonManiaController controller, String configFile) {
-        //
+    private static DungeonResponse genericEnemySequence(DungeonResponse initialResponse, DungeonManiaController controller, String entityType) {
+        int enemyCount = countEntityOfType(initialResponse, entityType);
+       
+        assertEquals(1, countEntityOfType(initialResponse, "player"));
+        assertEquals(1, enemyCount);
+        return controller.tick(Direction.RIGHT);
+    }
+
+    /*@Test
+    @DisplayName("Testing: spider loses the battle against player")
+    public void testSpiderLosesBasic() {
         //  exit   wall      wall    wall
         //         player    [  ]    boulder
         //  wall   wall     spider   wall
-        //
-        DungeonResponse initialResponse = controller.newGame("d_battleTest_basicSpider", configFile);
-        int spiderCount = countEntityOfType(initialResponse, "spider");
-       
-        assertEquals(1, countEntityOfType(initialResponse, "player"));
-        assertEquals(1, spiderCount);
-        return controller.tick(Direction.RIGHT);
-    }
-
-    @Test
-    @DisplayName("Testing: spider loses the battle against player")
-    public void testSpiderLosesBasic() {
         DungeonManiaController controller = new DungeonManiaController();
-        DungeonResponse postBattleResponse = genericSpiderSequence(controller, "c_battleTests_basicSpiderSpiderDies");
+        DungeonResponse initialResponse = controller.newGame("d_battleTest_basicSpider", "c_battleTests_basicSpiderSpiderDies");
+        DungeonResponse postBattleResponse = genericEnemySequence(initialResponse, controller, "spider");
         BattleResponse battle = postBattleResponse.getBattles().get(0);
-        assertBattleCalculations("spider", battle, false, "c_battleTests_basicSpiderSpiderDies");
-    }
-
-
-    private static DungeonResponse genericZombieSequence(DungeonManiaController controller, String configFile) {
-        //
-        //  exit   boulder      
-        //  door   zombie_toast_spawner        wall    
-        //  player  [  ]          
-        //
-        DungeonResponse initialResponse = controller.newGame("d_battleTest_basicZombie", configFile);
-        int zombieCount = countEntityOfType(initialResponse, "zombie_toast");
-       
-        assertEquals(1, countEntityOfType(initialResponse, "player"));
-        assertEquals(1, zombieCount);
-        return controller.tick(Direction.RIGHT);
+        assertBattleCalculations("spider", battle, true, "c_battleTests_basicSpiderSpiderDies");
     }
 
     @Test
     @DisplayName("Testing: zombie loses the battle against player")
     public void testZombieLosesBasic() {
+        //  exit   boulder      
+        //  door   zombie_toast_spawner        wall    
+        //  player  [  ]          
         DungeonManiaController controller = new DungeonManiaController();
-        DungeonResponse postBattleResponse = genericZombieSequence(controller, "c_battleTests_basicZombieZombieDies");
+        DungeonResponse initialResponse = controller.newGame("d_battleTest_basicZombie", "c_battleTests_basicZombieZombieDies");
+ 
+        DungeonResponse postBattleResponse = genericEnemySequence(initialResponse, controller, "zombie_toast");
         BattleResponse battle = postBattleResponse.getBattles().get(0);
-        assertBattleCalculations("zombie_toast", battle, false, "c_battleTests_basicZombieZombieDies");
-    }
+        assertBattleCalculations("zombie_toast", battle, true, "c_battleTests_basicZombieZombieDies");
+    } 
+
+    @Test
+    @DisplayName("Test zombie walk through the open door and wins the battle")
+    public void testZombieWalkThroughOpenDoor() {
+        //
+        //  player   key      door    
+        //           wall     zombie_toast_spawner     wall
+        //                    wall                     exit
+        //
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_zombieTest_throughOpenDoor", "c_battleTests_basicZombieZombieWins");
+
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+      
+        DungeonResponse postBattleResponse = genericEnemySequence(res, dmc, "zombie_toast");
+
+        BattleResponse battle = postBattleResponse.getBattles().get(0);
+        assertBattleCalculations("zombie_toast", battle, false, "c_battleTests_basicZombieZombieWins");
+    }*/ 
 
     private static DungeonResponse genericPlayerBattle(DungeonManiaController controller, String configFile) {
         //

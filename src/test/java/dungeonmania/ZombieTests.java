@@ -29,8 +29,6 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class ZombieTests {
-    // TODO: @Before method for creating zombies!!!!!!!!!
-
     // Helper function that gets position of a zombie
     public Position getZombPos(int i, DungeonResponse res) {
         return getEntities(res, "zombie_toast").stream()
@@ -88,7 +86,7 @@ public class ZombieTests {
     }
 
     @Test
-    @DisplayName("Test zombies can't ??? CHECK FORUMMMMMMMM<NDN<SF spawn on walls, boulders and locked doors")
+    @DisplayName("Test zombies can't spawn on walls, boulders and locked doors")
     public void testZombiesCantSpawn() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_zombieTest_spawnBlocked", "c_zombieTest_spawnBlocked");
@@ -198,14 +196,6 @@ public class ZombieTests {
         assertTrue(z3Pos1.equals(new Position(2, 2)));
 
     }
-
-    /* // TODO: WAIT UNTIL DOORS & KEYS HAVE BEEN IMPLEMENTED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    @Test
-    @DisplayName("Test zombies can move through open doors")
-    public void testZombieMoveThruOpenDoor() {
-        
-    }
-    */
 
     @Test
     @DisplayName("Test zombies can only move up, down, right, left or stay where they are")

@@ -74,7 +74,7 @@ public class Spider extends MovingEntity {
                 super.setCurrentLocation(nextPosition);
         }
 
-        super.updatePosAfterMove(listOfEntities, nextPosition, getEntityID());
+        // TODO: call the battle function if spider is at player's position!!!!!!!!!!!
     }
 
 
