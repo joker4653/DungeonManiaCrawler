@@ -207,8 +207,6 @@ public class DungeonManiaController {
             return new Sword(x, y, Integer.parseInt(configMap.get("sword_durability")), Integer.parseInt(configMap.get("sword_attack")));
         }
         
-        // add other entities here
-
         return null;
     }
 
@@ -231,46 +229,51 @@ public class DungeonManiaController {
      */
     public DungeonResponse tick(Direction movementDirection) {
         setTickCount(getTickCount() + 1);
+        int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
+        int xZomb = Integer.parseInt(configMap.get("zombie_spawn_rate"));
 
         // Move player.
         Player player = getPlayer();
         player.setPrevPos(player.getCurrentLocation()); // a bribed mercenary occupies the player's previous position
+        playerMovesBoulder(movementDirection, player);
+        player.move(listOfEntities, movementDirection, player, inventory); 
 
+        Spider newSpider = spawnASpider(xSpi, player);
+        for (Entity currEntity : listOfEntities) {
+            if (currEntity.getEntityType().equalsIgnoreCase("player") || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID())))
+                continue;
+
+            if (currEntity.isMovingEntity())
+                ((MovingEntity) currEntity).move(listOfEntities, movementDirection, player, inventory); 
+        }
+
+        if (xZomb != 0 && getTickCount() % xZomb == 0)
+            processZombieSpawner();
+
+        return createDungeonResponse();
+    }
+
+    private void playerMovesBoulder(Direction movementDirection, Player player) {
         for (Entity currEntity : listOfEntities) {
             if (currEntity.getEntityType().equals("boulder")) {
                 ((Boulder) currEntity).move(listOfEntities, movementDirection, player);
             }
         }
-        player.move(listOfEntities, movementDirection, player, inventory); 
+    }
 
-        int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
-        int xZomb = Integer.parseInt(configMap.get("zombie_spawn_rate"));
+    // Spawns a spider within the specified box (from minX to maxX and from minY to maxY)
+    private Spider spawnASpider(int xSpi, Player player) {
         Spider newSpider = null;
-
         if (xSpi != 0 && getTickCount() % xSpi == 0) {
             newSpider = new Spider(mapOfMinAndMaxValues.get("minX"), mapOfMinAndMaxValues.get("maxX"),
                             mapOfMinAndMaxValues.get("minY"), mapOfMinAndMaxValues.get("maxY"), configMap);
             newSpider.spawn(listOfEntities, player);
         }
 
-        // all existing moving entities must move
-        for (Entity currEntity : listOfEntities) {
-            if (currEntity.getEntityType().equalsIgnoreCase("player") || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID()))) {
-                continue;
-            }
-
-            if (currEntity.isMovingEntity())
-                ((MovingEntity) currEntity).move(listOfEntities, movementDirection, player, inventory); 
-        }
-
-        if (xZomb != 0 && getTickCount() % xZomb == 0) {
-            processZombieSpawner();            
-        }
-
-        // update listOfEntities and then dungeonResp
-        return createDungeonResponse();
+        return newSpider;
     }
 
+    // Spawner creates a new zombie
     private void processZombieSpawner() {
         List<Entity> originalList = new ArrayList<>(listOfEntities);
         for (Entity currEntity : originalList) {
