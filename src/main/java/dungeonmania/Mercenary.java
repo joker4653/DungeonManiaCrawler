@@ -113,10 +113,9 @@ public class Mercenary extends MovingEntity {
     private List<Position> getAdjacentPos(Position currPos, List<Entity> listOfEntities) {
         List<Position> possiblePos = createListOfCardinalPos(currPos);
 
-        for (Entity currEntity : listOfEntities) {
-            if (possiblePos.contains(currEntity.getCurrentLocation()) && !currEntity.getCanMercBeOnThisEntityBool())
-                possiblePos.remove(possiblePos.indexOf(currEntity.getCurrentLocation()));
-        }
+        listOfEntities.stream()
+                      .filter((currEntity) -> possiblePos.contains(currEntity.getCurrentLocation()) && !currEntity.getCanMercBeOnThisEntityBool())
+                      .forEach((ent) -> possiblePos.remove(possiblePos.indexOf(ent.getCurrentLocation())));
 
         return possiblePos;
     }
