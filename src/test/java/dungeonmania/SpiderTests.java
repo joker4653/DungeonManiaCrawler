@@ -155,7 +155,7 @@ public class SpiderTests {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_spiderTest_boulderIsAbove", "c_spiderTest_boulders");
 
-        res = dmc.tick(Direction.UP);
+        res = dmc.tick(Direction.LEFT);
         
         int actualSpider1Row = getEntities(res, "spider").get(0).getPosition().getY();
         assertNotEquals(actualSpider1Row, 0);
