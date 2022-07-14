@@ -184,6 +184,18 @@ public class ZombieTests {
     // Zombie movement tests:
 
     @Test
+    @DisplayName("Test zombies can only move in one position")
+    public void testZombieCanOnlyMoveInOnePos() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_zombieTest_moveOnlyOnePos", "c_zombieTest_moveOnlyOnePos");
+
+        res = dmc.tick(Direction.LEFT);
+        res = dmc.tick(Direction.LEFT);
+        
+        assertEquals(getZombSize(res), 2);
+    }
+
+    @Test
     @DisplayName("Test zombies cannot move through walls, boulders and locked doors")
     public void testZombieMoveRestrictions() {
         DungeonManiaController dmc = new DungeonManiaController();
