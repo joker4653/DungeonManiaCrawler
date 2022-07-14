@@ -42,6 +42,7 @@ public class DungeonManiaController {
     private HashMap<String, Integer> mapOfMinAndMaxValues = new HashMap<>();
     List<Battle> listOfBattles = new ArrayList<>();
     List<String> buildables = new ArrayList<>();
+    Inventory inventory = new Inventory();
 
     public int getTickCount() {
         return tickCount;
@@ -170,12 +171,11 @@ public class DungeonManiaController {
     }
 
     private List<ItemResponse> getInventoryResponse() {
-        Player player = getPlayer();
-        ArrayList<Entity> inventory = player.getInventory();
+        ArrayList<Entity> invList = inventory.getInventory();
         
         List<ItemResponse> invResponse = new ArrayList<ItemResponse>();
 
-        for (Entity entity : inventory) {
+        for (Entity entity : invList) {
             invResponse.add(new ItemResponse(entity.getEntityID(), entity.getEntityType()));
         }
 
@@ -242,7 +242,7 @@ public class DungeonManiaController {
                 ((Boulder) currEntity).move(listOfEntities, movementDirection, player);
             }
         }
-        player.move(listOfEntities, movementDirection, player); 
+        player.move(listOfEntities, movementDirection, player, inventory); 
 
         int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
         int xZomb = Integer.parseInt(configMap.get("zombie_spawn_rate"));
@@ -261,7 +261,7 @@ public class DungeonManiaController {
             }
 
             if (currEntity.isMovingEntity())
-                ((MovingEntity) currEntity).move(listOfEntities, movementDirection, player); 
+                ((MovingEntity) currEntity).move(listOfEntities, movementDirection, player, inventory); 
         }
 
         if (xZomb != 0 && getTickCount() % xZomb == 0) {
@@ -395,8 +395,8 @@ public class DungeonManiaController {
         }
 
         // Check player has sufficient gold - if so, deduct the right amount of gold from player.
-        ArrayList<Entity> inventory = player.getInventory();
-        List<Entity> treasure = inventory.stream().filter(e -> e.getEntityType().equals("treasure")).collect(Collectors.toList());
+        ArrayList<Entity> inventList = inventory.getInventory();
+        List<Entity> treasure = inventList.stream().filter(e -> e.getEntityType().equals("treasure")).collect(Collectors.toList());
 
         int bribe = Integer.parseInt(configMap.get("bribe_amount"));
         if (treasure.size() < bribe) {
@@ -405,7 +405,7 @@ public class DungeonManiaController {
 
         // Remove gold from inventory.
         for (int i = 0; i < bribe; i++) {
-            player.removeItem(treasure.get(i));
+            inventory.removeItem(treasure.get(i));
         } 
 
         // Make mercenary into ally.

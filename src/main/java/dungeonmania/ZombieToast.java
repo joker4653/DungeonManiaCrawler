@@ -51,7 +51,7 @@ public class ZombieToast extends MovingEntity {
     }
 
     @Override
-    public void move(List<Entity> listOfEntities, Direction dir, Player player) {
+    public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory) {
         List<Position> moveLocations = createListOfCardinalPos(getCurrentLocation());
         updateZombAvailablePos(listOfEntities, moveLocations);
 
