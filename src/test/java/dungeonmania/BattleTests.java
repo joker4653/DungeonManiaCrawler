@@ -58,7 +58,7 @@ public class BattleTests {
         return controller.tick(Direction.RIGHT);
     }
 
-    /*@Test
+    @Test
     @DisplayName("Testing: spider loses the battle against player")
     public void testSpiderLosesBasic() {
         //  exit   wall      wall    wall
@@ -103,7 +103,7 @@ public class BattleTests {
 
         BattleResponse battle = postBattleResponse.getBattles().get(0);
         assertBattleCalculations("zombie_toast", battle, false, "c_battleTests_basicZombieZombieWins");
-    }*/ 
+    }
 
     /* System level test.
     The test below involves the following:
@@ -195,7 +195,7 @@ public class BattleTests {
     @DisplayName("Test general player battle scenario - player dies.")
     public void testPlayerBattleDies() {
         DungeonManiaController controller = new DungeonManiaController();
-        DungeonResponse postBattleResponse = genericZombieSequence(controller, "c_battleTests_basicPlayerBattle");
+        DungeonResponse postBattleResponse = genericPlayerSequence(controller, "d_battleTest_basicSpider", "c_battleTests_basicPlayerBattle");
         BattleResponse battle = postBattleResponse.getBattles().get(0);
         assertBattleCalculations("zombie_toast", battle, true, "c_battleTests_basicPlayerBattle");
     }
@@ -264,7 +264,7 @@ public class BattleTests {
     @Test
     @DisplayName("Test player attack with bow bonus.") {
         DungeonManiaController controller = new DungeonManiaController();
-        DungeonResponse postBattleResponse = genericZombieSequence(controller, "c_battleTests_basicPlayerBattle");
+        DungeonResponse postBattleResponse = genericEnemySequence(controller, "c_battleTests_basicPlayerBattle");
 
         double playerAttack = Double.parseDouble(getValueFromConfigFile("player_attack", configFilePath));
         playerAttack *= 2;
@@ -280,7 +280,7 @@ public class BattleTests {
     @Test
     @DisplayName("Test player attack with sword and bow bonus.") {
         DungeonManiaController controller = new DungeonManiaController();
-        DungeonResponse postBattleResponse = genericZombieSequence(controller, "c_battleTests_basicPlayerBattle");
+        DungeonResponse postBattleResponse = genericEnemySequence(controller, "c_battleTests_basicPlayerBattle");
         
         new Sword(x, y, Integer.parseInt(configMap.get("sword_durability")), Integer.parseInt(configMap.get("sword_attack"))
 
@@ -300,7 +300,7 @@ public class BattleTests {
     @Test
     @DisplayName("Test player defense with shield bonus.") {
         DungeonManiaController controller = new DungeonManiaController();
-        DungeonResponse postBattleResponse = genericZombieSequence(controller, "c_battleTests_basicPlayerBattle");
+        DungeonResponse postBattleResponse = genericEnemySequence(controller, "c_battleTests_basicPlayerBattle");
 
         double playerAttack = Double.parseDouble(getValueFromConfigFile("player_attack", configFilePath));
         playerAttack += swordBonus;

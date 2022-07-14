@@ -163,13 +163,7 @@ public class DungeonManiaController {
             }
 
             roundRespList.add(new RoundResponse(round.getDeltaCharacterHealth(), round.getDeltaEnemyHealth(), items));
-            
-            return roundRespList;
         }
-
-
-
-
 
         return roundRespList;
     }
@@ -317,7 +311,7 @@ public class DungeonManiaController {
 
         for (Entity monster : monstersHere) {
             Battle battle = new Battle(player, monster);
-            boolean alive = battle.doBattle(configMap);
+            boolean alive = battle.doBattle(configMap, inventory);
 
             listOfBattles.add(battle);
 
@@ -339,7 +333,6 @@ public class DungeonManiaController {
         List<EntityResponse> entities = new ArrayList<>();
         listOfEntities.forEach((currEntity) -> entities.add(new EntityResponse(currEntity.getEntityID(), currEntity.getEntityType(), currEntity.getCurrentLocation(), currEntity.isInteractable())));
 
-        // TODO replace nulls with correct values as battles and buildables are created!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, entities, getInventoryResponse(), getBattleResponse(), buildables, goals);
         return dungeonResp;
     }
