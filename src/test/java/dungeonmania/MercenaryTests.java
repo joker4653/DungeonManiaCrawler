@@ -202,15 +202,19 @@ public class MercenaryTests {
         });
 
         for (int i = 0; i < 2; i++) {
+            // can't move this to a helper function because I need a new response every time the player moves
             Position playerPrevPos = getPlayer(res).get().getPosition();
             res = dmc.tick(Direction.UP);
             assertTrue(getEntities(res, "mercenary").get(0).getPosition().equals(playerPrevPos));
+
             playerPrevPos = getPlayer(res).get().getPosition();
             res = dmc.tick(Direction.DOWN);
             assertTrue(getEntities(res, "mercenary").get(0).getPosition().equals(playerPrevPos));
+
             playerPrevPos = getPlayer(res).get().getPosition();
             res = dmc.tick(Direction.LEFT);
             assertTrue(getEntities(res, "mercenary").get(0).getPosition().equals(playerPrevPos));
+            
             playerPrevPos = getPlayer(res).get().getPosition();
             res = dmc.tick(Direction.RIGHT);
             assertTrue(getEntities(res, "mercenary").get(0).getPosition().equals(playerPrevPos));
