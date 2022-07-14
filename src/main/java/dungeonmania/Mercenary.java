@@ -52,7 +52,7 @@ public class Mercenary extends MovingEntity {
         List<Position> queue = new ArrayList<>(Arrays.asList(player.getCurrentLocation()));
         HashMap<Position, Integer> reachablePos = new HashMap<>();
         reachablePos.put(player.getCurrentLocation(), 0);
-        
+
         int distance = 1;
         boolean mercFound = false;
         while (queue.size() != 0 && !mercFound && distance <= UPPER_LIMIT) {
@@ -73,7 +73,8 @@ public class Mercenary extends MovingEntity {
         }
     }
 
-    private boolean processAdjPosAndCheckIfMerc(Map<Position, Integer> reachablePos, Position front, List<Entity> listOfEntities, List<Position> queue, int distance) {
+    private boolean processAdjPosAndCheckIfMerc(Map<Position, Integer> reachablePos, Position front,
+    List<Entity> listOfEntities, List<Position> queue, int distance) {
         List<Position> adjacentPos = getAdjacentPos(front, listOfEntities);
 
         for (Position adjPos : adjacentPos) {
