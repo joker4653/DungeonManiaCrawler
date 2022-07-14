@@ -43,8 +43,8 @@ public class Battle {
     /*
      * @returns true if player alive after battle, false otherwise.
      */
-    public boolean doBattle(HashMap<String, String> configMap) {
-        boolean result = doRound(configMap);        
+    public boolean doBattle(HashMap<String, String> configMap, Inventory inventory) {
+        boolean result = doRound(configMap, inventory); 
 
         return result;
     }
@@ -52,9 +52,9 @@ public class Battle {
     /*
      * @returns true if player alive after round, false otherwise.
      */
-    public boolean doRound(HashMap<String, String> configMap) {
-        double player_attack = getPlayerAttack(configMap);
-        double player_defence = getPlayerDefence(configMap);
+    public boolean doRound(HashMap<String, String> configMap, Inventory inventory) {
+        double player_attack = getPlayerAttack(configMap, inventory);
+        double player_defence = getPlayerDefence(configMap, inventory);
         double enemy_attack = enemy.enemyAttackModifier();
 
         double delta_player_health = (enemy_attack - player_defence) / 10;
@@ -64,7 +64,7 @@ public class Battle {
         player.setPlayerHealth(player_hp);
         enemy.setEnemyHealth(enemy_hp);
 
-        ArrayList<Entity> weaponryUsed= getWeaponry();
+        ArrayList<Entity> weaponryUsed= getWeaponry(inventory);
         // TODO make weaponryUsed, do durability changes.
 
         Round round = new Round(delta_player_health, delta_enemy_health, weaponryUsed);
@@ -76,20 +76,20 @@ public class Battle {
         } else if (enemy_hp <= 0) {
             return true;
         } else {
-            return doRound(configMap);
+            return doRound(configMap, inventory);
         }
     }
 
-    private ArrayList<Entity> getWeaponry() {
+    private ArrayList<Entity> getWeaponry(Inventory inventory) {
         ArrayList<Entity> weaponryUsed = new ArrayList<Entity>();
 
-        Entity item = player.getItem("sword");
+        Entity item = inventory.getItem("sword");
         if (item != null) {
             weaponryUsed.add(item);
             Sword sword = (Sword) item;
             sword.reduceDurability();
             if (sword.isDestroyed()) {
-                player.removeItem(sword);
+                inventory.removeItem(sword);
             }
         }
 
@@ -108,9 +108,9 @@ public class Battle {
         return weaponryUsed;
     }
 
-    private double getPlayerAttack(HashMap<String, String> configMap) {
-        boolean swordExists = player.itemExists("sword");
-        boolean bowExists = player.itemExists("bow");
+    private double getPlayerAttack(HashMap<String, String> configMap, Inventory inventory) {
+        boolean swordExists = inventory.itemExists("sword");
+        boolean bowExists = inventory.itemExists("bow");
         int allies = player.getAllies();
 
         double atk = new NoWeaponBattlingStrategy(configMap).attackModifier();
@@ -130,10 +130,10 @@ public class Battle {
         return atk;
     }
 
-    private double getPlayerDefence(HashMap<String, String> configMap) {
+    private double getPlayerDefence(HashMap<String, String> configMap, Inventory inventory) {
         double def = 0;
 
-        boolean shieldExists = player.itemExists("shield");
+        boolean shieldExists = inventory.itemExists("shield");
         double shield_defence = Double.parseDouble(configMap.get("shield_defence"));
         if (shieldExists) {
             def += shield_defence;
