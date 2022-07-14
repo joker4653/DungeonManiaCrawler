@@ -86,7 +86,7 @@ public class ZombieTests {
     }
 
     @Test
-    @DisplayName("Test zombies can't ??? CHECK FORUMMMMMMMM<NDN<SF spawn on walls, boulders and locked doors")
+    @DisplayName("Test zombies can't spawn on walls, boulders and locked doors")
     public void testZombiesCantSpawn() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_zombieTest_spawnBlocked", "c_zombieTest_spawnBlocked");
