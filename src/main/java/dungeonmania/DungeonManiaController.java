@@ -84,55 +84,24 @@ public class DungeonManiaController {
      */
     public DungeonResponse newGame(String dungeonName, String configName) throws IllegalArgumentException {
         setTickCount(0);
-
         try {
             String dungeonJSONString = FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json");
             String configJSONString = FileLoader.loadResourceFile("/configs/" + configName + ".json");
-
-            /* Reading Config file */
-            JsonObject configJsonObj = JsonParser.parseString(configJSONString).getAsJsonObject();
-            Set<String> configKeySet = configJsonObj.keySet();
-
-            for (String key : configKeySet) {
-                configMap.put(key, configJsonObj.get(key).toString());
-            }
+            generateConfigMap(configJSONString);
 
             /* Reading Dungeon JSON file */
             JsonObject dungeonJsonObj = JsonParser.parseString(dungeonJSONString).getAsJsonObject();
-
-            JsonArray jsonEntities = dungeonJsonObj.get("entities").getAsJsonArray();
-            List<EntityResponse> listOfEntityResponses = new ArrayList<>(); 
-            for (JsonElement currElement : jsonEntities) {
-                JsonObject jsonObjElement = currElement.getAsJsonObject();
-                String type = jsonObjElement.get("type").getAsString();
-                int x = jsonObjElement.get("x").getAsInt();
-                int y = jsonObjElement.get("y").getAsInt();
-                
-                // fixing key issue
-                int key = Integer.MAX_VALUE;
-                if (jsonObjElement.get("key") != null) {
-                    key = jsonObjElement.get("key").getAsInt();
-                }
-
-                Entity entityCreated = createEntity(type, x, y, key);
-                if (entityCreated != null) {
-                    listOfEntities.add(entityCreated);
-                    listOfEntityResponses.add(new EntityResponse(entityCreated.getEntityID(), entityCreated.getEntityType(), entityCreated.getCurrentLocation(), entityCreated.isInteractable()));
-                } else {
-                    listOfEntityResponses.add(new EntityResponse(UUID.randomUUID().toString(), type, new Position(x, y), false));
-                }
-            }
+            List<EntityResponse> listOfEntityResponses = createListOfEntsAndResp(dungeonJsonObj);
 
             // TODO!!!!! Holly already added the simple goal, BUT NOT the complex goals!!!!!!!!!!!!!!!!!!!!!!!!!!
             JsonElement jsonGoal = dungeonJsonObj.get("goal-condition");
             JsonObject jsonObj = jsonGoal.getAsJsonObject();
             goals = jsonObj.get("goal").getAsString();
 
-            // TODO!!!!! replace the "null" inventory, battles and buildables with your lists.
+            // TODO!!!!! replace "buildables" and "goals" with your ACTUAL buildables/goals lists.
             this.dungeonId = UUID.randomUUID().toString();
             this.dungeonName = dungeonName;
-            DungeonResponse dungeonResp = new DungeonResponse(UUID.randomUUID().toString(), dungeonName, listOfEntityResponses, getInventoryResponse(), getBattleResponse(), buildables, goals);
-            
+            DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, listOfEntityResponses, getInventoryResponse(), getBattleResponse(), buildables, goals);
             mapOfMinAndMaxValues = findMinAndMaxValues();
 
             return dungeonResp;
@@ -143,6 +112,40 @@ public class DungeonManiaController {
         return null;
     }
     
+    private void generateConfigMap(String configJSONString) {
+        /* Reading Config file */
+        JsonObject configJsonObj = JsonParser.parseString(configJSONString).getAsJsonObject();
+        Set<String> configKeySet = configJsonObj.keySet();
+
+        for (String key : configKeySet) {
+            configMap.put(key, configJsonObj.get(key).toString());
+        }
+    }
+
+    private List<EntityResponse> createListOfEntsAndResp(JsonObject dungeonJsonObj) {
+        JsonArray jsonEntities = dungeonJsonObj.get("entities").getAsJsonArray();
+        List<EntityResponse> listOfEntityResponses = new ArrayList<>();
+
+        for (JsonElement currElement : jsonEntities) {
+            JsonObject jsonObjElement = currElement.getAsJsonObject();
+            String type = jsonObjElement.get("type").getAsString();
+            int x = jsonObjElement.get("x").getAsInt();
+            int y = jsonObjElement.get("y").getAsInt();
+            int key = Integer.MAX_VALUE;
+
+            if (jsonObjElement.get("key") != null) key = jsonObjElement.get("key").getAsInt();
+
+            Entity entityCreated = createEntity(type, x, y, key);
+            if (entityCreated != null) {
+                listOfEntities.add(entityCreated);
+                listOfEntityResponses.add(new EntityResponse(entityCreated.getEntityID(), entityCreated.getEntityType(), entityCreated.getCurrentLocation(), entityCreated.isInteractable()));
+            } else
+                listOfEntityResponses.add(new EntityResponse(UUID.randomUUID().toString(), type, new Position(x, y), false));
+        }
+
+        return listOfEntityResponses;
+    }
+
     private List<BattleResponse> getBattleResponse() {
         List<BattleResponse> battleRespList = new ArrayList<>();
         Player player = getPlayer();
