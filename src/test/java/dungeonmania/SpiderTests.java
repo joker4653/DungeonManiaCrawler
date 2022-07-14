@@ -27,9 +27,6 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class SpiderTests {
-
-    /* DO TEST DESIGN/TEST REFACTORING LATER (CREATE TEST HELPER FUNCTIONS)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
-
     // Spider spawn tests:
     @Test
     @DisplayName("Test spider doesn't spawn on boulder")
@@ -158,27 +155,29 @@ public class SpiderTests {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_spiderTest_boulderIsAbove", "c_spiderTest_boulders");
 
-        res = dmc.tick(Direction.UP);
+        res = dmc.tick(Direction.LEFT);
         
-        int actualSpider1Row = getEntities(res, "spider").get(0).getPosition().getX();
+        int actualSpider1Row = getEntities(res, "spider").get(0).getPosition().getY();
         assertNotEquals(actualSpider1Row, 0);
         assertNotEquals(actualSpider1Row, 2);
     }
-/* 
-    @Test
+ 
+    /* @Test
     @DisplayName("Test spider can move if there is a boulder above it AFTER it is pushed by the player")
     public void testSpiderCanMoveIfBoulderAboveItIsMoved() {
+        //  player(-1,0)        boulder(1,0)      
+        //                      spider(1,1)
+        //             exit                     wall
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_spiderTest_playerPushBoulder", "c_spiderTest_playerPushBoulder");
 
-    }
+        res = dmc.tick(Direction.RIGHT);
+        
+        Position actualSpiderPos= getEntities(res, "spider").get(0).getPosition();
+        assertEquals(actualSpiderPos, new Position(1, 1)); //not move
 
+        res = dmc.tick(Direction.RIGHT); // push boulder
 
-    TODO (do this when others finish their implementation!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!)
-    @Test
-    @DisplayName("Test spiders running into each other, Player, door, switch, wall, exit, other MovingEntities") {
-
-    }
-*/
-    
-
-
+        assertEquals(null, getEntities(res, "spider")); //spider moves up and dies
+    } */
 }
