@@ -112,14 +112,11 @@ public class DungeonManiaController {
         return null;
     }
     
+    /* Reading Config file */
     private void generateConfigMap(String configJSONString) {
-        /* Reading Config file */
         JsonObject configJsonObj = JsonParser.parseString(configJSONString).getAsJsonObject();
         Set<String> configKeySet = configJsonObj.keySet();
-
-        for (String key : configKeySet) {
-            configMap.put(key, configJsonObj.get(key).toString());
-        }
+        configKeySet.forEach((key) -> configMap.put(key, configJsonObj.get(key).toString()));
     }
 
     private List<EntityResponse> createListOfEntsAndResp(JsonObject dungeonJsonObj) {
@@ -152,14 +149,11 @@ public class DungeonManiaController {
         Position playerPos = player.getCurrentLocation();
 
         for (Entity currEntity : listOfEntities) {
-            if (currEntity.getCurrentLocation().equals(playerPos) && currEntity.isMovingEntity() && !currEntity.getEntityID().equals(player.getEntityID())) {
+            if (currEntity.getCurrentLocation().equals(playerPos) && currEntity.isMovingEntity() && !currEntity.getEntityID().equals(player.getEntityID()))
                 listOfBattles.add(new Battle(player, currEntity));
-            }
         }
 
-        for (Battle currBattle : listOfBattles) {
-            battleRespList.add(new BattleResponse(currBattle.getEnemyType(), getRoundsResponse(), currBattle.getInitPlayerHealth(), currBattle.getInitEnemyHealth()));
-        }
+        listOfBattles.forEach((currBattle) -> battleRespList.add(new BattleResponse(currBattle.getEnemyType(), getRoundsResponse(), currBattle.getInitPlayerHealth(), currBattle.getInitEnemyHealth())));
 
         return battleRespList;
     }
@@ -301,20 +295,17 @@ public class DungeonManiaController {
     // Spawner creates a new zombie
     private void processZombieSpawner() {
         List<Entity> originalList = new ArrayList<>(listOfEntities);
-        for (Entity currEntity : originalList) {
-            if (currEntity.getEntityType().equalsIgnoreCase("zombie_toast_spawner")) {
-                ((ZombieToastSpawner)currEntity).spawnZombie(listOfEntities, configMap);
-            }
-        }
+
+        originalList.stream()
+                    .filter(currEntity -> currEntity.getEntityType().equalsIgnoreCase("zombie_toast_spawner"))
+                    .forEach((ent) -> ((ZombieToastSpawner)ent).spawnZombie(listOfEntities, configMap));
     }
 
     // Helper function that creates a new DungeonResponse because some entities can change positions. This new information needs to
     // be included in the listOfEntities and DungeonResponse.
     private DungeonResponse createDungeonResponse() {
         List<EntityResponse> entities = new ArrayList<>();
-        for (Entity currEntity : listOfEntities) {
-            entities.add(new EntityResponse(currEntity.getEntityID(), currEntity.getEntityType(), currEntity.getCurrentLocation(), currEntity.isInteractable()));
-        }
+        listOfEntities.forEach((currEntity) -> entities.add(new EntityResponse(currEntity.getEntityID(), currEntity.getEntityType(), currEntity.getCurrentLocation(), currEntity.isInteractable())));
 
         // TODO replace nulls with correct values as battles and buildables are created!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, entities, getInventoryResponse(), getBattleResponse(), buildables, goals);
