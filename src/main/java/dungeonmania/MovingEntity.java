@@ -87,6 +87,9 @@ public abstract class MovingEntity extends Entity {
     // returns a random position from a list of possible locations.
     // used by zombies, spiders and mercenaries.
     public Position getRandPos(List<Position> possibleLocations) {
+        if (possibleLocations.size() <= 0)
+            return this.getCurrentLocation();
+
         Random rand = new Random();
         int randNum = rand.nextInt(possibleLocations.size());
         Position location = possibleLocations.get(randNum);

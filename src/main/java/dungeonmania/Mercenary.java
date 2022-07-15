@@ -52,10 +52,9 @@ public class Mercenary extends MovingEntity {
         List<Position> queue = new ArrayList<>(Arrays.asList(player.getCurrentLocation()));
         HashMap<Position, Integer> reachablePos = new HashMap<>();
         reachablePos.put(player.getCurrentLocation(), 0);
-        
+
         int distance = 1;
         boolean mercFound = false;
-
         while (queue.size() != 0 && !mercFound && distance <= UPPER_LIMIT) {
             Position front = queue.get(0);
             queue.remove(0);
@@ -65,17 +64,17 @@ public class Mercenary extends MovingEntity {
 
         // next, find the path from mercenary to player
         if (mercFound) {
-            setMercNextPos(reachablePos, listOfEntities);
-            // TODO: call the battle function if mercenary is at player's position!!!!!!!!!!!
+            setMercNextPos(reachablePos, listOfEntities, player.getCurrentLocation());
+            List<Position> playerAdjPos = getAdjacentPos(player.getCurrentLocation(), listOfEntities);
+            if (playerAdjPos.contains(this.getCurrentLocation()))
+                this.isNeighbour = true;
+            
+            // TODO: call the battle function if mercenary is at player's position AND merc is NOT an ally!!!!!!!!!!!
         }
-
-        List<Position> playerAdjPos = getAdjacentPos(player.getCurrentLocation(), listOfEntities);
-        if (playerAdjPos.contains(this.getCurrentLocation()))
-            this.isNeighbour = true;
-
     }
 
-    private boolean processAdjPosAndCheckIfMerc(Map<Position, Integer> reachablePos, Position front, List<Entity> listOfEntities, List<Position> queue, int distance) {
+    private boolean processAdjPosAndCheckIfMerc(Map<Position, Integer> reachablePos, Position front,
+    List<Entity> listOfEntities, List<Position> queue, int distance) {
         List<Position> adjacentPos = getAdjacentPos(front, listOfEntities);
 
         for (Position adjPos : adjacentPos) {
@@ -93,9 +92,12 @@ public class Mercenary extends MovingEntity {
         return false;
     }
 
-    private void setMercNextPos(HashMap<Position, Integer> reachablePos, List<Entity> listOfEntities) {
+    private void setMercNextPos(HashMap<Position, Integer> reachablePos, List<Entity> listOfEntities, Position playerPos) {
         // find the merc's neighbour that has the minimum distance in the map
         List<Position> mercNeighbours = getAdjacentPos(this.getCurrentLocation(), listOfEntities);
+
+        if (this.isAlly && mercNeighbours.contains(playerPos))
+            mercNeighbours.remove(playerPos);
 
         int minDistance = UPPER_LIMIT;
         Position minPosition = this.getCurrentLocation();
@@ -113,10 +115,9 @@ public class Mercenary extends MovingEntity {
     private List<Position> getAdjacentPos(Position currPos, List<Entity> listOfEntities) {
         List<Position> possiblePos = createListOfCardinalPos(currPos);
 
-        for (Entity currEntity : listOfEntities) {
-            if (possiblePos.contains(currEntity.getCurrentLocation()) && !currEntity.getCanMercBeOnThisEntityBool())
-                possiblePos.remove(possiblePos.indexOf(currEntity.getCurrentLocation()));
-        }
+        listOfEntities.stream()
+                      .filter((currEntity) -> possiblePos.contains(currEntity.getCurrentLocation()) && !currEntity.getCanMercBeOnThisEntityBool())
+                      .forEach((ent) -> possiblePos.remove(possiblePos.indexOf(ent.getCurrentLocation())));
 
         return possiblePos;
     }

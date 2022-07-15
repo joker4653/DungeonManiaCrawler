@@ -62,9 +62,8 @@ public class ZombieToast extends MovingEntity {
     private void updateZombAvailablePos(List<Entity> listOfEntities, List<Position> positions) {
         for (Entity currEntity : listOfEntities) {
             Position currEntityPosition = currEntity.getCurrentLocation();
-            if (positions.contains(currEntityPosition) && !currEntity.getCanZombieBeOnThisEntityBool()) {
+            if (positions.contains(currEntityPosition) && !currEntity.getCanZombieBeOnThisEntityBool())
                 positions.remove(currEntityPosition);
-            }
         }
     }
 

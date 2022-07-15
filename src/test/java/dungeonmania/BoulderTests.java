@@ -65,5 +65,6 @@ public class BoulderTests {
 //         Position actualPlayerPos = getEntities(res, "player").get(0).getPosition();
 //         assertEquals(expectedBoulderPos, actualBoulderPos);    
 //         assertEquals(expectedPlayerPos, actualPlayerPos);
+// 
 //     }
 }
