@@ -1,4 +1,4 @@
-package dungeonmania;
+
 package dungeonmania;
 
 import java.util.List;
@@ -38,12 +38,33 @@ import dungeonmania.BuildableEntity;
 public class BowTests {
     @Test
     @DisplayName("Testing determining viability of building")
-    public void isBuildabletresure() {
+    public void isBuildableBow() {
         Bow bow = new Bow(4, 4);
         ArrayList<Entity> inventory = new ArrayList<Entity>();
         //System.out.println(inventory);
         //System.out.println(shield.shieldMaterialsTreasure());
-        assertEquals(false, shield.isBuildable(shield.shieldMaterialsTreasure(), inventory));
+        assertEquals(false, bow.isBuildable(bow.bowMaterials(), inventory));
+        Arrow arrow1 = new Arrow(0,0);
+        Arrow arrow2 = new Arrow(0,1);
+        Arrow arrow3 = new Arrow(0,2);
+        Wood wood = new Wood(0,0);
+        inventory.add(arrow1);
+        inventory.add(arrow2);
+        inventory.add(arrow3);
+        inventory.add(wood);
+        System.out.println(inventory);
+        assertEquals(true, bow.isBuildable(bow.bowMaterials(), inventory));
+        
+    } 
+
+    @Test
+    @DisplayName("Testing determining viability of Build function in Buildable entity")
+    public void BuilableEntityBuildTestBow() {
+        Bow bow = new Bow(4, 4);
+        ArrayList<Entity> inventory = new ArrayList<Entity>();
+        //System.out.println(inventory);
+        //System.out.println(shield.shieldMaterialsTreasure());
+        assertEquals(false, bow.isBuildable(bow.bowMaterials(), inventory));
         Arrow arrow1 = new Arrow(0,0);
         Arrow arrow2 = new Arrow(0,1);
         Arrow arrow3 = new Arrow(0,2);
@@ -53,8 +74,13 @@ public class BowTests {
         inventory.add(arrow2);
         inventory.add(arrow3);
         inventory.add(wood);
+        inventory.add(wood2);
         System.out.println(inventory);
-        assertEquals(true, shield.isBuildable(shield.shieldMaterialsTreasure(), inventory));
-        
-    }    
+        assertEquals(true, bow.isBuildable(bow.bowMaterials(), inventory));
+        bow.BuildBow(inventory, bow);
+        System.out.println(inventory);
+        assertEquals(true, inventory.contains(bow));
+        assertEquals(false, bow.isBuildable(bow.bowMaterials(), inventory));
+    }
+
 }

@@ -14,7 +14,7 @@ public class Bow extends BuildableEntity{
         super.setEntityType("bow");
     }
 
-    public void BuildShieldTreasure(List<Entity> inventory, Bow bow) {
+    public void BuildBow(List<Entity> inventory, Bow bow) {
         //TODO: MAKE SHIELD DURABILITY RANDOM
         Build(bowMaterials(), inventory, bow);
     }
