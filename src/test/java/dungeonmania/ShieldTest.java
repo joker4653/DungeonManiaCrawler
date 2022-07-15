@@ -78,7 +78,7 @@ public class ShieldTest {
     }
     @Test
     @DisplayName("Testing determining viability of Build function in Buildable entity") 
-    public void BuilableEntityBuildTest() {
+    public void BuilableEntityBuildTestShield() {
         Shield shield = new Shield(4, 4);
         ArrayList<Entity> inventory = new ArrayList<Entity>();
         //System.out.println(shield.shieldMaterialsTreasure());
