@@ -13,3 +13,4 @@ sword
 arrow
 bomb
 wood
+key

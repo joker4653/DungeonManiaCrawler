@@ -12,6 +12,7 @@ public abstract class CollectableEntity extends Entity {
         super.setCanSpiderBeOnThisEntity(true);
         super.setCanZombieBeOnThisEntity(true);
         super.setCanMercBeOnThisEntity(true);
+        super.setCollectableEntity(true);
     }
 
     public void setIsConsumable(boolean boo) {
@@ -34,15 +35,4 @@ public abstract class CollectableEntity extends Entity {
         super.setEntityID(entityID);
     }
     
-    public void setInteractable(boolean isInteractable) {
-        super.setInteractable(isInteractable);
-    }
-
-    public void PlaceObject(List<Entity> entities) {
-        entities.add(this);
-    }
-
-    public void removeObject(List<Entity> inventory) {
-        inventory.add(this);
-    }
 }
