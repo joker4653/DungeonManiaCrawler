@@ -46,8 +46,6 @@ public class ZombieToast extends MovingEntity {
         Position spawnLocation = super.getRandPos(spawnablePositions); 
         setSpawnLocation(spawnLocation);
         listOfEntities.add(this);
-
-        // TODO: call the battle function if mercenary is at player's position!!!!!!!!!!!
     }
 
     @Override
@@ -58,8 +56,6 @@ public class ZombieToast extends MovingEntity {
         // update this entity's position in the listOfEntities
         Position newPosition = super.getRandPos(moveLocations);
         super.updatePosAfterMove(listOfEntities, newPosition, getEntityID());
-
-        // TODO: call the battle function if mercenary is at player's position!!!!!!!!!!!
     }
 
     // updates a list of positions that zombies can be on

@@ -60,8 +60,8 @@ public abstract class MovingEntity extends Entity {
         return enemyStrategy.attackModifier();
     }
 
-    public double calculateEnemyHealth(double playerDmg) {
-        return enemyStrategy.calculateEnemyHealth(playerDmg);
+    public double calculateDeltaEnemyHealth(double playerDmg) {
+        return enemyStrategy.calculateDeltaEnemyHealth(playerDmg);
     }
 
     public void enemyChangeStrategy(EnemyBattlingStrategy newStrategy) {

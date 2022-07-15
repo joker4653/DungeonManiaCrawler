@@ -8,3 +8,6 @@ spider
 mercenary
 treasure
 boulder
+zombie_toast
+sword
+arrow

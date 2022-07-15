@@ -38,12 +38,14 @@ public class TreasureTests {
 
     }
 
- /*   @Test
+    @Test
     @DisplayName("Adding Treasure to Inventory") 
     public void treasureToInventory() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_treasureTest_basicSpawn", "c_treasureTest_basicSpawn");
 
+        res = dmc.tick(Direction.RIGHT);
+
         assertFalse(getInventory(res, "treasure").isEmpty());
-    }*/
+    }
 }

@@ -3,8 +3,8 @@ package dungeonmania.EnemyBattleStrategy;
 public class NoBattlingStrategy extends EnemyBattlingStrategy {
 
     @Override
-    public double calculateEnemyHealth(double playerDmg) {
-        return super.getHealth();
+    public double calculateDeltaEnemyHealth(double playerDmg) {
+        return 0;
     }
     
     @Override

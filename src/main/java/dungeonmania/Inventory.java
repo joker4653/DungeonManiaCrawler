@@ -23,6 +23,16 @@ public class Inventory {
         inventory.remove(item);
     }
 
+    public Entity getItem(String type) {
+        for (Entity entity : inventory) {
+            if (entity.getEntityType().equalsIgnoreCase(type)) {
+                return entity;
+            }
+        }
+
+        return null;
+    }
+
     public boolean itemExists(Entity item) {
         for (Entity entity : inventory) {
             if (entity.equals(item)) {

@@ -145,24 +145,25 @@ public class DungeonManiaController {
 
     private List<BattleResponse> getBattleResponse() {
         List<BattleResponse> battleRespList = new ArrayList<>();
-        Player player = getPlayer();
-        Position playerPos = player.getCurrentLocation();
 
-        for (Entity currEntity : listOfEntities) {
-            if (currEntity.getCurrentLocation().equals(playerPos) && currEntity.isMovingEntity() && !currEntity.getEntityID().equals(player.getEntityID()))
-                listOfBattles.add(new Battle(player, currEntity));
+        for (Battle currBattle : listOfBattles) {
+            battleRespList.add(new BattleResponse(currBattle.getEnemyType(), getRoundsResponse(currBattle.getRounds()), currBattle.getInitPlayerHealth(), currBattle.getInitEnemyHealth()));
         }
-
-        listOfBattles.forEach((currBattle) -> battleRespList.add(new BattleResponse(currBattle.getEnemyType(), getRoundsResponse(), currBattle.getInitPlayerHealth(), currBattle.getInitEnemyHealth())));
 
         return battleRespList;
     }
 
-    private List<RoundResponse> getRoundsResponse() {
-        // TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    private List<RoundResponse> getRoundsResponse(ArrayList<Round> rounds) {
         List<RoundResponse> roundRespList = new ArrayList<>();
 
-        
+        for (Round round : rounds) {
+            ArrayList<ItemResponse> items = new ArrayList<>();
+            for (Entity weapon : round.getWeaponryUsed()) {
+                items.add(new ItemResponse(weapon.getEntityID(), weapon.getEntityType()));
+            }
+
+            roundRespList.add(new RoundResponse(round.getDeltaCharacterHealth(), round.getDeltaEnemyHealth(), items));
+        }
 
         return roundRespList;
     }
@@ -244,12 +245,17 @@ public class DungeonManiaController {
             if (currEntity.getEntityType().equalsIgnoreCase("player") || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID())))
                 continue;
 
-            if (currEntity.isMovingEntity())
+            if (currEntity.isMovingEntity()) {
                 ((MovingEntity) currEntity).move(listOfEntities, movementDirection, player, inventory); 
+            }
         }
 
         if (xZomb != 0 && getTickCount() % xZomb == 0)
             processZombieSpawner();
+
+        // Process any battles.
+        checkBattles();
+
 
         return createDungeonResponse();
     }
@@ -301,15 +307,48 @@ public class DungeonManiaController {
                     .forEach((ent) -> ((ZombieToastSpawner)ent).spawnZombie(listOfEntities, configMap));
     }
 
+    /*
+     * Find and fulfill all burgeoning battles.
+     */
+    private void checkBattles() {
+        List<Entity> monstersHere = getMonstersHere();
+        Player player = getPlayer();
+
+        for (Entity monster : monstersHere) {
+            Battle battle = new Battle(player, monster);
+            boolean alive = battle.doBattle(configMap, inventory);
+
+            listOfBattles.add(battle);
+
+            if (!alive) {
+                // TODO Player Death?!
+                listOfEntities.remove(player);
+                break;
+            } else {
+                // Monster died.
+                listOfEntities.remove(monster);
+            }
+        }
+    }
+
+
     // Helper function that creates a new DungeonResponse because some entities can change positions. This new information needs to
     // be included in the listOfEntities and DungeonResponse.
     private DungeonResponse createDungeonResponse() {
         List<EntityResponse> entities = new ArrayList<>();
         listOfEntities.forEach((currEntity) -> entities.add(new EntityResponse(currEntity.getEntityID(), currEntity.getEntityType(), currEntity.getCurrentLocation(), currEntity.isInteractable())));
 
-        // TODO replace nulls with correct values as battles and buildables are created!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, entities, getInventoryResponse(), getBattleResponse(), buildables, goals);
         return dungeonResp;
+    }
+
+    private List<Entity> getMonstersHere() {
+        Player player = getPlayer();
+        List<Entity> entitiesHere = listOfEntities.stream().filter(e -> e.getCurrentLocation().equals(player.getCurrentLocation()) && !e.getEntityType().equals("player")).collect(Collectors.toList());
+
+        List<Entity> monstersHere = entitiesHere.stream().filter(e -> e.isMovingEntity()).collect(Collectors.toList());
+
+        return monstersHere;
     }
 
     private Player getPlayer() {
@@ -391,6 +430,7 @@ public class DungeonManiaController {
 
         // Make mercenary into ally.
         merc.setAlly(true);
+        player.addAlly();
         merc.setInteractable(false); // according to the spec
 
         return createDungeonResponse();
