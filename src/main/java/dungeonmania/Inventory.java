@@ -54,46 +54,6 @@ public class Inventory {
         return false;
     }
 
-    // For checking if a certain type of entity (e.g. a sword) exists in a certain quantity
-    public boolean numitemExists(String type,int num) {
-        int count = 0;
-
-        for (Entity entity : inventory) {
-            if (entity.getEntityType().equalsIgnoreCase(type)) {
-                count = count + 1;
-                if (count == num) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    //For removing item of certain type from inventory
-    public void RemovingItemOfType(String type) {
-        ArrayList<Entity> del= new ArrayList<>();;
-        if(this.itemExists(type)) {
-            for (Entity entity : inventory) {
-                if (entity.getEntityType().equalsIgnoreCase(type)) {
-                    del.add(entity);
-                    break;
-                }
-            }
-            inventory.remove(del.get(0));
-        }
-        
-
-        return;
-    }
-
-    //Removing number of items from inventory by type
-    public void RemovingnumItemOfType(int num,String type) {
-        for(int i = 0; i != num;i++) {
-            RemovingItemOfType(type);
-        }
-        return;
-    }
 
 
 
