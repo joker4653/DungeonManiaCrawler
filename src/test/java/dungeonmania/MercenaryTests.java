@@ -207,11 +207,11 @@ public class MercenaryTests {
         assertTrue(getEntities(res, "mercenary").get(0).getPosition().equals(playerPrevPos));
 
         playerPrevPos = getPlayer(res).get().getPosition();
-        res = dmc.tick(Direction.DOWN);
+        res = dmc.tick(Direction.LEFT);
         assertTrue(getEntities(res, "mercenary").get(0).getPosition().equals(playerPrevPos));
 
         playerPrevPos = getPlayer(res).get().getPosition();
-        res = dmc.tick(Direction.LEFT);
+        res = dmc.tick(Direction.DOWN);
         assertTrue(getEntities(res, "mercenary").get(0).getPosition().equals(playerPrevPos));
         
         playerPrevPos = getPlayer(res).get().getPosition();
