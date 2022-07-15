@@ -57,10 +57,10 @@ public class Battle {
         double player_defence = getPlayerDefence(configMap, inventory);
         double enemy_attack = enemy.enemyAttackModifier();
 
-        double delta_player_health = (enemy_attack - player_defence) / 10;
-        double delta_enemy_health = enemy.calculateDeltaEnemyHealth(player_attack);
-        double player_hp = player.getPlayerHealth() - delta_player_health;
-        double enemy_hp = enemy.getEnemyHealth() - delta_enemy_health;
+        double delta_player_health = - (enemy_attack - player_defence) / 10;    
+        double delta_enemy_health = - enemy.calculateDeltaEnemyHealth(player_attack);  
+        double player_hp = player.getPlayerHealth() + delta_player_health;
+        double enemy_hp = enemy.getEnemyHealth() + delta_enemy_health;
         player.setPlayerHealth(player_hp);
         enemy.setEnemyHealth(enemy_hp);
 

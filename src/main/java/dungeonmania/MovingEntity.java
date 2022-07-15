@@ -16,6 +16,7 @@ public abstract class MovingEntity extends Entity {
     private EnemyBattlingStrategy enemyStrategy;
     private double playerHealth;
     private double enemyHealth;
+    private boolean isAlly;
 
     public MovingEntity() {
         super.setCanSpiderBeOnThisEntity(true);
@@ -82,6 +83,14 @@ public abstract class MovingEntity extends Entity {
 
     public void setEnemyHealth(double enemyHealth) {
         this.enemyHealth = enemyHealth;
+    }
+
+    public boolean isAlly() {
+        return isAlly;
+    }
+
+    public void setAlly(boolean isAlly) {
+        this.isAlly = isAlly;
     }
 
     // returns a random position from a list of possible locations.

@@ -243,6 +243,7 @@ public class DungeonManiaController {
         boulderCheck();
         exitCheck(player);
 
+        checkBattles();
         Spider newSpider = spawnASpider(xSpi, player);
         for (Entity currEntity : listOfEntities) {
             if (currEntity.getEntityType().equalsIgnoreCase("player") || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID())))
@@ -359,7 +360,7 @@ public class DungeonManiaController {
         Player player = getPlayer();
         List<Entity> entitiesHere = listOfEntities.stream().filter(e -> e.getCurrentLocation().equals(player.getCurrentLocation()) && !e.getEntityType().equals("player")).collect(Collectors.toList());
 
-        List<Entity> monstersHere = entitiesHere.stream().filter(e -> e.isMovingEntity()).collect(Collectors.toList());
+        List<Entity> monstersHere = entitiesHere.stream().filter(e -> e.isMovingEntity() && !((MovingEntity)e).isAlly()).collect(Collectors.toList());
 
         return monstersHere;
     }
