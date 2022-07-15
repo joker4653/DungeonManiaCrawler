@@ -246,10 +246,53 @@ public class BattleTests {
         // Test player attack w/ sword.
     }
 
-    // TODO Write this test when ally/mercenary stuff has been cleared up!
-    @Test
-    @DisplayName("Test player attack & defence with ally bonuses.") {
-        // Test player attack w/ ally
-    }
     */
+
+    @Test
+    @DisplayName("Test player attack & defence with ally bonuses.")
+    public void TestPlayerBattleAlly() {
+        // Test player attack w/ ally
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_battleTest_allyBackup", "c_battleTest_allyBackup");
+
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+
+        EntityResponse merc = getEntities(res, "mercenary").get(0);
+
+        assertDoesNotThrow(() -> {
+            dmc.interact(merc.getId());
+        });
+
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT); // tick 6
+
+        assertEquals(1, countEntityOfType(res, "zombie_toast"));
+
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+
+        DungeonResponse postBattleResponse = res;
+
+        double playerAttack = Double.parseDouble(getValueFromConfigFile("player_attack", "c_battleTest_allyBackup"));
+        double allyAtkBonus = Double.parseDouble(getValueFromConfigFile("ally_attack", "c_battleTest_allyBackup"));
+        playerAttack += allyAtkBonus;
+
+        double enemyAttack = Double.parseDouble(getValueFromConfigFile("zombie_attack", "c_battleTest_allyBackup"));
+        double allyDefBonus = Double.parseDouble(getValueFromConfigFile("ally_defence", "c_battleTest_allyBackup"));
+        enemyAttack -= allyDefBonus;
+
+        BattleResponse battle = postBattleResponse.getBattles().get(0);
+
+        List<RoundResponse> rounds = battle.getRounds();
+
+        RoundResponse round1 = rounds.get(0);
+
+        assertEquals(round1.getDeltaCharacterHealth(), enemyAttack / 10);
+        assertEquals(round1.getDeltaEnemyHealth(), playerAttack / 5);
+        
+
+    }
 }
