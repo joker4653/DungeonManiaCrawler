@@ -34,6 +34,7 @@ public class Door extends StaticEntity {
             super.setCanZombieBeOnThisEntity(false);
             super.setCanMercBeOnThisEntity(false);
         } else {
+            super.setEntityType("door_open");
             super.setCanZombieBeOnThisEntity(true);
             super.setCanMercBeOnThisEntity(true);
         }

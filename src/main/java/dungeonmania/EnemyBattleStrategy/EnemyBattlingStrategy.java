@@ -5,7 +5,7 @@ public abstract class EnemyBattlingStrategy {
     private double health;
 
     public abstract double attackModifier();
-    public abstract double calculateEnemyHealth(double playerDmg);
+    public abstract double calculateDeltaEnemyHealth(double playerDmg);
 
     /* Getters & Setters */
 

@@ -28,7 +28,7 @@ public class MercenaryAllyStrategy extends EnemyBattlingStrategy {
     }
 
     @Override
-    public double calculateEnemyHealth(double playerDmg) {
+    public double calculateDeltaEnemyHealth(double playerDmg) {
         return getHealth(); // ally's health doesnt decrease        
     }
 }
