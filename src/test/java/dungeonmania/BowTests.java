@@ -52,7 +52,7 @@ public class BowTests {
         inventory.addItem(arrow2);
         inventory.addItem(arrow3);
         inventory.addItem(wood);
-        System.out.println(inventory);
+        //System.out.println(inventory);
         assertEquals(true, bow.isBuildable(bow.bowMaterials(), inventory));
         
     } 
@@ -75,12 +75,12 @@ public class BowTests {
         inventory.addItem(arrow3);
         inventory.addItem(wood);
         inventory.addItem(wood2);
-        System.out.println(inventory);
+        //System.out.println(inventory);
         assertEquals(true, bow.isBuildable(bow.bowMaterials(), inventory));
-        System.out.println(inventory);
+        //System.out.println(inventory);
         assertEquals(true, bow.isBuildable(bow.bowMaterials(), inventory));
         bow.BuildBow(inventory, bow);
-        System.out.println(inventory);
+        //System.out.println(inventory);
         assertEquals(true, inventory.itemExists("bow"));
         assertEquals(false, inventory.itemExists("arrow"));
         assertEquals(false, inventory.numitemExists("wood", 2));

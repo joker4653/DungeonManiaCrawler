@@ -50,7 +50,7 @@ public class ShieldTest {
         inventory.addItem(wood);
         inventory.addItem(wood2);
         inventory.addItem(tre);
-        System.out.println(inventory);
+        //System.out.println(inventory);
         assertEquals(true, shield.isBuildable(shield.shieldMaterialsTreasure(), inventory));
         
     }
@@ -112,10 +112,10 @@ public class ShieldTest {
         inventory.addItem(wood2);
         inventory.addItem(wood3);
         inventory.addItem(tre);
-        System.out.println(inventory);
+        //System.out.println(inventory);
         assertEquals(true, shield.isBuildable(shield.shieldMaterialsTreasure(), inventory));
         shield.BuildShieldTreasure(inventory,shield);
-        System.out.println(inventory);
+        //System.out.println(inventory);
         assertEquals(true, inventory.itemExists(shield));
         assertEquals(false, shield.isBuildable(shield.shieldMaterialsTreasure(), inventory));
     }

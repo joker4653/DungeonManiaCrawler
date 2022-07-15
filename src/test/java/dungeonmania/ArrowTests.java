@@ -37,4 +37,15 @@ public class ArrowTests {
         assertEquals(expectedPos, realPos);
 
     }
+
+    @Test
+    @DisplayName("Adding arrow to Inventory") 
+    public void arrowToInventory() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_arrowTest_basicSpawn", "c_arrowTest_basicSpawn");
+
+        res = dmc.tick(Direction.RIGHT);
+
+        assertFalse(getInventory(res, "arrow").isEmpty());
+    }
 }
