@@ -44,6 +44,10 @@ public class DungeonManiaController {
     List<String> buildables = new ArrayList<>();
     Inventory inventory = new Inventory();
 
+    public List<Entity> getListOfEntities() {
+        return listOfEntities;
+    }
+
     public int getTickCount() {
         return tickCount;
     }
@@ -199,6 +203,8 @@ public class DungeonManiaController {
             return new Treasure(x, y);
         } else if (type.equalsIgnoreCase("sword")) {
             return new Sword(x, y, Integer.parseInt(configMap.get("sword_durability")), Integer.parseInt(configMap.get("sword_attack")));
+        } else if (type.equalsIgnoreCase("switch")) {
+            return new FloorSwitch(x, y);
         }
         
         return null;
@@ -231,6 +237,7 @@ public class DungeonManiaController {
         player.setPrevPos(player.getCurrentLocation()); // a bribed mercenary occupies the player's previous position
         playerMovesBoulder(movementDirection, player);
         player.move(listOfEntities, movementDirection, player, inventory); 
+        boulderCheck();
 
         Spider newSpider = spawnASpider(xSpi, player);
         for (Entity currEntity : listOfEntities) {
@@ -245,6 +252,24 @@ public class DungeonManiaController {
             processZombieSpawner();
 
         return createDungeonResponse();
+    }
+
+    // Checks all floor switches if they have a boulder on them. If they do, it updates the state of the switch to trigger it. It they don't it updates
+    // the switch to untrigger.
+    private void boulderCheck() {
+        for (Entity currSwitch : listOfEntities) {
+            if (currSwitch.getEntityType() == "switch") {
+                for (Entity currBoulder : listOfEntities) {
+                    if (currBoulder.getEntityType() == "boulder") {
+                        if (currSwitch.getCurrentLocation().equals(currBoulder.getCurrentLocation())) {
+                            ((FloorSwitch) currSwitch).trigger(listOfEntities);
+                        } else {
+                            ((FloorSwitch) currSwitch).untrigger(listOfEntities);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private void playerMovesBoulder(Direction movementDirection, Player player) {
