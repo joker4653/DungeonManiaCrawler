@@ -11,9 +11,8 @@ public class ZombieBattlingStrategy extends EnemyBattlingStrategy {
 
 
     @Override
-    public double calculateEnemyHealth(double playerDmg) {
-        super.setHealth(super.getHealth() - (playerDmg) / 5);
-        return super.getHealth();
+    public double calculateDeltaEnemyHealth(double playerDmg) {
+        return playerDmg / 5;
     }
 
 

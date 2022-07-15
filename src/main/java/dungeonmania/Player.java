@@ -14,6 +14,7 @@ public class Player extends MovingEntity {
     HashMap<String, Integer> ActiveStates = new HashMap<String, Integer>();
 
     Position prevPos;
+    int allies = 0;
 
     public Player(int x, int y, HashMap<String, String> configMap) {
         super.setEntityID(UUID.randomUUID().toString());
@@ -26,6 +27,13 @@ public class Player extends MovingEntity {
         super.setPlayerHealth(Double.parseDouble(configMap.get("player_health")));
     }
 
+    public int getAllies() {
+        return allies;
+    }
+
+    public void addAlly() {
+        this.allies += 1;
+    }
 
     public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory) {
         Position curr = super.getCurrentLocation();

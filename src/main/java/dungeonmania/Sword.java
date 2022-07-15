@@ -38,7 +38,7 @@ public class Sword extends CollectableEntity {
         return attackFactor;
     }
 
-    public void reduceDurabilityAfterBattle() {
+    public void reduceDurability() {
         durability--;
     }
 }
