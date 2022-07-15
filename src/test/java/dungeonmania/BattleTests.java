@@ -32,15 +32,15 @@ public class BattleTests {
     private void assertBattleCalculations(String enemyType, BattleResponse battle, boolean enemyDies, String configFilePath) {
         List<RoundResponse> rounds = battle.getRounds();
         double playerHealth = Double.parseDouble(getValueFromConfigFile("player_health", configFilePath));
-        double enemyHealth = Double.parseDouble(getValueFromConfigFile(enemyType + "_attack", configFilePath));
+        double enemyHealth = Double.parseDouble(getValueFromConfigFile(enemyType + "_health", configFilePath));
         double playerAttack = Double.parseDouble(getValueFromConfigFile("player_attack", configFilePath));
         double enemyAttack = Double.parseDouble(getValueFromConfigFile(enemyType + "_attack", configFilePath));
 
         for (RoundResponse round : rounds) {
-            assertEquals(round.getDeltaCharacterHealth(), enemyAttack / 10);
-            assertEquals(round.getDeltaEnemyHealth(), playerAttack / 5);
-            enemyHealth -= round.getDeltaEnemyHealth();
-            playerHealth -= round.getDeltaCharacterHealth();
+            assertEquals(round.getDeltaCharacterHealth(), -enemyAttack / 10);
+            assertEquals(round.getDeltaEnemyHealth(), -playerAttack / 5);
+            enemyHealth += round.getDeltaEnemyHealth();
+            playerHealth += round.getDeltaCharacterHealth();
         }
 
         if (enemyDies) {
@@ -119,22 +119,22 @@ public class BattleTests {
         //
         DungeonResponse res = dmc.newGame(dungeon, configFile);
 
-        res = dmc.tick(Direction.UP);
+        res = dmc.tick(Direction.RIGHT);
 
         int zombieCount = countEntityOfType(res, "zombie_toast");
        
-        assertEquals(1, countEntityOfType(res, "player"));
+        //assertEquals(1, countEntityOfType(res, "player"));
         assertEquals(1, zombieCount);
-        return dmc.tick(Direction.RIGHT);
+        return res;
     }
 
     @Test
     @DisplayName("Test general player battle scenario - player dies.")
     public void testPlayerBattleDies() {
         DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse postBattleResponse = genericPlayerSequence(dmc, "d_battleTest_basicZombie", "c_battleTests_basicPlayerBattle");
+        DungeonResponse postBattleResponse = genericPlayerSequence(dmc, "d_battleTest_basicZombie", "c_battleTests_basicZombieZombieWins");
         BattleResponse battle = postBattleResponse.getBattles().get(0);
-        assertBattleCalculations("zombie", battle, true, "c_battleTests_basicPlayerBattle");
+        assertBattleCalculations("zombie", battle, false, "c_battleTests_basicZombieZombieWins");
     }
 
 
@@ -145,15 +145,15 @@ public class BattleTests {
     private void assertBattleCalculations(String enemyType, BattleResponse battle, boolean enemyDies, String configFilePath, int atkBonus, int defBonus) {
         List<RoundResponse> rounds = battle.getRounds();
         double playerHealth = Double.parseDouble(getValueFromConfigFile("player_health", configFilePath));
-        double enemyHealth = Double.parseDouble(getValueFromConfigFile(enemyType + "_attack", configFilePath));
+        double enemyHealth = Double.parseDouble(getValueFromConfigFile(enemyType + "_health", configFilePath));
         double playerAttack = Double.parseDouble(getValueFromConfigFile("player_attack", configFilePath));
         double enemyAttack = Double.parseDouble(getValueFromConfigFile(enemyType + "_attack", configFilePath));
 
         for (RoundResponse round : rounds) {
-            assertEquals(round.getDeltaCharacterHealth(), enemyAttack / 10);
-            assertEquals(round.getDeltaEnemyHealth(), playerAttack / 5);
-            enemyHealth -= round.getDeltaEnemyHealth();
-            playerHealth -= round.getDeltaCharacterHealth();
+            assertEquals(round.getDeltaCharacterHealth(), -enemyAttack / 10);  
+            assertEquals(round.getDeltaEnemyHealth(), -playerAttack / 5);
+            enemyHealth += round.getDeltaEnemyHealth();
+            playerHealth += round.getDeltaCharacterHealth();
         }
 
         if (enemyDies) {
@@ -187,7 +187,7 @@ public class BattleTests {
 
         RoundResponse round1 = rounds.get(0);
 
-        assertEquals(round1.getDeltaEnemyHealth(), playerAttack / 5);
+        assertEquals(round1.getDeltaEnemyHealth(), -playerAttack / 5);
     }
 
     /* // TODO Finish these tests once appropriate entities have been made!!!!!!
@@ -290,8 +290,8 @@ public class BattleTests {
 
         RoundResponse round1 = rounds.get(0);
 
-        assertEquals(round1.getDeltaCharacterHealth(), enemyAttack / 10);
-        assertEquals(round1.getDeltaEnemyHealth(), playerAttack / 5);
+        assertEquals(round1.getDeltaCharacterHealth(), -enemyAttack / 10);
+        assertEquals(round1.getDeltaEnemyHealth(), -playerAttack / 5);
         
 
     }
@@ -340,12 +340,11 @@ public class BattleTests {
         });
 
         res = dmc.tick(Direction.DOWN);
-        res = dmc.tick(Direction.RIGHT);
-
+        
         Position playerPrevPos = getPlayer(res).get().getPosition();
-        res = dmc.tick(Direction.DOWN);
+        res = dmc.tick(Direction.RIGHT);
         assertTrue(getEntities(res, "mercenary").get(0).getPosition().equals(playerPrevPos));
-   
+        res = dmc.tick(Direction.DOWN);
         return res;
     }
 

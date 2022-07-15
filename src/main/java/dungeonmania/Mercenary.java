@@ -13,12 +13,13 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Mercenary extends MovingEntity {
-    private boolean isAlly;
+   // private boolean isAlly;
     private static final int UPPER_LIMIT = 60;
     private boolean isNeighbour;
+    private HashMap<String, String> configMap;
 
     public Mercenary(int x, int y, HashMap<String, String> configMap) {
-        this.isAlly = false;
+        super.setAlly(false);
         super.setCurrentLocation(new Position(x, y));
         super.setEntityID(UUID.randomUUID().toString());
         super.setInteractable(true);
@@ -26,14 +27,16 @@ public class Mercenary extends MovingEntity {
         super.setEnemyHealth(Double.parseDouble(configMap.get("mercenary_health")));
         super.enemyChangeStrategy(new MercenaryEnemyStrategy(configMap));
         this.isNeighbour = false;
+        this.configMap = configMap;
     }
 
     @Override
     public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory) {
-        if (!isAlly) {
+        if (!super.isAlly()) {
             enemyMovement(listOfEntities, player);
         } else {
-            allyMovement(listOfEntities, player);
+            super.enemyChangeStrategy(new MercenaryAllyStrategy(configMap));
+            allyMovement(listOfEntities, player); 
         }
     }
 
@@ -95,8 +98,8 @@ public class Mercenary extends MovingEntity {
         // find the merc's neighbour that has the minimum distance in the map
         List<Position> mercNeighbours = getAdjacentPos(this.getCurrentLocation(), listOfEntities);
 
-        if (this.isAlly && mercNeighbours.contains(playerPos))
-            mercNeighbours.remove(playerPos);
+        if (super.isAlly() && mercNeighbours.contains(playerPos))
+           mercNeighbours.remove(playerPos);
 
         int minDistance = UPPER_LIMIT;
         Position minPosition = this.getCurrentLocation();
@@ -119,15 +122,5 @@ public class Mercenary extends MovingEntity {
                       .forEach((ent) -> possiblePos.remove(possiblePos.indexOf(ent.getCurrentLocation())));
 
         return possiblePos;
-    }
-    
-
-    /* Getters & Setters */
-    public boolean isAlly() {
-        return isAlly;
-    }
-
-    public void setAlly(boolean isAlly) {
-        this.isAlly = isAlly;
     }
 }

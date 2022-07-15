@@ -144,7 +144,7 @@ public class ZombieTests {
         DungeonResponse res = dmc.newGame("d_zombieTest_cantSpawnWithNoSpawner", "c_zombieTest_spawnEveryTick");
 
         for (int i = 0; i < 50; i++) {
-            res = dmc.tick(Direction.UP);
+            res = dmc.tick(Direction.LEFT);
         }
 
         assertEquals(getZombSize(res), 1);
