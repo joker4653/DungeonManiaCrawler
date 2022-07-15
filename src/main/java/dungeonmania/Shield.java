@@ -46,7 +46,7 @@ public class Shield extends BuildableEntity{
         return stuff;
     }
 
-    public void BuildShieldTreasure(List<Entity> inventory, Shield shield) {
+    public void BuildShieldTreasure(Inventory inventory, Shield shield) {
         //TODO: MAKE SHIELD DURABILITY RANDOM
         shield.Build(shield.Components, inventory, shield);
     }

@@ -329,43 +329,19 @@ public class DungeonManiaController {
      * /game/build
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
-        Player player = getPlayer(listOfEntities);
-        ArrayList<Entity> inventory = player.getInventory();
         if (buildable == "shield") {
-        //TODO: For now durability and defence are 4 CHANGE BEFORE IMPLEMENTATION!
-            Shield shield = new Shield(4, 4);
-
-            if(shield.isBuildable(shield.Components, inventory)){
-                //TODO: STREAM MALARKY
-                List<Entity> consumedWoodEntities = inventory.stream().filter((t) -> t.getEntityType() == "wood" ).collect(Collectors.toList());
-                int i = 0;
-                while(i < 2) {
-                    player.removeItem(consumedWoodEntities.get(i));
-                    i++;
-                }
-                List<Entity> consumedTreasure = inventory.stream().filter((t) -> t.getEntityType() == "treasure" ).collect(Collectors.toList());
-                int k= 0;
-                while(k < 1) {
-                    player.removeItem(consumedTreasure.get(i));
-                    k++;
-                }
-            } else if (shield.isBuildable(shield.Components2, inventory)) {
-                List<Entity> consumedWoodEntities = inventory.stream().filter((t) -> t.getEntityType() == "wood" ).collect(Collectors.toList());
-                int j = 0;
-                while(j < 2) {
-                    player.removeItem(consumedWoodEntities.get(j));
-                    j++;
-                }
-                List<Entity> consumedKey = inventory.stream().filter((t) -> t.getEntityType() == "key" ).collect(Collectors.toList());
-                int l = 0;
-                while(l < 1) {
-                    player.removeItem(consumedKey.get(l));
-                    l++;
-                }    
+            Shield newShield = new Shield(4, 4);
+            if(newShield.isBuildable(newShield.Components,inventory)) {
+                newShield.BuildShieldTreasure(inventory, newShield);
             }
-
         }
+        
         return null;
+    }
+
+
+    public Inventory getInventory() {
+        return inventory;
     }
 
     /**

@@ -21,56 +21,37 @@ public BuildableEntity() {
     super.setCanMercBeOnThisEntity(true);
 }
 
-public boolean isBuildable(ArrayList<HowMany> components,List<Entity> inventory) {
+public boolean isBuildable(ArrayList<HowMany> components,Inventory inventory) {
     for (HowMany component: components) {
-        if(!numItemExists(component.getType(), component.getAmount(), inventory)) {
-            return false;
+        if(inventory.numitemExists(component.getType(), component.getAmount())) {
+            return true;
         }
     }
-    return true;
+    return false;
 
 }
 
-public void Build(ArrayList<HowMany> components,List<Entity> inventory,BuildableEntity buildable) {
+public void Build(ArrayList<HowMany> components,Inventory inventory,BuildableEntity buildable) {
     for (HowMany component: components) {
         if(numItemExists(component.getType(), component.getAmount(), inventory)) {
             numItemDelete(component.getType(), component.getAmount(), inventory);
         }
     }
-    inventory.add(buildable);
+    inventory.addItem(buildable);
 }
 
 // For checking if requisite number of a certain item exists
-public boolean numItemExists(String type, int num,List<Entity> inventory) {
-    int checkNum = 0;
-    for (Entity entity : inventory) {
-        if (entity.getEntityType().equalsIgnoreCase(type)) {
-           checkNum = checkNum + 1;
-           if (checkNum == num) {
-            return true;
-           }
-        }
+public boolean numItemExists(String type, int num,Inventory inventory) {
+    if(inventory.numitemExists(type, num)) {
+        return true;
     }
+    
     return false;    
 }
 
-public void numItemDelete(String type, int num,List<Entity> inventory){
-    int checkNum = 0;
-    List<Entity> itemsToDelete = new ArrayList<>();
-    for (Entity entity : inventory) {
-        if (entity.getEntityType().equalsIgnoreCase(type)) {
-           itemsToDelete.add(entity);
-           checkNum = checkNum + 1;
-           if (checkNum == num) {
-            break;
-           }
-        }
-    }
-    for(Entity entity2: itemsToDelete) {
-        inventory.remove(entity2);
-    }
+public void numItemDelete(String type, int num,Inventory inventory){
+    inventory.RemovingnumItemOfType(num, type);
     return;
-
 }
 
 
