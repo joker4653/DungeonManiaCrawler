@@ -296,26 +296,26 @@ public class DungeonManiaController {
 
             if(shield.isBuildable(shield.Components, inventory)){
                 //TODO: STREAM MALARKY
-                List<Entity> consumedWoodEntities = inventory.stream().filter((t) -> t.getEntityType() == "wood" ).toList();
+                List<Entity> consumedWoodEntities = inventory.stream().filter((t) -> t.getEntityType() == "wood" ).collect(Collectors.toList());
                 int i = 0;
                 while(i < 2) {
                     player.removeItem(consumedWoodEntities.get(i));
                     i++;
                 }
-                List<Entity> consumedTreasure = inventory.stream().filter((t) -> t.getEntityType() == "treasure" ).toList();
+                List<Entity> consumedTreasure = inventory.stream().filter((t) -> t.getEntityType() == "treasure" ).collect(Collectors.toList());
                 int k= 0;
                 while(k < 1) {
                     player.removeItem(consumedTreasure.get(i));
                     k++;
                 }
             } else if (shield.isBuildable(shield.Components2, inventory)) {
-                List<Entity> consumedWoodEntities = inventory.stream().filter((t) -> t.getEntityType() == "wood" ).toList();
+                List<Entity> consumedWoodEntities = inventory.stream().filter((t) -> t.getEntityType() == "wood" ).collect(Collectors.toList());
                 int j = 0;
                 while(j < 2) {
                     player.removeItem(consumedWoodEntities.get(j));
                     j++;
                 }
-                List<Entity> consumedKey = inventory.stream().filter((t) -> t.getEntityType() == "key" ).toList();
+                List<Entity> consumedKey = inventory.stream().filter((t) -> t.getEntityType() == "key" ).collect(Collectors.toList());
                 int l = 0;
                 while(l < 1) {
                     player.removeItem(consumedKey.get(l));

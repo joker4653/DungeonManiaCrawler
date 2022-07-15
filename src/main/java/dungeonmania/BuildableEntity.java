@@ -31,6 +31,15 @@ public boolean isBuildable(ArrayList<HowMany> components,List<Entity> inventory)
 
 }
 
+public void Build(ArrayList<HowMany> components,List<Entity> inventory,BuildableEntity buildable) {
+    for (HowMany component: components) {
+        if(numItemExists(component.getType(), component.getAmount(), inventory)) {
+            numItemDelete(component.getType(), component.getAmount(), inventory);
+        }
+    }
+    inventory.add(buildable);
+}
+
 // For checking if requisite number of a certain item exists
 public boolean numItemExists(String type, int num,List<Entity> inventory) {
     int checkNum = 0;
@@ -43,6 +52,25 @@ public boolean numItemExists(String type, int num,List<Entity> inventory) {
         }
     }
     return false;    
+}
+
+public void numItemDelete(String type, int num,List<Entity> inventory){
+    int checkNum = 0;
+    List<Entity> itemsToDelete = new ArrayList<>();
+    for (Entity entity : inventory) {
+        if (entity.getEntityType().equalsIgnoreCase(type)) {
+           itemsToDelete.add(entity);
+           checkNum = checkNum + 1;
+           if (checkNum == num) {
+            break;
+           }
+        }
+    }
+    for(Entity entity2: itemsToDelete) {
+        inventory.remove(entity2);
+    }
+    return;
+
 }
 
 

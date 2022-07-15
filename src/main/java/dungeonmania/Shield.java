@@ -46,6 +46,11 @@ public class Shield extends BuildableEntity{
         return stuff;
     }
 
+    public void BuildShieldTreasure(List<Entity> inventory, Shield shield) {
+        //TODO: MAKE SHIELD DURABILITY RANDOM
+        shield.Build(shield.Components, inventory, shield);
+    }
+
     public void setComponents(ArrayList<HowMany> components) {
         this.Components = components;
     }
