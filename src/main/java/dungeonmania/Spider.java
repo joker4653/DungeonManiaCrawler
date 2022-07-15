@@ -39,6 +39,7 @@ public class Spider extends MovingEntity {
         super.setEntityType("spider");
         super.setEnemyHealth(Double.parseDouble(configMap.get("spider_health")));
         super.enemyChangeStrategy(new SpiderBattlingStrategy(configMap));
+        super.setAlly(false);
     }
 
     public void spawn(List<Entity> listOfEntities, Player player) {

@@ -98,8 +98,8 @@ public class ExampleTests {
         }
     }
     
-    /*
-    @Test
+    
+   /* @Test
     @DisplayName("Test surrounding entities are removed when placing a bomb next to an active switch with config file bomb radius set to 2")
     public void placeBombRadius2() {
         DungeonManiaController dmc;
@@ -168,7 +168,7 @@ public class ExampleTests {
         // move to exit
         res = dmc.tick(Direction.DOWN);
         assertEquals("", getGoals(res));
-    }
+    }*/
 
     private static DungeonResponse genericMercenarySequence(DungeonManiaController controller, String configFile) {
         //
@@ -222,6 +222,6 @@ public class ExampleTests {
        DungeonResponse postBattleResponse = genericMercenarySequence(controller, "c_battleTests_basicMercenaryMercenaryDies");
        BattleResponse battle = postBattleResponse.getBattles().get(0);
        assertBattleCalculations("mercenary", battle, true, "c_battleTests_basicMercenaryMercenaryDies");
-    }*/
+    }
 
 }
