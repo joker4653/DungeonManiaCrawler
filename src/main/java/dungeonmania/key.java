@@ -5,7 +5,7 @@ import java.util.UUID;
 import dungeonmania.util.Position;
 
 public class Key extends CollectableEntity {
-    private int pairNum;
+    private int pairNum = 0;
 
     public Key(int x, int y, int key) {
         super.setCanZombieBeOnThisEntity(true);
