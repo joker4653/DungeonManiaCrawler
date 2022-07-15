@@ -122,6 +122,7 @@ public class Battle {
         }
 
         double ally_attack = Double.parseDouble(configMap.get("ally_attack"));
+
         for (int i = 0; i < allies; i++) {
             atk += ally_attack;
         }
