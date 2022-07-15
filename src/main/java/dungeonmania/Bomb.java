@@ -1,10 +1,7 @@
 package dungeonmania;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -72,18 +69,18 @@ public class Bomb extends CollectableEntity {
     }
 
     private List<Position> getSquarePositions() {
-        ArrayList<Position> positions = new ArrayList<Position>();
+        ArrayList<Position> positions = new ArrayList<>();
 
         // get square locations around the player
-        if (radius == 1) {
+        /*if (radius == 1) {
             return super.getCurrentLocation().getAdjacentPositions();
-        } else { 
-            for (int x = 0 - radius; x <= radius; x++) {
-                for (int y = 0 - radius; y <= radius; y++) {
+        } else { */
+            for (int x = super.getCurrentLocation().getX() - radius; x <= radius; x++) {
+                for (int y = super.getCurrentLocation().getY() - radius; y <= radius; y++) {
                     positions.add(new Position(x, y));
                 }
             }
-        }
+        /* }*/
 
         
         return positions;
@@ -93,6 +90,8 @@ public class Bomb extends CollectableEntity {
 
         // get entities whom current location is within the square
         return entities.stream().filter(e -> (pos.contains(e.getCurrentLocation()))).collect(Collectors.toList());
+
+
     }
 
     public boolean isUsed() {

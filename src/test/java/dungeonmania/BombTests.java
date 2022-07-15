@@ -96,24 +96,57 @@ public class BombTests {
         assertTrue(getEntities(res, "treasure").isEmpty());
         assertTrue(getEntities(res, "boulder").isEmpty());
         assertTrue(getEntities(res, "switch").isEmpty());
+        assertTrue(getEntities(res, "mercenary").isEmpty());
         
     }
 
     @Test
     @DisplayName("Assert bomb does NOT remove entities outside of radius")
-    public void DoesNotExplodeOutsideOfRange() {
+    public void DoesNotExplodeOutsideOfRange() throws IllegalArgumentException, InvalidActionException {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_bombTest_placeBombRadius2", "c_bombTest_placeBombRadius1");
+        String str = getEntities(res, "bomb").get(0).getId();
 
+        // compress floor switch
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.DOWN);
+        res = dmc.tick(Direction.RIGHT);
+
+        res = dmc.tick(str);
+        // one wall should still exist
+        assertFalse(getEntities(res, "wall").isEmpty());
+
+        // everything else should be removed
+        assertTrue(getEntities(res, "treasure").isEmpty());
+        assertTrue(getEntities(res, "boulder").isEmpty());
+        assertTrue(getEntities(res, "switch").isEmpty());
+        assertTrue(getEntities(res, "mercenary").isEmpty());
     }
 
     @Test
-    @DisplayName("Entities still move after tick")
-    public void MovementOccursAfterTick() {
+    @DisplayName("still existing Entities still move after tick")
+    public void MovementOccursAfterTick() throws IllegalArgumentException, InvalidActionException {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_bombTest_EntitiesStilMove", "c_bombTest_placeBombRadius1");
+        String bomb = getEntities(res, "bomb").get(0).getId();
+        String str = getEntities(res, "mercenary").get(0).getId();
+
+        // compress floor switch
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.DOWN);
+        res = dmc.tick(Direction.RIGHT);
+
+
+        // starts at 2,3 should move to 3,3
+        assertEquals(getEntities(res, "mercenary").get(0).getPosition(), new Position(3, 2));
+        res = dmc.tick(bomb);
+        assertEquals(getEntities(res, "mercenary").get(0).getPosition(), new Position(3, 3));
 
     }
 
     @Test
     @DisplayName("Entities still move if failed to use bomb")
     public void MovementOccursAfterFailure() {
-
+        assertTrue(false);
     }
 }
