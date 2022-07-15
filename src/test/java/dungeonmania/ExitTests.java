@@ -66,7 +66,7 @@ public class ExitTests {
         List<Entity> list = dmc.getListOfEntities();
         for (Entity currEntity : list) {
             if (currEntity.getEntityType().equals("exit")) {
-                if (((Exit) currEntity).getExitState()) {
+                if (((Exit) currEntity).isExitState()) {
                     return true;
                 }
             }
