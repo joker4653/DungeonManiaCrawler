@@ -16,11 +16,11 @@
     "shield_durability": 1,
     "spider_attack": 1,
     "spider_health": 1,
-    "spider_spawn_rate": 1,
+    "spider_spawn_rate": 10,
     "sword_attack": 2,
     "sword_durability": 1,
     "treasure_goal": 1,
     "zombie_attack": 1,
     "zombie_health": 1,
-    "zombie_spawn_rate": 1
+    "zombie_spawn_rate": 8
   }
