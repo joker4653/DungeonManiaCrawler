@@ -30,7 +30,7 @@ public class FloorSwitchTests {
     @DisplayName("Tests basic floor switch press when boulder is pushed ontop")
     public void testFloorSwitchBoulderPress() {
         DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_floorswitchTest_basicPress", "c_playerTest_basicMovement");
+        DungeonResponse res = dmc.newGame("d_floorSwitchTest_basicPress", "c_playerTest_basicMovement");
         List<Entity> list = dmc.getListOfEntities();
 
         for (Entity currEntity : list) {
@@ -56,7 +56,7 @@ public class FloorSwitchTests {
     @DisplayName("Tests boulder moving off floorswitch")
     public void testFloorSwitchBoulderMove() {
         DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_floorswitchTest_basicPress", "c_playerTest_basicMovement");
+        DungeonResponse res = dmc.newGame("d_floorSwitchTest_basicPress", "c_playerTest_basicMovement");
         List<Entity> list = dmc.getListOfEntities();
 
         for (Entity currEntity : list) {
