@@ -37,6 +37,16 @@ public class KeyTests {
         Position expectedPos = new Position(1, 1);
         Position realPos = getEntities(res, "key").get(0).getPosition();
         assertEquals(expectedPos, realPos);
+    }
 
+    @Test
+    @DisplayName("Placing key into Inventory")
+    public void KeytoInventory() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_keyTest_basicSpawn", "c_treasureTest_basicSpawn");
+
+        res = dmc.tick(Direction.RIGHT);
+
+        assertFalse(getInventory(res, "key").isEmpty());
     }
 }
