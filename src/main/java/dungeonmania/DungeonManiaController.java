@@ -404,7 +404,7 @@ public class DungeonManiaController {
                 newBow.BuildBow(inventory, newBow);
             }
         }
-        return null;
+        return createDungeonResponse();
     }
 
 
