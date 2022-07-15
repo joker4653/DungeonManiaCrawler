@@ -16,6 +16,7 @@ public class Arrow extends CollectableEntity {
         super.setInteractable(false);
         super.setEntityType("arrow");
         super.setCurrentLocation(location);
+        super.setCollectableEntity(true);
 
         super.setIsConsumable(false);
     }

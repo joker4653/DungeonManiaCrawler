@@ -17,7 +17,7 @@ public class Treasure extends CollectableEntity {
         super.setInteractable(false);
         super.setEntityType("treasure");
         super.setCurrentLocation(location);
-
+        super.setCollectableEntity(true);
         super.setIsConsumable(false);
     }
 
