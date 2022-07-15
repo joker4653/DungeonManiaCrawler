@@ -58,14 +58,13 @@ public class Battle {
         double enemy_attack = enemy.enemyAttackModifier();
 
         double delta_player_health = (enemy_attack - player_defence) / 10;
-        double delta_enemy_health = enemy.calculateEnemyHealth(player_attack);
+        double delta_enemy_health = enemy.calculateDeltaEnemyHealth(player_attack);
         double player_hp = player.getPlayerHealth() - delta_player_health;
         double enemy_hp = enemy.getEnemyHealth() - delta_enemy_health;
         player.setPlayerHealth(player_hp);
         enemy.setEnemyHealth(enemy_hp);
 
         ArrayList<Entity> weaponryUsed= getWeaponry(inventory);
-        // TODO make weaponryUsed, do durability changes.
 
         Round round = new Round(delta_player_health, delta_enemy_health, weaponryUsed);
         rounds.add(round);
