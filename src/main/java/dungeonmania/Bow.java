@@ -8,7 +8,7 @@ public class Bow extends BuildableEntity{
     private int durability;
     ArrayList<HowMany> Components = new ArrayList<HowMany>();
 
-    public Bow(int durability, int defenceFactor) {
+    public Bow(int durability) {
         this.durability = durability;
         this.setComponents(bowMaterials());
         super.setEntityType("bow");

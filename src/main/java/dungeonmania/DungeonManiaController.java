@@ -334,8 +334,12 @@ public class DungeonManiaController {
             if(newShield.isBuildable(newShield.Components,inventory)) {
                 newShield.BuildShieldTreasure(inventory, newShield);
             }
+        } else if (buildable == "bow") {
+            Bow newBow = new Bow(4);
+            if(newBow.isBuildable(newBow.bowMaterials(),inventory)) {
+                newBow.BuildBow(inventory, newBow);
+            }
         }
-        
         return null;
     }
 
