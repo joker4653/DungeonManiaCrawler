@@ -32,6 +32,7 @@ public class ZombieToast extends MovingEntity {
         super.setEntityType("zombie_toast");
         super.enemyChangeStrategy(new ZombieBattlingStrategy(configMap));
         super.setEnemyHealth(Double.parseDouble(configMap.get("zombie_health")));
+        super.setAlly(false);
     }
 
     public void spawn(List<Entity> listOfEntities) {

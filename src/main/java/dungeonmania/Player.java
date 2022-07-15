@@ -25,6 +25,7 @@ public class Player extends MovingEntity {
 
         setPrevPos(new Position(x, y));
         super.setPlayerHealth(Double.parseDouble(configMap.get("player_health")));
+        super.setAlly(true);
     }
 
     public int getAllies() {
@@ -42,6 +43,7 @@ public class Player extends MovingEntity {
         if (legalMove(listOfEntities, next, inventory)) {
             super.setCurrentLocation(next);
         }
+        
     }
 
     private boolean legalMove(List<Entity> listOfEntities, Position next, Inventory inventory) {
