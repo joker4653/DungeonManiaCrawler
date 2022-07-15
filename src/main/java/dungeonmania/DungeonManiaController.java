@@ -9,7 +9,7 @@ import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 import dungeonmania.util.Position;
-
+import dungeonmania.Battle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;

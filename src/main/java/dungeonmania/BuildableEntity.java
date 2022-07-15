@@ -23,11 +23,11 @@ public BuildableEntity() {
 
 public boolean isBuildable(ArrayList<HowMany> components,Inventory inventory) {
     for (HowMany component: components) {
-        if(inventory.numitemExists(component.getType(), component.getAmount())) {
-            return true;
+        if(!inventory.numitemExists(component.getType(), component.getAmount())) {
+            return false;
         }
     }
-    return false;
+    return true;
 
 }
 
