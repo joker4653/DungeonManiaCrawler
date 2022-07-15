@@ -242,10 +242,7 @@ public class DungeonManiaController {
         player.move(listOfEntities, movementDirection, player, inventory); 
         boulderCheck();
         exitCheck(player);
-
         checkBattles();
-        exitCheck(player);
-
         Spider newSpider = spawnASpider(xSpi, player);
         for (Entity currEntity : listOfEntities) {
             if (currEntity.getEntityType().equalsIgnoreCase("player") || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID())))
