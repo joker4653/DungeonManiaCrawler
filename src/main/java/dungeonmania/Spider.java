@@ -1,51 +1,49 @@
 package dungeonmania;
 
 import dungeonmania.util.Position;
+import dungeonmania.EnemyBattleStrategy.SpiderBattlingStrategy;
 import dungeonmania.util.Direction;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
 public class Spider extends MovingEntity {
     private boolean isClockwise = true;
-    private Position nextPosition;
-    private int currHealth;
-    private int damagePoints;
-
-    //private int spiderID;
     private int xMin;
     private int xMax;
     private int yMin;
     private int yMax;
     private Position spawnLocation;
 
-    public Spider(int x, int y) {
+    public Spider(int x, int y, HashMap<String, String> configMap) {
         this.spawnLocation = new Position(x, y);
-        super.setCurrentLocation(spawnLocation); // or should I do super.super.currentLocation = new Position(x, y); ?????????????????????????? (obv method forwarding when referring to currLocaiton)
-        initialiseSpider();
+        super.setCurrentLocation(spawnLocation);
+        initialiseSpider(configMap);
     }
 
-    public Spider(int xMin, int xMax, int yMin, int yMax) {
+    public Spider(int xMin, int xMax, int yMin, int yMax, HashMap<String, String> configMap) {
         this.xMin = xMin;
         this.xMax = xMax;
         this.yMin = yMin;
         this.yMax = yMax;
-        initialiseSpider();
+        initialiseSpider(configMap);
     }
 
-    private void initialiseSpider() {
+    private void initialiseSpider(HashMap<String, String> configMap) {
         super.setCanSpiderBeOnThisEntity(true);
         super.setEntityID(UUID.randomUUID().toString());
         super.setInteractable(false);
         super.setEntityType("spider");
+        super.setEnemyHealth(Double.parseDouble(configMap.get("spider_health")));
+        super.enemyChangeStrategy(new SpiderBattlingStrategy(configMap));
     }
 
     public void spawn(List<Entity> listOfEntities, Player player) {
-        List<Position> possibleSpiderLocations = new ArrayList<>();
-
         // get a list of possible spawn locations within the map
+        List<Position> possibleSpiderLocations = new ArrayList<>();
         for (int row = xMin; row <= xMax; row++) {
             for (int col = yMin; col <= yMax; col++) {
                 possibleSpiderLocations.add(new Position(row, col));
@@ -53,97 +51,76 @@ public class Spider extends MovingEntity {
         }
         
         // exclude locations of boulders since spiders can't spawn on top of them
-        for (Entity currEntity : listOfEntities) {
-            if (!currEntity.getCanSpiderBeOnThisEntityBool() && possibleSpiderLocations.contains(currEntity.getCurrentLocation())) {
-                possibleSpiderLocations.remove(currEntity.getCurrentLocation());
-            }
-        }
+        listOfEntities.stream()
+                      .filter((currEntity) -> !currEntity.getCanSpiderBeOnThisEntityBool() && possibleSpiderLocations.contains(currEntity.getCurrentLocation()))
+                      .forEach((ent) -> possibleSpiderLocations.remove(ent.getCurrentLocation()));
 
-        Random rand = new Random();
-        int randNum = rand.nextInt(possibleSpiderLocations.size());
-        Position spawnLocation = possibleSpiderLocations.get(randNum);
-
-        super.setCurrentLocation(spawnLocation);
+        Position spawnLocation = super.getRandPos(possibleSpiderLocations);
         setSpawnLocation(spawnLocation);
-
-        // add to entity list
         listOfEntities.add(this);
-        // From the spec: "When the spider spawns, they immediately move the 1 square upwards"
-        //move(listOfEntities, Direction.DOWN, player);
+
     }
 
-    public void move(List<Entity> listOfEntities, Direction dir, Player player) {
+    public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory) {
+        // Get the next position and check if it's a boulder. If so, change direction and move. Otherwise, move normally.
         Position nextPosition = getNextPosition();
-
-        // Get the next position and check if it's a boulder. If so, change direction and move. Else, move normally.
-
         if (checkIfNextPositionIsAllowed(nextPosition, listOfEntities)) {
             super.setCurrentLocation(nextPosition);
         } else {
             isClockwise = !isClockwise;
             nextPosition = getNextPosition();
-            if (checkIfNextPositionIsAllowed(nextPosition, listOfEntities)) {
+            if (checkIfNextPositionIsAllowed(nextPosition, listOfEntities))
                 super.setCurrentLocation(nextPosition);
-            }
         }
 
-        Entity entity = listOfEntities.stream().filter(e -> e.getEntityID() == this.getEntityID()).findFirst().get();
-        if (entity != null)
-            entity.setCurrentLocation(nextPosition);
-
+        // TODO: call the battle function if spider is at player's position!!!!!!!!!!!
     }
 
-    public Position getNextPosition() {
-        int spawnPositionX = spawnLocation.getX();
-        int spawnPositionY = spawnLocation.getY();
-        int currPositionX = super.getCurrentLocation().getX();
-        int currPositionY = super.getCurrentLocation().getY();
 
-        if (currPositionX == spawnPositionX && currPositionY == spawnPositionY - 1) {
-            return isClockwise ? new Position(spawnPositionX + 1, spawnPositionY - 1) : new Position(spawnPositionX - 1, spawnPositionY - 1);
-        }
+    private Position getNextPosition() {
+        int spawnPosX = spawnLocation.getX();
+        int spawnPosY = spawnLocation.getY();
+        HashMap<Position, Position> clockwisePos = generateClockwisePosMap(spawnPosX, spawnPosY);
+        HashMap<Position, Position> anticlockwisePos = generateAntiClockwisePosMap(spawnPosX, spawnPosY);
 
-        if (currPositionX == spawnPositionX + 1 && currPositionY == spawnPositionY - 1) {
-            return isClockwise ? new Position(spawnPositionX + 1, spawnPositionY) : new Position(spawnPositionX, spawnPositionY - 1);
-        }
-
-        if (currPositionX == spawnPositionX + 1 && currPositionY == spawnPositionY) {
-            return isClockwise ? new Position(spawnPositionX + 1, spawnPositionY + 1) : new Position(spawnPositionX + 1, spawnPositionY - 1);
-        }
-
-        if (currPositionX == spawnPositionX + 1 && currPositionY == spawnPositionY + 1) {
-            return isClockwise ? new Position(spawnPositionX, spawnPositionY + 1) : new Position(spawnPositionX + 1, spawnPositionY);
-        }
-
-        if (currPositionX == spawnPositionX && currPositionY == spawnPositionY + 1) {
-            return isClockwise ? new Position(spawnPositionX - 1, spawnPositionY + 1) : new Position(spawnPositionX + 1, spawnPositionY + 1);
-        }
-
-        if (currPositionX == spawnPositionX - 1 && currPositionY == spawnPositionY + 1) {
-            return isClockwise ? new Position(spawnPositionX - 1, spawnPositionY) : new Position(spawnPositionX, spawnPositionY + 1);
-        }
-
-        if (currPositionX == spawnPositionX - 1 && currPositionY == spawnPositionY) {
-            return isClockwise ? new Position(spawnPositionX - 1, spawnPositionY - 1) : new Position(spawnPositionX - 1, spawnPositionY + 1);
-        }
-
-        if (currPositionX == spawnPositionX - 1 && currPositionY == spawnPositionY - 1) {
-            return isClockwise ? new Position(spawnPositionX, spawnPositionY - 1) : new Position(spawnPositionX - 1, spawnPositionY);
-        }
-
-        // this means we are currently at the spawnLocation, so go up
-        return new Position(spawnPositionX, spawnPositionY - 1);
+        // if nextPos is null, this means the spider is currently at its spawnLocation. Thus, spider moves up next.
+        Position nextPos = isClockwise ? clockwisePos.get(getCurrentLocation()) : anticlockwisePos.get(getCurrentLocation());
+        return nextPos != null ? nextPos : new Position(spawnPosX, spawnPosY - 1);
     }
 
-    public boolean checkIfNextPositionIsAllowed(Position nextPosition, List<Entity> listOfEntities) {
-        for (Entity currEntity : listOfEntities) {
-            Position currPosition = currEntity.getCurrentLocation();
-            if (currPosition.equals(nextPosition) && !currEntity.getCanSpiderBeOnThisEntityBool()) {
-                return false;
-            }
-        }
+    // generates a hashmap of the spider's new locations if it is moving anticlockwise.
+    private HashMap<Position, Position> generateAntiClockwisePosMap(int spawnPosX, int spawnPosY) {
+        HashMap<Position, Position> anticlockwisePos = new HashMap<>();
+        anticlockwisePos.put(new Position(spawnPosX, spawnPosY - 1), new Position(spawnPosX - 1, spawnPosY - 1));
+        anticlockwisePos.put(new Position(spawnPosX + 1, spawnPosY - 1), new Position(spawnPosX, spawnPosY - 1));
+        anticlockwisePos.put(new Position(spawnPosX + 1, spawnPosY), new Position(spawnPosX + 1, spawnPosY - 1));
+        anticlockwisePos.put(new Position(spawnPosX + 1, spawnPosY + 1), new Position(spawnPosX + 1, spawnPosY));
+        anticlockwisePos.put(new Position(spawnPosX, spawnPosY + 1), new Position(spawnPosX + 1, spawnPosY + 1));
+        anticlockwisePos.put(new Position(spawnPosX - 1, spawnPosY + 1), new Position(spawnPosX, spawnPosY + 1));
+        anticlockwisePos.put(new Position(spawnPosX - 1, spawnPosY), new Position(spawnPosX - 1, spawnPosY + 1));
+        anticlockwisePos.put(new Position(spawnPosX - 1, spawnPosY - 1), new Position(spawnPosX - 1, spawnPosY));
 
-        return true;
+        return anticlockwisePos;
+    }
+
+    // generates a hashmap of the spider's new locations if it is moving clockwise.
+    private HashMap<Position, Position> generateClockwisePosMap(int spawnPosX, int spawnPosY) {
+        HashMap<Position, Position> clockwisePos = new HashMap<>();
+        clockwisePos.put(new Position(spawnPosX, spawnPosY - 1), new Position(spawnPosX + 1, spawnPosY - 1));
+        clockwisePos.put(new Position(spawnPosX + 1, spawnPosY - 1), new Position(spawnPosX + 1, spawnPosY));
+        clockwisePos.put(new Position(spawnPosX + 1, spawnPosY), new Position(spawnPosX + 1, spawnPosY + 1));
+        clockwisePos.put(new Position(spawnPosX + 1, spawnPosY + 1), new Position(spawnPosX, spawnPosY + 1));
+        clockwisePos.put(new Position(spawnPosX, spawnPosY + 1), new Position(spawnPosX - 1, spawnPosY + 1));
+        clockwisePos.put(new Position(spawnPosX - 1, spawnPosY + 1), new Position(spawnPosX - 1, spawnPosY));
+        clockwisePos.put(new Position(spawnPosX - 1, spawnPosY), new Position(spawnPosX - 1, spawnPosY - 1));
+        clockwisePos.put(new Position(spawnPosX - 1, spawnPosY - 1), new Position(spawnPosX, spawnPosY - 1));
+
+        return clockwisePos;
+    }
+
+    private boolean checkIfNextPositionIsAllowed(Position nextPosition, List<Entity> listOfEntities) {
+        return !listOfEntities.stream()
+                              .anyMatch((currEntity) -> currEntity.getCurrentLocation().equals(nextPosition) && !currEntity.getCanSpiderBeOnThisEntityBool());
     }
 
     /* Getters and Setters */
