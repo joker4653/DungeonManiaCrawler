@@ -141,10 +141,11 @@ public class DungeonManiaController {
             int x = jsonObjElement.get("x").getAsInt();
             int y = jsonObjElement.get("y").getAsInt();
             int key = Integer.MAX_VALUE;
-
+            String colour = " ";
             if (jsonObjElement.get("key") != null) key = jsonObjElement.get("key").getAsInt();
+            if (jsonObjElement.get("colour") != null) colour = jsonObjElement.get("colour").getAsString();
 
-            Entity entityCreated = createEntity(type, x, y, key);
+            Entity entityCreated = createEntity(type, x, y, key, colour);
             if (entityCreated != null) {
                 listOfEntities.add(entityCreated);
                 listOfEntityResponses.add(new EntityResponse(entityCreated.getEntityID(), entityCreated.getEntityType(), entityCreated.getCurrentLocation(), entityCreated.isInteractable()));
@@ -193,7 +194,7 @@ public class DungeonManiaController {
     }
 
     // helper function that creates entities, which will later be stored in the list of entities
-    private Entity createEntity(String type, int x, int y, int key) {
+    private Entity createEntity(String type, int x, int y, int key, String colour) {
         if (type.equalsIgnoreCase("Player")) {
             return new Player(x, y, configMap);
         } else if (type.equalsIgnoreCase("Spider")) {
@@ -226,6 +227,8 @@ public class DungeonManiaController {
             return new Akey(x, y, key);
         } else if (type.equalsIgnoreCase("exit")) {
             return new Exit(x, y);
+        } else if (type.equalsIgnoreCase("portal")) {
+            return new Portal(x, y, colour);
         }
         
         return null;
@@ -281,6 +284,7 @@ public class DungeonManiaController {
         player.move(listOfEntities, movementDirection, player, inventory, statistics); 
         boulderCheck();
         checkBattles();
+        portalCheck(listOfEntities, player);
         Spider newSpider = spawnASpider(xSpi, player);
         for (Entity currEntity : listOfEntities) {
             if (currEntity.getEntityType().equalsIgnoreCase("player") || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID())))
@@ -300,6 +304,15 @@ public class DungeonManiaController {
         checkBombs();
 
         return createDungeonResponse();
+    }
+
+    // Checks whether or not player is on a portal and then runs teleport method.
+    private void portalCheck(List<Entity> listOfEntities, Player player) {
+        for (Entity currEntity: listOfEntities) {
+            if (currEntity.getEntityType() == "portal" && currEntity.getCurrentLocation().equals(player.getCurrentLocation())) {
+                ((Portal) currEntity).teleport(listOfEntities, player);
+            }
+        }
     }
 
     // Checks all floor switches if they have a boulder on them. If they do, it updates the state of the switch to trigger it. It they don't it updates
