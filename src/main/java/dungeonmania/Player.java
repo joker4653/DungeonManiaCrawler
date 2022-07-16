@@ -17,6 +17,7 @@ public class Player extends MovingEntity {
     int allies = 0;
 
     public Player(int x, int y, HashMap<String, String> configMap) {
+        super();
         super.setEntityID(UUID.randomUUID().toString());
         super.setInteractable(false);
         super.setEntityType("player");
