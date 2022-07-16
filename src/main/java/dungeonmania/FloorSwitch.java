@@ -10,7 +10,6 @@ public class FloorSwitch extends StaticEntity {
     private State state;
 
     public FloorSwitch(int x, int y) {
-        super();
         super.setCanSpiderBeOnThisEntity(true);
         super.setCanZombieBeOnThisEntity(true);
         super.setCurrentLocation(new Position(x, y));
