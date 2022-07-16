@@ -1,10 +1,13 @@
 package dungeonmania;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import dungeonmania.exceptions.InvalidActionException;
 
 import static dungeonmania.TestUtils.getPlayer;
 import static dungeonmania.TestUtils.getEntities;
@@ -58,8 +61,57 @@ public class ZombieTests {
         return possibleZombiePos;
     }
 
-    // Zombie toast spawn tests:
-    
+    // Zombie toast spawner destruction tests.
+     /*
+     * - [Spawner] Player is not cardinally adjacent to spawner.
+     * - [Spawner] Player does not have a weapon for destroying spawner.
+     * - [Spawner] Destruction success.
+     */
+    @Test
+    @DisplayName("Test spawner interact when not cardinally adjacent.")
+    public void testSpawnerDestructionNotAdjacent() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_spawnerDestructionTest_basic", "c_spawnerDestructionTest_basic");
+
+        EntityResponse spawner = getEntities(res, "zombie_toast_spawner").get(0);
+
+        assertThrows(InvalidActionException.class, () -> {
+            dmc.interact(spawner.getId());
+        });
+    }
+
+    @Test
+    @DisplayName("Test spawner interact without weapon.")
+    public void testSpawnerDestructionNoWeapon() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_spawnerDestructionTest_basic", "c_spawnerDestructionTest_basic");
+
+        res = dmc.tick(Direction.RIGHT);
+
+        EntityResponse spawner = getEntities(res, "zombie_toast_spawner").get(0);
+
+        assertThrows(InvalidActionException.class, () -> {
+            dmc.interact(spawner.getId());
+        });
+    }
+
+    @Test
+    @DisplayName("Test spawner interact success case.")
+    public void testSpawnerDestructionSuccess() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_spawnerDestructionTest_sword", "c_spawnerDestructionTest_basic");
+
+        res = dmc.tick(Direction.RIGHT);
+
+        EntityResponse spawner = getEntities(res, "zombie_toast_spawner").get(0);
+
+        assertThrows(InvalidActionException.class, () -> {
+            dmc.interact(spawner.getId());
+        });
+    }
+
+
+    // Zombie toast spawn tests.
     @Test
     @DisplayName("Test zombies can only spawn on cardinally adjacent open squares")
     public void testZombiesSpawnSuccess() {
