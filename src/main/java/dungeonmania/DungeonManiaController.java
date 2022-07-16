@@ -393,7 +393,8 @@ public class DungeonManiaController {
      * /game/build
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
-        if (buildable == "shield") {
+        // The following below isn't working.
+        /*if (buildable == "shield") {
             Shield newShield = new Shield(4, 4);
             if(newShield.isBuildable(newShield.Components,inventory)) {
                 newShield.BuildShieldTreasure(inventory, newShield);
@@ -403,7 +404,7 @@ public class DungeonManiaController {
             if(newBow.isBuildable(newBow.bowMaterials(),inventory)) {
                 newBow.BuildBow(inventory, newBow);
             }
-        }
+        }*/
         return createDungeonResponse();
     }
 

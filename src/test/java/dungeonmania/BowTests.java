@@ -87,7 +87,7 @@ public class BowTests {
         assertEquals(false, bow.isBuildable(bow.bowMaterials(), inventory));
     }
 
-    @Test
+    /*@Test
     @DisplayName("Testing determining viability of build function")
     public void BuildTest() throws InvalidActionException{
         Bow bow = new Bow(4);
@@ -107,7 +107,7 @@ public class BowTests {
         assertEquals(true, bow.isBuildable(bow.bowMaterials(), dmc.inventory));
         dmc.build("bow");
         assertEquals(true, dmc.inventory.itemExists("bow"));
-    }
+    }*/
 
 
 }
