@@ -19,7 +19,7 @@ public class Door extends StaticEntity {
         super.setInteractable(false);
         super.setEntityType("door");
         super.setCurrentLocation(new Position(x, y));
-        super.setCanMercBeOnThisEntity(true);
+        super.setCanMercBeOnThisEntity(false);
 
         // remove
         this.key = key;
