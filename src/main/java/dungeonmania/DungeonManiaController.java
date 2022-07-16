@@ -269,6 +269,8 @@ public class DungeonManiaController {
         exitCheck(player);
         boulderCheck();
         checkBattles();
+        portalCheck(listOfEntities, player, movementDirection);
+
         Spider newSpider = spawnASpider(xSpi, player);
         for (Entity currEntity : listOfEntities) {
             if (currEntity.getEntityType().equalsIgnoreCase("player") || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID())))
@@ -316,6 +318,15 @@ public class DungeonManiaController {
             }
         }
     }
+
+    // Checks whether or not player is on a portal and then runs teleport method.
+    private void portalCheck(List<Entity> listOfEntities, Player player, Direction movementDirection) {
+        for (Entity currEntity: listOfEntities) {
+            if (currEntity.getEntityType() == "portal" && currEntity.getCurrentLocation().equals(player.getCurrentLocation())) {
+                ((Portal) currEntity).teleport(listOfEntities, player, movementDirection);
+            }
+        }
+    }    
 
     private void playerMovesBoulder(Direction movementDirection, Player player) {
         for (Entity currEntity : listOfEntities) {
