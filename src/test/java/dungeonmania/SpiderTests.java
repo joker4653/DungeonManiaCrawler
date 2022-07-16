@@ -53,25 +53,15 @@ public class SpiderTests {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_spiderTest_spawnEveryTick", "c_spiderTest_spawnEveryTick");
 
-        // spiders can only spawn at (0, 0) (where the player is) or at (1,1)
-        Position expectedPos2 = new Position(1, 1);
+        // spiders can only spawn at (1,1)
+        int spiderCount = 0;
 
-        int spiderCountNotOnPlayer = 0;
-
-        // create 20 spiders, including the ones that will die from the player's attack
+        // create 20 spiders
         for (int numTicks = 0; numTicks < 20; numTicks++) {
             res = dmc.tick(Direction.UP);
-
-            // if the spider spawns at (0, 0), they automatically die to the player's attack. Thus, the total spiderCount should be
-            // the number of spiders on (1, 1) only.
-            Position actualSpiderPos = getEntities(res, "spider").get(numTicks).getPosition();
-            
-            if (actualSpiderPos.equals(expectedPos2)) {
-                spiderCountNotOnPlayer++;
-            }
-
-            assertEquals(spiderCountNotOnPlayer, getEntities(res, "spider").size());
+            spiderCount++;
         }
+        assertEquals(spiderCount, getEntities(res, "spider").size());
     }
 
     @Test
@@ -99,7 +89,6 @@ public class SpiderTests {
     
     //     for (int i = 1; i <= 50; i++) {
     //         res = dmc.tick(Direction.UP);
-
     //         if (i % 5 == 0) {
     //             Position actualSpiderPos = getEntities(res, "spider").get((i % 5) + spiderIndex).getPosition();
     //             // check that the x and y coordinates are within the map's boundaries
