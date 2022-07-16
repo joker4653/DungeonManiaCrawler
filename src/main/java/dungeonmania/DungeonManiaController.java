@@ -14,18 +14,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -206,6 +201,14 @@ public class DungeonManiaController {
             return new Sword(x, y, Integer.parseInt(configMap.get("sword_durability")), Integer.parseInt(configMap.get("sword_attack")));
         } else if (type.equalsIgnoreCase("switch")) {
             return new FloorSwitch(x, y);
+        } else if (type.equalsIgnoreCase("wood")) {
+            return new Wood(x, y);
+        } else if (type.equalsIgnoreCase("bomb")) {
+            return new Bomb(x, y, Integer.parseInt(configMap.get("bomb_radius")));
+        } else if (type.equalsIgnoreCase("key")) {
+            return new Akey(x, y, key);
+        } else if (type.equalsIgnoreCase("exit")) {
+            return new Exit(x, y);
         }
         
         return null;
@@ -222,7 +225,28 @@ public class DungeonManiaController {
      * /game/tick/item
      */
     public DungeonResponse tick(String itemUsedId) throws IllegalArgumentException, InvalidActionException {
-        return createDungeonResponse();
+        
+        Optional<Entity> itemInInv = inventory.getInventory().stream().filter(e -> e.getEntityID().startsWith(itemUsedId)).findFirst();
+        // exception cases
+            if (itemInInv.isEmpty()) {
+                throw new InvalidActionException(itemUsedId);
+            } else if (!itemInInv.get().getEntityType().equalsIgnoreCase("bomb")) {
+                throw new IllegalArgumentException("itemUsed must be one of bomb, invincibility_potion, invisibility_potion");
+            }
+
+            Entity item = itemInInv.get();
+
+            // remove item from inventory
+            inventory.removeItem(item);
+
+            if (item.getEntityType().equalsIgnoreCase("bomb")) {
+                Bomb b = (Bomb) item;
+                b.use(getPlayer(), listOfEntities, inventory);
+            }
+
+            checkBombs();
+
+            return tick(Direction.STILL); 
     }
 
     /**
@@ -238,6 +262,7 @@ public class DungeonManiaController {
         player.setPrevPos(player.getCurrentLocation()); // a bribed mercenary occupies the player's previous position
         playerMovesBoulder(movementDirection, player);
         player.move(listOfEntities, movementDirection, player, inventory); 
+        exitCheck(player);
         boulderCheck();
         checkBattles();
         Spider newSpider = spawnASpider(xSpi, player);
@@ -256,6 +281,7 @@ public class DungeonManiaController {
         // Process any battles.
         checkBattles();
 
+        checkBombs();
 
         return createDungeonResponse();
     }
@@ -274,6 +300,15 @@ public class DungeonManiaController {
                         }
                     }
                 }
+            }
+        }
+    }
+
+   // Checks whether or not player is on exit. If they are, it updates the exitState.
+    private void exitCheck(Player player) {
+        for (Entity currEntity: listOfEntities) {
+            if (currEntity.getEntityType() == "exit" && currEntity.getCurrentLocation().equals(player.getCurrentLocation())) {
+                ((Exit) currEntity).setExitState(true);
             }
         }
     }
@@ -449,4 +484,16 @@ public class DungeonManiaController {
             return y_diff;
         }
     }
+
+    private void checkBombs() {
+        List<Entity> bombs = listOfEntities.stream().filter(e -> e.getEntityType().equals("bomb")).collect(Collectors.toList());
+
+        for (Entity b : bombs) {
+            Bomb bo = (Bomb) b;
+            if (bo.isUsed()) {
+                bo.checkBombStatus(listOfEntities, getPlayer());
+            }
+        }
+    }
+
 }
