@@ -141,7 +141,7 @@ public class DungeonManiaController {
             int x = jsonObjElement.get("x").getAsInt();
             int y = jsonObjElement.get("y").getAsInt();
             int key = Integer.MAX_VALUE;
-            String colour = "";
+            String colour = " ";
             if (jsonObjElement.get("key") != null) key = jsonObjElement.get("key").getAsInt();
             if (jsonObjElement.get("key") != null) colour = jsonObjElement.get("colour").getAsString();
 
@@ -282,9 +282,9 @@ public class DungeonManiaController {
         player.setPrevPos(player.getCurrentLocation()); // a bribed mercenary occupies the player's previous position
         playerMovesBoulder(movementDirection, player);
         player.move(listOfEntities, movementDirection, player, inventory, statistics); 
-        portalCheck(listOfEntities, player);
         boulderCheck();
         checkBattles();
+        portalCheck(listOfEntities, player);
         Spider newSpider = spawnASpider(xSpi, player);
         for (Entity currEntity : listOfEntities) {
             if (currEntity.getEntityType().equalsIgnoreCase("player") || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID())))
