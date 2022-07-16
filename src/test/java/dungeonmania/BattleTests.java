@@ -51,10 +51,9 @@ public class BattleTests {
     }
 
     private static DungeonResponse genericEnemySequence(DungeonResponse res, DungeonManiaController controller, String entityType) {
-        int enemyCount = countEntityOfType(res, entityType);
        
         assertEquals(1, countEntityOfType(res, "player"));
-        assertEquals(1, enemyCount);
+        assertEquals(1, countEntityOfType(res, entityType));
         return controller.tick(Direction.RIGHT);
     }
 
@@ -87,9 +86,7 @@ public class BattleTests {
         assertBattleCalculations("zombie", battle, true, "c_battleTests_basicZombieZombieDies");
     } 
 
-/*  TODO HOLLY --> UNCOMMENT THIS WHEN DOOR/KEY HAVE BEEN IMPLEMENTED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
- *  This test is failing because Zombie can't distinguish between a door and an open door under
- *  old system, meaning it never spawns.
+/*  TODO --> UNCOMMENT THIS WHEN DOOR/KEY HAVE BEEN IMPLEMENTED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     @Test
     @DisplayName("Test zombie walk through the open door and wins the battle")
     public void testZombieWalkThroughOpenDoor() {

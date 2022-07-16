@@ -3,15 +3,17 @@ package dungeonmania;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static dungeonmania.TestUtils.getPlayer;
 import static dungeonmania.TestUtils.getEntities;
-import static dungeonmania.TestUtils.getInventory;
 import static dungeonmania.TestUtils.getGoals;
 import static dungeonmania.TestUtils.countEntityOfType;
-import static dungeonmania.TestUtils.getValueFromConfigFile;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import dungeonmania.response.models.DungeonResponse;
+import dungeonmania.response.models.EntityResponse;
+import dungeonmania.util.Direction;
 
 public class StatisticsTests {
 
@@ -23,16 +25,14 @@ public class StatisticsTests {
 
         String goals = getGoals(res); 
 
-        String[] goalsList = goals.split("\\s+");
-
-        assertTrue(goalsList.contains(":exit");
+        assertTrue(goals.contains(":exit"));
     }
 
     @Test
     @DisplayName("Test response when enemies goal has been completed.")
     public void testEnemiesGoalCompleted() {
         DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = controller.newGame("d_statsTest_enemiesComplete", "c_statsTest_enemiesCompleted");
+        DungeonResponse res = dmc.newGame("d_statsTest_enemiesComplete", "c_statsTest_enemiesCompleted");
 
         assertEquals(1, countEntityOfType(res, "player"));
         assertEquals(1, countEntityOfType(res, "spider"));
@@ -41,16 +41,14 @@ public class StatisticsTests {
 
         String goals = getGoals(res); 
 
-        String[] goalsList = goals.split("\\s+");
-
-        assertFalse(goalsList.contains(":enemies");
+        assertFalse(goals.contains(":enemies"));
     }
 
     @Test
     @DisplayName("Test response when enemies (including spawner) goal has been completed.")
     public void testEnemiesAndSpawnerGoalCompleted() {
         DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = controller.newGame("d_statsTest_enemySpawnerComplete", "c_statsTest_enemySpawnerComplete");
+        DungeonResponse res = dmc.newGame("d_statsTest_enemySpawnerComplete", "c_statsTest_enemySpawnerComplete");
 
         assertEquals(1, countEntityOfType(res, "player"));
         assertEquals(1, countEntityOfType(res, "zombie"));
@@ -65,9 +63,7 @@ public class StatisticsTests {
 
         String goals = getGoals(res); 
 
-        String[] goalsList = goals.split("\\s+");
-
-        assertFalse(goalsList.contains(":enemies");
+        assertFalse(goals.contains(":enemies"));
     }
 
 
@@ -80,9 +76,7 @@ public class StatisticsTests {
 
         String goals = getGoals(res); 
 
-        String[] goalsList = goals.split("\\s+");
-
-        assertFalse(goalsList.contains(":treasure");
+        assertFalse(goals.contains(":treasure"));
     }
 
 
@@ -96,18 +90,16 @@ public class StatisticsTests {
 
         // Boulder goal should be complete.
         String goals = getGoals(res); 
-        String[] goalsList = goals.split("\\s+");
 
-        assertFalse(goalsList.contains(":boulders");
+        assertFalse(goals.contains(":boulders"));
 
         dmc.tick(Direction.RIGHT);
         dmc.tick(Direction.RIGHT);
 
         // After moving again, boulder goal should once again be incomplete.
-        String goals = getGoals(res); 
-        String[] goalsList = goals.split("\\s+");
+        goals = getGoals(res); 
 
-        assertTrue(goalsList.contains(":exit");
+        assertTrue(goals.contains(":exit"));
     }
 
 
@@ -122,9 +114,7 @@ public class StatisticsTests {
 
         String goals = getGoals(res); 
 
-        String[] goalsList = goals.split("\\s+");
-
-        assertFalse(goalsList.contains(":exit");
+        assertFalse(goals.contains(":exit"));
     }
 
     @Test
@@ -138,17 +128,15 @@ public class StatisticsTests {
 
         // Treasure goal should not yet be completed
         String goals = getGoals(res); 
-        String[] goalsList = goals.split("\\s+");
 
-        assertTrue(goalsList.contains(":treasure");
+        assertTrue(goals.contains(":treasure"));
         
         dmc.tick(Direction.RIGHT);
 
         // Treasure should now be complete.
-        String goals = getGoals(res); 
-        String[] goalsList = goals.split("\\s+");
+        goals = getGoals(res); 
 
-        assertFalse(goalsList.contains(":treasure");
+        assertFalse(goals.contains(":treasure"));
     }
 }
 

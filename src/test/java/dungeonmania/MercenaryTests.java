@@ -96,7 +96,7 @@ public class MercenaryTests {
         assertTrue(mPos.equals(expectedPos1) || mPos.equals(expectedPos2));
     }
 
-    /*@Test
+    /*@Test TODO UNCOMMENT WHEN DOOR & KEY COMPLETE!
     @DisplayName("Test mercenary walk through open door")
     public void testMercenaryWalkThroughOpenDoor() {
         //
