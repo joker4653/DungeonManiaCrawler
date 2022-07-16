@@ -206,7 +206,7 @@ public class DungeonManiaController {
         } else if (type.equalsIgnoreCase("bomb")) {
             return new Bomb(x, y, Integer.parseInt(configMap.get("bomb_radius")));
         } else if (type.equalsIgnoreCase("key")) {
-            return new Key(x, y, key);
+            return new Akey(x, y, key);
         }
         
         return null;
