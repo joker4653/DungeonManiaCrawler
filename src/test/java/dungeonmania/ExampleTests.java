@@ -46,8 +46,8 @@ public class ExampleTests {
         assertEquals(expectedPlayer, actualPlayer);
     }
    
-    /* 
-    @Test
+    
+    /*@Test
     @DisplayName("Test player can use a key to open and walk through a door")
     public void useKeyWalkThroughOpenDoor() {
         DungeonManiaController dmc;
@@ -99,7 +99,7 @@ public class ExampleTests {
     }
     
     
-   /* @Test
+    @Test
     @DisplayName("Test surrounding entities are removed when placing a bomb next to an active switch with config file bomb radius set to 2")
     public void placeBombRadius2() {
         DungeonManiaController dmc;
@@ -132,7 +132,7 @@ public class ExampleTests {
         assertEquals(1, getEntities(res, "player").size());
     }
     
-    @Test
+    /*@Test
     @DisplayName("Testing a map with 4 conjunction goal")
     public void andAll() {
         DungeonManiaController dmc;
