@@ -143,7 +143,7 @@ public class DungeonManiaController {
             int key = Integer.MAX_VALUE;
             String colour = " ";
             if (jsonObjElement.get("key") != null) key = jsonObjElement.get("key").getAsInt();
-            if (jsonObjElement.get("key") != null) colour = jsonObjElement.get("colour").getAsString();
+            if (jsonObjElement.get("colour") != null) colour = jsonObjElement.get("colour").getAsString();
 
             Entity entityCreated = createEntity(type, x, y, key, colour);
             if (entityCreated != null) {
