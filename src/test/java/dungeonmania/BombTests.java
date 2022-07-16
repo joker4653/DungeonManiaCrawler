@@ -78,7 +78,7 @@ public class BombTests {
 
     }
 
-    /*@Test
+    @Test
     @DisplayName("bomb removes surrounding entities")
     public void ExplodeSurroundingEntities() throws IllegalArgumentException, InvalidActionException {
         DungeonManiaController dmc = new DungeonManiaController();
@@ -98,13 +98,13 @@ public class BombTests {
         assertTrue(getEntities(res, "switch").isEmpty());
         assertTrue(getEntities(res, "mercenary").isEmpty());
         
-    }*/
+    }
 
-    /*@Test
+    @Test
     @DisplayName("Assert bomb does NOT remove entities outside of radius")
     public void DoesNotExplodeOutsideOfRange() throws IllegalArgumentException, InvalidActionException {
         DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_bombTest_placeBombRadius2", "c_bombTest_placeBombRadius1");
+        DungeonResponse res = dmc.newGame("d_bombTest_placeBombRadius1", "c_bombTest_placeBombRadius1");
         String str = getEntities(res, "bomb").get(0).getId();
 
         // compress floor switch
@@ -121,7 +121,7 @@ public class BombTests {
         assertTrue(getEntities(res, "boulder").isEmpty());
         assertTrue(getEntities(res, "switch").isEmpty());
         assertTrue(getEntities(res, "mercenary").isEmpty());
-    }*/
+    }
 
     @Test
     @DisplayName("still existing Entities still move after tick")
@@ -129,7 +129,6 @@ public class BombTests {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_bombTest_EntitiesStilMove", "c_bombTest_placeBombRadius1");
         String bomb = getEntities(res, "bomb").get(0).getId();
-        String str = getEntities(res, "mercenary").get(0).getId();
 
         // compress floor switch
         res = dmc.tick(Direction.RIGHT);

@@ -7,7 +7,7 @@ import dungeonmania.util.Position;
 public class Key extends CollectableEntity {
     private int pairNum = 0;
 
-    public Key(int x, int y, int key) {
+    public Key(int x, int y, int k) {
         super.setCanZombieBeOnThisEntity(true);
         super.setCanSpiderBeOnThisEntity(true);
         super.setEntityID(UUID.randomUUID().toString());
@@ -17,7 +17,7 @@ public class Key extends CollectableEntity {
         super.setCanMercBeOnThisEntity(true);
         super.setCollectableEntity(true);
 
-        pairNum = key;
+        pairNum = k;
     }
 
     public int getKey() {
