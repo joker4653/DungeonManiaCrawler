@@ -3,7 +3,6 @@ package dungeonmania;
 import java.util.List;
 import java.util.UUID;
 import dungeonmania.util.Position;
-import dungeonmania.util.Direction;
 
 public class Portal extends StaticEntity {
     private String colour;
