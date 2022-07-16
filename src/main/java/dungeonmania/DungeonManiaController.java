@@ -43,7 +43,7 @@ public class DungeonManiaController {
     List<Battle> listOfBattles = new ArrayList<>();
     List<String> buildables = new ArrayList<>();
     Inventory inventory = new Inventory();
-
+ 
     public List<Entity> getListOfEntities() {
         return listOfEntities;
     }
