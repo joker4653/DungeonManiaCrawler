@@ -30,10 +30,10 @@ public class Portal extends StaticEntity {
     }
 
     // Check whether or not player is in a portal location in controller and THEN call this method.
-    public void teleport(List<Entity> listOfEntities, Player player, Direction direction) {
+    public void teleport(List<Entity> listOfEntities, Player player) {
         for (Entity p : listOfEntities) {
             if (p.getEntityType().equals("portal")) {
-                if (((Portal) p ).getColour().equals(this.colour)  && p != this) {
+                if (((Portal) p ).getColour().equals(this.colour) && p != this) {
                     List<Position> currentAdj = this.getCurrentLocation().getAdjacentPositions();
                     List<Position> otherAdj = p.getCurrentLocation().getAdjacentPositions();
 
