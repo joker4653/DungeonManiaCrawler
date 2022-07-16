@@ -13,12 +13,12 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Mercenary extends MovingEntity {
-   // private boolean isAlly;
     private static final int UPPER_LIMIT = 60;
     private boolean isNeighbour;
     private HashMap<String, String> configMap;
 
     public Mercenary(int x, int y, HashMap<String, String> configMap) {
+        super();
         super.setAlly(false);
         super.setCurrentLocation(new Position(x, y));
         super.setEntityID(UUID.randomUUID().toString());

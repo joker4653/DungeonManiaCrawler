@@ -18,12 +18,14 @@ public class Spider extends MovingEntity {
     private Position spawnLocation;
 
     public Spider(int x, int y, HashMap<String, String> configMap) {
+        super();
         this.spawnLocation = new Position(x, y);
         super.setCurrentLocation(spawnLocation);
         initialiseSpider(configMap);
     }
 
     public Spider(int xMin, int xMax, int yMin, int yMax, HashMap<String, String> configMap) {
+        super();
         this.xMin = xMin;
         this.xMax = xMax;
         this.yMin = yMin;

@@ -13,6 +13,7 @@ public abstract class CollectableEntity extends Entity {
         super.setCanZombieBeOnThisEntity(true);
         super.setCanMercBeOnThisEntity(true);
         super.setCollectableEntity(true);
+        super.setInteractable(false);
     }
 
     public void setIsConsumable(boolean boo) {

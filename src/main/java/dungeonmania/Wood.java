@@ -8,10 +8,8 @@ public class Wood extends CollectableEntity {
 
 
     public Wood(int x, int y) {
-
-        super.setCanSpiderBeOnThisEntity(true);
+        super();
         super.setEntityID(UUID.randomUUID().toString());
-        super.setInteractable(false);
         super.setEntityType("wood");
         super.setCurrentLocation(new Position(x, y));
         super.setCollectableEntity(true);

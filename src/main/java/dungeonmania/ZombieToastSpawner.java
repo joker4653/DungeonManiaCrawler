@@ -9,6 +9,7 @@ import dungeonmania.util.Position;
 public class ZombieToastSpawner extends StaticEntity {
     
     public ZombieToastSpawner(int x, int y) {
+        super();
         super.setCanSpiderBeOnThisEntity(true);
         super.setCanZombieBeOnThisEntity(false);
 

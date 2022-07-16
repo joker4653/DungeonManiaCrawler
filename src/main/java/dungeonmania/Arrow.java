@@ -9,11 +9,10 @@ public class Arrow extends CollectableEntity {
 
 
     public Arrow(int x, int y) {
+        super();
         location = new Position(x, y);
 
-        super.setCanSpiderBeOnThisEntity(true);
         super.setEntityID(UUID.randomUUID().toString());
-        super.setInteractable(false);
         super.setEntityType("arrow");
         super.setCurrentLocation(location);
         super.setCollectableEntity(true);

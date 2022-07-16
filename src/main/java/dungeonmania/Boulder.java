@@ -9,6 +9,7 @@ import java.util.List;
 public class Boulder extends StaticEntity {
     
     public Boulder(int x, int y) {
+        super();
         super.setCanSpiderBeOnThisEntity(false);
         super.setCanZombieBeOnThisEntity(false);
         super.setCurrentLocation(new Position(x, y));
