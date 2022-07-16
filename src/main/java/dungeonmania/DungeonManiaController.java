@@ -124,10 +124,12 @@ public class DungeonManiaController {
             int x = jsonObjElement.get("x").getAsInt();
             int y = jsonObjElement.get("y").getAsInt();
             int key = Integer.MAX_VALUE;
+            String colour = " ";
 
             if (jsonObjElement.get("key") != null) key = jsonObjElement.get("key").getAsInt();
+            if (jsonObjElement.get("colour") != null) colour = jsonObjElement.get("colour").getAsString();
 
-            Entity entityCreated = createEntity(type, x, y, key);
+            Entity entityCreated = createEntity(type, x, y, key, colour);
             if (entityCreated != null) {
                 listOfEntities.add(entityCreated);
                 listOfEntityResponses.add(new EntityResponse(entityCreated.getEntityID(), entityCreated.getEntityType(), entityCreated.getCurrentLocation(), entityCreated.isInteractable()));
