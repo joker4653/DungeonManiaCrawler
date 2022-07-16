@@ -9,7 +9,7 @@ import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 import dungeonmania.util.Position;
-import dungeonmania.Battle;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -223,6 +223,8 @@ public class DungeonManiaController {
             return new Sword(x, y, Integer.parseInt(configMap.get("sword_durability")), Integer.parseInt(configMap.get("sword_attack")));
         } else if (type.equalsIgnoreCase("switch")) {
             return new FloorSwitch(x, y);
+        } else if (type.equalsIgnoreCase("exit")) {
+            return new Exit(x, y);
         }
         
         return null;
@@ -300,6 +302,7 @@ public class DungeonManiaController {
             }
         }
     }
+
 
     private void playerMovesBoulder(Direction movementDirection, Player player) {
         for (Entity currEntity : listOfEntities) {
@@ -417,23 +420,7 @@ public class DungeonManiaController {
      * /game/build
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
-        if (buildable == "shield") {
-            Shield newShield = new Shield(4, 4);
-            if(newShield.isBuildable(newShield.Components,inventory)) {
-                newShield.BuildShieldTreasure(inventory, newShield);
-            }
-        } else if (buildable == "bow") {
-            Bow newBow = new Bow(4);
-            if(newBow.isBuildable(newBow.bowMaterials(),inventory)) {
-                newBow.BuildBow(inventory, newBow);
-            }
-        }
-        return null;
-    }
-
-
-    public Inventory getInventory() {
-        return inventory;
+        return createDungeonResponse();
     }
 
     /**

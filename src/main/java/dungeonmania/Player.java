@@ -58,6 +58,7 @@ public class Player extends MovingEntity {
                 items.add(currEntity);
             } else if (currEntity.getEntityType() == "exit") {
                 statistics.reachedExit();
+                ((Exit) currEntity).setExitState(true);
             }
 
         }
