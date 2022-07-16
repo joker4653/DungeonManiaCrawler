@@ -9,11 +9,11 @@ public class Sword extends CollectableEntity {
     private int attackFactor;
 
     public Sword(int x, int y, int durability, int attackFactor) {
+        super();
         this.durability = durability;
         this.attackFactor = attackFactor;
         
         super.setEntityID(UUID.randomUUID().toString());
-        super.setInteractable(false);
         super.setEntityType("sword");
         super.setCurrentLocation(new Position(x, y));
         super.setCollectableEntity(true);

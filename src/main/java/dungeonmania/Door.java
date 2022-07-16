@@ -12,7 +12,8 @@ public class Door extends StaticEntity {
     private int key;
 
     public Door(int x, int y, int key) {
-        super.setCanZombieBeOnThisEntity(true);
+        super();
+        super.setCanZombieBeOnThisEntity(false);
         super.setCanSpiderBeOnThisEntity(true);
         super.setEntityID(UUID.randomUUID().toString());
         super.setInteractable(false);

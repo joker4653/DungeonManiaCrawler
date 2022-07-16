@@ -8,6 +8,7 @@ public class Exit extends StaticEntity {
     private boolean exitState;
 
     public Exit(int x, int y) {
+        super();
         super.setCanSpiderBeOnThisEntity(true);
         super.setCanZombieBeOnThisEntity(true);
         super.setCurrentLocation(new Position(x, y));

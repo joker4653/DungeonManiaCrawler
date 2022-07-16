@@ -13,8 +13,8 @@ public class Bomb extends CollectableEntity {
 
 
     public Bomb(int x, int y, int radius) {
+        super();
         super.setEntityID(UUID.randomUUID().toString());
-        super.setInteractable(false);
         super.setEntityType("bomb");
         super.setCurrentLocation(new Position(x, y));
         super.setCollectableEntity(true);

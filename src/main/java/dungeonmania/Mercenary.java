@@ -18,6 +18,7 @@ public class Mercenary extends MovingEntity {
     private HashMap<String, String> configMap;
 
     public Mercenary(int x, int y, HashMap<String, String> configMap) {
+        super();
         super.setAlly(false);
         super.setCurrentLocation(new Position(x, y));
         super.setEntityID(UUID.randomUUID().toString());

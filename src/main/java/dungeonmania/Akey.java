@@ -8,8 +8,8 @@ public class Akey extends CollectableEntity {
     private int pairNum = 0;
 
     public Akey(int x, int y, int k) {
+        super();
         super.setEntityID(UUID.randomUUID().toString());
-        super.setInteractable(false);
         super.setEntityType("key");
         super.setCurrentLocation(new Position(x, y));
         super.setCollectableEntity(true);
