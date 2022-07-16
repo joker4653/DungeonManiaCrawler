@@ -105,9 +105,14 @@ public class ZombieTests {
 
         EntityResponse spawner = getEntities(res, "zombie_toast_spawner").get(0);
 
-        assertThrows(InvalidActionException.class, () -> {
+        assertDoesNotThrow(() -> {
             dmc.interact(spawner.getId());
         });
+
+        res = dmc.tick(Direction.RIGHT);
+
+        assertEquals(0, countEntityOfType(res, "zombie_toast_spawner"));
+
     }
 
 

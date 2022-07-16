@@ -435,13 +435,41 @@ public class DungeonManiaController {
      * /game/interact
      */
     public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {
-        Player player = getPlayer();
         // Get the entity.
         Entity entity = getEntity(entityId);
         if (entity == null) {
             throw new IllegalArgumentException("EntityId does not refer to a valid entity.");
         }
-        Mercenary merc = (Mercenary) entity;
+
+        Player player = getPlayer();
+
+        if (entity.getEntityType() == "mercenary") {
+            bribery((Mercenary) entity, player);
+        } else if (entity.getEntityType() == "zombie_toast_spawner") {
+            destroySpawner((ZombieToastSpawner) entity, player);
+        }
+
+        return createDungeonResponse();
+    }
+
+    private void destroySpawner(ZombieToastSpawner spawner, Player player) throws InvalidActionException {
+        // Check player is cardinally adjacent to spawner.
+        if (!isCardinallyAdjacent(spawner, player)) {
+            throw new InvalidActionException("Player isn't cardinally adjacent to spawner.");
+        }
+        
+        // Check player has sword.
+        if (!inventory.itemExists("sword")) {
+            throw new InvalidActionException("Player cannot destroy spawner by willpower alone.");
+        }
+
+        listOfEntities.remove(spawner);
+    }
+
+
+
+
+    private void bribery(Mercenary merc, Player player) throws InvalidActionException {
 
         // Check player is within radius of mercenary.
         int radius = Integer.parseInt(configMap.get("bribe_radius"));
@@ -467,9 +495,34 @@ public class DungeonManiaController {
         merc.setAlly(true);
         player.addAlly();
         merc.setInteractable(false); // according to the spec
-
-        return createDungeonResponse();
     }
+
+
+    /*
+     * @params Entity entity1, Entity entity2.
+     * @returns true if entity2 is cardinally adjacent to entity1, false otherwise.
+     */
+    private boolean isCardinallyAdjacent(Entity entity1, Entity entity2) {
+        ArrayList<Position> positions = new ArrayList<>();
+        int x = entity1.getCurrentLocation().getX();
+        int y = entity1.getCurrentLocation().getY();
+
+        positions.add(new Position(x + 1, y));
+        positions.add(new Position(x, y + 1));
+        positions.add(new Position(x - 1, y));
+        positions.add(new Position(x, y - 1));
+
+        Position targetPos = entity2.getCurrentLocation();
+
+        for (Position position : positions) {
+            if (position.equals(targetPos)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     /*
      * @returns int distance, indicating the distance between the two x coordinates, or y
