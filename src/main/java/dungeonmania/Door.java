@@ -1,14 +1,14 @@
 package dungeonmania;
 
+import java.util.List;
 import java.util.UUID;
-
+import java.util.stream.Collectors;
 
 import dungeonmania.util.Position;
 
 public class Door extends StaticEntity {
-    private boolean isLocked;
+    private boolean isLocked = true;
 
-    // remove!!!!!!!!!!!!!!!
     private int key;
 
     public Door(int x, int y, int key) {
@@ -20,7 +20,6 @@ public class Door extends StaticEntity {
         super.setCurrentLocation(new Position(x, y));
         super.setCanMercBeOnThisEntity(false);
 
-        // remove
         this.key = key;
     }
 
@@ -39,6 +38,19 @@ public class Door extends StaticEntity {
         }
 
         this.isLocked = isLocked;
+    }
+
+    public Entity getMatchingKey(List<Entity> entities) {
+        List<Entity> keys = entities.stream().filter(e -> (e.getEntityType().startsWith("key"))).collect(Collectors.toList());
+
+        for (Entity k : keys) {
+            Akey ke = (Akey) k;
+            if (ke.getKey() == this.key) {
+                return ke;
+            }
+        }
+
+        return null;
     }
 
 }

@@ -65,6 +65,15 @@ public class Player extends MovingEntity {
                 } else {
                     items.add(currEntity);
                 } 
+            } else if (currEntity.getEntityType().startsWith("door")) {
+                // check if door is locked, then check if key in inv and switch door to open
+                Door door = (Door) currEntity;
+                if (door.isLocked()) {
+                    if (inventory.itemExists(door.getMatchingKey(listOfEntities))) {
+                        door.setLocked(false);
+                        inventory.removeItem(door.getMatchingKey(listOfEntities));
+                    }
+                }
             }
         }
 
