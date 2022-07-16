@@ -12,13 +12,13 @@ public class Door extends StaticEntity {
     private int key;
 
     public Door(int x, int y, int key) {
-        super.setCanZombieBeOnThisEntity(false);
+        super.setCanZombieBeOnThisEntity(true);
         super.setCanSpiderBeOnThisEntity(true);
         super.setEntityID(UUID.randomUUID().toString());
         super.setInteractable(false);
         super.setEntityType("door");
         super.setCurrentLocation(new Position(x, y));
-        super.setCanMercBeOnThisEntity(false);
+        super.setCanMercBeOnThisEntity(true);
 
         // remove
         this.key = key;

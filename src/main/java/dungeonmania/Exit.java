@@ -8,13 +8,13 @@ public class Exit extends StaticEntity {
     private boolean exitState;
 
     public Exit(int x, int y) {
-        super.setCanSpiderBeOnThisEntity(false);
-        super.setCanZombieBeOnThisEntity(false);
+        super.setCanSpiderBeOnThisEntity(true);
+        super.setCanZombieBeOnThisEntity(true);
         super.setCurrentLocation(new Position(x, y));
         super.setEntityID(UUID.randomUUID().toString());
         super.setEntityType("exit");
         super.setInteractable(false);
-        super.setCanMercBeOnThisEntity(false);
+        super.setCanMercBeOnThisEntity(true);
         this.setCanBlockPlayerMovement(false); 
         this.setExitState(false);
     }

@@ -12,13 +12,10 @@ public class Sword extends CollectableEntity {
         this.durability = durability;
         this.attackFactor = attackFactor;
         
-        super.setCanZombieBeOnThisEntity(true);
-        super.setCanSpiderBeOnThisEntity(true);
         super.setEntityID(UUID.randomUUID().toString());
         super.setInteractable(false);
         super.setEntityType("sword");
         super.setCurrentLocation(new Position(x, y));
-        super.setCanMercBeOnThisEntity(true);
         super.setCollectableEntity(true);
     }
 

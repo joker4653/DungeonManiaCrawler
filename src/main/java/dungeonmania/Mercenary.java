@@ -13,7 +13,6 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Mercenary extends MovingEntity {
-   // private boolean isAlly;
     private static final int UPPER_LIMIT = 60;
     private boolean isNeighbour;
     private HashMap<String, String> configMap;
