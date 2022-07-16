@@ -9,7 +9,7 @@ import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 import dungeonmania.util.Position;
-import dungeonmania.Battle;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -207,6 +207,8 @@ public class DungeonManiaController {
             return new Bomb(x, y, Integer.parseInt(configMap.get("bomb_radius")));
         } else if (type.equalsIgnoreCase("key")) {
             return new Akey(x, y, key);
+        } else if (type.equalsIgnoreCase("exit")) {
+            return new Exit(x, y);
         }
         
         return null;
@@ -260,6 +262,7 @@ public class DungeonManiaController {
         player.setPrevPos(player.getCurrentLocation()); // a bribed mercenary occupies the player's previous position
         playerMovesBoulder(movementDirection, player);
         player.move(listOfEntities, movementDirection, player, inventory); 
+        exitCheck(player);
         boulderCheck();
         checkBattles();
         Spider newSpider = spawnASpider(xSpi, player);
@@ -297,6 +300,15 @@ public class DungeonManiaController {
                         }
                     }
                 }
+            }
+        }
+    }
+
+   // Checks whether or not player is on exit. If they are, it updates the exitState.
+    private void exitCheck(Player player) {
+        for (Entity currEntity: listOfEntities) {
+            if (currEntity.getEntityType() == "exit" && currEntity.getCurrentLocation().equals(player.getCurrentLocation())) {
+                ((Exit) currEntity).setExitState(true);
             }
         }
     }
@@ -416,23 +428,7 @@ public class DungeonManiaController {
      * /game/build
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
-        if (buildable == "shield") {
-            Shield newShield = new Shield(4, 4);
-            if(newShield.isBuildable(newShield.Components,inventory)) {
-                newShield.BuildShieldTreasure(inventory, newShield);
-            }
-        } else if (buildable == "bow") {
-            Bow newBow = new Bow(4);
-            if(newBow.isBuildable(newBow.bowMaterials(),inventory)) {
-                newBow.BuildBow(inventory, newBow);
-            }
-        }
-        return null;
-    }
-
-
-    public Inventory getInventory() {
-        return inventory;
+        return createDungeonResponse();
     }
 
     /**
