@@ -176,7 +176,7 @@ public class DungeonManiaController {
     }
 
     // helper function that creates entities, which will later be stored in the list of entities
-    private Entity createEntity(String type, int x, int y, int key) {
+    private Entity createEntity(String type, int x, int y, int key, String colour) {
         if (type.equalsIgnoreCase("Player")) {
             return new Player(x, y, configMap);
         } else if (type.equalsIgnoreCase("Spider")) {
@@ -209,6 +209,8 @@ public class DungeonManiaController {
             return new Akey(x, y, key);
         } else if (type.equalsIgnoreCase("exit")) {
             return new Exit(x, y);
+        } else if (type.equalsIgnoreCase("portal")) {
+            return new Portal(x, y, colour);
         }
         
         return null;
