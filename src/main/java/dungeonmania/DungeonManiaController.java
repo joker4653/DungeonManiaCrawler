@@ -333,15 +333,6 @@ public class DungeonManiaController {
         }
     }
 
-   // Checks whether or not player is on exit. If they are, it updates the exitState.
-    private void exitCheck(Player player) {
-        for (Entity currEntity: listOfEntities) {
-            if (currEntity.getEntityType() == "exit" && currEntity.getCurrentLocation().equals(player.getCurrentLocation())) {
-                ((Exit) currEntity).setExitState(true);
-            }
-        }
-    }
-
     // Checks whether or not player is on a portal and then runs teleport method.
     private void portalCheck(List<Entity> listOfEntities, Player player, Direction movementDirection) {
         for (Entity currEntity: listOfEntities) {
