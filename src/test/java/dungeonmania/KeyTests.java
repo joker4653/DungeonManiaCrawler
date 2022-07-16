@@ -27,7 +27,7 @@ import dungeonmania.util.Position;
 import java.util.List;
 import java.util.ArrayList;
 
-/*public class KeyTests {
+public class KeyTests {
     @Test
     @DisplayName("Placing Key into Map at (1,1)") 
     public void placeKey() {
@@ -49,4 +49,4 @@ import java.util.ArrayList;
 
         assertFalse(getInventory(res, "key").isEmpty());
     }
-}*/
+}
