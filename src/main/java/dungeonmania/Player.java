@@ -54,11 +54,20 @@ public class Player extends MovingEntity {
         for (Entity currEntity : entitiesHere) {
             if (!super.canStep(currEntity.getEntityType())) {
                 return false;
-            } else if (currEntity instanceof CollectableEntity) {
-                items.add(currEntity);
             } else if (currEntity.getEntityType() == "exit") {
                 statistics.reachedExit();
                 ((Exit) currEntity).setExitState(true);
+            } else if (currEntity.isCollectableEntity()) {
+                if (currEntity.getEntityType().startsWith("bomb")) {
+                    Bomb entity = (Bomb) currEntity;
+                    if (entity.isUsed()) {
+                        continue;
+                    } else {
+                        items.add(currEntity);
+                    }
+                } else {
+                    items.add(currEntity);
+                } 
             }
 
         }

@@ -11,3 +11,6 @@ boulder
 zombie_toast
 sword
 arrow
+bomb
+wood
+key
