@@ -12,11 +12,20 @@ public abstract class Entity {
     private boolean canZombieBeOnThisEntity;
     private boolean isMovingEntity;
     private boolean canMercBeOnThisEntity;
+    private boolean isCollectableEntity;
 
     /* Getters and Setters */
 
     public String getEntityID() {
         return entityID;
+    }
+
+    public boolean isCollectableEntity() {
+        return isCollectableEntity;
+    }
+
+    public void setCollectableEntity(boolean isCollectableEntity) {
+        this.isCollectableEntity = isCollectableEntity;
     }
 
     public void setEntityID(String entityID) {

@@ -19,6 +19,7 @@ public class Sword extends CollectableEntity {
         super.setEntityType("sword");
         super.setCurrentLocation(new Position(x, y));
         super.setCanMercBeOnThisEntity(true);
+        super.setCollectableEntity(true);
     }
 
     public int getCurrDurability() {
