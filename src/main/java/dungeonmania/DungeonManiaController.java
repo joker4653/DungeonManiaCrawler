@@ -29,16 +29,16 @@ import com.google.gson.JsonParser;
 public class DungeonManiaController {
     private int tickCount;
     private List<Entity> listOfEntities = new ArrayList<>();
-    private List<String> listOfGoals = new ArrayList<>();
     private HashMap<String, String> configMap = new HashMap<>();
     private String dungeonId;
     private String dungeonName;
-    private String goals;
     private HashMap<String, Integer> mapOfMinAndMaxValues = new HashMap<>();
     List<Battle> listOfBattles = new ArrayList<>();
     List<String> buildables = new ArrayList<>();
     Inventory inventory = new Inventory();
  
+    Statistics statistics;
+
     public List<Entity> getListOfEntities() {
         return listOfEntities;
     }
@@ -91,12 +91,16 @@ public class DungeonManiaController {
             // TODO!!!!! Holly already added the simple goal, BUT NOT the complex goals!!!!!!!!!!!!!!!!!!!!!!!!!!
             JsonElement jsonGoal = dungeonJsonObj.get("goal-condition");
             JsonObject jsonObj = jsonGoal.getAsJsonObject();
-            goals = jsonObj.get("goal").getAsString();
-
+            // TODO this will change when we implement complex goals.
+            ArrayList<String> listOfGoals = new ArrayList<>();
+            String goal = ":" + jsonObj.get("goal").getAsString();
+            listOfGoals.add(goal);
+            statistics = new Statistics(listOfGoals, listOfEntities, configMap);
+ 
             // TODO!!!!! replace "buildables" and "goals" with your ACTUAL buildables/goals lists.
             this.dungeonId = UUID.randomUUID().toString();
             this.dungeonName = dungeonName;
-            DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, listOfEntityResponses, getInventoryResponse(), getBattleResponse(), buildables, goals);
+            DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, listOfEntityResponses, getInventoryResponse(), getBattleResponse(), buildables, getGoalsResponse());
             mapOfMinAndMaxValues = findMinAndMaxValues();
 
             return dungeonResp;
@@ -106,7 +110,23 @@ public class DungeonManiaController {
         
         return null;
     }
-    
+
+    private String getGoalsResponse() {
+        // TODO this will change when complex goals is implemented.
+        ArrayList<String> listOfGoals = statistics.getListOfGoals();
+        String goals = "";
+        if (listOfGoals.size() > 0) {
+            for (int i = 0; i < listOfGoals.size(); i++) {
+                goals = goals + listOfGoals.get(i);
+                if (i < listOfGoals.size() - 1) {
+                    goals = goals + " ";
+                }
+            }
+        }
+
+        return goals;
+    }
+
     /* Reading Config file */
     private void generateConfigMap(String configJSONString) {
         JsonObject configJsonObj = JsonParser.parseString(configJSONString).getAsJsonObject();
@@ -388,7 +408,7 @@ public class DungeonManiaController {
         List<EntityResponse> entities = new ArrayList<>();
         listOfEntities.forEach((currEntity) -> entities.add(new EntityResponse(currEntity.getEntityID(), currEntity.getEntityType(), currEntity.getCurrentLocation(), currEntity.isInteractable())));
 
-        DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, entities, getInventoryResponse(), getBattleResponse(), buildables, goals);
+        DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, entities, getInventoryResponse(), getBattleResponse(), buildables, getGoalsResponse());
         return dungeonResp;
     }
 
