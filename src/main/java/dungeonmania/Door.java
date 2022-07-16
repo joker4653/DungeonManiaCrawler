@@ -2,7 +2,6 @@ package dungeonmania;
 
 import java.util.UUID;
 
-
 import dungeonmania.util.Position;
 
 public class Door extends StaticEntity {

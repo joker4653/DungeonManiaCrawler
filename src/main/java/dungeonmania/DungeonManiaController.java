@@ -29,16 +29,15 @@ import com.google.gson.JsonParser;
 public class DungeonManiaController {
     private int tickCount;
     private List<Entity> listOfEntities = new ArrayList<>();
-    private List<String> listOfGoals = new ArrayList<>();
     private HashMap<String, String> configMap = new HashMap<>();
     private String dungeonId;
     private String dungeonName;
-    private String goals;
     private HashMap<String, Integer> mapOfMinAndMaxValues = new HashMap<>();
     List<Battle> listOfBattles = new ArrayList<>();
     List<String> buildables = new ArrayList<>();
     Inventory inventory = new Inventory();
- 
+    Statistics statistics;
+
     public List<Entity> getListOfEntities() {
         return listOfEntities;
     }
@@ -88,15 +87,18 @@ public class DungeonManiaController {
             JsonObject dungeonJsonObj = JsonParser.parseString(dungeonJSONString).getAsJsonObject();
             List<EntityResponse> listOfEntityResponses = createListOfEntsAndResp(dungeonJsonObj);
 
-            // TODO!!!!! Holly already added the simple goal, BUT NOT the complex goals!!!!!!!!!!!!!!!!!!!!!!!!!!
             JsonElement jsonGoal = dungeonJsonObj.get("goal-condition");
             JsonObject jsonObj = jsonGoal.getAsJsonObject();
-            goals = jsonObj.get("goal").getAsString();
-
+            // TODO this will change when we implement complex goals.
+            HashMap<String, Boolean> goals = new HashMap<String, Boolean>();
+            String goal = ":" + jsonObj.get("goal").getAsString();
+            goals.put(goal, false);
+            statistics = new Statistics(goals, listOfEntities, configMap);
+ 
             // TODO!!!!! replace "buildables" and "goals" with your ACTUAL buildables/goals lists.
             this.dungeonId = UUID.randomUUID().toString();
             this.dungeonName = dungeonName;
-            DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, listOfEntityResponses, getInventoryResponse(), getBattleResponse(), buildables, goals);
+            DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, listOfEntityResponses, getInventoryResponse(), getBattleResponse(), buildables, getGoalsResponse());
             mapOfMinAndMaxValues = findMinAndMaxValues();
 
             return dungeonResp;
@@ -106,7 +108,22 @@ public class DungeonManiaController {
         
         return null;
     }
-    
+
+    private String getGoalsResponse() {
+        // TODO this will change when complex goals is implemented.
+        HashMap<String, Boolean> goals = statistics.getGoals();
+        String incomplete = "";
+        if (goals.size() > 0) {
+            for (String key : goals.keySet()) {
+                if (!goals.get(key)) {
+                    incomplete = incomplete + key + " ";
+                }
+            }
+        }
+
+        return incomplete;
+    }
+
     /* Reading Config file */
     private void generateConfigMap(String configJSONString) {
         JsonObject configJsonObj = JsonParser.parseString(configJSONString).getAsJsonObject();
@@ -261,8 +278,7 @@ public class DungeonManiaController {
         Player player = getPlayer();
         player.setPrevPos(player.getCurrentLocation()); // a bribed mercenary occupies the player's previous position
         playerMovesBoulder(movementDirection, player);
-        player.move(listOfEntities, movementDirection, player, inventory); 
-        exitCheck(player);
+        player.move(listOfEntities, movementDirection, player, inventory, statistics); 
         boulderCheck();
         checkBattles();
         Spider newSpider = spawnASpider(xSpi, player);
@@ -271,7 +287,7 @@ public class DungeonManiaController {
                 continue;
 
             if (currEntity.isMovingEntity()) {
-                ((MovingEntity) currEntity).move(listOfEntities, movementDirection, player, inventory); 
+                ((MovingEntity) currEntity).move(listOfEntities, movementDirection, player, inventory, statistics);
             }
         }
 
@@ -290,28 +306,26 @@ public class DungeonManiaController {
     // the switch to untrigger.
     private void boulderCheck() {
         for (Entity currSwitch : listOfEntities) {
-            if (currSwitch.getEntityType() == "switch") {
-                for (Entity currBoulder : listOfEntities) {
-                    if (currBoulder.getEntityType() == "boulder") {
-                        if (currSwitch.getCurrentLocation().equals(currBoulder.getCurrentLocation())) {
-                            ((FloorSwitch) currSwitch).trigger(listOfEntities);
-                        } else {
-                            ((FloorSwitch) currSwitch).untrigger(listOfEntities);
-                        }
-                    }
+            if (currSwitch.getEntityType() != "switch") {
+                continue;
+            }
+
+            for (Entity currBoulder : listOfEntities) {
+                if (currBoulder.getEntityType() != "boulder") {
+                    continue;
+                }
+
+                if (currSwitch.getCurrentLocation().equals(currBoulder.getCurrentLocation())) {
+                    ((FloorSwitch) currSwitch).trigger(listOfEntities);
+                    statistics.addFloorSwitch();
+                } else {
+                    ((FloorSwitch) currSwitch).untrigger(listOfEntities);
+                    statistics.removeFloorSwitch();
                 }
             }
         }
     }
 
-   // Checks whether or not player is on exit. If they are, it updates the exitState.
-    private void exitCheck(Player player) {
-        for (Entity currEntity: listOfEntities) {
-            if (currEntity.getEntityType() == "exit" && currEntity.getCurrentLocation().equals(player.getCurrentLocation())) {
-                ((Exit) currEntity).setExitState(true);
-            }
-        }
-    }
 
     private void playerMovesBoulder(Direction movementDirection, Player player) {
         for (Entity currEntity : listOfEntities) {
@@ -361,6 +375,7 @@ public class DungeonManiaController {
                 break;
             } else {
                 // Monster died.
+                statistics.addEnemyDestroyed();
                 listOfEntities.remove(monster);
             }
         }
@@ -373,7 +388,7 @@ public class DungeonManiaController {
         List<EntityResponse> entities = new ArrayList<>();
         listOfEntities.forEach((currEntity) -> entities.add(new EntityResponse(currEntity.getEntityID(), currEntity.getEntityType(), currEntity.getCurrentLocation(), currEntity.isInteractable())));
 
-        DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, entities, getInventoryResponse(), getBattleResponse(), buildables, goals);
+        DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, entities, getInventoryResponse(), getBattleResponse(), buildables, getGoalsResponse());
         return dungeonResp;
     }
 
@@ -464,6 +479,7 @@ public class DungeonManiaController {
         }
 
         listOfEntities.remove(spawner);
+        statistics.addSpawnerDestroyed();
     }
 
 

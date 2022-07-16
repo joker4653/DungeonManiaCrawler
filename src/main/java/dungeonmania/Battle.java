@@ -44,7 +44,8 @@ public class Battle {
      * @returns true if player alive after battle, false otherwise.
      */
     public boolean doBattle(HashMap<String, String> configMap, Inventory inventory) {
-        boolean result = doRound(configMap, inventory); 
+        ArrayList<Entity> weaponryUsed = getWeaponry(inventory);
+        boolean result = doRound(configMap, weaponryUsed, inventory); 
 
         return result;
     }
@@ -52,8 +53,8 @@ public class Battle {
     /*
      * @returns true if player alive after round, false otherwise.
      */
-    public boolean doRound(HashMap<String, String> configMap, Inventory inventory) {
-        double player_attack = getPlayerAttack(configMap, inventory);
+    public boolean doRound(HashMap<String, String> configMap, ArrayList<Entity> weaponryUsed, Inventory inventory) {
+        double player_attack = getPlayerAttack(configMap, weaponryUsed, inventory);
         double player_defence = getPlayerDefence(configMap, inventory);
         double enemy_attack = enemy.enemyAttackModifier();
 
@@ -64,7 +65,6 @@ public class Battle {
         player.setPlayerHealth(player_hp);
         enemy.setEnemyHealth(enemy_hp);
 
-        ArrayList<Entity> weaponryUsed= getWeaponry(inventory);
 
         Round round = new Round(delta_player_health, delta_enemy_health, weaponryUsed);
         rounds.add(round);
@@ -75,7 +75,7 @@ public class Battle {
         } else if (enemy_hp <= 0) {
             return true;
         } else {
-            return doRound(configMap, inventory);
+            return doRound(configMap, weaponryUsed, inventory);
         }
     }
 
@@ -107,9 +107,9 @@ public class Battle {
         return weaponryUsed;
     }
 
-    private double getPlayerAttack(HashMap<String, String> configMap, Inventory inventory) {
-        boolean swordExists = inventory.itemExists("sword");
-        boolean bowExists = inventory.itemExists("bow");
+    private double getPlayerAttack(HashMap<String, String> configMap, ArrayList<Entity> weaponryUsed, Inventory inventory) {
+        boolean swordExists = itemExists(weaponryUsed, "sword");
+        boolean bowExists = itemExists(weaponryUsed, "bow");
         int allies = player.getAllies();
 
         double atk = new NoWeaponBattlingStrategy(configMap).attackModifier();
@@ -146,6 +146,16 @@ public class Battle {
         }
 
         return def;
+    }
+
+    private boolean itemExists(ArrayList<Entity> entities, String type) {
+        for (Entity entity : entities) {
+            if (entity.getEntityType().equalsIgnoreCase(type)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

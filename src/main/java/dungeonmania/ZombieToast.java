@@ -1,10 +1,7 @@
 package dungeonmania;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 import dungeonmania.EnemyBattleStrategy.ZombieBattlingStrategy;
@@ -52,7 +49,7 @@ public class ZombieToast extends MovingEntity {
     }
 
     @Override
-    public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory) {
+    public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
         List<Position> moveLocations = createListOfCardinalPos(getCurrentLocation());
         updateZombAvailablePos(listOfEntities, moveLocations);
 
