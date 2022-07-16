@@ -37,7 +37,10 @@ public class StatisticsTests {
         assertEquals(1, countEntityOfType(res, "player"));
         assertEquals(1, countEntityOfType(res, "spider"));
 
-        dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+
+        assertEquals(1, countEntityOfType(res, "player"));
+        assertEquals(0, countEntityOfType(res, "spider"));
 
         String goals = getGoals(res); 
 
@@ -51,9 +54,9 @@ public class StatisticsTests {
         DungeonResponse res = dmc.newGame("d_statsTest_enemySpawnerComplete", "c_statsTest_enemySpawnerComplete");
 
         assertEquals(1, countEntityOfType(res, "player"));
-        assertEquals(1, countEntityOfType(res, "zombie"));
+        assertEquals(1, countEntityOfType(res, "zombie_toast"));
 
-        dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
 
         EntityResponse spawner = getEntities(res, "zombie_toast_spawner").get(0);
 
@@ -72,7 +75,7 @@ public class StatisticsTests {
     public void testTreasureGoalCompleted() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_statsTest_treasureComplete", "c_statsTest_basicTreasure");
-        dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
 
         String goals = getGoals(res); 
 
@@ -86,20 +89,20 @@ public class StatisticsTests {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_statsTest_boulderGoal", "c_statsTest_noGoalsCompleted");
 
-        dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
 
         // Boulder goal should be complete.
         String goals = getGoals(res); 
 
         assertFalse(goals.contains(":boulders"));
 
-        dmc.tick(Direction.RIGHT);
-        dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
 
         // After moving again, boulder goal should once again be incomplete.
         goals = getGoals(res); 
 
-        assertTrue(goals.contains(":exit"));
+        assertTrue(goals.contains(":boulders"));
     }
 
 
@@ -109,8 +112,8 @@ public class StatisticsTests {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_statsTest_exit", "c_statsTest_noGoalsCompleted");
 
-        dmc.tick(Direction.DOWN);
-        dmc.tick(Direction.DOWN);
+        res = dmc.tick(Direction.DOWN);
+        res = dmc.tick(Direction.DOWN);
 
         String goals = getGoals(res); 
 
@@ -122,16 +125,16 @@ public class StatisticsTests {
     public void testLargeTreasureGoalCompleted() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_statsTest_treasureComplete", "c_statsTest_largeTreasure");
-        dmc.tick(Direction.RIGHT);
-        dmc.tick(Direction.RIGHT);
-        dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
 
         // Treasure goal should not yet be completed
         String goals = getGoals(res); 
 
         assertTrue(goals.contains(":treasure"));
         
-        dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
 
         // Treasure should now be complete.
         goals = getGoals(res); 

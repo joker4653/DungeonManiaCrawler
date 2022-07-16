@@ -2,8 +2,6 @@ package dungeonmania;
 
 import java.util.UUID;
 
-import com.google.gson.JsonObject;
-
 import dungeonmania.util.Position;
 
 public class Door extends StaticEntity {

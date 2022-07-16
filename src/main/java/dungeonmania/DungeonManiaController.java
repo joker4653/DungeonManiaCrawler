@@ -92,14 +92,13 @@ public class DungeonManiaController {
             JsonObject dungeonJsonObj = JsonParser.parseString(dungeonJSONString).getAsJsonObject();
             List<EntityResponse> listOfEntityResponses = createListOfEntsAndResp(dungeonJsonObj);
 
-            // TODO!!!!! Holly already added the simple goal, BUT NOT the complex goals!!!!!!!!!!!!!!!!!!!!!!!!!!
             JsonElement jsonGoal = dungeonJsonObj.get("goal-condition");
             JsonObject jsonObj = jsonGoal.getAsJsonObject();
             // TODO this will change when we implement complex goals.
-            ArrayList<String> listOfGoals = new ArrayList<>();
+            HashMap<String, Boolean> goals = new HashMap<String, Boolean>();
             String goal = ":" + jsonObj.get("goal").getAsString();
-            listOfGoals.add(goal);
-            statistics = new Statistics(listOfGoals, listOfEntities, configMap);
+            goals.put(goal, false);
+            statistics = new Statistics(goals, listOfEntities, configMap);
  
             // TODO!!!!! replace "buildables" and "goals" with your ACTUAL buildables/goals lists.
             this.dungeonId = UUID.randomUUID().toString();
@@ -117,18 +116,17 @@ public class DungeonManiaController {
 
     private String getGoalsResponse() {
         // TODO this will change when complex goals is implemented.
-        ArrayList<String> listOfGoals = statistics.getListOfGoals();
-        String goals = "";
-        if (listOfGoals.size() > 0) {
-            for (int i = 0; i < listOfGoals.size(); i++) {
-                goals = goals + listOfGoals.get(i);
-                if (i < listOfGoals.size() - 1) {
-                    goals = goals + " ";
+        HashMap<String, Boolean> goals = statistics.getGoals();
+        String incomplete = "";
+        if (goals.size() > 0) {
+            for (String key : goals.keySet()) {
+                if (!goals.get(key)) {
+                    incomplete = incomplete + key + " ";
                 }
             }
         }
 
-        return goals;
+        return incomplete;
     }
 
     /* Reading Config file */
@@ -256,7 +254,7 @@ public class DungeonManiaController {
         Player player = getPlayer();
         player.setPrevPos(player.getCurrentLocation()); // a bribed mercenary occupies the player's previous position
         playerMovesBoulder(movementDirection, player);
-        player.move(listOfEntities, movementDirection, player, inventory); 
+        player.move(listOfEntities, movementDirection, player, inventory, statistics); 
         boulderCheck();
         checkBattles();
         Spider newSpider = spawnASpider(xSpi, player);
@@ -265,7 +263,7 @@ public class DungeonManiaController {
                 continue;
 
             if (currEntity.isMovingEntity()) {
-                ((MovingEntity) currEntity).move(listOfEntities, movementDirection, player, inventory); 
+                ((MovingEntity) currEntity).move(listOfEntities, movementDirection, player, inventory, statistics);
             }
         }
 
@@ -283,15 +281,21 @@ public class DungeonManiaController {
     // the switch to untrigger.
     private void boulderCheck() {
         for (Entity currSwitch : listOfEntities) {
-            if (currSwitch.getEntityType() == "switch") {
-                for (Entity currBoulder : listOfEntities) {
-                    if (currBoulder.getEntityType() == "boulder") {
-                        if (currSwitch.getCurrentLocation().equals(currBoulder.getCurrentLocation())) {
-                            ((FloorSwitch) currSwitch).trigger(listOfEntities);
-                        } else {
-                            ((FloorSwitch) currSwitch).untrigger(listOfEntities);
-                        }
-                    }
+            if (currSwitch.getEntityType() != "switch") {
+                continue;
+            }
+
+            for (Entity currBoulder : listOfEntities) {
+                if (currBoulder.getEntityType() != "boulder") {
+                    continue;
+                }
+
+                if (currSwitch.getCurrentLocation().equals(currBoulder.getCurrentLocation())) {
+                    ((FloorSwitch) currSwitch).trigger(listOfEntities);
+                    statistics.addFloorSwitch();
+                } else {
+                    ((FloorSwitch) currSwitch).untrigger(listOfEntities);
+                    statistics.removeFloorSwitch();
                 }
             }
         }
@@ -345,6 +349,7 @@ public class DungeonManiaController {
                 break;
             } else {
                 // Monster died.
+                statistics.addEnemyDestroyed();
                 listOfEntities.remove(monster);
             }
         }

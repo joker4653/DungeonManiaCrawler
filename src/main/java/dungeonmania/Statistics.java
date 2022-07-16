@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class Statistics {
 
-    private ArrayList<String> listOfGoals;
+    private HashMap<String, Boolean> goals;
 
     private boolean reachedAnExit = false;
 
@@ -24,16 +24,16 @@ public class Statistics {
     private int treasureCollected = 0;
     private int treasureGoal;
 
-    public Statistics(ArrayList<String> listOfGoals, List<Entity> listOfEntities, HashMap<String, String> configMap) {
-        this.listOfGoals = listOfGoals;
+    public Statistics(HashMap<String, Boolean> goals, List<Entity> listOfEntities, HashMap<String, String> configMap) {
+        this.goals = goals;
         this.spawnersCreated = listOfEntities.stream().filter(e -> e.getEntityType().equals("zombie_toast_spawner")).collect(Collectors.toList()).size();
 
         this.enemiesGoal = Integer.parseInt(configMap.get("enemy_goal"));
         this.treasureGoal = Integer.parseInt(configMap.get("treasure_goal"));
     }
 
-    public ArrayList<String> getListOfGoals() {
-        return this.listOfGoals;
+    public HashMap<String, Boolean> getGoals() {
+        return this.goals;
     }
 
     public void addEnemyDestroyed() {
@@ -62,14 +62,14 @@ public class Statistics {
     }
 
     private void addGoal(String goal) {
-        if (!listOfGoals.contains(goal)) {
-            listOfGoals.add(goal);
+        if (goals.containsKey(goal)) {
+            goals.replace(goal, false);
         }
     }
 
     private void removeGoal(String goal) {
-        if (listOfGoals.contains(goal)) {
-            listOfGoals.remove(goal);
+        if (goals.containsKey(goal)) {
+            goals.replace(goal, true);
         }
     }
 
@@ -98,16 +98,5 @@ public class Statistics {
             removeGoal(":exit");
         }
     }
-
-
-    // Setters for (set) stats variables.
-    // Goal checking.
-
-
-
-
-
-
-
 }
 

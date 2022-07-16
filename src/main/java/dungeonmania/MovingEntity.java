@@ -25,7 +25,7 @@ public abstract class MovingEntity extends Entity {
         super.setMovingEntity(true);
     }
 
-    public abstract void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory);
+    public abstract void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics);
 
     public Position getCurrentLocation() {
         return super.getCurrentLocation();

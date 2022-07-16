@@ -62,7 +62,7 @@ public class Spider extends MovingEntity {
 
     }
 
-    public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory) {
+    public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
         // Get the next position and check if it's a boulder. If so, change direction and move. Otherwise, move normally.
         Position nextPosition = getNextPosition();
         if (checkIfNextPositionIsAllowed(nextPosition, listOfEntities)) {
@@ -73,8 +73,6 @@ public class Spider extends MovingEntity {
             if (checkIfNextPositionIsAllowed(nextPosition, listOfEntities))
                 super.setCurrentLocation(nextPosition);
         }
-
-        // TODO: call the battle function if spider is at player's position!!!!!!!!!!!
     }
 
 
