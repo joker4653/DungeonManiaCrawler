@@ -58,11 +58,17 @@ public class StatisticsTests {
 
         res = dmc.tick(Direction.RIGHT);
 
+        assertEquals(0, countEntityOfType(res, "zombie_toast"));
+
         EntityResponse spawner = getEntities(res, "zombie_toast_spawner").get(0);
 
         assertDoesNotThrow(() -> {
             dmc.interact(spawner.getId());
         });
+
+        res = dmc.tick(Direction.RIGHT);
+
+        assertEquals(0, countEntityOfType(res, "zombie_toast_spawner"));
 
         String goals = getGoals(res); 
 

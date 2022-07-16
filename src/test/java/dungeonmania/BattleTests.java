@@ -118,10 +118,6 @@ public class BattleTests {
 
         res = dmc.tick(Direction.RIGHT);
 
-        int zombieCount = countEntityOfType(res, "zombie_toast");
-       
-        //assertEquals(1, countEntityOfType(res, "player"));
-        assertEquals(1, zombieCount);
         return res;
     }
 
@@ -184,7 +180,7 @@ public class BattleTests {
 
         RoundResponse round1 = rounds.get(0);
 
-        assertEquals(round1.getDeltaEnemyHealth(), -playerAttack / 5);
+        assertEquals(-playerAttack / 5, round1.getDeltaEnemyHealth());
     }
 
     /* // TODO Finish these tests once appropriate entities have been made!!!!!!

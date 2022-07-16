@@ -1,7 +1,6 @@
 package dungeonmania;
 
 import java.util.List;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import java.util.stream.Collectors;
@@ -38,6 +37,11 @@ public class Statistics {
 
     public void addEnemyDestroyed() {
         this.enemiesDestroyed += 1;
+        checkEnemiesGoal();
+    }
+    
+    public void addSpawnerDestroyed() {
+        this.spawnersDestroyed += 1;
         checkEnemiesGoal();
     }
 

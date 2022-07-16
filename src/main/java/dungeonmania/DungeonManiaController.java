@@ -479,6 +479,7 @@ public class DungeonManiaController {
         }
 
         listOfEntities.remove(spawner);
+        statistics.addSpawnerDestroyed();
     }
 
 
