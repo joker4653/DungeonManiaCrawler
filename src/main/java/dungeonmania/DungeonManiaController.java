@@ -240,8 +240,8 @@ public class DungeonManiaController {
         player.setPrevPos(player.getCurrentLocation()); // a bribed mercenary occupies the player's previous position
         playerMovesBoulder(movementDirection, player);
         player.move(listOfEntities, movementDirection, player, inventory); 
-        boulderCheck();
         exitCheck(player);
+        boulderCheck();
         checkBattles();
         Spider newSpider = spawnASpider(xSpi, player);
         for (Entity currEntity : listOfEntities) {
