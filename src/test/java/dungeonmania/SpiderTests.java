@@ -88,35 +88,35 @@ public class SpiderTests {
     }
 
 
-    @Test
-    @DisplayName("Test multiple spiders spawning when spawn_rate is 5 ticks and ensure they spawn within the map boundaries")
-    public void testMultipleSpidersSpawnEvery5Ticks() {
-        DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_spiderTest_spawn5Ticks", "c_spiderTest_spawn5Ticks");
-        Position playerPos = new Position(0, 0);
-        int spiderCount = 1; // there is already 1 spider at position (2, 0) on the map
-        int spiderIndex = 0;
+    // @Test
+    // @DisplayName("Test multiple spiders spawning when spawn_rate is 5 ticks and ensure they spawn within the map boundaries")
+    // public void testMultipleSpidersSpawnEvery5Ticks() {
+    //     DungeonManiaController dmc = new DungeonManiaController();
+    //     DungeonResponse res = dmc.newGame("d_spiderTest_spawn5Ticks", "c_spiderTest_spawn5Ticks");
+    //     Position playerPos = new Position(0, 0);
+    //     int spiderCount = 1; // there is already 1 spider at position (2, 0) on the map
+    //     int spiderIndex = 0;
     
-        for (int i = 1; i <= 50; i++) {
-            res = dmc.tick(Direction.UP);
+    //     for (int i = 1; i <= 50; i++) {
+    //         res = dmc.tick(Direction.UP);
 
-            if (i % 5 == 0) {
-                Position actualSpiderPos = getEntities(res, "spider").get((i % 5) + spiderIndex).getPosition();
-                // check that the x and y coordinates are within the map's boundaries
-                assertTrue(actualSpiderPos.getX() >= 0 && actualSpiderPos.getX() <= 2);
-                assertTrue(actualSpiderPos.getY() >= 0 && actualSpiderPos.getX() <= 2);
+    //         if (i % 5 == 0) {
+    //             Position actualSpiderPos = getEntities(res, "spider").get((i % 5) + spiderIndex).getPosition();
+    //             // check that the x and y coordinates are within the map's boundaries
+    //             assertTrue(actualSpiderPos.getX() >= 0 && actualSpiderPos.getX() <= 2);
+    //             assertTrue(actualSpiderPos.getY() >= 0 && actualSpiderPos.getX() <= 2);
 
-                if (!actualSpiderPos.equals(playerPos)) {
-                    spiderCount++;
-                    assertEquals(spiderCount, getEntities(res, "spider").size());
-                }
+    //             if (!actualSpiderPos.equals(playerPos)) {
+    //                 spiderCount++;
+    //                 assertEquals(spiderCount, getEntities(res, "spider").size());
+    //             }
 
-                spiderIndex++;
-            }
-        }
+    //             spiderIndex++;
+    //         }
+    //     }
 
-        assertEquals(spiderCount, getEntities(res, "spider").size());
-    }
+    //     assertEquals(spiderCount, getEntities(res, "spider").size());
+    // }
 
     // Spider movement tests:
 

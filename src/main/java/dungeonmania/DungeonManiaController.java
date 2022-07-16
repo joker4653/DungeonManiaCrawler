@@ -206,6 +206,8 @@ public class DungeonManiaController {
             return new Sword(x, y, Integer.parseInt(configMap.get("sword_durability")), Integer.parseInt(configMap.get("sword_attack")));
         } else if (type.equalsIgnoreCase("switch")) {
             return new FloorSwitch(x, y);
+        } else if (type.equalsIgnoreCase("exit")) {
+            return new Exit(x, y);
         }
         
         return null;
@@ -238,6 +240,7 @@ public class DungeonManiaController {
         player.setPrevPos(player.getCurrentLocation()); // a bribed mercenary occupies the player's previous position
         playerMovesBoulder(movementDirection, player);
         player.move(listOfEntities, movementDirection, player, inventory); 
+        exitCheck(player);
         boulderCheck();
         checkBattles();
         Spider newSpider = spawnASpider(xSpi, player);
@@ -274,6 +277,15 @@ public class DungeonManiaController {
                         }
                     }
                 }
+            }
+        }
+    }
+
+   // Checks whether or not player is on exit. If they are, it updates the exitState.
+    private void exitCheck(Player player) {
+        for (Entity currEntity: listOfEntities) {
+            if (currEntity.getEntityType() == "exit" && currEntity.getCurrentLocation().equals(player.getCurrentLocation())) {
+                ((Exit) currEntity).setExitState(true);
             }
         }
     }
