@@ -167,23 +167,6 @@ public class MercenaryTests {
         });
     }
 
-
-
-
-
-
-
-    /* Bribery tests:
-     * - entity id is not real
-     * - player is not within radius of mercenary (indicated by entity id).
-     * - player does not have enough gold.
-     *
-     * - [Spawner] Player is not cardinally adjacent to spawner.
-     * - [Spawner] Player does not have a weapon for destroying spawner.
-     * - [Spawner] Destruction success.
-     */
-
-    
     // Mercenary ally movement tests:
     @Test
     @DisplayName("Test the movement of a bribed mercenary")
