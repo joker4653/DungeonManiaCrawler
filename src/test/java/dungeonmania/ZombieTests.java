@@ -63,7 +63,7 @@ public class ZombieTests {
     @Test
     @DisplayName("Test zombies can only spawn on cardinally adjacent open squares")
     public void testZombiesSpawnSuccess() {
-        /* Test zombies spawn on a cardinally adjacent (up, down, left, right) “open square” (i.e. no wall or boulder).
+        /* Test zombies spawn on a cardinally adjacent (up, down, left, right) open square (i.e. no wall or boulder).
         Also ensure no zombies spawn on top of the spawner (assert that the no. of zombies on the spawner = 0) */
 
         DungeonManiaController dmc = new DungeonManiaController();

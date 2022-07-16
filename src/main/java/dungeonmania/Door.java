@@ -28,6 +28,11 @@ public class Door extends StaticEntity {
         return isLocked;
     }
 
+    public String findCorrespondingKey() {
+
+        return "hi";
+    }
+
     public void setLocked(boolean isLocked) {
         if (isLocked) {
             super.setCanZombieBeOnThisEntity(false);

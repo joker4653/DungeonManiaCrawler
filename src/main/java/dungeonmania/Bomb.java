@@ -75,8 +75,8 @@ public class Bomb extends CollectableEntity {
         /*if (radius == 1) {
             return super.getCurrentLocation().getAdjacentPositions();
         } else { */
-            for (int x = super.getCurrentLocation().getX() - radius; x <= radius; x++) {
-                for (int y = super.getCurrentLocation().getY() - radius; y <= radius; y++) {
+            for (int x = super.getCurrentLocation().getX() - radius; x <= super.getCurrentLocation().getX() + radius; x++) {
+                for (int y = super.getCurrentLocation().getY() - radius; y <= super.getCurrentLocation().getY() + radius; y++) {
                     positions.add(new Position(x, y));
                 }
             }
