@@ -323,6 +323,8 @@ public class BattleTests {
         res = dmc.tick(Direction.RIGHT);
         // player exits
         assertEquals(new Position(6, 8), getPlayer(res).get().getPosition());
+        String goals = getGoals(res); 
+        assertFalse(goals.contains(":exit")); // completed goal has been removed
     }    
 
     private DungeonResponse testMercenary(DungeonManiaController dmc, DungeonResponse res) {
