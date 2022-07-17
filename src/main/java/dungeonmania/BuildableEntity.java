@@ -42,14 +42,6 @@ public void Build(List<Entity> listOfEntities, Inventory inventory,Entity builda
     return;
 }
 
-// For checking if requisite number of a certain item exists
-public boolean numItemExists(String type, int num,Inventory inventory) {
-    if(inventory.numitemExists(type, num)) {
-        return true;
-    }
-    
-    return false;    
-}
 
 
 

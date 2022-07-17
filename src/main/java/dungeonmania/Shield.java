@@ -51,7 +51,7 @@ public class Shield extends BuildableEntity{
     public void BuildShield(List<Entity> listOfEntities, Inventory inventory, Entity shield) {
         Components = getComponents();
         for (HowMany component: Components) {
-            if(numItemExists(component.getType(), component.getAmount(), inventory)) {
+            if(inventory.numitemExists(component.getType(), component.getAmount())) {
                 inventory.RemovingnumItemOfType(listOfEntities,component.getAmount(), component.getType());
                 inventory.addItem(shield);
                 return;
@@ -59,7 +59,7 @@ public class Shield extends BuildableEntity{
         }
         Components2 = getComponents2();
         for (HowMany component: Components2) {
-            if(numItemExists(component.getType(), component.getAmount(), inventory)) {
+            if(inventory.numitemExists(component.getType(), component.getAmount())) {
                 inventory.RemovingnumItemOfType(listOfEntities,component.getAmount(), component.getType());
                 inventory.addItem(shield);
                 return;
