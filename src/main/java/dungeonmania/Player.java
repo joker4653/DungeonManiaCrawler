@@ -11,10 +11,10 @@ import dungeonmania.util.Direction;
 
 public class Player extends MovingEntity {
 
-    HashMap<String, Integer> ActiveStates = new HashMap<String, Integer>();
+    private HashMap<String, Integer> activeStates = new HashMap<String, Integer>();
 
-    Position prevPos;
-    int allies = 0;
+    private Position prevPos;
+    private int allies = 0;
 
     public Player(int x, int y, HashMap<String, String> configMap) {
         super();

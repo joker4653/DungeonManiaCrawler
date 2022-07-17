@@ -383,7 +383,6 @@ public class DungeonManiaController {
             listOfBattles.add(battle);
 
             if (!alive) {
-                // TODO Player Death
                 listOfEntities.remove(player);
                 break;
             } else {
