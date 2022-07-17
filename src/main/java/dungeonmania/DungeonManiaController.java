@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import com.google.gson.JsonArray;
@@ -89,13 +88,12 @@ public class DungeonManiaController {
 
             JsonElement jsonGoal = dungeonJsonObj.get("goal-condition");
             JsonObject jsonObj = jsonGoal.getAsJsonObject();
-            // TODO this will change when we implement complex goals.
+    
             HashMap<String, Boolean> goals = new HashMap<String, Boolean>();
             String goal = ":" + jsonObj.get("goal").getAsString();
             goals.put(goal, false);
             statistics = new Statistics(goals, listOfEntities, configMap);
  
-            // TODO!!!!! replace "buildables" and "goals" with your ACTUAL buildables/goals lists.
             this.dungeonId = UUID.randomUUID().toString();
             this.dungeonName = dungeonName;
             DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, listOfEntityResponses, getInventoryResponse(), getBattleResponse(), buildables, getGoalsResponse());
@@ -110,7 +108,7 @@ public class DungeonManiaController {
     }
 
     private String getGoalsResponse() {
-        // TODO this will change when complex goals is implemented.
+        
         HashMap<String, Boolean> goals = statistics.getGoals();
         String incomplete = "";
         if (goals.size() > 0) {
@@ -383,7 +381,6 @@ public class DungeonManiaController {
             listOfBattles.add(battle);
 
             if (!alive) {
-                // TODO Player Death?!
                 listOfEntities.remove(player);
                 break;
             } else {

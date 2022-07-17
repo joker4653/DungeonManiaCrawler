@@ -1,6 +1,5 @@
 package dungeonmania;
 
-import java.util.List;
 
 import dungeonmania.util.Position;
 

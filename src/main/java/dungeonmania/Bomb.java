@@ -105,7 +105,8 @@ public class Bomb extends CollectableEntity {
         positions.add(new Position(x, y - 1));
 
         // get entities whom are floor switches and in cardinal squares
-        List<Entity> switchesInCardinalSquares = entities.stream().filter(e -> (positions.contains(e.getCurrentLocation()) && e.getEntityType().startsWith("switch"))).collect(Collectors.toList());
+        List<Entity> switchesInCardinalSquares = entities.stream().filter(e -> (positions.contains(e.getCurrentLocation()) && 
+                                                                                e.getEntityType().startsWith("switch"))).collect(Collectors.toList());
 
         // if no switch in cardinal squares otherwise check if pressed
         if (switchesInCardinalSquares.isEmpty()) {

@@ -7,7 +7,6 @@ import java.util.Arrays;
 
 import dungeonmania.util.Position;
 import dungeonmania.EnemyBattleStrategy.EnemyBattlingStrategy;
-import dungeonmania.EnemyBattleStrategy.NoBattlingStrategy;
 import dungeonmania.util.Direction;
 
 public abstract class MovingEntity extends Entity {

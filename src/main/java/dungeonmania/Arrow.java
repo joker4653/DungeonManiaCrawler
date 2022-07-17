@@ -20,11 +20,4 @@ public class Arrow extends CollectableEntity {
         super.setIsConsumable(false);
     }
 
-    public Position getPosition() {
-        return location;
-    }
-
-    public void onPickup() {
-        
-    }
 }

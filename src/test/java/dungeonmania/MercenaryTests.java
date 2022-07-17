@@ -2,8 +2,6 @@ package dungeonmania;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -11,23 +9,12 @@ import dungeonmania.exceptions.InvalidActionException;
 
 import static dungeonmania.TestUtils.getPlayer;
 import static dungeonmania.TestUtils.getEntities;
-import static dungeonmania.TestUtils.getInventory;
-import static dungeonmania.TestUtils.getGoals;
-import static dungeonmania.TestUtils.countEntityOfType;
-import static dungeonmania.TestUtils.getValueFromConfigFile;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
-import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -122,11 +109,11 @@ public class MercenaryTests {
     @DisplayName("Test Mercenary Bribery invalid id.")
     public void testBriberyInvalidId() {
         DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_mercenaryTest_followPlayer", "c_mercenaryTest_followPlayer");
+        dmc.newGame("d_mercenaryTest_followPlayer", "c_mercenaryTest_followPlayer");
 
-        res = dmc.tick(Direction.RIGHT);
-        res = dmc.tick(Direction.RIGHT);
-        res = dmc.tick(Direction.RIGHT);
+        dmc.tick(Direction.RIGHT);
+        dmc.tick(Direction.RIGHT);
+        dmc.tick(Direction.RIGHT);
 
         assertThrows(IllegalArgumentException.class, () -> {
             dmc.interact("abcd");
