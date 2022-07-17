@@ -99,6 +99,8 @@ public class DungeonManiaController {
             goals = jsonObj.get("goal").getAsString();
 
             // TODO!!!!! replace "buildables" and "goals" with your ACTUAL buildables/goals lists.
+            buildables.add("shield");
+            buildables.add("bow");
             this.dungeonId = UUID.randomUUID().toString();
             this.dungeonName = dungeonName;
             DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, listOfEntityResponses, getInventoryResponse(), getBattleResponse(), buildables, goals);
@@ -206,8 +208,11 @@ public class DungeonManiaController {
             return new Sword(x, y, Integer.parseInt(configMap.get("sword_durability")), Integer.parseInt(configMap.get("sword_attack")));
         } else if (type.equalsIgnoreCase("switch")) {
             return new FloorSwitch(x, y);
+        } else if(type.equalsIgnoreCase("shield")) {
+            return new Shield(Integer.parseInt(configMap.get("shield_durability")), Integer.parseInt(configMap.get("shield_defence")));
+        } else if(type.equalsIgnoreCase("bow")) {
+            return new Bow(Integer.parseInt(configMap.get("bow_durability")));
         }
-        
         return null;
     }
 
@@ -393,13 +398,15 @@ public class DungeonManiaController {
      * /game/build
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
+        Inventory inventory = getInventory();
+        int key = Integer.MAX_VALUE;
         if (buildable == "shield") {
-            Shield newShield = new Shield(4, 4);
-            if(newShield.isBuildable(newShield.Components,inventory)) {
-                newShield.BuildShieldTreasure(inventory, newShield);
+            Shield sh = createEntity("shield", 0, 0, key)
+            if(sh.isBuildable(sh.Components,inventory)) {
+                sh.BuildShieldTreasure(inventory, sh);
             }
         } else if (buildable == "bow") {
-            Bow newBow = new Bow(4);
+            Bow newBow = createEntity("bow", 0, 0, key);
             if(newBow.isBuildable(newBow.bowMaterials(),inventory)) {
                 newBow.BuildBow(inventory, newBow);
             }

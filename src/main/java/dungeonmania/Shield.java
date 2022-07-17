@@ -2,6 +2,8 @@ package dungeonmania;
 import dungeonmania.util.HowMany;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.UUID;
+
 
 public class Shield extends BuildableEntity{
     private int durability;
@@ -16,6 +18,8 @@ public class Shield extends BuildableEntity{
         this.setComponents(shieldMaterialsTreasure());
         this.setComponents2(shieldMaterialsKey());
         super.setEntityType("shield");
+        super.setEntityID(UUID.randomUUID().toString());
+        super.setInteractable(false);
     }
     
     //player.inventory.stream().filter((t) -> t.getEntityType() ==  )
@@ -47,8 +51,7 @@ public class Shield extends BuildableEntity{
     }
 
     public void BuildShieldTreasure(Inventory inventory, Shield shield) {
-        //TODO: MAKE SHIELD DURABILITY RANDOM
-        shield.Build(shield.Components, inventory, shield);
+        shield.Build(Components, inventory, shield);
     }
 
     public void setComponents(ArrayList<HowMany> components) {

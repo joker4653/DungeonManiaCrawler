@@ -2,6 +2,7 @@ package dungeonmania;
 import dungeonmania.util.HowMany;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Bow extends BuildableEntity{
 
@@ -11,6 +12,8 @@ public class Bow extends BuildableEntity{
     public Bow(int durability) {
         this.durability = durability;
         this.setComponents(bowMaterials());
+        super.setEntityID(UUID.randomUUID().toString());
+        super.setInteractable(false);
         super.setEntityType("bow");
     }
 
