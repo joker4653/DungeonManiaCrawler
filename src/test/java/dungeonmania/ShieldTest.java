@@ -30,13 +30,13 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 import dungeonmania.CollectableEntity;
 import dungeonmania.Wood;
+import dungeonmania.Akey;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.BuildableEntity;
 
 
 public class ShieldTest {
-
-    @Test
+    /*@Test
     @DisplayName("Testing determining viability of building")
     public void isBuildabletresure() {
         Shield shield = new Shield(4, 4);
@@ -118,28 +118,77 @@ public class ShieldTest {
         System.out.println(inventory);
         assertEquals(true, inventory.itemExists(shield));
         assertEquals(false, shield.isBuildable(shield.shieldMaterialsTreasure(), inventory));
+
+
+
+        
     }
+    
+    } */
+    /* @Test
+     @DisplayName("Whitebox test for shield durability and defence") 
+     public void testShieldValues(){
+        DungeonManiaController dmc = new DungeonManiaController();
+        
+        System.out.println(dmc.getShielddefence());
+        System.out.println(dmc.getShielddurability());
+    }
+*/
     
 
     @Test
     @DisplayName("Testing determining viability of build function")
-    public void BuildTest() throws InvalidActionException{
+    public void BuildTestTreasure() throws InvalidActionException{
         Shield shield = new Shield(4, 4);
         DungeonManiaController dmc = new DungeonManiaController();
-        //System.out.println(shield.shieldMaterialsTreasure());
+        DungeonResponse res = dmc.newGame("d_swordTest_basicSpawn", "c_swordTest_basicSpawn");
         assertEquals(false, shield.isBuildable(shield.shieldMaterialsTreasure(), dmc.inventory));
         Wood wood = new Wood(0,0);
         Wood wood2 = new Wood(0,1);
         Treasure tre = new Treasure(0,2);
         Wood wood3 = new Wood(0,3);
+        List<Entity> entities = dmc.getListOfEntities();
         dmc.inventory.addItem(wood);
+        entities.add(wood);
         dmc.inventory.addItem(wood2);
+        entities.add(wood2);
         dmc.inventory.addItem(wood3);
+        entities.add(wood3);
         dmc.inventory.addItem(tre);
+        entities.add(tre);
         //System.out.println(inventory);
         assertEquals(true, shield.isBuildable(shield.shieldMaterialsTreasure(), dmc.inventory));
         dmc.build("shield");
         assertEquals(true, dmc.inventory.itemExists("shield"));
+        assertEquals(false, shield.isBuildable(shield.shieldMaterialsTreasure(), dmc.inventory));
+    }
+    @Test
+    @DisplayName("Testing determining viability of build function")
+    public void BuildTestKey() throws InvalidActionException{
+        Shield shield = new Shield(4, 4);
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_swordTest_basicSpawn", "c_swordTest_basicSpawn");
+        assertEquals(false, shield.isBuildable(shield.shieldMaterialsTreasure(), dmc.inventory));
+        Wood wood = new Wood(0,0);
+        Wood wood2 = new Wood(0,1);
+        Akey key = new Akey(0, 2, 4);
+        Wood wood3 = new Wood(0,3);
+        List<Entity> entities = dmc.getListOfEntities();
+        dmc.inventory.addItem(wood);
+        entities.add(wood);
+        dmc.inventory.addItem(wood2);
+        entities.add(wood2);
+        dmc.inventory.addItem(wood3);
+        entities.add(wood3);
+        dmc.inventory.addItem(key);
+        entities.add(key);
+        //System.out.println(inventory);
+        assertEquals(true, shield.isBuildable(shield.shieldMaterialsKey(), dmc.inventory));
+        dmc.build("shield");
+        assertEquals(true, dmc.inventory.itemExists("shield"));
+        assertEquals(false, shield.isBuildable(shield.shieldMaterialsKey(), dmc.inventory));
     }
 
 }
+    
+

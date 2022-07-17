@@ -1,4 +1,3 @@
-
 package dungeonmania;
 
 import java.util.List;
@@ -40,74 +39,21 @@ public class BowTests {
     @DisplayName("Testing determining viability of building")
     public void isBuildableBow() {
         Bow bow = new Bow(4);
-        Inventory inventory = new Inventory();
-        //System.out.println(inventory);
-        //System.out.println(shield.shieldMaterialsTreasure());
-        assertEquals(false, bow.isBuildable(bow.bowMaterials(), inventory));
-        Arrow arrow1 = new Arrow(0,0);
-        Arrow arrow2 = new Arrow(0,1);
-        Arrow arrow3 = new Arrow(0,2);
-        Wood wood = new Wood(0,0);
-        inventory.addItem(arrow1);
-        inventory.addItem(arrow2);
-        inventory.addItem(arrow3);
-        inventory.addItem(wood);
-        System.out.println(inventory);
-        assertEquals(true, bow.isBuildable(bow.bowMaterials(), inventory));
-        
-    } 
-
-    @Test
-    @DisplayName("Testing determining viability of Build function in Buildable entity")
-    public void BuilableEntityBuildTestBow() {
-        Bow bow = new Bow(4);
-        Inventory inventory = new Inventory();
-        //System.out.println(inventory);
-        //System.out.println(shield.shieldMaterialsTreasure());
-        assertEquals(false, bow.isBuildable(bow.bowMaterials(), inventory));
-        Arrow arrow1 = new Arrow(0,0);
-        Arrow arrow2 = new Arrow(0,1);
-        Arrow arrow3 = new Arrow(0,2);
-        Wood wood = new Wood(0,3);
-        Wood wood2 = new Wood(0,3);
-        inventory.addItem(arrow1);
-        inventory.addItem(arrow2);
-        inventory.addItem(arrow3);
-        inventory.addItem(wood);
-        inventory.addItem(wood2);
-        System.out.println(inventory);
-        assertEquals(true, bow.isBuildable(bow.bowMaterials(), inventory));
-        System.out.println(inventory);
-        assertEquals(true, bow.isBuildable(bow.bowMaterials(), inventory));
-        bow.BuildBow(inventory, bow);
-        System.out.println(inventory);
-        assertEquals(true, inventory.itemExists("bow"));
-        assertEquals(false, inventory.itemExists("arrow"));
-        assertEquals(false, inventory.numitemExists("wood", 2));
-        assertEquals(false, bow.isBuildable(bow.bowMaterials(), inventory));
-    }
-
-    @Test
-    @DisplayName("Testing determining viability of build function")
-    public void BuildTest() throws InvalidActionException{
-        Bow bow = new Bow(4);
         DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_swordTest_basicSpawn", "c_swordTest_basicSpawn");
+        //System.out.println(inventory);
         //System.out.println(shield.shieldMaterialsTreasure());
         assertEquals(false, bow.isBuildable(bow.bowMaterials(), dmc.inventory));
         Arrow arrow1 = new Arrow(0,0);
         Arrow arrow2 = new Arrow(0,1);
         Arrow arrow3 = new Arrow(0,2);
-        Wood wood = new Wood(0,3);
-        Wood wood2 = new Wood(0,3);
+        Wood wood = new Wood(0,0);
         dmc.inventory.addItem(arrow1);
         dmc.inventory.addItem(arrow2);
         dmc.inventory.addItem(arrow3);
         dmc.inventory.addItem(wood);
-        dmc.inventory.addItem(wood2);
         assertEquals(true, bow.isBuildable(bow.bowMaterials(), dmc.inventory));
-        dmc.build("bow");
-        assertEquals(true, dmc.inventory.itemExists("bow"));
-    }
-
+        
+    } 
 
 }

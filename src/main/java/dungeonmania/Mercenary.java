@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import dungeonmania.EnemyBattleStrategy.MercenaryAllyStrategy;
 import dungeonmania.EnemyBattleStrategy.MercenaryEnemyStrategy;
@@ -14,12 +13,12 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Mercenary extends MovingEntity {
-   // private boolean isAlly;
     private static final int UPPER_LIMIT = 60;
     private boolean isNeighbour;
     private HashMap<String, String> configMap;
 
     public Mercenary(int x, int y, HashMap<String, String> configMap) {
+        super();
         super.setAlly(false);
         super.setCurrentLocation(new Position(x, y));
         super.setEntityID(UUID.randomUUID().toString());
@@ -32,7 +31,7 @@ public class Mercenary extends MovingEntity {
     }
 
     @Override
-    public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory) {
+    public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
         if (!super.isAlly()) {
             enemyMovement(listOfEntities, player);
         } else {
@@ -71,8 +70,6 @@ public class Mercenary extends MovingEntity {
             List<Position> playerAdjPos = getAdjacentPos(player.getCurrentLocation(), listOfEntities);
             if (playerAdjPos.contains(this.getCurrentLocation()))
                 this.isNeighbour = true;
-            
-            // TODO: call the battle function if mercenary is at player's position AND merc is NOT an ally!!!!!!!!!!!
         }
     }
 

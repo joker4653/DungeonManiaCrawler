@@ -31,13 +31,15 @@ public boolean isBuildable(ArrayList<HowMany> components,Inventory inventory) {
 
 }
 
-public void Build(ArrayList<HowMany> components,Inventory inventory,BuildableEntity buildable) {
-    for (HowMany component: components) {
-        if(numItemExists(component.getType(), component.getAmount(), inventory)) {
-            numItemDelete(component.getType(), component.getAmount(), inventory);
-        }
+public void Build(List<Entity> listOfEntities, Inventory inventory,Entity buildable) {
+    if(buildable.getEntityType() == "shield") {
+        Shield sh = new Shield(4, 4);
+        sh.BuildShield(listOfEntities, inventory, buildable);
+    } else if (buildable.getEntityType() == "bow") {
+        Bow bow = new Bow(4);
+        bow.BuildBow(listOfEntities,inventory, bow);
     }
-    inventory.addItem(buildable);
+    return;
 }
 
 // For checking if requisite number of a certain item exists
@@ -48,13 +50,6 @@ public boolean numItemExists(String type, int num,Inventory inventory) {
     
     return false;    
 }
-
-public void numItemDelete(String type, int num,Inventory inventory){
-    inventory.RemovingnumItemOfType(num, type);
-    return;
-}
-
-
 
 
 
@@ -67,5 +62,4 @@ public void numItemDelete(String type, int num,Inventory inventory){
 
 
 }
-
 

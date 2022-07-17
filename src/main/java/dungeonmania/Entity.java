@@ -1,6 +1,9 @@
 package dungeonmania;
 
+import dungeonmania.util.HowMany;
 import dungeonmania.util.Position;
+import dungeonmania.BuildableEntity;
+import java.util.List;
 
 public abstract class Entity {
 
@@ -12,11 +15,20 @@ public abstract class Entity {
     private boolean canZombieBeOnThisEntity;
     private boolean isMovingEntity;
     private boolean canMercBeOnThisEntity;
+    private boolean isCollectableEntity;
 
     /* Getters and Setters */
 
     public String getEntityID() {
         return entityID;
+    }
+
+    public boolean isCollectableEntity() {
+        return isCollectableEntity;
+    }
+
+    public void setCollectableEntity(boolean isCollectableEntity) {
+        this.isCollectableEntity = isCollectableEntity;
     }
 
     public void setEntityID(String entityID) {
@@ -77,5 +89,10 @@ public abstract class Entity {
 
     public void setCanMercBeOnThisEntity(boolean canMercBeOnThisEntity) {
         this.canMercBeOnThisEntity = canMercBeOnThisEntity;
+    }
+
+    public void BuildItem(List<Entity> listOfEntities, Inventory inventory,Entity entity) {
+        BuildableEntity itemTobuild = new BuildableEntity();
+        itemTobuild.Build(listOfEntities, inventory, entity);
     }
 }

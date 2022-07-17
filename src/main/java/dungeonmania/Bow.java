@@ -17,9 +17,16 @@ public class Bow extends BuildableEntity{
         super.setEntityType("bow");
     }
 
-    public void BuildBow(Inventory inventory, Bow bow) {
-        //TODO: MAKE SHIELD DURABILITY RANDOM
-        Build(bowMaterials(), inventory, bow);
+    public void BuildBow(List<Entity> listOfEntities, Inventory inventory, Bow bow) {
+        Components = bowMaterials();
+        for (HowMany component: Components) {
+            if(numItemExists(component.getType(), component.getAmount(), inventory)) {
+                inventory.RemovingnumItemOfType(listOfEntities,component.getAmount(), component.getType());
+                inventory.addItem(bow);
+                return;
+            }
+        }
+        
     }
 
     public ArrayList<HowMany> bowMaterials() {

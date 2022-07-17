@@ -15,8 +15,6 @@ public class Shield extends BuildableEntity{
     public Shield(int durability, int defenceFactor) {
         this.durability = durability;
         this.defenceFactor= defenceFactor;
-        this.setComponents(shieldMaterialsTreasure());
-        this.setComponents2(shieldMaterialsKey());
         super.setEntityType("shield");
         super.setEntityID(UUID.randomUUID().toString());
         super.setInteractable(false);
@@ -50,24 +48,36 @@ public class Shield extends BuildableEntity{
         return stuff;
     }
 
-    public void BuildShieldTreasure(Inventory inventory, Shield shield) {
-        shield.Build(Components, inventory, shield);
+    public void BuildShield(List<Entity> listOfEntities, Inventory inventory, Entity shield) {
+        Components = getComponents();
+        for (HowMany component: Components) {
+            if(numItemExists(component.getType(), component.getAmount(), inventory)) {
+                inventory.RemovingnumItemOfType(listOfEntities,component.getAmount(), component.getType());
+                inventory.addItem(shield);
+                return;
+            }
+        }
+        Components2 = getComponents2();
+        for (HowMany component: Components2) {
+            if(numItemExists(component.getType(), component.getAmount(), inventory)) {
+                inventory.RemovingnumItemOfType(listOfEntities,component.getAmount(), component.getType());
+                inventory.addItem(shield);
+                return;
+            }
+        }
+        return;
+        
     }
 
-    public void setComponents(ArrayList<HowMany> components) {
-        this.Components = components;
-    }
     
     public ArrayList<HowMany> getComponents() {
-        return Components;
+        return shieldMaterialsTreasure();
     }
     
-    public void setComponents2(ArrayList<HowMany> components2) {
-        Components2 = components2;
-    }
+
     
     public ArrayList<HowMany> getComponents2() {
-        return Components2;
+        return shieldMaterialsKey();
     }
     
     public int getCurrDurability() {

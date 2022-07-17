@@ -1,7 +1,8 @@
 package dungeonmania;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+
 
 public class Inventory {
 
@@ -70,8 +71,10 @@ public class Inventory {
         return false;
     }
 
+
+
     //For removing item of certain type from inventory
-    public void RemovingItemOfType(String type) {
+    public void RemovingItemOfType(List<Entity> listOfEntities, String type) {
         ArrayList<Entity> del= new ArrayList<>();;
         if(this.itemExists(type)) {
             for (Entity entity : inventory) {
@@ -81,6 +84,7 @@ public class Inventory {
                 }
             }
             inventory.remove(del.get(0));
+            listOfEntities.remove(del.get(0));
         }
         
 
@@ -88,12 +92,14 @@ public class Inventory {
     }
 
     //Removing number of items from inventory by type
-    public void RemovingnumItemOfType(int num,String type) {
+    public void RemovingnumItemOfType(List<Entity> listOfEntities, int num,String type) {
         for(int i = 0; i != num;i++) {
-            RemovingItemOfType(type);
+            RemovingItemOfType(listOfEntities, type);
         }
         return;
     }
+
+
 
 
 
