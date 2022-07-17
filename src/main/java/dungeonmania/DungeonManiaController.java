@@ -33,10 +33,10 @@ public class DungeonManiaController {
     private String dungeonId;
     private String dungeonName;
     private HashMap<String, Integer> mapOfMinAndMaxValues = new HashMap<>();
-    List<Battle> listOfBattles = new ArrayList<>();
-    List<String> buildables = new ArrayList<>();
-    Inventory inventory = new Inventory();
-    Statistics statistics;
+    private List<Battle> listOfBattles = new ArrayList<>();
+    private List<String> buildables = new ArrayList<>();
+    private Inventory inventory = new Inventory();
+    private Statistics statistics;
 
     public List<Entity> getListOfEntities() {
         return listOfEntities;
