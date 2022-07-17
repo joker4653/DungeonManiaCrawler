@@ -2,7 +2,6 @@ package dungeonmania;
 
 import java.util.UUID;
 
-
 import dungeonmania.util.Position;
 
 public class Door extends StaticEntity {
@@ -12,6 +11,7 @@ public class Door extends StaticEntity {
     private int key;
 
     public Door(int x, int y, int key) {
+        super();
         super.setCanZombieBeOnThisEntity(false);
         super.setCanSpiderBeOnThisEntity(true);
         super.setEntityID(UUID.randomUUID().toString());

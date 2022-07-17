@@ -13,12 +13,14 @@ public class ZombieToast extends MovingEntity {
     private Position spawnerLocation;
     
     public ZombieToast(int x, int y, HashMap<String, String> configMap) {
+        super();
         this.spawnLocation = new Position(x, y);
         super.setCurrentLocation(spawnLocation);
         initialise(configMap);
     }
 
     public ZombieToast(int zombieSpawnerX, int zombieSpawnerY, boolean hasSpawned, HashMap<String, String> configMap) {
+        super();
         this.spawnerLocation = new Position(zombieSpawnerX, zombieSpawnerY);
         initialise(configMap);
     }
@@ -47,7 +49,7 @@ public class ZombieToast extends MovingEntity {
     }
 
     @Override
-    public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory) {
+    public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
         List<Position> moveLocations = createListOfCardinalPos(getCurrentLocation());
         updateZombAvailablePos(listOfEntities, moveLocations);
 

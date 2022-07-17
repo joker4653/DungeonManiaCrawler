@@ -13,14 +13,10 @@ public class Bomb extends CollectableEntity {
 
 
     public Bomb(int x, int y, int radius) {
-
-        super.setCanZombieBeOnThisEntity(true);
-        super.setCanSpiderBeOnThisEntity(true);
+        super();
         super.setEntityID(UUID.randomUUID().toString());
-        super.setInteractable(false);
         super.setEntityType("bomb");
         super.setCurrentLocation(new Position(x, y));
-        super.setCanMercBeOnThisEntity(true);
         super.setCollectableEntity(true);
 
         this.radius = radius;

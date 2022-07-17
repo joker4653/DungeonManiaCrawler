@@ -17,6 +17,7 @@ public class Player extends MovingEntity {
     int allies = 0;
 
     public Player(int x, int y, HashMap<String, String> configMap) {
+        super();
         super.setEntityID(UUID.randomUUID().toString());
         super.setInteractable(false);
         super.setEntityType("player");
@@ -36,17 +37,17 @@ public class Player extends MovingEntity {
         this.allies += 1;
     }
 
-    public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory) {
+    public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
         Position curr = super.getCurrentLocation();
         Position next = curr.translateBy(dir);
 
-        if (legalMove(listOfEntities, next, inventory)) {
+        if (legalMove(listOfEntities, next, inventory, statistics)) {
             super.setCurrentLocation(next);
         }
         
     }
 
-    private boolean legalMove(List<Entity> listOfEntities, Position next, Inventory inventory) {
+    private boolean legalMove(List<Entity> listOfEntities, Position next, Inventory inventory, Statistics statistics) {
 
         List<Entity> entitiesHere = listOfEntities.stream().filter(e -> e.getCurrentLocation().equals(next)).collect(Collectors.toList());
 
@@ -54,6 +55,9 @@ public class Player extends MovingEntity {
         for (Entity currEntity : entitiesHere) {
             if (!super.canStep(currEntity.getEntityType())) {
                 return false;
+            } else if (currEntity.getEntityType() == "exit") {
+                statistics.reachedExit();
+                ((Exit) currEntity).setExitState(true);
             } else if (currEntity.isCollectableEntity()) {
                 if (currEntity.getEntityType().startsWith("bomb")) {
                     Bomb entity = (Bomb) currEntity;
@@ -66,11 +70,16 @@ public class Player extends MovingEntity {
                     items.add(currEntity);
                 } 
             }
+
         }
 
         for (Entity curr : items) {
             inventory.addItem(curr);
             listOfEntities.remove(curr);
+            
+            if (curr.getEntityType() == "treasure") {
+                statistics.addTreasureCollected();
+            }
         }
 
         return true;

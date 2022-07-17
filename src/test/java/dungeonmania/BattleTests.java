@@ -51,10 +51,9 @@ public class BattleTests {
     }
 
     private static DungeonResponse genericEnemySequence(DungeonResponse res, DungeonManiaController controller, String entityType) {
-        int enemyCount = countEntityOfType(res, entityType);
        
         assertEquals(1, countEntityOfType(res, "player"));
-        assertEquals(1, enemyCount);
+        assertEquals(1, countEntityOfType(res, entityType));
         return controller.tick(Direction.RIGHT);
     }
 
@@ -87,9 +86,7 @@ public class BattleTests {
         assertBattleCalculations("zombie", battle, true, "c_battleTests_basicZombieZombieDies");
     } 
 
-/*  TODO HOLLY --> UNCOMMENT THIS WHEN DOOR/KEY HAVE BEEN IMPLEMENTED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
- *  This test is failing because Zombie can't distinguish between a door and an open door under
- *  old system, meaning it never spawns.
+/*  TODO --> UNCOMMENT THIS WHEN DOOR/KEY HAVE BEEN IMPLEMENTED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     @Test
     @DisplayName("Test zombie walk through the open door and wins the battle")
     public void testZombieWalkThroughOpenDoor() {
@@ -121,10 +118,6 @@ public class BattleTests {
 
         res = dmc.tick(Direction.RIGHT);
 
-        int zombieCount = countEntityOfType(res, "zombie_toast");
-       
-        //assertEquals(1, countEntityOfType(res, "player"));
-        assertEquals(1, zombieCount);
         return res;
     }
 
@@ -187,7 +180,7 @@ public class BattleTests {
 
         RoundResponse round1 = rounds.get(0);
 
-        assertEquals(round1.getDeltaEnemyHealth(), -playerAttack / 5);
+        assertEquals(-playerAttack / 5, round1.getDeltaEnemyHealth());
     }
 
     /* // TODO Finish these tests once appropriate entities have been made!!!!!!
@@ -330,6 +323,8 @@ public class BattleTests {
         res = dmc.tick(Direction.RIGHT);
         // player exits
         assertEquals(new Position(6, 8), getPlayer(res).get().getPosition());
+        String goals = getGoals(res); 
+        assertFalse(goals.contains(":exit")); // completed goal has been removed
     }    
 
     private DungeonResponse testMercenary(DungeonManiaController dmc, DungeonResponse res) {

@@ -7,6 +7,7 @@ import dungeonmania.util.Position;
 public class Wall extends StaticEntity {
     
     public Wall(int x, int y) {
+        super();
         super.setCanZombieBeOnThisEntity(false);
         super.setCanSpiderBeOnThisEntity(true);
         super.setEntityID(UUID.randomUUID().toString());

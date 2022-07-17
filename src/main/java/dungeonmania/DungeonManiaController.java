@@ -29,15 +29,14 @@ import com.google.gson.JsonParser;
 public class DungeonManiaController {
     private int tickCount;
     private List<Entity> listOfEntities = new ArrayList<>();
-    private List<String> listOfGoals = new ArrayList<>();
     private HashMap<String, String> configMap = new HashMap<>();
     private String dungeonId;
     private String dungeonName;
-    private String goals;
     private HashMap<String, Integer> mapOfMinAndMaxValues = new HashMap<>();
     List<Battle> listOfBattles = new ArrayList<>();
     List<String> buildables = new ArrayList<>();
     Inventory inventory = new Inventory();
+    Statistics statistics;
 
     public List<Entity> getListOfEntities() {
         return listOfEntities;
@@ -88,15 +87,18 @@ public class DungeonManiaController {
             JsonObject dungeonJsonObj = JsonParser.parseString(dungeonJSONString).getAsJsonObject();
             List<EntityResponse> listOfEntityResponses = createListOfEntsAndResp(dungeonJsonObj);
 
-            // TODO!!!!! Holly already added the simple goal, BUT NOT the complex goals!!!!!!!!!!!!!!!!!!!!!!!!!!
             JsonElement jsonGoal = dungeonJsonObj.get("goal-condition");
             JsonObject jsonObj = jsonGoal.getAsJsonObject();
-            goals = jsonObj.get("goal").getAsString();
-
+            // TODO this will change when we implement complex goals.
+            HashMap<String, Boolean> goals = new HashMap<String, Boolean>();
+            String goal = ":" + jsonObj.get("goal").getAsString();
+            goals.put(goal, false);
+            statistics = new Statistics(goals, listOfEntities, configMap);
+ 
             // TODO!!!!! replace "buildables" and "goals" with your ACTUAL buildables/goals lists.
             this.dungeonId = UUID.randomUUID().toString();
             this.dungeonName = dungeonName;
-            DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, listOfEntityResponses, getInventoryResponse(), getBattleResponse(), buildables, goals);
+            DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, listOfEntityResponses, getInventoryResponse(), getBattleResponse(), buildables, getGoalsResponse());
             mapOfMinAndMaxValues = findMinAndMaxValues();
 
             return dungeonResp;
@@ -106,7 +108,22 @@ public class DungeonManiaController {
         
         return null;
     }
-    
+
+    private String getGoalsResponse() {
+        // TODO this will change when complex goals is implemented.
+        HashMap<String, Boolean> goals = statistics.getGoals();
+        String incomplete = "";
+        if (goals.size() > 0) {
+            for (String key : goals.keySet()) {
+                if (!goals.get(key)) {
+                    incomplete = incomplete + key + " ";
+                }
+            }
+        }
+
+        return incomplete;
+    }
+
     /* Reading Config file */
     private void generateConfigMap(String configJSONString) {
         JsonObject configJsonObj = JsonParser.parseString(configJSONString).getAsJsonObject();
@@ -124,10 +141,11 @@ public class DungeonManiaController {
             int x = jsonObjElement.get("x").getAsInt();
             int y = jsonObjElement.get("y").getAsInt();
             int key = Integer.MAX_VALUE;
-
+            String colour = " ";
             if (jsonObjElement.get("key") != null) key = jsonObjElement.get("key").getAsInt();
+            if (jsonObjElement.get("colour") != null) colour = jsonObjElement.get("colour").getAsString();
 
-            Entity entityCreated = createEntity(type, x, y, key);
+            Entity entityCreated = createEntity(type, x, y, key, colour);
             if (entityCreated != null) {
                 listOfEntities.add(entityCreated);
                 listOfEntityResponses.add(new EntityResponse(entityCreated.getEntityID(), entityCreated.getEntityType(), entityCreated.getCurrentLocation(), entityCreated.isInteractable()));
@@ -176,7 +194,7 @@ public class DungeonManiaController {
     }
 
     // helper function that creates entities, which will later be stored in the list of entities
-    private Entity createEntity(String type, int x, int y, int key) {
+    private Entity createEntity(String type, int x, int y, int key, String colour) {
         if (type.equalsIgnoreCase("Player")) {
             return new Player(x, y, configMap);
         } else if (type.equalsIgnoreCase("Spider")) {
@@ -209,6 +227,8 @@ public class DungeonManiaController {
             return new Akey(x, y, key);
         } else if (type.equalsIgnoreCase("exit")) {
             return new Exit(x, y);
+        } else if (type.equalsIgnoreCase("portal")) {
+            return new Portal(x, y, colour);
         }
         
         return null;
@@ -261,17 +281,17 @@ public class DungeonManiaController {
         Player player = getPlayer();
         player.setPrevPos(player.getCurrentLocation()); // a bribed mercenary occupies the player's previous position
         playerMovesBoulder(movementDirection, player);
-        player.move(listOfEntities, movementDirection, player, inventory); 
-        exitCheck(player);
+        player.move(listOfEntities, movementDirection, player, inventory, statistics); 
         boulderCheck();
         checkBattles();
+        portalCheck(listOfEntities, player);
         Spider newSpider = spawnASpider(xSpi, player);
         for (Entity currEntity : listOfEntities) {
             if (currEntity.getEntityType().equalsIgnoreCase("player") || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID())))
                 continue;
 
             if (currEntity.isMovingEntity()) {
-                ((MovingEntity) currEntity).move(listOfEntities, movementDirection, player, inventory); 
+                ((MovingEntity) currEntity).move(listOfEntities, movementDirection, player, inventory, statistics);
             }
         }
 
@@ -286,32 +306,39 @@ public class DungeonManiaController {
         return createDungeonResponse();
     }
 
+    // Checks whether or not player is on a portal and then runs teleport method.
+    private void portalCheck(List<Entity> listOfEntities, Player player) {
+        for (Entity currEntity: listOfEntities) {
+            if (currEntity.getEntityType() == "portal" && currEntity.getCurrentLocation().equals(player.getCurrentLocation())) {
+                ((Portal) currEntity).teleport(listOfEntities, player);
+            }
+        }
+    }
+
     // Checks all floor switches if they have a boulder on them. If they do, it updates the state of the switch to trigger it. It they don't it updates
     // the switch to untrigger.
     private void boulderCheck() {
         for (Entity currSwitch : listOfEntities) {
-            if (currSwitch.getEntityType() == "switch") {
-                for (Entity currBoulder : listOfEntities) {
-                    if (currBoulder.getEntityType() == "boulder") {
-                        if (currSwitch.getCurrentLocation().equals(currBoulder.getCurrentLocation())) {
-                            ((FloorSwitch) currSwitch).trigger(listOfEntities);
-                        } else {
-                            ((FloorSwitch) currSwitch).untrigger(listOfEntities);
-                        }
-                    }
+            if (currSwitch.getEntityType() != "switch") {
+                continue;
+            }
+
+            for (Entity currBoulder : listOfEntities) {
+                if (currBoulder.getEntityType() != "boulder") {
+                    continue;
+                }
+
+                if (currSwitch.getCurrentLocation().equals(currBoulder.getCurrentLocation())) {
+                    ((FloorSwitch) currSwitch).trigger(listOfEntities);
+                    statistics.addFloorSwitch();
+                } else {
+                    ((FloorSwitch) currSwitch).untrigger(listOfEntities);
+                    statistics.removeFloorSwitch();
                 }
             }
         }
     }
 
-   // Checks whether or not player is on exit. If they are, it updates the exitState.
-    private void exitCheck(Player player) {
-        for (Entity currEntity: listOfEntities) {
-            if (currEntity.getEntityType() == "exit" && currEntity.getCurrentLocation().equals(player.getCurrentLocation())) {
-                ((Exit) currEntity).setExitState(true);
-            }
-        }
-    }
 
     private void playerMovesBoulder(Direction movementDirection, Player player) {
         for (Entity currEntity : listOfEntities) {
@@ -361,6 +388,7 @@ public class DungeonManiaController {
                 break;
             } else {
                 // Monster died.
+                statistics.addEnemyDestroyed();
                 listOfEntities.remove(monster);
             }
         }
@@ -373,7 +401,7 @@ public class DungeonManiaController {
         List<EntityResponse> entities = new ArrayList<>();
         listOfEntities.forEach((currEntity) -> entities.add(new EntityResponse(currEntity.getEntityID(), currEntity.getEntityType(), currEntity.getCurrentLocation(), currEntity.isInteractable())));
 
-        DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, entities, getInventoryResponse(), getBattleResponse(), buildables, goals);
+        DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, entities, getInventoryResponse(), getBattleResponse(), buildables, getGoalsResponse());
         return dungeonResp;
     }
 
@@ -435,13 +463,42 @@ public class DungeonManiaController {
      * /game/interact
      */
     public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {
-        Player player = getPlayer();
         // Get the entity.
         Entity entity = getEntity(entityId);
         if (entity == null) {
             throw new IllegalArgumentException("EntityId does not refer to a valid entity.");
         }
-        Mercenary merc = (Mercenary) entity;
+
+        Player player = getPlayer();
+
+        if (entity.getEntityType() == "mercenary") {
+            bribery((Mercenary) entity, player);
+        } else if (entity.getEntityType() == "zombie_toast_spawner") {
+            destroySpawner((ZombieToastSpawner) entity, player);
+        }
+
+        return createDungeonResponse();
+    }
+
+    private void destroySpawner(ZombieToastSpawner spawner, Player player) throws InvalidActionException {
+        // Check player is cardinally adjacent to spawner.
+        if (!isCardinallyAdjacent(spawner, player)) {
+            throw new InvalidActionException("Player isn't cardinally adjacent to spawner.");
+        }
+        
+        // Check player has sword.
+        if (!inventory.itemExists("sword")) {
+            throw new InvalidActionException("Player cannot destroy spawner by willpower alone.");
+        }
+
+        listOfEntities.remove(spawner);
+        statistics.addSpawnerDestroyed();
+    }
+
+
+
+
+    private void bribery(Mercenary merc, Player player) throws InvalidActionException {
 
         // Check player is within radius of mercenary.
         int radius = Integer.parseInt(configMap.get("bribe_radius"));
@@ -467,9 +524,34 @@ public class DungeonManiaController {
         merc.setAlly(true);
         player.addAlly();
         merc.setInteractable(false); // according to the spec
-
-        return createDungeonResponse();
     }
+
+
+    /*
+     * @params Entity entity1, Entity entity2.
+     * @returns true if entity2 is cardinally adjacent to entity1, false otherwise.
+     */
+    private boolean isCardinallyAdjacent(Entity entity1, Entity entity2) {
+        ArrayList<Position> positions = new ArrayList<>();
+        int x = entity1.getCurrentLocation().getX();
+        int y = entity1.getCurrentLocation().getY();
+
+        positions.add(new Position(x + 1, y));
+        positions.add(new Position(x, y + 1));
+        positions.add(new Position(x - 1, y));
+        positions.add(new Position(x, y - 1));
+
+        Position targetPos = entity2.getCurrentLocation();
+
+        for (Position position : positions) {
+            if (position.equals(targetPos)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     /*
      * @returns int distance, indicating the distance between the two x coordinates, or y

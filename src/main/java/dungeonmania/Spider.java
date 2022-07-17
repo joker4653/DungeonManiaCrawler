@@ -18,12 +18,14 @@ public class Spider extends MovingEntity {
     private Position spawnLocation;
 
     public Spider(int x, int y, HashMap<String, String> configMap) {
+        super();
         this.spawnLocation = new Position(x, y);
         super.setCurrentLocation(spawnLocation);
         initialiseSpider(configMap);
     }
 
     public Spider(int xMin, int xMax, int yMin, int yMax, HashMap<String, String> configMap) {
+        super();
         this.xMin = xMin;
         this.xMax = xMax;
         this.yMin = yMin;
@@ -61,7 +63,7 @@ public class Spider extends MovingEntity {
 
     }
 
-    public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory) {
+    public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
         // Get the next position and check if it's a boulder. If so, change direction and move. Otherwise, move normally.
         Position nextPosition = getNextPosition();
         if (checkIfNextPositionIsAllowed(nextPosition, listOfEntities)) {
@@ -72,8 +74,6 @@ public class Spider extends MovingEntity {
             if (checkIfNextPositionIsAllowed(nextPosition, listOfEntities))
                 super.setCurrentLocation(nextPosition);
         }
-
-        // TODO: call the battle function if spider is at player's position!!!!!!!!!!!
     }
 
 
