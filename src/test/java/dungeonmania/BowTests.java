@@ -37,7 +37,7 @@ import dungeonmania.BuildableEntity;
 public class BowTests {
     @Test
     @DisplayName("Testing determining viability of building")
-    public void isBuildableBow() {
+    public void isBuildableBow() throws InvalidActionException{
         Bow bow = new Bow(4);
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_swordTest_basicSpawn", "c_swordTest_basicSpawn");
@@ -53,7 +53,9 @@ public class BowTests {
         dmc.inventory.addItem(arrow3);
         dmc.inventory.addItem(wood);
         assertEquals(true, bow.isBuildable(bow.bowMaterials(), dmc.inventory));
-        
+        dmc.build("bow");
+        assertEquals(true, dmc.inventory.itemExists("bow"));
+        assertEquals(false, bow.isBuildable(bow.bowMaterials(), dmc.inventory));
     } 
 
 }

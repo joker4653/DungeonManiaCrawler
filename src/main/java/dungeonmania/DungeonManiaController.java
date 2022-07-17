@@ -486,7 +486,7 @@ public class DungeonManiaController {
                 listOfEntities.add(newBow);
             }
         }
-        return null;
+        return createDungeonResponse();
     }
 
 
