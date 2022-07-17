@@ -60,8 +60,6 @@ public class ExitTests {
         assertEquals(getExitStateHelper(dmc), true);
     }
 
-    // TODO: Test when goals has been implemented.
-
     public boolean getExitStateHelper(DungeonManiaController dmc) {
         List<Entity> list = dmc.getListOfEntities();
         for (Entity currEntity : list) {

@@ -86,7 +86,7 @@ public class BattleTests {
         assertBattleCalculations("zombie", battle, true, "c_battleTests_basicZombieZombieDies");
     } 
 
-/*  TODO --> UNCOMMENT THIS WHEN DOOR/KEY HAVE BEEN IMPLEMENTED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/*  TODO UNCOMMENT THIS WHEN DOOR/KEY HAVE BEEN IMPLEMENTED
     @Test
     @DisplayName("Test zombie walk through the open door and wins the battle")
     public void testZombieWalkThroughOpenDoor() {
@@ -183,7 +183,7 @@ public class BattleTests {
         assertEquals(-playerAttack / 5, round1.getDeltaEnemyHealth());
     }
 
-    /* // TODO Finish these tests once appropriate entities have been made!!!!!!
+    /* // TODO Finish these tests once appropriate entities have been made
     @Test
     @DisplayName("Test player attack with bow bonus.") {
         DungeonManiaController controller = new DungeonManiaController();

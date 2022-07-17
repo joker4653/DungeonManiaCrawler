@@ -33,10 +33,10 @@ public class DungeonManiaController {
     private String dungeonId;
     private String dungeonName;
     private HashMap<String, Integer> mapOfMinAndMaxValues = new HashMap<>();
-    List<Battle> listOfBattles = new ArrayList<>();
-    List<String> buildables = new ArrayList<>();
-    Inventory inventory = new Inventory();
-    Statistics statistics;
+    private List<Battle> listOfBattles = new ArrayList<>();
+    private List<String> buildables = new ArrayList<>();
+    private Inventory inventory = new Inventory();
+    private Statistics statistics;
 
     public List<Entity> getListOfEntities() {
         return listOfEntities;
@@ -95,7 +95,7 @@ public class DungeonManiaController {
             goals.put(goal, false);
             statistics = new Statistics(goals, listOfEntities, configMap);
  
-            // TODO!!!!! replace "buildables" and "goals" with your ACTUAL buildables/goals lists.
+            // TODO replace "buildables" with your actual buildables lists.
             this.dungeonId = UUID.randomUUID().toString();
             this.dungeonName = dungeonName;
             DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, listOfEntityResponses, getInventoryResponse(), getBattleResponse(), buildables, getGoalsResponse());
@@ -383,7 +383,6 @@ public class DungeonManiaController {
             listOfBattles.add(battle);
 
             if (!alive) {
-                // TODO Player Death?!
                 listOfEntities.remove(player);
                 break;
             } else {
