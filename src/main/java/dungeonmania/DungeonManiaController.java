@@ -95,7 +95,7 @@ public class DungeonManiaController {
             goals.put(goal, false);
             statistics = new Statistics(goals, listOfEntities, configMap);
  
-            // TODO!!!!! replace "buildables" and "goals" with your ACTUAL buildables/goals lists.
+            // TODO replace "buildables" with your actual buildables lists.
             this.dungeonId = UUID.randomUUID().toString();
             this.dungeonName = dungeonName;
             DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, listOfEntityResponses, getInventoryResponse(), getBattleResponse(), buildables, getGoalsResponse());
@@ -383,7 +383,7 @@ public class DungeonManiaController {
             listOfBattles.add(battle);
 
             if (!alive) {
-                // TODO Player Death?!
+                // TODO Player Death
                 listOfEntities.remove(player);
                 break;
             } else {
