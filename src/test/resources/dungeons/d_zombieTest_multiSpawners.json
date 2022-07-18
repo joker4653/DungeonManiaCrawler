@@ -1,0 +1,38 @@
+{
+    "entities": [
+        {
+            "type" : "player",
+            "x" : 0,
+            "y" : 0
+        },{
+            "type" : "wall",
+            "x" : 1,
+            "y" : 0
+        }, {
+            "type" : "zombie_toast",
+            "x" : 7,
+            "y" : 7
+        }, {
+            "type": "exit",
+            "x": 5,
+            "y": 1
+        }, {
+            "type" : "zombie_toast",
+            "x" : 10,
+            "y" : 10
+        }, {
+            "type" : "zombie_toast_spawner",
+            "x" : 11,
+            "y" : 11
+        }, {
+            "type" : "zombie_toast_spawner",
+            "x" : 11,
+            "y" : 12
+        }, {
+            "type" : "zombie_toast_spawner",
+            "x" : 10,
+            "y" : 12
+        }
+    ],
+    "goal-condition": {"goal": "exit"}
+}
