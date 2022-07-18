@@ -266,7 +266,29 @@ public class DungeonManiaController {
 
             checkBombs();
 
-            return tick(Direction.STILL); 
+        setTickCount(getTickCount() + 1);
+        int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
+        int xZomb = Integer.parseInt(configMap.get("zombie_spawn_rate"));
+
+        Spider newSpider = spawnASpider(xSpi, getPlayer());
+        for (Entity currEntity : listOfEntities) {
+            if (currEntity.getEntityType().equalsIgnoreCase("player") || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID())))
+                continue;
+
+            if (currEntity.isMovingEntity()) {
+                ((MovingEntity) currEntity).move(listOfEntities,null, getPlayer(), inventory, statistics);
+            }
+        }
+
+        if (xZomb != 0 && getTickCount() % xZomb == 0)
+            processZombieSpawner();
+
+        // Process any battles.
+        checkBattles();
+
+        checkBombs();
+
+        return createDungeonResponse();
     }
 
     /**
@@ -291,7 +313,7 @@ public class DungeonManiaController {
                 continue;
 
             if (currEntity.isMovingEntity()) {
-                ((MovingEntity) currEntity).move(listOfEntities, movementDirection, player, inventory, statistics);
+                ((MovingEntity) currEntity).move(listOfEntities, movementDirection, getPlayer(), inventory, statistics);
             }
         }
 
