@@ -1,11 +1,12 @@
 package dungeonmania;
 
 import java.util.List;
+import java.io.Serializable;
 import java.util.HashMap;
 
 import java.util.stream.Collectors;
 
-public class Statistics {
+public class Statistics implements Serializable {
 
     private HashMap<String, Boolean> goals;
 
