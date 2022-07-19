@@ -9,9 +9,17 @@ import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 import dungeonmania.util.Position;
+import javassist.bytecode.stackmap.BasicBlock.Catch;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +34,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-public class DungeonManiaController {
+public class DungeonManiaController implements Serializable{
     private int tickCount;
     private List<Entity> listOfEntities = new ArrayList<>();
     private HashMap<String, String> configMap = new HashMap<>();
@@ -551,21 +559,70 @@ public class DungeonManiaController {
      * /game/save
      */
     public DungeonResponse saveGame(String name) throws IllegalArgumentException {
-        return null;
+        String path = "src/main/java/dungeonmania/saves/" + name + ".ser";
+        HashMap<String, ArrayList<Integer>> hm = new HashMap<String, ArrayList<Integer>>();
+
+        // store entity id against a array list where ["Position in X", "Position in Y"]
+        for (Entity e : listOfEntities) {
+            hm.put(e.getEntityID(), new ArrayList<Integer>(Arrays.asList(e.getCurrentLocation().getX(), e.getCurrentLocation().getY())));
+        }
+        try {
+            FileOutputStream fOut = new FileOutputStream(path);
+            ObjectOutputStream out = new ObjectOutputStream(fOut);
+            out.writeObject(this);
+            out.close();
+            fOut.close();
+        } catch (IOException excep) {
+            excep.printStackTrace();
+        }
+        return getDungeonResponseModel();
     }
 
     /**
      * /game/load
      */
     public DungeonResponse loadGame(String name) throws IllegalArgumentException {
-        return null;
+        if (!allGames().contains(name)) {
+            throw new IllegalArgumentException();
+        }
+        DungeonManiaController dmc = null;
+
+        String path = "src/main/java/dungeonmania/saves/" + name + ".ser";
+
+        // try to open file Pointer and write 
+        try {
+            FileInputStream fIn = new FileInputStream(path);
+            ObjectInputStream In = new ObjectInputStream(fIn);
+            dmc = (DungeonManiaController) In.readObject();
+            In.close();
+            fIn.close();
+        } catch (IOException excep) {
+            excep.printStackTrace();
+            return null;
+        } catch (ClassNotFoundException excep) {
+            excep.printStackTrace();
+            return null;
+        }
+
+        // return dungeonresponsemodel of the retrieved DMC
+        return dmc.getDungeonResponseModel();
     }
 
     /**
      * /games/all
      */
     public List<String> allGames() {
-        return new ArrayList<>();
+        String path = "src/main/java/dungeonmania/saves/";
+        List<String> GameNames = new ArrayList<String>();
+
+
+        File[] files = new File(path).listFiles();
+
+        for (File f : files) {
+            GameNames.add(f.getName().replace(".ser", ""));
+        }
+
+        return GameNames;
     }
 
     /*

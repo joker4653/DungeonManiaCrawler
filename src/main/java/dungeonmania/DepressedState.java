@@ -1,9 +1,10 @@
 package dungeonmania;
 
 import java.util.List;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class DepressedState implements State {
+public class DepressedState implements State, Serializable {
     private FloorSwitch floorSwitch;
 
     public DepressedState(FloorSwitch floorSwitch) {

@@ -1,5 +1,6 @@
 package dungeonmania;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -8,7 +9,7 @@ import dungeonmania.PlayerBattleStrategy.SwordBattlingStrategy;
 import dungeonmania.PlayerBattleStrategy.BowBattlingStrategy;
 
 
-public class Battle {
+public class Battle implements Serializable {
     private MovingEntity enemy;
     private Player player;
     private double initPlayerHealth;
