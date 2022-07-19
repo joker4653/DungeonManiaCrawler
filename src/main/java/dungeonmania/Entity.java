@@ -6,7 +6,7 @@ import dungeonmania.util.Position;
 
 public abstract class Entity implements Serializable {
 
-    private Position currentLocation;
+    private transient Position currentLocation;
     private String entityID;
     private String entityType;
     private boolean isInteractable;

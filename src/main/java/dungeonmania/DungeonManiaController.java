@@ -584,15 +584,24 @@ public class DungeonManiaController implements Serializable{
     public DungeonResponse saveGame(String name) throws IllegalArgumentException {
         String path = "src/main/java/dungeonmania/saves/" + name + ".ser";
         HashMap<String, ArrayList<Integer>> hm = new HashMap<String, ArrayList<Integer>>();
+        HashMap<DungeonManiaController, HashMap<String, ArrayList<Integer>>> toBeSerialized = new HashMap<DungeonManiaController, HashMap<String, ArrayList<Integer>>>();
 
         // store entity id against a array list where ["Position in X", "Position in Y"]
         for (Entity e : listOfEntities) {
-            hm.put(e.getEntityID(), new ArrayList<Integer>(Arrays.asList(e.getCurrentLocation().getX(), e.getCurrentLocation().getY())));
+            if (e.getEntityID() == getPlayer().getEntityID()) {
+                hm.put("PrevPosPlayer", new ArrayList<Integer>(Arrays.asList(getPlayer().getCurrentLocation().getX(), getPlayer().getCurrentLocation().getY())));
+            } else {
+                hm.put(e.getEntityID(), new ArrayList<Integer>(Arrays.asList(e.getCurrentLocation().getX(), e.getCurrentLocation().getY())));
+            }
         }
+        
+        toBeSerialized.put(this, hm);
+
+
         try {
             FileOutputStream fOut = new FileOutputStream(path);
             ObjectOutputStream out = new ObjectOutputStream(fOut);
-            out.writeObject(this);
+            out.writeObject(toBeSerialized);
             out.close();
             fOut.close();
         } catch (IOException excep) {
@@ -612,7 +621,7 @@ public class DungeonManiaController implements Serializable{
 
         String path = "src/main/java/dungeonmania/saves/" + name + ".ser";
 
-        // try to open file Pointer and write 
+        // try to open file Pointer and read 
         try {
             FileInputStream fIn = new FileInputStream(path);
             ObjectInputStream In = new ObjectInputStream(fIn);
@@ -638,10 +647,7 @@ public class DungeonManiaController implements Serializable{
         String path = "src/main/java/dungeonmania/saves/";
         List<String> GameNames = new ArrayList<String>();
 
-
-        File[] files = new File(path).listFiles();
-
-        for (File f : files) {
+        for (File f : new File(path).listFiles()) {
             GameNames.add(f.getName().replace(".ser", ""));
         }
 

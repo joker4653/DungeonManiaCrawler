@@ -13,7 +13,7 @@ public class Player extends MovingEntity {
 
     private HashMap<String, Integer> activeStates = new HashMap<String, Integer>();
 
-    private Position prevPos;
+    private transient Position prevPos;
     private int allies = 0;
 
     public Player(int x, int y, HashMap<String, String> configMap) {
