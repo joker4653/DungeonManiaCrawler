@@ -1,8 +1,10 @@
 package dungeonmania;
 
+import java.io.Serializable;
+
 import dungeonmania.util.Position;
 
-public abstract class Entity {
+public abstract class Entity implements Serializable {
 
     private Position currentLocation;
     private String entityID;
