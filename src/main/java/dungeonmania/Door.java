@@ -12,14 +12,11 @@ public class Door extends StaticEntity {
 
     public Door(int x, int y, int key) {
         super();
-        super.setCanZombieBeOnThisEntity(false);
-        super.setCanSpiderBeOnThisEntity(true);
         super.setEntityID(UUID.randomUUID().toString());
         super.setInteractable(false);
         super.setEntityType("door");
         super.setCurrentLocation(new Position(x, y));
-        super.setCanMercBeOnThisEntity(false);
-
+        
         // remove
         this.key = key;
     }
@@ -29,13 +26,8 @@ public class Door extends StaticEntity {
     }
 
     public void setLocked(boolean isLocked) {
-        if (isLocked) {
-            super.setCanZombieBeOnThisEntity(false);
-            super.setCanMercBeOnThisEntity(false);
-        } else {
+        if (!isLocked) {
             super.setEntityType("door_open");
-            super.setCanZombieBeOnThisEntity(true);
-            super.setCanMercBeOnThisEntity(true);
         }
 
         this.isLocked = isLocked;

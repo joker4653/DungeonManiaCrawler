@@ -32,6 +32,7 @@ public class ZombieToast extends MovingEntity {
         super.enemyChangeStrategy(new ZombieBattlingStrategy(configMap));
         super.setEnemyHealth(Double.parseDouble(configMap.get("zombie_health")));
         super.setAlly(false);
+        super.setCanStepOn("zombie_toast");
     }
 
     public void spawn(List<Entity> listOfEntities) {
@@ -62,7 +63,7 @@ public class ZombieToast extends MovingEntity {
     private void updateZombAvailablePos(List<Entity> listOfEntities, List<Position> positions) {
         for (Entity currEntity : listOfEntities) {
             Position currEntityPosition = currEntity.getCurrentLocation();
-            if (positions.contains(currEntityPosition) && !currEntity.getCanZombieBeOnThisEntityBool())
+            if (positions.contains(currEntityPosition) && !super.canStep(currEntity.getEntityType()))
                 positions.remove(currEntityPosition);
         }
     }

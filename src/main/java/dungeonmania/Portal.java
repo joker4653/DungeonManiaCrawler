@@ -9,13 +9,10 @@ public class Portal extends StaticEntity {
 
     public Portal(int x, int y, String colour) {
         super();
-        super.setCanZombieBeOnThisEntity(true);
-        super.setCanSpiderBeOnThisEntity(true);
         super.setEntityID(UUID.randomUUID().toString());
         super.setInteractable(false);
         super.setEntityType("portal");
         super.setCurrentLocation(new Position(x, y));
-        super.setCanMercBeOnThisEntity(true);
         this.setCanBlockPlayerMovement(false);
         this.colour = colour;
     }

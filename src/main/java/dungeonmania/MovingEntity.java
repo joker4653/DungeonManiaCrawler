@@ -19,9 +19,6 @@ public abstract class MovingEntity extends Entity {
     private boolean isAlly;
 
     public MovingEntity() {
-        super.setCanSpiderBeOnThisEntity(true);
-        super.setCanZombieBeOnThisEntity(true);
-        super.setCanMercBeOnThisEntity(true);
         super.setMovingEntity(true);
     }
 
