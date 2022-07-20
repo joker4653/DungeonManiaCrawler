@@ -52,20 +52,18 @@ public class HydraTests {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_hydraTest_movementBlocked", "c_hydraTest_basic");
         Position expectedPos = new Position(1, 2);
-        int hydraCount = 0;
 
-        // all hydras are forced to stay where they are, since they are surrounded by entities they can't step on.
+        // hydra is forced to stay where it is, since it is surrounded by entities it can't step on.
         for (int i = 0; i < 5; i++) {
             res = dmc.tick(Direction.DOWN);
             res = dmc.tick(Direction.DOWN);
             res = dmc.tick(Direction.DOWN);
 
-            Position actualHydraPos = getEntities(res, "hydra").get(i).getPosition();
+            Position actualHydraPos = getEntities(res, "hydra").get(0).getPosition();
             assertEquals(expectedPos, actualHydraPos);
-            hydraCount++;
         }
 
-        assertEquals(hydraCount, getEntities(res, "hydra").size());
+        assertEquals(1, getEntities(res, "hydra").size());
     }
 
 

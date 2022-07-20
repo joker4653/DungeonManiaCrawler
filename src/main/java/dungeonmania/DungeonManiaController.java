@@ -38,6 +38,27 @@ public class DungeonManiaController {
     private Inventory inventory = new Inventory();
     private Statistics statistics;
 
+    /*public static void main(String[] args) {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_hydraTest_movementBlocked", "c_hydraTest_basic");
+        Position expectedPos = new Position(1, 2);
+        int hydraCount = 0;
+
+        // all hydras are forced to stay where they are, since they are surrounded by entities they can't step on.
+        for (int i = 0; i < 5; i++) {
+            res = dmc.tick(Direction.DOWN);
+            res = dmc.tick(Direction.DOWN);
+            res = dmc.tick(Direction.DOWN);
+
+            Position actualHydraPos = TestUtils.getEntities(res, "hydra").get(i).getPosition();
+            System.out.println("expected: " + expectedPos + "actualHydraPos: " + actualHydraPos);
+            //TestUtils.assertEquals(expectedPos, actualHydraPos);
+            hydraCount++;
+        }
+
+        System.out.println("expected size: " + TestUtils.getEntities(res, "hydra").size() + "hydraCount: " + hydraCount);
+    }*/
+
     public List<Entity> getListOfEntities() {
         return listOfEntities;
     }
@@ -229,6 +250,8 @@ public class DungeonManiaController {
             return new Exit(x, y);
         } else if (type.equalsIgnoreCase("portal")) {
             return new Portal(x, y, colour);
+        } else if (type.equalsIgnoreCase("hydra")) {
+            return new Hydra(x, y, configMap);
         }
         
         return null;
