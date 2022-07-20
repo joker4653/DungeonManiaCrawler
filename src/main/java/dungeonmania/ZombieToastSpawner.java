@@ -10,14 +10,10 @@ public class ZombieToastSpawner extends StaticEntity {
     
     public ZombieToastSpawner(int x, int y) {
         super();
-        super.setCanSpiderBeOnThisEntity(true);
-        super.setCanZombieBeOnThisEntity(false);
-
         super.setCurrentLocation(new Position(x, y));
         super.setEntityID(UUID.randomUUID().toString());
         super.setEntityType("zombie_toast_spawner");
         super.setInteractable(true);
-        super.setCanMercBeOnThisEntity(true);
     }
 
     public void spawnZombie(List<Entity> listOfEntities, HashMap<String, String> configMap) {
