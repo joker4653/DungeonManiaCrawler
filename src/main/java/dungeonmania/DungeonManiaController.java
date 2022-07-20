@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -475,7 +476,7 @@ public class DungeonManiaController implements Serializable{
         return monstersHere;
     }
 
-    private Player getPlayer() {
+    public Player getPlayer() {
         for (Entity entity : listOfEntities) {
             if (entity.getEntityType().equalsIgnoreCase("player")) {
                 Player player = (Player) entity;
@@ -592,23 +593,12 @@ public class DungeonManiaController implements Serializable{
      */
     public DungeonResponse saveGame(String name) throws IllegalArgumentException {
         String path = "src/main/java/dungeonmania/saves/" + name + ".ser";
-        HashMap<String, ArrayList<Integer>> entityPositions = new HashMap<String, ArrayList<Integer>>();
-        HashMap<DungeonManiaController, HashMap<String, ArrayList<Integer>>> toBeSerialized = new HashMap<DungeonManiaController, HashMap<String, ArrayList<Integer>>>();
-
-        // store entity id against a array list where ("entity ID" -> ["Position in X", "Position in Y"]
-        entityPositions.put("PrevPlayerPos", new ArrayList<Integer>(Arrays.asList(getPlayer().getPrevPos().getX(), getPlayer().getPrevPos().getY())));
-        for (Entity e : listOfEntities) {
-            entityPositions.put(e.getEntityID(), new ArrayList<Integer>(Arrays.asList(e.getCurrentLocation().getX(), e.getCurrentLocation().getY())));
-        }
-        
-        // store DMC as key to positions hm
-        toBeSerialized.put(this, entityPositions);
-
+        Save save = new Save(this);
 
         try {
             FileOutputStream fOut = new FileOutputStream(path, false);
             ObjectOutputStream out = new ObjectOutputStream(fOut);
-            out.writeObject(toBeSerialized);
+            out.writeObject(save);
             out.close();
             fOut.close();
         } catch (IOException excep) {
@@ -620,14 +610,11 @@ public class DungeonManiaController implements Serializable{
     /**
      * /game/load
      */
-
-    // due to nature of the assignment, I know what the unserialized object will be 100% of the time
-    @SuppressWarnings("unchecked")
     public DungeonResponse loadGame(String name) throws IllegalArgumentException {
         if (!allGames().contains(name)) {
             throw new IllegalArgumentException();
         }
-        HashMap<DungeonManiaController, HashMap<String, ArrayList<Integer>>> UnSerailizedData;
+        Save UnSerailizedData;
 
         String path = "src/main/java/dungeonmania/saves/" + name + ".ser";
 
@@ -635,7 +622,7 @@ public class DungeonManiaController implements Serializable{
         try {
             FileInputStream fIn = new FileInputStream(path);
             ObjectInputStream In = new ObjectInputStream(fIn);
-            UnSerailizedData = (HashMap<DungeonManiaController, HashMap<String, ArrayList<Integer>>>) In.readObject();
+            UnSerailizedData = (Save) In.readObject();
             In.close();
             fIn.close();
         } catch (IOException excep) {
@@ -646,15 +633,19 @@ public class DungeonManiaController implements Serializable{
             return null;
         }
 
-        DungeonManiaController LoadedDMC = UnSerailizedData.keySet().iterator().next();
-        HashMap<String, ArrayList<Integer>> positions = UnSerailizedData.get(LoadedDMC);
+        DungeonManiaController LoadedDMC = UnSerailizedData.getDmc();
+        HashMap<String, ArrayList<Integer>> positions = UnSerailizedData.getEntityPositions();
         List<Entity> Entities = LoadedDMC.getListOfEntities();
+
+        setZombAndSpiderSpawnFields(UnSerailizedData, LoadedDMC);
 
         LoadedDMC.getPlayer().setPrevPos(new Position(positions.get("PrevPlayerPos").get(0), positions.get("PrevPlayerPos").get(1)));
         for (Entity e : Entities) {
             ArrayList<Integer> XandY = positions.get(e.getEntityID());
             e.setCurrentLocation(new Position(XandY.get(0), XandY.get(1)));
         }
+
+
 
         // overwrites current existing DMC with the loaded one from Deserialised Object
         reintialisefields(LoadedDMC);
@@ -753,5 +744,21 @@ public class DungeonManiaController implements Serializable{
     buildables = LoadedDMC.getBuildables();
     inventory = LoadedDMC.getInventory();
     statistics = LoadedDMC.getStatistics();
+    }
+
+    private void setZombAndSpiderSpawnFields(Save save, DungeonManiaController dmc) {
+        HashMap<String, ArrayList<Integer>> zombs = save.getZombieToast();
+        HashMap<String, ArrayList<Integer>> spids = save.getSpider();
+
+        for (Entity e : dmc.listOfEntities) {
+            if (e.getEntityType().equals("zombie_toast")) {
+                ZombieToast zomb = (ZombieToast) e;
+                zomb.setSpawnLocation(new Position(zombs.get(e.getEntityID()).get(0), zombs.get(e.getEntityID()).get(1)));
+                zomb.setSpawnerLocation(new Position(zombs.get(e.getEntityID()).get(2), zombs.get(e.getEntityID()).get(3)));
+            } else if (e.getEntityType().equals("spider")) {
+                Spider spid = (Spider) e;
+                spid.setSpawnLocation(new Position(spids.get(e.getEntityID()).get(0), spids.get(e.getEntityID()).get(1)));
+            }
+        }
     }
 }

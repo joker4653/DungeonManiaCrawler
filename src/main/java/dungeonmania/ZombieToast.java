@@ -77,4 +77,12 @@ public class ZombieToast extends MovingEntity {
     public void setSpawnLocation(Position spawnLocation) {
         this.spawnLocation = spawnLocation;
     }
+
+    public Position getSpawnerLocation() {
+        return spawnerLocation;
+    }
+
+    public void setSpawnerLocation(Position spawnerLocation) {
+        this.spawnerLocation = spawnerLocation;
+    }
 }
