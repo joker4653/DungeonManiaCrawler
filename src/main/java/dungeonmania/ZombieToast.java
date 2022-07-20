@@ -51,23 +51,8 @@ public class ZombieToast extends MovingEntity {
 
     @Override
     public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
-        /*List<Position> moveLocations = createListOfCardinalPos(getCurrentLocation());
-        updateZombAvailablePos(listOfEntities, moveLocations);
-
-        // update this entity's position in the listOfEntities
-        Position newPosition = super.getRandPos(moveLocations);
-        super.updatePosAfterMove(listOfEntities, newPosition, getEntityID());*/
         super.moveRandomly(listOfEntities, dir, player, inventory, statistics);
     }
-
-    /*// updates a list of positions that zombies can be on
-    private void updateZombAvailablePos(List<Entity> listOfEntities, List<Position> positions) {
-        for (Entity currEntity : listOfEntities) {
-            Position currEntityPosition = currEntity.getCurrentLocation();
-            if (positions.contains(currEntityPosition) && !super.canStep(currEntity.getEntityType()))
-                positions.remove(currEntityPosition);
-        }
-    }*/
 
     /* Getters and Setters */
 
