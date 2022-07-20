@@ -1,8 +1,9 @@
 package dungeonmania;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Inventory {
+public class Inventory implements Serializable {
 
     ArrayList<Entity> inventory;
 

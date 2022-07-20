@@ -9,9 +9,17 @@ import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 import dungeonmania.util.Position;
+import javassist.bytecode.stackmap.BasicBlock.Catch;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +34,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-public class DungeonManiaController {
+public class DungeonManiaController implements Serializable{
     private int tickCount;
     private List<Entity> listOfEntities = new ArrayList<>();
     private HashMap<String, String> configMap = new HashMap<>();
@@ -37,6 +45,38 @@ public class DungeonManiaController {
     private List<String> buildables = new ArrayList<>();
     private Inventory inventory = new Inventory();
     private Statistics statistics;
+
+    public HashMap<String, String> getConfigMap() {
+        return configMap;
+    }
+
+    public String getDungeonId() {
+        return dungeonId;
+    }
+
+    public String getDungeonName() {
+        return dungeonName;
+    }
+
+    public HashMap<String, Integer> getMapOfMinAndMaxValues() {
+        return mapOfMinAndMaxValues;
+    }
+
+    public List<Battle> getListOfBattles() {
+        return listOfBattles;
+    }
+
+    public List<String> getBuildables() {
+        return buildables;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public Statistics getStatistics() {
+        return statistics;
+    }
 
     public List<Entity> getListOfEntities() {
         return listOfEntities;
@@ -77,7 +117,7 @@ public class DungeonManiaController {
      * /game/new
      */
     public DungeonResponse newGame(String dungeonName, String configName) throws IllegalArgumentException {
-        setTickCount(0);
+        reintialisefields();
         try {
             String dungeonJSONString = FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json");
             String configJSONString = FileLoader.loadResourceFile("/configs/" + configName + ".json");
@@ -551,21 +591,90 @@ public class DungeonManiaController {
      * /game/save
      */
     public DungeonResponse saveGame(String name) throws IllegalArgumentException {
-        return null;
+        String path = "src/main/java/dungeonmania/saves/" + name + ".ser";
+        HashMap<String, ArrayList<Integer>> entityPositions = new HashMap<String, ArrayList<Integer>>();
+        HashMap<DungeonManiaController, HashMap<String, ArrayList<Integer>>> toBeSerialized = new HashMap<DungeonManiaController, HashMap<String, ArrayList<Integer>>>();
+
+        // store entity id against a array list where ("entity ID" -> ["Position in X", "Position in Y"]
+        entityPositions.put("PrevPlayerPos", new ArrayList<Integer>(Arrays.asList(getPlayer().getPrevPos().getX(), getPlayer().getPrevPos().getY())));
+        for (Entity e : listOfEntities) {
+            entityPositions.put(e.getEntityID(), new ArrayList<Integer>(Arrays.asList(e.getCurrentLocation().getX(), e.getCurrentLocation().getY())));
+        }
+        
+        // store DMC as key to positions hm
+        toBeSerialized.put(this, entityPositions);
+
+
+        try {
+            FileOutputStream fOut = new FileOutputStream(path, false);
+            ObjectOutputStream out = new ObjectOutputStream(fOut);
+            out.writeObject(toBeSerialized);
+            out.close();
+            fOut.close();
+        } catch (IOException excep) {
+            excep.printStackTrace();
+        }
+        return getDungeonResponseModel();
     }
 
     /**
      * /game/load
      */
+
+    // due to nature of the assignment, I know what the unserialized object will be 100% of the time
+    @SuppressWarnings("unchecked")
     public DungeonResponse loadGame(String name) throws IllegalArgumentException {
-        return null;
+        if (!allGames().contains(name)) {
+            throw new IllegalArgumentException();
+        }
+        HashMap<DungeonManiaController, HashMap<String, ArrayList<Integer>>> UnSerailizedData;
+
+        String path = "src/main/java/dungeonmania/saves/" + name + ".ser";
+
+        // try to open file Pointer and read 
+        try {
+            FileInputStream fIn = new FileInputStream(path);
+            ObjectInputStream In = new ObjectInputStream(fIn);
+            UnSerailizedData = (HashMap<DungeonManiaController, HashMap<String, ArrayList<Integer>>>) In.readObject();
+            In.close();
+            fIn.close();
+        } catch (IOException excep) {
+            excep.printStackTrace();
+            return null;
+        } catch (ClassNotFoundException excep) {
+            excep.printStackTrace();
+            return null;
+        }
+
+        DungeonManiaController LoadedDMC = UnSerailizedData.keySet().iterator().next();
+        HashMap<String, ArrayList<Integer>> positions = UnSerailizedData.get(LoadedDMC);
+        List<Entity> Entities = LoadedDMC.getListOfEntities();
+
+        LoadedDMC.getPlayer().setPrevPos(new Position(positions.get("PrevPlayerPos").get(0), positions.get("PrevPlayerPos").get(1)));
+        for (Entity e : Entities) {
+            ArrayList<Integer> XandY = positions.get(e.getEntityID());
+            e.setCurrentLocation(new Position(XandY.get(0), XandY.get(1)));
+        }
+
+        // overwrites current existing DMC with the loaded one from Deserialised Object
+        reintialisefields(LoadedDMC);
+
+        // return dungeonresponsemodel of the retrieved DMC
+        return getDungeonResponseModel();
     }
 
     /**
      * /games/all
      */
     public List<String> allGames() {
-        return new ArrayList<>();
+        String path = "src/main/java/dungeonmania/saves/";
+        List<String> GameNames = new ArrayList<String>();
+
+        for (File f : new File(path).listFiles()) {
+            GameNames.add(f.getName().replace(".ser", ""));
+        }
+
+        return GameNames;
     }
 
     /*
@@ -619,4 +728,30 @@ public class DungeonManiaController {
         }
     }
 
+
+    private void reintialisefields() {
+    tickCount = 0;
+    listOfEntities = new ArrayList<>();
+    configMap = new HashMap<>();
+    dungeonId = null;
+    dungeonName = null;
+    mapOfMinAndMaxValues = new HashMap<>();
+    listOfBattles = new ArrayList<>();
+    buildables = new ArrayList<>();
+    inventory = new Inventory();
+    statistics = null;
+    }
+
+    private void reintialisefields(DungeonManiaController LoadedDMC) {
+    tickCount = LoadedDMC.getTickCount();
+    listOfEntities = LoadedDMC.getListOfEntities();
+    configMap = LoadedDMC.getConfigMap();
+    dungeonId = LoadedDMC.getDungeonId();
+    dungeonName = LoadedDMC.getDungeonName();
+    mapOfMinAndMaxValues = LoadedDMC.getMapOfMinAndMaxValues();
+    listOfBattles = LoadedDMC.getListOfBattles();
+    buildables = LoadedDMC.getBuildables();
+    inventory = LoadedDMC.getInventory();
+    statistics = LoadedDMC.getStatistics();
+    }
 }
