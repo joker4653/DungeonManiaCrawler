@@ -612,6 +612,9 @@ public class DungeonManiaController implements Serializable{
     /**
      * /game/load
      */
+
+    // due to nature of the assignment, I know what the unserialized object will be 100% of the time
+    @SuppressWarnings("unchecked")
     public DungeonResponse loadGame(String name) throws IllegalArgumentException {
         if (!allGames().contains(name)) {
             throw new IllegalArgumentException();
