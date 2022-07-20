@@ -10,10 +10,7 @@ public abstract class Entity implements Serializable {
     private String entityID;
     private String entityType;
     private boolean isInteractable;
-    private boolean canSpiderBeOnThisEntity;
-    private boolean canZombieBeOnThisEntity;
     private boolean isMovingEntity;
-    private boolean canMercBeOnThisEntity;
     private boolean isCollectableEntity;
 
     /* Getters and Setters */
@@ -42,14 +39,6 @@ public abstract class Entity implements Serializable {
         this.entityType = entityType;
     }
 
-    public boolean getCanSpiderBeOnThisEntityBool() {
-        return canSpiderBeOnThisEntity;
-    }
-
-    public void setCanSpiderBeOnThisEntity(boolean canSpiderBeOnThisEntity) {
-        this.canSpiderBeOnThisEntity = canSpiderBeOnThisEntity;
-    }
-
     public Position getCurrentLocation() {
         return currentLocation;
     }
@@ -66,27 +55,11 @@ public abstract class Entity implements Serializable {
         this.isInteractable = isInteractable;
     }
 
-    public void setCanZombieBeOnThisEntity(boolean canZombieBeOnThisEntity) {
-        this.canZombieBeOnThisEntity = canZombieBeOnThisEntity;
-    }
-
-    public boolean getCanZombieBeOnThisEntityBool() {
-        return canZombieBeOnThisEntity;
-    }
-
     public boolean isMovingEntity() {
         return isMovingEntity;
     }
 
     public void setMovingEntity(boolean isMovingEntity) {
         this.isMovingEntity = isMovingEntity;
-    }
-
-    public boolean getCanMercBeOnThisEntityBool() {
-        return canMercBeOnThisEntity;
-    }
-
-    public void setCanMercBeOnThisEntity(boolean canMercBeOnThisEntity) {
-        this.canMercBeOnThisEntity = canMercBeOnThisEntity;
     }
 }

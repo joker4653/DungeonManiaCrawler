@@ -28,6 +28,7 @@ public class Mercenary extends MovingEntity {
         super.enemyChangeStrategy(new MercenaryEnemyStrategy(configMap));
         this.isNeighbour = false;
         this.configMap = configMap;
+        super.setCanStepOn("mercenary");
     }
 
     @Override
@@ -116,7 +117,7 @@ public class Mercenary extends MovingEntity {
         List<Position> possiblePos = createListOfCardinalPos(currPos);
 
         listOfEntities.stream()
-                      .filter((currEntity) -> possiblePos.contains(currEntity.getCurrentLocation()) && !currEntity.getCanMercBeOnThisEntityBool())
+                      .filter((currEntity) -> possiblePos.contains(currEntity.getCurrentLocation()) && !super.canStep(currEntity.getEntityType()))
                       .forEach((ent) -> possiblePos.remove(possiblePos.indexOf(ent.getCurrentLocation())));
 
         return possiblePos;

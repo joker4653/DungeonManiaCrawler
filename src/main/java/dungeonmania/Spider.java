@@ -34,13 +34,13 @@ public class Spider extends MovingEntity {
     }
 
     private void initialiseSpider(HashMap<String, String> configMap) {
-        super.setCanSpiderBeOnThisEntity(true);
         super.setEntityID(UUID.randomUUID().toString());
         super.setInteractable(false);
         super.setEntityType("spider");
         super.setEnemyHealth(Double.parseDouble(configMap.get("spider_health")));
         super.enemyChangeStrategy(new SpiderBattlingStrategy(configMap));
         super.setAlly(false);
+        super.setCanStepOn("spider");
     }
 
     public void spawn(List<Entity> listOfEntities, Player player) {
@@ -54,7 +54,7 @@ public class Spider extends MovingEntity {
         
         // exclude locations of boulders since spiders can't spawn on top of them
         listOfEntities.stream()
-                      .filter((currEntity) -> !currEntity.getCanSpiderBeOnThisEntityBool() && possibleSpiderLocations.contains(currEntity.getCurrentLocation()))
+                      .filter((currEntity) -> !super.canStep(currEntity.getEntityType()) && possibleSpiderLocations.contains(currEntity.getCurrentLocation()))
                       .forEach((ent) -> possibleSpiderLocations.remove(ent.getCurrentLocation()));
 
         Position spawnLocation = super.getRandPos(possibleSpiderLocations);
@@ -120,7 +120,7 @@ public class Spider extends MovingEntity {
 
     private boolean checkIfNextPositionIsAllowed(Position nextPosition, List<Entity> listOfEntities) {
         return !listOfEntities.stream()
-                              .anyMatch((currEntity) -> currEntity.getCurrentLocation().equals(nextPosition) && !currEntity.getCanSpiderBeOnThisEntityBool());
+                              .anyMatch((currEntity) -> currEntity.getCurrentLocation().equals(nextPosition) && !super.canStep(currEntity.getEntityType()));
     }
 
     /* Getters and Setters */
