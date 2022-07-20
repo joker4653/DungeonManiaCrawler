@@ -37,7 +37,7 @@ public class ZombieToast extends MovingEntity {
 
     public void spawn(List<Entity> listOfEntities) {
         List<Position> spawnablePositions = createListOfCardinalPos(spawnerLocation);
-        super.updateZombLikeAvailablePos(listOfEntities, spawnablePositions);
+        super.updateAvailablePosList(listOfEntities, spawnablePositions);
 
         // if spawnablePositions is empty, don't spawn any zombies.
         // Otherwise, get the zombie's random spawn location and add the newly spawned zombie to listOfEntities.
