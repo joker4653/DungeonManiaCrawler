@@ -125,4 +125,21 @@ public abstract class MovingEntity extends Entity {
             entity.setCurrentLocation(nextPosition);
     }
 
+    public void moveRandomly(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
+        List<Position> moveLocations = createListOfCardinalPos(getCurrentLocation());
+        updateAvailablePosList(listOfEntities, moveLocations);
+
+        // update this entity's position in the listOfEntities
+        Position newPosition = getRandPos(moveLocations);
+        updatePosAfterMove(listOfEntities, newPosition, getEntityID());
+    }
+
+    // updates a list of positions that moving entities (e.g. zombies and hydras) can be on
+    public void updateAvailablePosList(List<Entity> listOfEntities, List<Position> positions) {
+        for (Entity currEntity : listOfEntities) {
+            Position currEntityPosition = currEntity.getCurrentLocation();
+            if (positions.contains(currEntityPosition) && !canStep(currEntity.getEntityType()))
+                positions.remove(currEntityPosition);
+        }
+    }
 }
