@@ -75,12 +75,13 @@ public class Mercenary extends MovingEntity {
                 break;
             
             queue.remove(u);
-            mercFound = calcShortestPath(u, listOfEntities, dist, prev, visited, mercFound, player);
+            mercFound = calcShortestPath(u, listOfEntities, dist, prev, visited, player);
         }
     }
 
     // Finds the shortest path and also checks if the player has reached the mercenary.
-    private boolean calcShortestPath(Position u, List<Entity> listOfEntities, Map<Position, Double> dist, Map<Position, Position> prev, HashSet<Position> visited, boolean mercFound, Player player) {
+    private boolean calcShortestPath(Position u, List<Entity> listOfEntities, Map<Position, Double> dist, Map<Position, Position> prev, HashSet<Position> visited, Player player) {
+        boolean mercFound = false;
         List<Position> uAdjList = getAdjacentPosInDist(u, listOfEntities, dist);
         for (Position v : uAdjList) {
             if (!visited.contains(v) && dist.get(u) + 1 < dist.get(v)) {
@@ -93,11 +94,10 @@ public class Mercenary extends MovingEntity {
             if (v.equals(getCurrentLocation())) {
                 mercFound = true;
                 mercenaryReached(player, prev, listOfEntities);
-                
                 break;
             }
         }
-
+        
         return mercFound;
     }
 
