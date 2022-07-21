@@ -20,7 +20,6 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Mercenary extends MovingEntity {
-    private static final int UPPER_LIMIT = 60;
     private boolean isNeighbour;
     private HashMap<String, String> configMap;
 
@@ -80,7 +79,9 @@ public class Mercenary extends MovingEntity {
     }
 
     // Finds the shortest path and also checks if the player has reached the mercenary.
-    private boolean calcShortestPath(Position u, List<Entity> listOfEntities, Map<Position, Double> dist, Map<Position, Position> prev, HashSet<Position> visited, Player player) {
+    private boolean calcShortestPath(Position u, List<Entity> listOfEntities, Map<Position, Double> dist,
+    Map<Position, Position> prev, HashSet<Position> visited, Player player) {
+
         boolean mercFound = false;
         List<Position> uAdjList = getAdjacentPosInDist(u, listOfEntities, dist);
         for (Position v : uAdjList) {
@@ -102,21 +103,21 @@ public class Mercenary extends MovingEntity {
     }
 
     private void mercenaryReached(Player player, Map<Position, Position> prev, List<Entity> listOfEntities) {
+        // if the ally's next position is the player's position, the ally doesn't move ---> NEED FORUM RESPONSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         if (!(isAlly() && prev.get(getCurrentLocation()).equals(player.getCurrentLocation())))
             super.setCurrentLocation(prev.get(getCurrentLocation()));
     
         List<Position> playerAdjPos = getAdjacentPos(player.getCurrentLocation(), listOfEntities);
-
         if (playerAdjPos.contains(this.getCurrentLocation()))
             this.isNeighbour = true;
     }
-    
 
     private void initialiseDijStructures(List<Position> grid, Map<Position, Double> dist, Map<Position, Position> prev, Player player) {
         for (Position currPos : grid) {
             dist.put(currPos, Double.MAX_VALUE);
             prev.put(currPos, null);
         }
+
         dist.put(player.getCurrentLocation(), 0.0);
     }
 
@@ -145,7 +146,7 @@ public class Mercenary extends MovingEntity {
 
     private List<Position> getGrid(HashMap<String, Integer> gridBoundaries) {
         List<Position> grid = new ArrayList<>();
-        
+
         for (int x = gridBoundaries.get("minX") - 1; x < gridBoundaries.get("maxX") + 1; x++) {
             for (int y = gridBoundaries.get("minY") - 1; y < gridBoundaries.get("maxY") + 1; y++) {
                 grid.add(new Position(x, y));

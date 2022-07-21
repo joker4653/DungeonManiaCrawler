@@ -27,14 +27,4 @@ public class Helper {
 
         return mapOfMinAndMaxValues;
     }
-
-    public static Player getPlayer(List<Entity> listOfEntities) {
-        for (Entity entity : listOfEntities) {
-            if (entity.getEntityType().equalsIgnoreCase("player")) {
-                Player player = (Player) entity;
-                return player;
-            }
-        }
-        return null;
-    }
 }
