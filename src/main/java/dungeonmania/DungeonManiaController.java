@@ -47,6 +47,29 @@ public class DungeonManiaController implements Serializable{
     private Inventory inventory = new Inventory();
     private Statistics statistics;
 
+    public static void main(String[] args) {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_mercenaryTest_blocked", "c_mercenaryTest_followPlayer");
+
+        Position pos = TestUtils.getEntities(res, "mercenary").get(0).getPosition();
+        //assertEquals(pos, new Position(2, 2));
+
+        res = dmc.tick(Direction.LEFT);
+
+        Position expectedPos = new Position(2, 2);
+        Position mPos = TestUtils.getEntities(res, "mercenary").get(0).getPosition();      
+        //assertEquals(expectedPos, mPos);
+
+        for (int i = 0; i < 3; i++)
+            res = dmc.tick(Direction.UP);
+        
+        expectedPos = new Position(2, 2);
+       // mPos = TestUtils.getEntities(res, "mercenary").get(0).getPosition();  
+        mPos = TestUtils.getEntities(res, "mercenary").get(0).getPosition();      
+       // assertEquals(expectedPos, mPos);
+    
+    }
+
     public HashMap<String, String> getConfigMap() {
         return configMap;
     }
@@ -140,7 +163,7 @@ public class DungeonManiaController implements Serializable{
             this.dungeonId = UUID.randomUUID().toString();
             this.dungeonName = dungeonName;
             DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, listOfEntityResponses, getInventoryResponse(), getBattleResponse(), buildables, getGoalsResponse());
-            mapOfMinAndMaxValues = findMinAndMaxValues();
+            mapOfMinAndMaxValues = Helper.findMinAndMaxValues(listOfEntities);
 
             return dungeonResp;
         } catch (IOException e) {
@@ -495,25 +518,6 @@ public class DungeonManiaController implements Serializable{
             }
         }
         return null;
-    }
-
-
-    // finds minX, maxX, minY and maxY based on the Dungeon map's coordinates.
-    public HashMap<String, Integer> findMinAndMaxValues() {
-        List<Integer> listOfXPositions = listOfEntities.stream()
-                                                       .map(e -> e.getCurrentLocation().getX())
-                                                       .collect(Collectors.toList());
-
-        List<Integer> listOfYPositions = listOfEntities.stream()
-                                                       .map(e -> e.getCurrentLocation().getY())
-                                                       .collect(Collectors.toList());
-
-        mapOfMinAndMaxValues.put("minX", Collections.min(listOfXPositions));
-        mapOfMinAndMaxValues.put("maxX", Collections.max(listOfXPositions));
-        mapOfMinAndMaxValues.put("minY", Collections.min(listOfYPositions));
-        mapOfMinAndMaxValues.put("maxY", Collections.max(listOfYPositions));
-
-        return mapOfMinAndMaxValues;
     }
 
     /**
