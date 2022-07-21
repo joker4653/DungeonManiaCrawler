@@ -47,29 +47,6 @@ public class DungeonManiaController implements Serializable{
     private Inventory inventory = new Inventory();
     private Statistics statistics;
 
-    public static void main(String[] args) {
-        DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_mercenaryTest_blocked", "c_mercenaryTest_followPlayer");
-
-        Position pos = TestUtils.getEntities(res, "mercenary").get(0).getPosition();
-        //assertEquals(pos, new Position(2, 2));
-
-        res = dmc.tick(Direction.LEFT);
-
-        Position expectedPos = new Position(2, 2);
-        Position mPos = TestUtils.getEntities(res, "mercenary").get(0).getPosition();      
-        //assertEquals(expectedPos, mPos);
-
-        for (int i = 0; i < 3; i++)
-            res = dmc.tick(Direction.UP);
-        
-        expectedPos = new Position(2, 2);
-       // mPos = TestUtils.getEntities(res, "mercenary").get(0).getPosition();  
-        mPos = TestUtils.getEntities(res, "mercenary").get(0).getPosition();      
-       // assertEquals(expectedPos, mPos);
-    
-    }
-
     public HashMap<String, String> getConfigMap() {
         return configMap;
     }
