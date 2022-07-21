@@ -2,10 +2,17 @@ package dungeonmania;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.UUID;
+import java.util.Map.Entry;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import dungeonmania.EnemyBattleStrategy.MercenaryAllyStrategy;
 import dungeonmania.EnemyBattleStrategy.MercenaryEnemyStrategy;
@@ -13,7 +20,6 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Mercenary extends MovingEntity {
-    private static final int UPPER_LIMIT = 60;
     private boolean isNeighbour;
     private HashMap<String, String> configMap;
 
@@ -34,7 +40,7 @@ public class Mercenary extends MovingEntity {
     @Override
     public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
         if (!super.isAlly()) {
-            enemyMovement(listOfEntities, player);
+            enemyMovementDS(listOfEntities, player);
         } else {
             super.enemyChangeStrategy(new MercenaryAllyStrategy(configMap));
             allyMovement(listOfEntities, player); 
@@ -47,72 +53,110 @@ public class Mercenary extends MovingEntity {
         if (this.isNeighbour) {
             super.setCurrentLocation(player.getPrevPos());
         } else {
-            enemyMovement(listOfEntities, player);
+            enemyMovementDS(listOfEntities, player);
         }
     }
 
-    private void enemyMovement(List<Entity> listOfEntities, Player player) {
-        List<Position> queue = new ArrayList<>(Arrays.asList(player.getCurrentLocation()));
-        HashMap<Position, Integer> reachablePos = new HashMap<>();
-        reachablePos.put(player.getCurrentLocation(), 0);
+    // Mercenaries move according to Dijkstra's algorithm.
+    private void enemyMovementDS(List<Entity> listOfEntities, Player player) {
+        HashMap<String, Integer> gridBoundaries = Helper.findMinAndMaxValues(listOfEntities);
+        Map<Position, Double> dist = new HashMap<>();
+        Map<Position, Position> prev = new HashMap<>();
+        HashSet<Position> visited = new HashSet<Position>();
+        List<Position> grid =  getGrid(gridBoundaries);
+        initialiseDijStructures(grid, dist, prev, player);
 
-        int distance = 1;
+        List<Position> queue = new ArrayList<>(grid);
         boolean mercFound = false;
-        while (queue.size() != 0 && !mercFound && distance <= UPPER_LIMIT) {
-            Position front = queue.get(0);
-            queue.remove(0);
-            distance = reachablePos.get(front) + 1; // this is front's neighbours' distance from front
-            mercFound = processAdjPosAndCheckIfMerc(reachablePos, front, listOfEntities, queue, distance);            
-        }
-
-        // next, find the path from mercenary to player
-        if (mercFound) {
-            setMercNextPos(reachablePos, listOfEntities, player.getCurrentLocation());
-            List<Position> playerAdjPos = getAdjacentPos(player.getCurrentLocation(), listOfEntities);
-            if (playerAdjPos.contains(this.getCurrentLocation()))
-                this.isNeighbour = true;
+        while (!queue.isEmpty() && mercFound == false) {
+            Position u = findEleSmallestDist(queue, dist);
+            if (u == null)
+                break;
+            
+            queue.remove(u);
+            mercFound = calcShortestPath(u, listOfEntities, dist, prev, visited, player);
         }
     }
 
-    private boolean processAdjPosAndCheckIfMerc(Map<Position, Integer> reachablePos, Position front,
-    List<Entity> listOfEntities, List<Position> queue, int distance) {
-        List<Position> adjacentPos = getAdjacentPos(front, listOfEntities);
+    // Finds the shortest path and also checks if the player has reached the mercenary.
+    private boolean calcShortestPath(Position u, List<Entity> listOfEntities, Map<Position, Double> dist,
+    Map<Position, Position> prev, HashSet<Position> visited, Player player) {
 
-        for (Position adjPos : adjacentPos) {
-            // if the adjacent position is NOT in the hashmap, I add it to the queue and hashmap
-            if (reachablePos.get(adjPos) == null) {
-                queue.add(adjPos);
-                reachablePos.put(adjPos, distance);
+        boolean mercFound = false;
+        List<Position> uAdjList = getAdjacentPosInDist(u, listOfEntities, dist);
+        for (Position v : uAdjList) {
+            if (!visited.contains(v) && dist.get(u) + 1 < dist.get(v)) {
+                dist.put(v, dist.get(u) + 1);
+                prev.put(v, u);
+                visited.add(v);
             }
 
-            // if the adjacent position is a mercenary, return true
-            if (adjPos.equals(this.getCurrentLocation()))
-                return true;
+            // if the neighbour is a mercenary...
+            if (v.equals(getCurrentLocation())) {
+                mercFound = true;
+                mercenaryReached(player, prev, listOfEntities);
+                break;
+            }
         }
-
-        return false;
+        
+        return mercFound;
     }
 
-    private void setMercNextPos(HashMap<Position, Integer> reachablePos, List<Entity> listOfEntities, Position playerPos) {
-        // find the merc's neighbour that has the minimum distance in the map
-        List<Position> mercNeighbours = getAdjacentPos(this.getCurrentLocation(), listOfEntities);
+    private void mercenaryReached(Player player, Map<Position, Position> prev, List<Entity> listOfEntities) {
+        // if the ally's next position is the player's position, the ally doesn't move ---> NEED FORUM RESPONSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        if (!(isAlly() && prev.get(getCurrentLocation()).equals(player.getCurrentLocation())))
+            super.setCurrentLocation(prev.get(getCurrentLocation()));
+    
+        List<Position> playerAdjPos = getAdjacentPos(player.getCurrentLocation(), listOfEntities);
+        if (playerAdjPos.contains(this.getCurrentLocation()))
+            this.isNeighbour = true;
+    }
 
-        if (super.isAlly() && mercNeighbours.contains(playerPos))
-           mercNeighbours.remove(playerPos);
+    private void initialiseDijStructures(List<Position> grid, Map<Position, Double> dist, Map<Position, Position> prev, Player player) {
+        for (Position currPos : grid) {
+            dist.put(currPos, Double.MAX_VALUE);
+            prev.put(currPos, null);
+        }
 
-        int minDistance = UPPER_LIMIT;
-        Position minPosition = this.getCurrentLocation();
-        for (Position currNeighbour : mercNeighbours) {
-            if (reachablePos.containsKey(currNeighbour) && reachablePos.get(currNeighbour) < minDistance) {
-                minDistance = reachablePos.get(currNeighbour);
-                minPosition = currNeighbour;
+        dist.put(player.getCurrentLocation(), 0.0);
+    }
+
+    private List<Position> getAdjacentPosInDist(Position u, List<Entity> listOfEntities, Map<Position, Double> dist) {
+        List<Position> listOfAdjPos = getAdjacentPos(u, listOfEntities);
+        return listOfAdjPos.stream()
+                           .filter(pos -> dist.containsKey(pos))
+                           .collect(Collectors.toList());
+    }
+
+    private Position findEleSmallestDist(List<Position> queue, Map<Position, Double> dist) {
+        Map<Position, Double> distInQueue = dist.entrySet().stream()
+                                                           .filter(entry -> queue.contains(entry.getKey()))
+                                                           .collect(Collectors.toMap(k -> k.getKey(), v -> v.getValue()));
+        
+        double minVal = Collections.min(distInQueue.values());
+
+        if (minVal != Double.MAX_VALUE)
+            return distInQueue.entrySet().stream()
+                                         .filter(entry -> entry.getValue().equals(minVal))
+                                         .findFirst()
+                                         .get()
+                                         .getKey();
+        return null;
+    }
+
+    private List<Position> getGrid(HashMap<String, Integer> gridBoundaries) {
+        List<Position> grid = new ArrayList<>();
+
+        for (int x = gridBoundaries.get("minX") - 1; x < gridBoundaries.get("maxX") + 1; x++) {
+            for (int y = gridBoundaries.get("minY") - 1; y < gridBoundaries.get("maxY") + 1; y++) {
+                grid.add(new Position(x, y));
             }
         }
 
-        setCurrentLocation(minPosition);
+        return grid;
     }
 
-    // gets cardinally adjacent possible positions
+    // gets cardinally adjacent possible positions that the mercenary can be on
     private List<Position> getAdjacentPos(Position currPos, List<Entity> listOfEntities) {
         List<Position> possiblePos = createListOfCardinalPos(currPos);
 

@@ -140,7 +140,7 @@ public class DungeonManiaController implements Serializable{
             this.dungeonId = UUID.randomUUID().toString();
             this.dungeonName = dungeonName;
             DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, listOfEntityResponses, getInventoryResponse(), getBattleResponse(), buildables, getGoalsResponse());
-            mapOfMinAndMaxValues = findMinAndMaxValues();
+            mapOfMinAndMaxValues = Helper.findMinAndMaxValues(listOfEntities);
 
             return dungeonResp;
         } catch (IOException e) {
@@ -495,25 +495,6 @@ public class DungeonManiaController implements Serializable{
             }
         }
         return null;
-    }
-
-
-    // finds minX, maxX, minY and maxY based on the Dungeon map's coordinates.
-    public HashMap<String, Integer> findMinAndMaxValues() {
-        List<Integer> listOfXPositions = listOfEntities.stream()
-                                                       .map(e -> e.getCurrentLocation().getX())
-                                                       .collect(Collectors.toList());
-
-        List<Integer> listOfYPositions = listOfEntities.stream()
-                                                       .map(e -> e.getCurrentLocation().getY())
-                                                       .collect(Collectors.toList());
-
-        mapOfMinAndMaxValues.put("minX", Collections.min(listOfXPositions));
-        mapOfMinAndMaxValues.put("maxX", Collections.max(listOfXPositions));
-        mapOfMinAndMaxValues.put("minY", Collections.min(listOfYPositions));
-        mapOfMinAndMaxValues.put("maxY", Collections.max(listOfYPositions));
-
-        return mapOfMinAndMaxValues;
     }
 
     /**
