@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import dungeonmania.Entities.Entity;
+import dungeonmania.Entities.Moving.Spider;
+import dungeonmania.Entities.Moving.ZombieToast;
+
 public class Save implements Serializable {
     DungeonManiaController dmc;
     HashMap<String, ArrayList<Integer>> entityPositions = new HashMap<String, ArrayList<Integer>>();
-    ArrayList<Integer> PrevPlayerPos;
     HashMap<String, ArrayList<Integer>> Zombs = new HashMap<String, ArrayList<Integer>>();
     HashMap<String, ArrayList<Integer>> Spids = new HashMap<String, ArrayList<Integer>>();
 
@@ -24,10 +27,6 @@ public class Save implements Serializable {
 
     public HashMap<String, ArrayList<Integer>> getEntityPositions() {
         return entityPositions;
-    }
-
-    public ArrayList<Integer> getPrevPlayerPos() {
-        return PrevPlayerPos;
     }
 
     public HashMap<String, ArrayList<Integer>> getZombieToast() {
