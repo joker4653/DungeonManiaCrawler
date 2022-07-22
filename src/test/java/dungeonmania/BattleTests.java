@@ -290,7 +290,7 @@ public class BattleTests {
     }
 
     /* System level test.
-    The test below involves the following:
+    Tests the following:
     1. player gets 3 coins
     2. player bribes the mercenary
     3. player battles and wins against one zombie
@@ -361,4 +361,33 @@ public class BattleTests {
         assertEquals(new Position(4, 6), newPos);
         return res;
     }
+
+    // Hydra battle tests
+
+    @Test
+    @DisplayName("Test hydra's health never increases when hydra_health_increase_rate = 0. Hydra loses.")
+    public void testHydraHpNeverIncreases() {
+        //  exit   wall      wall                   wall
+        //         player    hydra                  boulder
+        //  wall   wall      zombie_toast_spawner   wall
+        DungeonManiaController controller = new DungeonManiaController();
+        DungeonResponse initialResponse = controller.newGame("d_battleTest_basicHydra", "c_battleTest_hydraNeverIncrease");
+        DungeonResponse postBattleResponse = genericEnemySequence(initialResponse, controller, "hydra");
+        BattleResponse battle = postBattleResponse.getBattles().get(0);
+        assertBattleCalculations("hydra", battle, true, "c_battleTest_hydraNeverIncrease");
+    }
+
+    @Test
+    @DisplayName("Test hydra's health always increases when hydra_health_increase_rate = 1. Hydra wins.")
+    public void testHydraHpAlwaysIncreases() {
+        //  exit   wall      wall                   wall
+        //         player    hydra                  boulder
+        //  wall   wall      zombie_toast_spawner   wall
+        DungeonManiaController controller = new DungeonManiaController();
+        DungeonResponse initialResponse = controller.newGame("d_battleTest_basicHydra", "c_battleTest_hydraAlwaysIncrease");
+        DungeonResponse postBattleResponse = genericEnemySequence(initialResponse, controller, "hydra");
+        BattleResponse battle = postBattleResponse.getBattles().get(0);
+        assertBattleCalculations("hydra", battle, false, "c_battleTest_hydraAlwaysIncrease");
+    }
+
 }
