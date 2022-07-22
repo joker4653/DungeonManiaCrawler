@@ -12,8 +12,8 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class ZombieToast extends MovingEntity {
-    private Position spawnLocation;
-    private Position spawnerLocation;
+    private transient Position spawnLocation;
+    private transient Position spawnerLocation;
     
     public ZombieToast(int x, int y, HashMap<String, String> configMap) {
         super();

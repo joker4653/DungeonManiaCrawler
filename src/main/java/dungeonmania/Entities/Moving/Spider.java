@@ -18,7 +18,7 @@ public class Spider extends MovingEntity {
     private int xMax;
     private int yMin;
     private int yMax;
-    private Position spawnLocation;
+    private transient Position spawnLocation;
 
     public Spider(int x, int y, HashMap<String, String> configMap) {
         super();
