@@ -1,5 +1,14 @@
 package dungeonmania;
 
+import dungeonmania.Battling.Battle;
+import dungeonmania.Entities.Entity;
+import dungeonmania.Entities.Inventory;
+import dungeonmania.Entities.Collectables.Bomb;
+import dungeonmania.Entities.Moving.Mercenary;
+import dungeonmania.Entities.Moving.MovingEntity;
+import dungeonmania.Entities.Moving.Player;
+import dungeonmania.Entities.Moving.Spider;
+import dungeonmania.Entities.Static.ZombieToastSpawner;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;

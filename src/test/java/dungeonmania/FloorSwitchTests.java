@@ -16,6 +16,8 @@ import static dungeonmania.TestUtils.getValueFromConfigFile;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import dungeonmania.Entities.Entity;
+import dungeonmania.Entities.Static.FloorSwitch;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
