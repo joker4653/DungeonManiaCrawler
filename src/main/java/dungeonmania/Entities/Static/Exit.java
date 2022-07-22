@@ -1,6 +1,5 @@
 package dungeonmania.Entities.Static;
 
-import java.util.List;
 import java.util.UUID;
 
 import dungeonmania.util.Position;
