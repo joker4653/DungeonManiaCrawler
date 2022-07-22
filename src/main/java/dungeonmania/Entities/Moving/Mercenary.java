@@ -170,4 +170,21 @@ public class Mercenary extends MovingEntity {
 
         return possiblePos;
     }
+
+    /* Getters & Setters */
+    public boolean isNeighbour() {
+        return isNeighbour;
+    }
+
+    public void setNeighbour(boolean isNeighbour) {
+        this.isNeighbour = isNeighbour;
+    }
+
+    public HashMap<String, String> getConfigMap() {
+        return configMap;
+    }
+
+    public void setConfigMap(HashMap<String, String> configMap) {
+        this.configMap = configMap;
+    }
 }

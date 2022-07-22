@@ -25,6 +25,7 @@ import dungeonmania.Entities.Collectables.Sword;
 import dungeonmania.Entities.Collectables.Treasure;
 import dungeonmania.Entities.Collectables.Wood;
 import dungeonmania.Entities.Moving.Hydra;
+import dungeonmania.Entities.Moving.Assassin;
 import dungeonmania.Entities.Moving.Mercenary;
 import dungeonmania.Entities.Moving.MovingEntity;
 import dungeonmania.Entities.Moving.Player;
@@ -147,6 +148,8 @@ public class Helper {
             return new Hydra(x, y, configMap);
         } else if (type.equalsIgnoreCase("invisibility_potion")) {
             return new InvisibilityPotion(x, y, Integer.parseInt(configMap.get("invisibility_potion_duration")));
+        } else if (type.equalsIgnoreCase("assassin")) {
+            return new Assassin(x, y, configMap);
         }
         
         return null;
