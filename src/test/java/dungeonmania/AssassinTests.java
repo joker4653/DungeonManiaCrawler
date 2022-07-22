@@ -119,7 +119,7 @@ public class AssassinTests {
     }*/
 
 
-    // Assassin ally movement tests:
+    /*// Assassin ally movement tests:
     @Test
     @DisplayName("Test the movement of a bribed assassin")
     public void testAssassinAllyMovement() {
@@ -152,5 +152,5 @@ public class AssassinTests {
         playerPrevPos = getPlayer(res).get().getPosition();
         res = dmc.tick(Direction.RIGHT);
         assertTrue(getEntities(res, "assassin").get(0).getPosition().equals(playerPrevPos));
-    }
+    }*/
 }

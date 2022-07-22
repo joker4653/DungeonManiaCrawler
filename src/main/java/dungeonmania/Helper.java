@@ -24,6 +24,7 @@ import dungeonmania.Entities.Collectables.Sword;
 import dungeonmania.Entities.Collectables.Treasure;
 import dungeonmania.Entities.Collectables.Wood;
 import dungeonmania.Entities.Moving.Hydra;
+import dungeonmania.Entities.Moving.Assassin;
 import dungeonmania.Entities.Moving.Mercenary;
 import dungeonmania.Entities.Moving.MovingEntity;
 import dungeonmania.Entities.Moving.Player;
@@ -144,6 +145,8 @@ public class Helper {
             return new Portal(x, y, colour);
         } else if (type.equalsIgnoreCase("hydra")) {
             return new Hydra(x, y, configMap);
+        } else if (type.equalsIgnoreCase("assassin")) {
+            return new Assassin(x, y, configMap);
         }
         
         return null;
