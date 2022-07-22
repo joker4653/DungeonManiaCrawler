@@ -11,7 +11,7 @@
     "mercenary_attack": 1,
     "mercenary_health": 5,
     "player_attack": 1,
-    "player_health": 1,
+    "player_health": 20,
     "shield_defence": 1,
     "shield_durability": 1,
     "spider_attack": 1,
@@ -23,8 +23,8 @@
     "zombie_attack": 1,
     "zombie_health": 5,
     "zombie_spawn_rate": 0,
-    "hydra_attack": 100,
-    "hydra_health": 100,
-    "hydra_health_increase_rate": 0.5,
+    "hydra_attack": 1,
+    "hydra_health": 10,
+    "hydra_health_increase_rate": 1,
     "hydra_health_increase_amount": 100
   }
