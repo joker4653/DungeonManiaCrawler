@@ -20,6 +20,7 @@ import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 import dungeonmania.Entities.Collectables.Akey;
 import dungeonmania.Entities.Collectables.Bomb;
+import dungeonmania.Entities.Collectables.InvisibilityPotion;
 import dungeonmania.Entities.Collectables.Sword;
 import dungeonmania.Entities.Collectables.Treasure;
 import dungeonmania.Entities.Collectables.Wood;
@@ -144,6 +145,8 @@ public class Helper {
             return new Portal(x, y, colour);
         } else if (type.equalsIgnoreCase("hydra")) {
             return new Hydra(x, y, configMap);
+        } else if (type.equalsIgnoreCase("invisibility_potion")) {
+            return new InvisibilityPotion(x, y, Integer.parseInt(configMap.get("invisibility_potion_duration")));
         }
         
         return null;
@@ -416,5 +419,33 @@ public class Helper {
 
         listOfEntities.remove(spawner);
         statistics.addSpawnerDestroyed();
+    }
+
+    /**
+     * For the tick a potion is used
+     * @param player
+     * @param bool
+     */
+    public static void checkPotionStatus(Player player, boolean bool, List<Entity> listofEntities) {
+        if (player.getCurrentPotionState() == null) {
+            return;
+        } else if (bool == true) {
+            // alert observers of change
+            player.setCurrentPotion(player.getCurrentPotion(), listofEntities);
+            return;
+        }
+        return;
+    }
+
+    /**
+     * For use any other time
+     * @param player
+     */
+    public static void checkPotionStatus(Player player, List<Entity> listofEntities) {
+        if (player.getCurrentPotionState() == null) {
+            return;
+        }
+        
+        player.decrementCurrentPotion(listofEntities);
     }
 }

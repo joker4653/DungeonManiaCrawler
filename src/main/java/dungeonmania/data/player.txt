@@ -14,3 +14,5 @@ arrow
 bomb
 wood
 key
+invisibility_potion
+invincibility_potion

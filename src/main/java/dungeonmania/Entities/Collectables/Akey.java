@@ -13,6 +13,7 @@ public class Akey extends CollectableEntity {
         super.setEntityType("key");
         super.setCurrentLocation(new Position(x, y));
         super.setCollectableEntity(true);
+        super.setConsumable(false);
 
         pairNum = k;
     }
