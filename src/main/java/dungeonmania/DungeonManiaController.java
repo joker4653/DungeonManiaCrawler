@@ -4,6 +4,7 @@ import dungeonmania.Battling.Battle;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 import dungeonmania.Entities.Collectables.Bomb;
+import dungeonmania.Entities.Moving.Assassin;
 import dungeonmania.Entities.Moving.Mercenary;
 import dungeonmania.Entities.Moving.MovingEntity;
 import dungeonmania.Entities.Moving.Player;
@@ -318,9 +319,9 @@ public class DungeonManiaController implements Serializable{
 
         Player player = getPlayer();
 
-        if (entity.getEntityType() == "mercenary") {
-            Helper.bribery((Mercenary) entity, player, configMap, inventory);
-        } else if (entity.getEntityType() == "zombie_toast_spawner") {
+        if (entity.getEntityType().equalsIgnoreCase("mercenary") || entity.getEntityType().equalsIgnoreCase("assassin")) {
+            ((Mercenary) entity).bribery((Mercenary) entity, player, inventory);
+        } else if (entity.getEntityType().equalsIgnoreCase("zombie_toast_spawner")) {
             Helper.destroySpawner((ZombieToastSpawner) entity, player, inventory, listOfEntities, statistics);
         }
 

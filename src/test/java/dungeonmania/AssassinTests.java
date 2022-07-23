@@ -226,5 +226,5 @@ public class AssassinTests {
         assertTrue(assassin.isInteractable()); // since the assassin is NOT an ally, isInteractable is still true.
     }
 
-    
+
 }

@@ -1,6 +1,7 @@
 package dungeonmania.Entities.Moving;
 
 import java.util.HashMap;
+import java.util.Random;
 import java.util.UUID;
 
 import dungeonmania.util.Position;
@@ -18,6 +19,13 @@ public class Assassin extends Mercenary {
         super.setNeighbour(false);
         super.setConfigMap(configMap);
         super.setCanStepOn("assassin");
+        super.setBribe(Integer.parseInt(configMap.get("assassin_bribe_amount")));
     }
     
+    @Override
+    public void becomeAlly(Mercenary merc, Player player) {
+        if (new Random().nextDouble() <= (1 - Double.parseDouble(getConfigMap().get("assassin_bribe_fail_rate")))) {
+            super.becomeAlly(this, player);
+        }
+    }
 }
