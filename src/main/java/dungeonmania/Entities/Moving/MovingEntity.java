@@ -15,7 +15,7 @@ import dungeonmania.Entities.Inventory;
 import dungeonmania.util.Direction;
 
 public abstract class MovingEntity extends Entity {
-    String CurrentPlayerPotion;
+    private String CurrentPlayerPotion = "";
     private ArrayList<String> canStepOn;
     private EnemyBattlingStrategy enemyStrategy;
     private double playerHealth;

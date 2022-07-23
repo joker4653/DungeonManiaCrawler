@@ -430,9 +430,7 @@ public class Helper {
      * @param bool
      */
     public static void checkPotionStatus(Player player, boolean bool, List<Entity> listofEntities) {
-        if (player.getCurrentPotionState() == null) {
-            return;
-        } else if (bool == true) {
+        if (bool == true) {
             // alert observers of change
             player.setCurrentPotion(player.getCurrentPotion(), listofEntities);
             return;
@@ -445,7 +443,7 @@ public class Helper {
      * @param player
      */
     public static void checkPotionStatus(Player player, List<Entity> listofEntities) {
-        if (player.getCurrentPotionState() == null) {
+        if (player.getCurrentPotionState() == "not") {
             return;
         }
         

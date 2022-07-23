@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.eclipse.jetty.xml.XmlParser;
+
 import dungeonmania.util.Position;
 import dungeonmania.Statistics;
 import dungeonmania.Entities.Entity;
@@ -18,7 +20,6 @@ public class Player extends MovingEntity {
 
     private List<HashMap<String, Integer>> activeStates = new ArrayList<HashMap<String, Integer>>();
     private List<Observer> observers = new ArrayList<Observer>();
-    private String CurrentPotion = null;
 
     private transient Position prevPos;
     private int allies = 0;
@@ -38,11 +39,11 @@ public class Player extends MovingEntity {
     }
 
     public String getCurrentPotion() {
-        return CurrentPotion;
+        return super.getCurrentPlayerPotion();
     }
 
     public void setCurrentPotion(String currentPotion, List<Entity> listofEntities) {
-        CurrentPotion = currentPotion;
+        super.setCurrentPlayerPotion(getCurrentPotionState());
         notifyAllObservers(listofEntities);
     }
 
@@ -128,16 +129,16 @@ public class Player extends MovingEntity {
      */
     public String getCurrentPotionState() {
         if (activeStates.isEmpty()) {
-            return null;
+            return "not";
         }
 
         return activeStates.get(0).keySet().stream().findFirst().get();
     }
 
     public void decrementCurrentPotion(List<Entity> listofEntities) {
-        int counter = activeStates.get(0).get(this.getEntityType());
+        int counter = activeStates.get(0).get(this.getCurrentPotionState());
 
-        activeStates.get(0).put(this.getEntityType(), counter--);
+        activeStates.get(0).put(this.getCurrentPotionState(), counter--);
 
         if (counter - 1 == 0) {
             activeStates.remove(0);
@@ -151,7 +152,7 @@ public class Player extends MovingEntity {
   
      public void notifyAllObservers(List<Entity> listOfEntities) {
         for (Observer o : observers) {
-           o.update(CurrentPotion, listOfEntities);
+           o.update(getCurrentPotion(), listOfEntities);
         }
      } 
 }

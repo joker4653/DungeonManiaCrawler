@@ -206,12 +206,10 @@ public class DungeonManiaController implements Serializable{
             } else if (item.getEntityType().equalsIgnoreCase("invisibility_potion")) {
                 InvisibilityPotion potion = (InvisibilityPotion) item;
                 potion.use(getPlayer());
+                Helper.checkPotionStatus(getPlayer(), true, listOfEntities);
             }
 
             Helper.checkBombs(listOfEntities, getPlayer());
-
-            // potion effect becomes active THIS TICK BEFORE MOVEMENT
-            Helper.checkPotionStatus(getPlayer(), true, listOfEntities);
 
         setTickCount(getTickCount() + 1);
         int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
@@ -236,7 +234,7 @@ public class DungeonManiaController implements Serializable{
         Helper.checkBombs(listOfEntities, getPlayer());
 
         Helper.checkPotionStatus(getPlayer(), listOfEntities);
-        
+    
         return createDungeonResponse();
     }
 
@@ -275,7 +273,7 @@ public class DungeonManiaController implements Serializable{
         Helper.checkBombs(listOfEntities, player);
 
         Helper.checkPotionStatus(player, listOfEntities);
-
+        System.out.println(getPlayer().getCurrentPotionState());
         return createDungeonResponse();
     }
 

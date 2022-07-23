@@ -27,6 +27,22 @@ public class Mercenary extends MovingEntity {
     private boolean isNeighbour;
     private HashMap<String, String> configMap;
 
+    public boolean isNeighbour() {
+        return isNeighbour;
+    }
+
+    public void setNeighbour(boolean isNeighbour) {
+        this.isNeighbour = isNeighbour;
+    }
+
+    public HashMap<String, String> getConfigMap() {
+        return configMap;
+    }
+
+    public void setConfigMap(HashMap<String, String> configMap) {
+        this.configMap = configMap;
+    }
+
     public Mercenary(int x, int y, HashMap<String, String> configMap) {
         super();
         super.setAlly(false);
