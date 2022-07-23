@@ -18,7 +18,7 @@ public class Player extends MovingEntity {
 
     private List<HashMap<String, Integer>> activeStates = new ArrayList<HashMap<String, Integer>>();
     private List<Observer> observers = new ArrayList<Observer>();
-    private String CurrentPotion;
+    private String CurrentPotion = null;
 
     private transient Position prevPos;
     private int allies = 0;
@@ -155,5 +155,7 @@ public class Player extends MovingEntity {
         }
      } 
 }
+
+
 
 

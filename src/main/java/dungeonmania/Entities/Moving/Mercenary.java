@@ -43,7 +43,9 @@ public class Mercenary extends MovingEntity {
 
     @Override
     public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
-        if (!super.isAlly()) {
+        if (super.getCurrentPlayerPotion().equals("invisibility_potion")) {
+            super.moveRandomly(listOfEntities, dir, player, inventory, statistics);
+        } else if (!super.isAlly()) {
             enemyMovementDS(listOfEntities, player);
         } else {
             super.enemyChangeStrategy(new MercenaryAllyStrategy(configMap));

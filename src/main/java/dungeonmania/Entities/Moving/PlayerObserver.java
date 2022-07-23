@@ -2,10 +2,8 @@ package dungeonmania.Entities.Moving;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import dungeonmania.Battling.EnemyBattleStrategy.MercenaryAllyStrategy;
 import dungeonmania.Entities.Entity;
 
 public class PlayerObserver implements Observer, Serializable {
@@ -23,12 +21,12 @@ public class PlayerObserver implements Observer, Serializable {
 
         for (Entity e : Zombs) {
             ZombieToast zomb = (ZombieToast) e;
-            // zomb.update(potion);
+            zomb.setCurrentPlayerPotion(potion);
         }
 
         for (Entity e : Mercs) {
             Mercenary merc = (Mercenary) e;
-            // merc.update(potion);
+            merc.setCurrentPlayerPotion(potion);
         }
         
     }
