@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 
 import dungeonmania.Helper;
 import dungeonmania.Statistics;
-import dungeonmania.Battling.EnemyBattleStrategy.MercenaryAllyStrategy;
-import dungeonmania.Battling.EnemyBattleStrategy.MercenaryEnemyStrategy;
+import dungeonmania.Battling.EnemyBattleStrategy.AllyStrategy;
+import dungeonmania.Battling.EnemyBattleStrategy.StandardBattlingStrategy;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 import dungeonmania.util.Direction;
@@ -35,7 +35,7 @@ public class Mercenary extends MovingEntity {
         super.setInteractable(true);
         super.setEntityType("mercenary");
         super.setEnemyHealth(Double.parseDouble(configMap.get("mercenary_health")));
-        super.enemyChangeStrategy(new MercenaryEnemyStrategy(configMap));
+        super.enemyChangeStrategy(new StandardBattlingStrategy(configMap, "mercenary"));
         this.isNeighbour = false;
         this.configMap = configMap;
         super.setCanStepOn("mercenary");
@@ -46,7 +46,7 @@ public class Mercenary extends MovingEntity {
         if (!super.isAlly()) {
             enemyMovementDS(listOfEntities, player);
         } else {
-            super.enemyChangeStrategy(new MercenaryAllyStrategy(configMap));
+            super.enemyChangeStrategy(new AllyStrategy(configMap, "mercenary"));
             allyMovement(listOfEntities, player); 
         }
     }
