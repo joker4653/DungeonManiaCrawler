@@ -111,7 +111,6 @@ public class Mercenary extends MovingEntity {
     }
 
     private void mercenaryReached(Player player, Map<Position, Position> prev, List<Entity> listOfEntities) {
-        // if the ally's next position is the player's position, the ally doesn't move ---> NEED FORUM RESPONSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         if (!(isAlly() && prev.get(getCurrentLocation()).equals(player.getCurrentLocation())))
             super.setCurrentLocation(prev.get(getCurrentLocation()));
     
