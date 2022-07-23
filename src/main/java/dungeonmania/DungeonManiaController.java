@@ -56,6 +56,50 @@ public class DungeonManiaController implements Serializable{
     private Inventory inventory = new Inventory();
     private Statistics statistics;
 
+    private static void assertBattleCalculations(String enemyType, BattleResponse battle, boolean enemyDies, String configFilePath) {
+        List<RoundResponse> rounds = battle.getRounds();
+        double playerHealth = Double.parseDouble(TestUtils.getValueFromConfigFile("player_health", configFilePath));
+        double enemyHealth = Double.parseDouble(TestUtils.getValueFromConfigFile(enemyType + "_health", configFilePath));
+        double playerAttack = Double.parseDouble(TestUtils.getValueFromConfigFile("player_attack", configFilePath));
+        double enemyAttack = Double.parseDouble(TestUtils.getValueFromConfigFile(enemyType + "_attack", configFilePath));
+
+        for (RoundResponse round : rounds) {
+            System.out.println("player expected hp: " + -enemyAttack/10 + "actual: " + round.getDeltaCharacterHealth());
+            System.out.println("enemy expected hp: " + -playerAttack/5 + "actual: " + round.getDeltaEnemyHealth());
+            //assertEquals(round.getDeltaCharacterHealth(), -enemyAttack / 10);
+            //assertEquals(round.getDeltaEnemyHealth(), -playerAttack / 5);
+            enemyHealth += round.getDeltaEnemyHealth();
+            playerHealth += round.getDeltaCharacterHealth();
+        }
+
+        if (enemyDies) {
+            System.out.println("Enemy died");
+            //assertTrue(enemyHealth <= 0);
+        } else {
+            System.out.println("Player died");
+            //assertTrue(playerHealth <= 0);
+        }
+    }
+
+    private static DungeonResponse genericEnemySequence(DungeonResponse res, DungeonManiaController controller, String entityType) {
+        System.out.println("expected num players: 1" + "actual: " + TestUtils.countEntityOfType(res, "player"));
+        System.out.println("expected num enemies: 1" + TestUtils.countEntityOfType(res, entityType));
+        //assertEquals(1, TestUtils.countEntityOfType(res, "player"));
+        //assertEquals(1, TestUtils.countEntityOfType(res, entityType));
+        return controller.tick(Direction.RIGHT);
+    }
+
+    public static void main(String[] args) {
+        //  exit   wall      wall                   wall
+        //         player    hydra                  boulder
+        //  wall   wall      zombie_toast_spawner   wall
+        DungeonManiaController controller = new DungeonManiaController();
+        DungeonResponse initialResponse = controller.newGame("d_battleTest_basicHydra", "c_battleTest_hydraAlwaysIncrease");
+        DungeonResponse postBattleResponse = genericEnemySequence(initialResponse, controller, "hydra");
+        BattleResponse battle = postBattleResponse.getBattles().get(0);
+        assertBattleCalculations("hydra", battle, false, "c_battleTest_hydraAlwaysIncrease");
+    }
+
     public HashMap<String, String> getConfigMap() {
         return configMap;
     }
