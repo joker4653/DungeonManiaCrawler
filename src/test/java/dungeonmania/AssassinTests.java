@@ -202,5 +202,29 @@ public class AssassinTests {
         });
     }
 
+    @Test
+    @DisplayName("Test player fails to bribe the assassin.")
+    public void testAssassinBriberyFail() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_assassinTest_followPlayer", "c_assassinTest_failed");
+        EntityResponse assassin = getEntities(res, "assassin").get(0);
+
+        for (int i = 1; i <= 3; i++) {
+            res = dmc.tick(Direction.RIGHT);
+            
+            assertDoesNotThrow(() -> {
+                dmc.interact(assassin.getId());
+            });
+            assertTrue(assassin.isInteractable()); // since the assassin is NOT an ally, isInteractable is still true.
+        }
+
+        // since the player ran out of treasure, an exception should be raised when they try to bribe the assassin again.
+        assertThrows(InvalidActionException.class, () -> {
+            dmc.interact(assassin.getId());
+        });
+
+        assertTrue(assassin.isInteractable()); // since the assassin is NOT an ally, isInteractable is still true.
+    }
+
     
 }
