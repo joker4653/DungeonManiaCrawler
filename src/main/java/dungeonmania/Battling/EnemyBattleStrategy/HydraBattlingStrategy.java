@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class HydraBattlingStrategy extends EnemyBattlingStrategy {
-    double hydraRate;
-    double hydraAmt;
+    private double hydraRate;
+    private double hydraAmt;
 
     public HydraBattlingStrategy(HashMap<String, String> configMap) {
         super.setDamage(Double.parseDouble(configMap.get("hydra_attack")));
