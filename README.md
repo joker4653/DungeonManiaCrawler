@@ -328,6 +328,8 @@ Implementation Hint
 
 The design of this extension is up to you, however we recommend you treat time travel as moving backwards in a series of game states that are being stored (the state of the dungeon at tick X). When time travel occurs, the player is transported to that state, and all `tick` and `interact` functions are "played" out in the same order *for the older player*, not the current player.
 
+This also means that when the older player reaches the tick during which they time travelled (either by using a time turner or through a portal), they should be removed from the map.
+
 </details>
 
 ### 3.12 Extension 2: Dungeon Builder 💀
