@@ -19,6 +19,14 @@ import dungeonmania.util.Direction;
 public class Player extends MovingEntity {
 
     private List<HashMap<String, Integer>> activeStates = new ArrayList<HashMap<String, Integer>>();
+    public List<HashMap<String, Integer>> getActiveStates() {
+        return activeStates;
+    }
+
+    public void setActiveStates(List<HashMap<String, Integer>> activeStates) {
+        this.activeStates = activeStates;
+    }
+
     private List<Observer> observers = new ArrayList<Observer>();
 
     private transient Position prevPos;
@@ -138,9 +146,9 @@ public class Player extends MovingEntity {
     public void decrementCurrentPotion(List<Entity> listofEntities) {
         int counter = activeStates.get(0).get(this.getCurrentPotionState());
 
-        activeStates.get(0).put(this.getCurrentPotionState(), counter--);
+        activeStates.get(0).put(this.getCurrentPotionState(), counter - 1);
 
-        if (counter - 1 == 0) {
+        if (counter - 1 <= 0) {
             activeStates.remove(0);
             this.setCurrentPotion(getCurrentPotionState(), listofEntities);
         }

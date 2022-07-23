@@ -273,7 +273,7 @@ public class DungeonManiaController implements Serializable{
         Helper.checkBombs(listOfEntities, player);
 
         Helper.checkPotionStatus(player, listOfEntities);
-        System.out.println(getPlayer().getCurrentPotionState());
+
         return createDungeonResponse();
     }
 
