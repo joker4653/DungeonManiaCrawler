@@ -2,7 +2,7 @@ package dungeonmania.Entities.Moving;
 
 import dungeonmania.util.Position;
 import dungeonmania.Statistics;
-import dungeonmania.Battling.EnemyBattleStrategy.SpiderBattlingStrategy;
+import dungeonmania.Battling.EnemyBattleStrategy.StandardBattlingStrategy;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 import dungeonmania.util.Direction;
@@ -41,7 +41,7 @@ public class Spider extends MovingEntity {
         super.setInteractable(false);
         super.setEntityType("spider");
         super.setEnemyHealth(Double.parseDouble(configMap.get("spider_health")));
-        super.enemyChangeStrategy(new SpiderBattlingStrategy(configMap));
+        super.enemyChangeStrategy(new StandardBattlingStrategy(configMap, "spider"));
         super.setAlly(false);
         super.setCanStepOn("spider");
     }

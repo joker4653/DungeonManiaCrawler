@@ -2,13 +2,13 @@ package dungeonmania.Battling.EnemyBattleStrategy;
 
 import java.util.HashMap;
 
-public class MercenaryAllyStrategy extends EnemyBattlingStrategy {
+public class AllyStrategy extends EnemyBattlingStrategy {
     private double allyAttack;
     private double allyDefence;
 
-    public MercenaryAllyStrategy(HashMap<String, String> configMap) {
-        super.setDamage(Double.parseDouble(configMap.get("mercenary_attack")));
-        super.setHealth(Double.parseDouble(configMap.get("mercenary_health")));
+    public AllyStrategy(HashMap<String, String> configMap, String type) {
+        super.setDamage(Double.parseDouble(configMap.get(type + "_attack")));
+        super.setHealth(Double.parseDouble(configMap.get(type + "_health")));
 
         this.allyAttack = configMap.get("ally_attack") != null ? Double.parseDouble(configMap.get("ally_attack")) : 0;
         this.allyDefence =  configMap.get("ally_defence") != null ? Double.parseDouble(configMap.get("ally_defence")) : 0;

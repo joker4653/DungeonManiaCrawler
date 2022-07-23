@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import dungeonmania.Statistics;
-import dungeonmania.Battling.EnemyBattleStrategy.ZombieBattlingStrategy;
+import dungeonmania.Battling.EnemyBattleStrategy.StandardBattlingStrategy;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 import dungeonmania.util.Direction;
@@ -32,7 +32,7 @@ public class ZombieToast extends MovingEntity {
         super.setEntityID(UUID.randomUUID().toString());
         super.setInteractable(false);
         super.setEntityType("zombie_toast");
-        super.enemyChangeStrategy(new ZombieBattlingStrategy(configMap));
+        super.enemyChangeStrategy(new StandardBattlingStrategy(configMap, "zombie"));
         super.setEnemyHealth(Double.parseDouble(configMap.get("zombie_health")));
         super.setAlly(false);
         super.setCanStepOn("zombie_toast");
