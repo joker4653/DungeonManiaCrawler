@@ -15,7 +15,7 @@ import dungeonmania.Entities.Inventory;
 import dungeonmania.util.Direction;
 
 public abstract class MovingEntity extends Entity {
-
+    private String CurrentPlayerPotion = "not";
     private ArrayList<String> canStepOn;
     private EnemyBattlingStrategy enemyStrategy;
     private double playerHealth;
@@ -144,6 +144,17 @@ public abstract class MovingEntity extends Entity {
             Position currEntityPosition = currEntity.getCurrentLocation();
             if (positions.contains(currEntityPosition) && !canStep(currEntity.getEntityType()))
                 positions.remove(currEntityPosition);
+        }
+    }
+
+    public String getCurrentPlayerPotion() {
+        return CurrentPlayerPotion;
+    }
+
+    public void setCurrentPlayerPotion(String currentPlayerPotion) {
+        CurrentPlayerPotion = currentPlayerPotion;
+        if (currentPlayerPotion.equals("invisibility_potion")) {
+            enemyChangeStrategy(new NoBattlingStrategy());
         }
     }
 }

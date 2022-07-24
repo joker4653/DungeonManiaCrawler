@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -21,6 +20,7 @@ import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 import dungeonmania.Entities.Collectables.Akey;
 import dungeonmania.Entities.Collectables.Bomb;
+import dungeonmania.Entities.Collectables.InvisibilityPotion;
 import dungeonmania.Entities.Collectables.Sword;
 import dungeonmania.Entities.Collectables.Treasure;
 import dungeonmania.Entities.Collectables.Wood;
@@ -146,6 +146,8 @@ public class Helper {
             return new Portal(x, y, colour);
         } else if (type.equalsIgnoreCase("hydra")) {
             return new Hydra(x, y, configMap);
+        } else if (type.equalsIgnoreCase("invisibility_potion")) {
+            return new InvisibilityPotion(x, y, Integer.parseInt(configMap.get("invisibility_potion_duration")));
         } else if (type.equalsIgnoreCase("assassin")) {
             return new Assassin(x, y, configMap);
         }
@@ -270,6 +272,10 @@ public class Helper {
      * @param statistics 
      */
     public static void checkBattles(Player play, HashMap<String, String> configMap, Inventory inventory, List<Battle> listOfBattles, List<Entity> listOfEntities, Statistics statistics) {
+        // skip battles
+        if (play.getCurrentPlayerPotion().equals("invisibility_potion")) {
+            return;
+        }
         List<Entity> monstersHere = Helper.getMonstersHere(play, listOfEntities);
         Player player = play;
 
@@ -391,5 +397,31 @@ public class Helper {
 
         listOfEntities.remove(spawner);
         statistics.addSpawnerDestroyed();
+    }
+
+    /**
+     * For the tick a potion is used
+     * @param player
+     * @param bool
+     */
+    public static void checkPotionStatus(Player player, boolean bool, List<Entity> listofEntities) {
+        if (bool == true) {
+            // alert observers of change
+            player.setCurrentPotion(player.getCurrentPotion(), listofEntities);
+            return;
+        }
+        return;
+    }
+
+    /**
+     * For use any other time
+     * @param player
+     */
+    public static void checkPotionStatus(Player player, List<Entity> listofEntities) {
+        if (player.getCurrentPotionState() == "not") {
+            return;
+        }
+        
+        player.decrementCurrentPotion(listofEntities);
     }
 }

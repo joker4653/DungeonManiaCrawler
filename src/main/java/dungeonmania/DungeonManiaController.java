@@ -4,6 +4,7 @@ import dungeonmania.Battling.Battle;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 import dungeonmania.Entities.Collectables.Bomb;
+import dungeonmania.Entities.Collectables.InvisibilityPotion;
 import dungeonmania.Entities.Moving.Assassin;
 import dungeonmania.Entities.Moving.Mercenary;
 import dungeonmania.Entities.Moving.MovingEntity;
@@ -191,7 +192,7 @@ public class DungeonManiaController implements Serializable{
         // exception cases
             if (itemInInv.isEmpty()) {
                 throw new InvalidActionException(itemUsedId);
-            } else if (!itemInInv.get().getEntityType().equalsIgnoreCase("bomb")) {
+            } else if (!itemInInv.get().isConsumable()) {
                 throw new IllegalArgumentException("itemUsed must be one of bomb, invincibility_potion, invisibility_potion");
             }
 
@@ -203,6 +204,10 @@ public class DungeonManiaController implements Serializable{
             if (item.getEntityType().equalsIgnoreCase("bomb")) {
                 Bomb b = (Bomb) item;
                 b.use(getPlayer(), listOfEntities, inventory);
+            } else if (item.getEntityType().equalsIgnoreCase("invisibility_potion")) {
+                InvisibilityPotion potion = (InvisibilityPotion) item;
+                potion.use(getPlayer());
+                Helper.checkPotionStatus(getPlayer(), true, listOfEntities);
             }
 
             Helper.checkBombs(listOfEntities, getPlayer());
@@ -229,6 +234,8 @@ public class DungeonManiaController implements Serializable{
 
         Helper.checkBombs(listOfEntities, getPlayer());
 
+        Helper.checkPotionStatus(getPlayer(), listOfEntities);
+    
         return createDungeonResponse();
     }
 
@@ -265,6 +272,8 @@ public class DungeonManiaController implements Serializable{
         Helper.checkBattles(player, configMap, inventory, listOfBattles, listOfEntities, statistics);
 
         Helper.checkBombs(listOfEntities, player);
+
+        Helper.checkPotionStatus(player, listOfEntities);
 
         return createDungeonResponse();
     }
