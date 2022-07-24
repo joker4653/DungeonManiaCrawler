@@ -36,6 +36,7 @@ import dungeonmania.Entities.Static.Door;
 import dungeonmania.Entities.Static.Exit;
 import dungeonmania.Entities.Static.FloorSwitch;
 import dungeonmania.Entities.Static.Portal;
+import dungeonmania.Entities.Static.SwampTile;
 import dungeonmania.Entities.Static.Wall;
 import dungeonmania.Entities.Static.ZombieToastSpawner;
 import dungeonmania.exceptions.InvalidActionException;
@@ -148,6 +149,8 @@ public class Helper {
             return new Hydra(x, y, configMap);
         } else if (type.equalsIgnoreCase("assassin")) {
             return new Assassin(x, y, configMap);
+        } else if (type.equalsIgnoreCase("swamp_tile")) {
+            return new SwampTile(x, y, configMap);
         }
         
         return null;

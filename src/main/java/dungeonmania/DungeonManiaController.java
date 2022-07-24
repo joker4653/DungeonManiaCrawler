@@ -189,23 +189,23 @@ public class DungeonManiaController implements Serializable{
         
         Optional<Entity> itemInInv = inventory.getInventory().stream().filter(e -> e.getEntityID().startsWith(itemUsedId)).findFirst();
         // exception cases
-            if (itemInInv.isEmpty()) {
-                throw new InvalidActionException(itemUsedId);
-            } else if (!itemInInv.get().getEntityType().equalsIgnoreCase("bomb")) {
-                throw new IllegalArgumentException("itemUsed must be one of bomb, invincibility_potion, invisibility_potion");
-            }
+        if (itemInInv.isEmpty()) {
+            throw new InvalidActionException(itemUsedId);
+        } else if (!itemInInv.get().getEntityType().equalsIgnoreCase("bomb")) {
+            throw new IllegalArgumentException("itemUsed must be one of bomb, invincibility_potion, invisibility_potion");
+        }
 
-            Entity item = itemInInv.get();
+        Entity item = itemInInv.get();
 
-            // remove item from inventory
-            inventory.removeItem(item);
+        // remove item from inventory
+        inventory.removeItem(item);
 
-            if (item.getEntityType().equalsIgnoreCase("bomb")) {
-                Bomb b = (Bomb) item;
-                b.use(getPlayer(), listOfEntities, inventory);
-            }
+        if (item.getEntityType().equalsIgnoreCase("bomb")) {
+            Bomb b = (Bomb) item;
+            b.use(getPlayer(), listOfEntities, inventory);
+        }
 
-            Helper.checkBombs(listOfEntities, getPlayer());
+        Helper.checkBombs(listOfEntities, getPlayer());
 
         setTickCount(getTickCount() + 1);
         int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
@@ -409,29 +409,29 @@ public class DungeonManiaController implements Serializable{
 
 
     private void reintialisefields() {
-    tickCount = 0;
-    listOfEntities = new ArrayList<>();
-    configMap = new HashMap<>();
-    dungeonId = null;
-    dungeonName = null;
-    mapOfMinAndMaxValues = new HashMap<>();
-    listOfBattles = new ArrayList<>();
-    buildables = new ArrayList<>();
-    inventory = new Inventory();
-    statistics = null;
+        tickCount = 0;
+        listOfEntities = new ArrayList<>();
+        configMap = new HashMap<>();
+        dungeonId = null;
+        dungeonName = null;
+        mapOfMinAndMaxValues = new HashMap<>();
+        listOfBattles = new ArrayList<>();
+        buildables = new ArrayList<>();
+        inventory = new Inventory();
+        statistics = null;
     }
 
     private void reintialisefields(DungeonManiaController LoadedDMC) {
-    tickCount = LoadedDMC.getTickCount();
-    listOfEntities = LoadedDMC.getListOfEntities();
-    configMap = LoadedDMC.getConfigMap();
-    dungeonId = LoadedDMC.getDungeonId();
-    dungeonName = LoadedDMC.getDungeonName();
-    mapOfMinAndMaxValues = LoadedDMC.getMapOfMinAndMaxValues();
-    listOfBattles = LoadedDMC.getListOfBattles();
-    buildables = LoadedDMC.getBuildables();
-    inventory = LoadedDMC.getInventory();
-    statistics = LoadedDMC.getStatistics();
+        tickCount = LoadedDMC.getTickCount();
+        listOfEntities = LoadedDMC.getListOfEntities();
+        configMap = LoadedDMC.getConfigMap();
+        dungeonId = LoadedDMC.getDungeonId();
+        dungeonName = LoadedDMC.getDungeonName();
+        mapOfMinAndMaxValues = LoadedDMC.getMapOfMinAndMaxValues();
+        listOfBattles = LoadedDMC.getListOfBattles();
+        buildables = LoadedDMC.getBuildables();
+        inventory = LoadedDMC.getInventory();
+        statistics = LoadedDMC.getStatistics();
     }
 
 }

@@ -117,8 +117,8 @@ public class Mercenary extends MovingEntity {
                                                     .collect(Collectors.toList());
 
         List<Integer> costsAtPosV = entitiesAtPosV.stream()
-                                              .map(Entity::getCost)
-                                              .collect(Collectors.toList());
+                                                  .map(Entity::getCost)
+                                                  .collect(Collectors.toList());
 
         return Collections.max(costsAtPosV);
     }
