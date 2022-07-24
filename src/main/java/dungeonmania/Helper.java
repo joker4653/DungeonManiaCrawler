@@ -272,6 +272,10 @@ public class Helper {
      * @param statistics 
      */
     public static void checkBattles(Player play, HashMap<String, String> configMap, Inventory inventory, List<Battle> listOfBattles, List<Entity> listOfEntities, Statistics statistics) {
+        // skip battles
+        if (play.getCurrentPlayerPotion().equals("invisibility_potion")) {
+            return;
+        }
         List<Entity> monstersHere = Helper.getMonstersHere(play, listOfEntities);
         Player player = play;
 

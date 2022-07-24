@@ -2,6 +2,7 @@ package dungeonmania.Entities.Moving;
 
 import dungeonmania.util.Position;
 import dungeonmania.Statistics;
+import dungeonmania.Battling.EnemyBattleStrategy.NoBattlingStrategy;
 import dungeonmania.Battling.EnemyBattleStrategy.SpiderBattlingStrategy;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
@@ -19,6 +20,7 @@ public class Spider extends MovingEntity {
     private int yMin;
     private int yMax;
     private transient Position spawnLocation;
+    private HashMap<String, String> configmap;
 
     public Spider(int x, int y, HashMap<String, String> configMap) {
         super();
@@ -34,6 +36,7 @@ public class Spider extends MovingEntity {
         this.yMin = yMin;
         this.yMax = yMax;
         initialiseSpider(configMap);
+        this.configmap = configMap;
     }
 
     private void initialiseSpider(HashMap<String, String> configMap) {
@@ -68,6 +71,7 @@ public class Spider extends MovingEntity {
 
     public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
         // Get the next position and check if it's a boulder. If so, change direction and move. Otherwise, move normally.
+
         Position nextPosition = getNextPosition();
         if (checkIfNextPositionIsAllowed(nextPosition, listOfEntities)) {
             super.setCurrentLocation(nextPosition);

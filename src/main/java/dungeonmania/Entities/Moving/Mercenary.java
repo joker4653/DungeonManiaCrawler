@@ -18,6 +18,7 @@ import dungeonmania.Helper;
 import dungeonmania.Statistics;
 import dungeonmania.Battling.EnemyBattleStrategy.MercenaryAllyStrategy;
 import dungeonmania.Battling.EnemyBattleStrategy.MercenaryEnemyStrategy;
+import dungeonmania.Battling.EnemyBattleStrategy.NoBattlingStrategy;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 import dungeonmania.util.Direction;
@@ -59,13 +60,16 @@ public class Mercenary extends MovingEntity {
 
     @Override
     public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
-        if (super.getCurrentPlayerPotion().equals("invisibility_potion")) {
-            super.moveRandomly(listOfEntities, dir, player, inventory, statistics);
-        } else if (!super.isAlly()) {
-            enemyMovementDS(listOfEntities, player);
+        if (player.getCurrentPlayerPotion().equals("not")) {
+            if (!super.isAlly()) {
+                super.enemyChangeStrategy(new MercenaryEnemyStrategy(configMap));
+                enemyMovementDS(listOfEntities, player);
+            } else {
+                super.enemyChangeStrategy(new MercenaryAllyStrategy(configMap));
+                allyMovement(listOfEntities, player); 
+            }
         } else {
-            super.enemyChangeStrategy(new MercenaryAllyStrategy(configMap));
-            allyMovement(listOfEntities, player); 
+            super.moveRandomly(listOfEntities, dir, player, inventory, statistics);
         }
     }
 

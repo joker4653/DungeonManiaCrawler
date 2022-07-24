@@ -16,17 +16,17 @@ public class PlayerObserver implements Observer, Serializable {
     }
     @Override
     public void update(String potion, List<Entity> ListOfEntities) {
-        List<Entity> Zombs = ListOfEntities.stream().filter(e -> (e.getEntityType().equals("zombie_toast"))).collect(Collectors.toList());
-        List<Entity> Mercs = ListOfEntities.stream().filter(e -> (e.getEntityType().equals("mercenary"))).collect(Collectors.toList());
+        List<Entity> MovingEntities = ListOfEntities.stream().filter(e -> (e.getEntityType().equals("zombie_toast") ||
+                                                                            e.getEntityType().equals("mercenary") ||
+                                                                            e.getEntityType().equals("hydra") ||
+                                                                            e.getEntityType().equals("assassin") ||
+                                                                            e.getEntityType().equals("spider")        
+                                                                            )).collect(Collectors.toList());
 
-        for (Entity e : Zombs) {
-            ZombieToast zomb = (ZombieToast) e;
-            zomb.setCurrentPlayerPotion(potion);
-        }
 
-        for (Entity e : Mercs) {
-            Mercenary merc = (Mercenary) e;
-            merc.setCurrentPlayerPotion(potion);
+        for (Entity e : MovingEntities) {
+            MovingEntity ent = (MovingEntity) e;
+            ent.setCurrentPlayerPotion(potion);
         }
         
     }
