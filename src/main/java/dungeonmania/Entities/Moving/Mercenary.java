@@ -43,16 +43,24 @@ public class Mercenary extends MovingEntity {
         this.configMap = configMap;
         super.setCanStepOn("mercenary");
         this.bribe = Integer.parseInt(configMap.get("bribe_amount"));
+        super.setMovementFactor(configMap.get("movement_factor") != null ? Integer.parseInt(configMap.get("movement_factor")) : 0);
     }
 
     @Override
     public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
+        if (super.getTickCountOnSwampTile() > 0) {
+            swampAffectEnemyMovement(listOfEntities);
+            return;
+        }
+
         if (!super.isAlly()) {
             enemyMovementDS(listOfEntities, player);
         } else {
             super.enemyChangeStrategy(new AllyStrategy(configMap, "mercenary"));
             allyMovement(listOfEntities, player); 
         }
+        
+        swampAffectEnemyMovement(listOfEntities);
     }
 
     // If the ally is in any of the player's neighbouring positions, they move to the player's previous position.
@@ -92,9 +100,9 @@ public class Mercenary extends MovingEntity {
 
         boolean mercFound = false;
         List<Position> uAdjList = getAdjacentPosInDist(u, listOfEntities, dist);
-        for (Position v : uAdjList) {
-            if (!visited.contains(v) && dist.get(u) + getMaxCostOfPos(v, listOfEntities) < dist.get(v)) {
-                dist.put(v, dist.get(u) + getMaxCostOfPos(v, listOfEntities));
+        for (Position v : uAdjList) { //getMaxCostOfPos(v, listOfEntities) < dist.get(v)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TODODODODODODDODODODODODODODODODODODOODODODODODDOTODODODODODODDODODODODODODODODODODODOODODODODODDOTODODODODODODDODODODODODODODODODODODOODODODODODDO
+            if (!visited.contains(v) && dist.get(u) + 1 < dist.get(v)) {
+                dist.put(v, dist.get(u) + 1);
                 prev.put(v, u);
                 visited.add(v);
             }

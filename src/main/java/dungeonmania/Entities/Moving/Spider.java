@@ -44,6 +44,7 @@ public class Spider extends MovingEntity {
         super.enemyChangeStrategy(new StandardBattlingStrategy(configMap, "spider"));
         super.setAlly(false);
         super.setCanStepOn("spider");
+        super.setMovementFactor(configMap.get("movement_factor") != null ? Integer.parseInt(configMap.get("movement_factor")) : 0);
     }
 
     public void spawn(List<Entity> listOfEntities, Player player) {
@@ -64,9 +65,15 @@ public class Spider extends MovingEntity {
         setSpawnLocation(spawnLocation);
         listOfEntities.add(this);
 
+        swampAffectEnemyMovement(listOfEntities);
     }
 
     public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
+        if (super.getTickCountOnSwampTile() > 0) {
+            swampAffectEnemyMovement(listOfEntities);
+            return;
+        }
+
         // Get the next position and check if it's a boulder. If so, change direction and move. Otherwise, move normally.
         Position nextPosition = getNextPosition();
         if (checkIfNextPositionIsAllowed(nextPosition, listOfEntities)) {
@@ -77,6 +84,8 @@ public class Spider extends MovingEntity {
             if (checkIfNextPositionIsAllowed(nextPosition, listOfEntities))
                 super.setCurrentLocation(nextPosition);
         }
+
+        swampAffectEnemyMovement(listOfEntities);
     }
 
 
