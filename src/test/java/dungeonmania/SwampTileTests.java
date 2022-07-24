@@ -170,5 +170,53 @@ public class SwampTileTests {
         assertNotEquals(expected, assassinPosition);
     }
 
-    
+    @Test
+    @DisplayName("Test the movement of a mercenary affected by swamp tiles")
+    public void testMercShortestPathAffectedBySwampTile() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_swampTileTest_mercShortestPathAffected", "c_swampTileTest_movementFactor5");
+        int expectedX = 2;
+        int expectedY = 4;
+
+        for (int i = 0; i < 3; i++) {
+            res = dmc.tick(Direction.RIGHT);
+            Position expected = new Position(expectedX, expectedY);
+            assertEquals(expected, getEntities(res, "mercenary").get(0).getPosition());
+            expectedY--;
+        }
+
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(new Position(2, 1), getEntities(res, "mercenary").get(0).getPosition());
+
+        res = dmc.tick(Direction.LEFT);
+        assertEquals(new Position(2, 0), getEntities(res, "mercenary").get(0).getPosition());
+
+        res = dmc.tick(Direction.LEFT);
+        assertEquals(new Position(3, 0), getEntities(res, "mercenary").get(0).getPosition());
+    }
+
+    @Test
+    @DisplayName("Test that the shortest path of an assassin changes due to the presence of swamp tiles with a movement factor of 5.")
+    public void testAssassinShortestPathAffectedBySwampTile() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_swampTileTest_assassinShortestPathAffected", "c_swampTileTest_movementFactor5");
+        int expectedX = 2;
+        int expectedY = 4;
+
+        for (int i = 0; i < 3; i++) {
+            res = dmc.tick(Direction.RIGHT);
+            Position expected = new Position(expectedX, expectedY);
+            assertEquals(expected, getEntities(res, "assassin").get(0).getPosition());
+            expectedY--;
+        }
+
+        res = dmc.tick(Direction.DOWN);
+        assertEquals(new Position(2, 1), getEntities(res, "assassin").get(0).getPosition());
+
+        res = dmc.tick(Direction.LEFT);
+        assertEquals(new Position(2, 0), getEntities(res, "assassin").get(0).getPosition());
+
+        res = dmc.tick(Direction.LEFT);
+        assertEquals(new Position(3, 0), getEntities(res, "assassin").get(0).getPosition());
+    }
 }

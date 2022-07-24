@@ -99,9 +99,9 @@ public class Mercenary extends MovingEntity {
 
         boolean mercFound = false;
         List<Position> uAdjList = getAdjacentPosInDist(u, listOfEntities, dist);
-        for (Position v : uAdjList) { //getMaxCostOfPos(v, listOfEntities) < dist.get(v)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TODODODODODODDODODODODODODODODODODODOODODODODODDOTODODODODODODDODODODODODODODODODODODOODODODODODDOTODODODODODODDODODODODODODODODODODODOODODODODODDO
-            if (!visited.contains(v) && dist.get(u) + 1 < dist.get(v)) {
-                dist.put(v, dist.get(u) + 1);
+        for (Position v : uAdjList) {
+            if (!visited.contains(v) && dist.get(u) + getMaxCostOfPos(v, listOfEntities) < dist.get(v)) {
+                dist.put(v, dist.get(u) + getMaxCostOfPos(v, listOfEntities));
                 prev.put(v, u);
                 visited.add(v);
             }
@@ -123,6 +123,9 @@ public class Mercenary extends MovingEntity {
                                                     .filter(e -> e.getCurrentLocation().equals(v))
                                                     .collect(Collectors.toList());
 
+        if (entitiesAtPosV.size() == 0)
+            return 1;
+        
         List<Integer> costsAtPosV = entitiesAtPosV.stream()
                                                   .map(Entity::getCost)
                                                   .collect(Collectors.toList());
