@@ -36,6 +36,7 @@ import dungeonmania.Entities.Static.Door;
 import dungeonmania.Entities.Static.Exit;
 import dungeonmania.Entities.Static.FloorSwitch;
 import dungeonmania.Entities.Static.Portal;
+import dungeonmania.Entities.Static.SwampTile;
 import dungeonmania.Entities.Static.Wall;
 import dungeonmania.Entities.Static.ZombieToastSpawner;
 import dungeonmania.exceptions.InvalidActionException;
@@ -148,6 +149,8 @@ public class Helper {
             return new Hydra(x, y, configMap);
         } else if (type.equalsIgnoreCase("assassin")) {
             return new Assassin(x, y, configMap);
+        } else if (type.equalsIgnoreCase("swamp_tile")) {
+            return new SwampTile(x, y, configMap);
         }
         
         return null;
@@ -391,5 +394,30 @@ public class Helper {
 
         listOfEntities.remove(spawner);
         statistics.addSpawnerDestroyed();
+    }
+
+    public static void moveEnemy(HashMap<String, String> configMap, Player player, HashMap<String, Integer> mapOfMinAndMaxValues,
+    List<Entity> listOfEntities, Direction movementDirection, Inventory inventory, Statistics statistics, List<Battle> listOfBattles,
+    int tickCount) {
+        int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
+        int xZomb = Integer.parseInt(configMap.get("zombie_spawn_rate"));
+
+        Spider newSpider = Helper.spawnASpider(xSpi, tickCount, player, mapOfMinAndMaxValues, listOfEntities, configMap);
+        for (Entity currEntity : listOfEntities) {
+            if (currEntity.getEntityType().equalsIgnoreCase("player") || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID())))
+                continue;
+
+            if (currEntity.isMovingEntity()) {
+                ((MovingEntity) currEntity).move(listOfEntities, movementDirection, player, inventory, statistics);
+            }
+        }
+
+        if (xZomb != 0 && (tickCount % xZomb == 0))
+            Helper.processZombieSpawner(listOfEntities, configMap);
+
+        // Process any battles.
+        Helper.checkBattles(player, configMap, inventory, listOfBattles, listOfEntities, statistics);
+
+        Helper.checkBombs(listOfEntities, player);
     }
 }

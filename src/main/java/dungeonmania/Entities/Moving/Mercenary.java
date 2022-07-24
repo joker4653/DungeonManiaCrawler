@@ -43,16 +43,23 @@ public class Mercenary extends MovingEntity {
         this.configMap = configMap;
         super.setCanStepOn("mercenary");
         this.bribe = Integer.parseInt(configMap.get("bribe_amount"));
+        super.setMovementFactor(configMap.get("movement_factor") != null ? Integer.parseInt(configMap.get("movement_factor")) : 0);
     }
 
     @Override
     public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
+        swampAffectEnemyMovement(listOfEntities);
+        if (super.getTickCountOnSwampTile() > 0)
+            return;
+
         if (!super.isAlly()) {
             enemyMovementDS(listOfEntities, player);
         } else {
             super.enemyChangeStrategy(new AllyStrategy(configMap, "mercenary"));
             allyMovement(listOfEntities, player); 
         }
+        
+        swampAffectEnemyMovement(listOfEntities);
     }
 
     // If the ally is in any of the player's neighbouring positions, they move to the player's previous position.
@@ -93,8 +100,8 @@ public class Mercenary extends MovingEntity {
         boolean mercFound = false;
         List<Position> uAdjList = getAdjacentPosInDist(u, listOfEntities, dist);
         for (Position v : uAdjList) {
-            if (!visited.contains(v) && dist.get(u) + 1 < dist.get(v)) {
-                dist.put(v, dist.get(u) + 1);
+            if (!visited.contains(v) && dist.get(u) + getMaxCostOfPos(v, listOfEntities) < dist.get(v)) {
+                dist.put(v, dist.get(u) + getMaxCostOfPos(v, listOfEntities));
                 prev.put(v, u);
                 visited.add(v);
             }
@@ -108,6 +115,22 @@ public class Mercenary extends MovingEntity {
         }
         
         return mercFound;
+    }
+
+    // Gets the maximum cost of all entities at position v on the map.
+    private int getMaxCostOfPos(Position v, List<Entity> listOfEntities) {
+        List<Entity> entitiesAtPosV = listOfEntities.stream()
+                                                    .filter(e -> e.getCurrentLocation().equals(v))
+                                                    .collect(Collectors.toList());
+
+        if (entitiesAtPosV.size() == 0)
+            return 1;
+        
+        List<Integer> costsAtPosV = entitiesAtPosV.stream()
+                                                  .map(Entity::getCost)
+                                                  .collect(Collectors.toList());
+
+        return Collections.max(costsAtPosV);
     }
 
     private void mercenaryReached(Player player, Map<Position, Position> prev, List<Entity> listOfEntities) {

@@ -14,3 +14,4 @@ arrow
 bomb
 wood
 key
+swamp_tile
