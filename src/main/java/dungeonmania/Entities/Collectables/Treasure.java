@@ -13,6 +13,6 @@ public class Treasure extends CollectableEntity {
         super.setEntityType("treasure");
         super.setCurrentLocation(new Position(x, y));
         super.setCollectableEntity(true);
-        super.setConsumable(false);
+        super.setIsConsumable(false);
     }
 }

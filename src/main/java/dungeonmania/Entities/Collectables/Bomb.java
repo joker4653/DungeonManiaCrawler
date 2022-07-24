@@ -23,7 +23,6 @@ public class Bomb extends CollectableEntity {
         super.setEntityType("bomb");
         super.setCurrentLocation(new Position(x, y));
         super.setCollectableEntity(true);
-        super.setConsumable(true);
 
         this.radius = radius;
     }

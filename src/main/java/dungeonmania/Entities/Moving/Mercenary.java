@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 import dungeonmania.Helper;
 import dungeonmania.Statistics;
-import dungeonmania.Battling.EnemyBattleStrategy.NoBattlingStrategy;
 import dungeonmania.Battling.EnemyBattleStrategy.AllyStrategy;
 import dungeonmania.Battling.EnemyBattleStrategy.StandardBattlingStrategy;
 import dungeonmania.Entities.Entity;
@@ -48,16 +47,11 @@ public class Mercenary extends MovingEntity {
 
     @Override
     public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
-        if (player.getCurrentPlayerPotion().equals("not")) {
-            if (!super.isAlly()) {
-                super.enemyChangeStrategy(new StandardBattlingStrategy(configMap, this.getEntityType()));
-                enemyMovementDS(listOfEntities, player);
-            } else {
-                super.enemyChangeStrategy(new AllyStrategy(configMap, this.getEntityType()));
-                allyMovement(listOfEntities, player); 
-            }
+        if (!super.isAlly()) {
+            enemyMovementDS(listOfEntities, player);
         } else {
-            super.moveRandomly(listOfEntities, dir, player, inventory, statistics);
+            super.enemyChangeStrategy(new AllyStrategy(configMap, "mercenary"));
+            allyMovement(listOfEntities, player); 
         }
     }
 
