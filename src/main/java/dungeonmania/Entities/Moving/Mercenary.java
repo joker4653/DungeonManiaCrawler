@@ -93,8 +93,8 @@ public class Mercenary extends MovingEntity {
         boolean mercFound = false;
         List<Position> uAdjList = getAdjacentPosInDist(u, listOfEntities, dist);
         for (Position v : uAdjList) {
-            if (!visited.contains(v) && dist.get(u) + 1 < dist.get(v)) {
-                dist.put(v, dist.get(u) + 1);
+            if (!visited.contains(v) && dist.get(u) + getMaxCostOfPos(v, listOfEntities) < dist.get(v)) {
+                dist.put(v, dist.get(u) + getMaxCostOfPos(v, listOfEntities));
                 prev.put(v, u);
                 visited.add(v);
             }
@@ -108,6 +108,19 @@ public class Mercenary extends MovingEntity {
         }
         
         return mercFound;
+    }
+
+    // Gets the maximum cost of all entities at position v on the map.
+    private int getMaxCostOfPos(Position v, List<Entity> listOfEntities) {
+        List<Entity> entitiesAtPosV = listOfEntities.stream()
+                                                    .filter(e -> e.getCurrentLocation().equals(v))
+                                                    .collect(Collectors.toList());
+
+        List<Integer> costsAtPosV = entitiesAtPosV.stream()
+                                              .map(Entity::getCost)
+                                              .collect(Collectors.toList());
+
+        return Collections.max(costsAtPosV);
     }
 
     private void mercenaryReached(Player player, Map<Position, Position> prev, List<Entity> listOfEntities) {
