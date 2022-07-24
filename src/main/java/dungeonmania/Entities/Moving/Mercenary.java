@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Random;
 import java.util.UUID;
 import java.util.Map.Entry;
 import java.util.stream.Collector;
@@ -16,33 +17,19 @@ import java.util.stream.Collectors;
 
 import dungeonmania.Helper;
 import dungeonmania.Statistics;
-import dungeonmania.Battling.EnemyBattleStrategy.MercenaryAllyStrategy;
-import dungeonmania.Battling.EnemyBattleStrategy.MercenaryEnemyStrategy;
 import dungeonmania.Battling.EnemyBattleStrategy.NoBattlingStrategy;
+import dungeonmania.Battling.EnemyBattleStrategy.AllyStrategy;
+import dungeonmania.Battling.EnemyBattleStrategy.StandardBattlingStrategy;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
+import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Mercenary extends MovingEntity {
     private boolean isNeighbour;
     private HashMap<String, String> configMap;
-
-    public boolean isNeighbour() {
-        return isNeighbour;
-    }
-
-    public void setNeighbour(boolean isNeighbour) {
-        this.isNeighbour = isNeighbour;
-    }
-
-    public HashMap<String, String> getConfigMap() {
-        return configMap;
-    }
-
-    public void setConfigMap(HashMap<String, String> configMap) {
-        this.configMap = configMap;
-    }
+    private int bribe;
 
     public Mercenary(int x, int y, HashMap<String, String> configMap) {
         super();
@@ -52,20 +39,21 @@ public class Mercenary extends MovingEntity {
         super.setInteractable(true);
         super.setEntityType("mercenary");
         super.setEnemyHealth(Double.parseDouble(configMap.get("mercenary_health")));
-        super.enemyChangeStrategy(new MercenaryEnemyStrategy(configMap));
+        super.enemyChangeStrategy(new StandardBattlingStrategy(configMap, "mercenary"));
         this.isNeighbour = false;
         this.configMap = configMap;
         super.setCanStepOn("mercenary");
+        this.bribe = Integer.parseInt(configMap.get("bribe_amount"));
     }
 
     @Override
     public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
         if (player.getCurrentPlayerPotion().equals("not")) {
             if (!super.isAlly()) {
-                super.enemyChangeStrategy(new MercenaryEnemyStrategy(configMap));
+                super.enemyChangeStrategy(new StandardBattlingStrategy(configMap, this.getEntityType()));
                 enemyMovementDS(listOfEntities, player);
             } else {
-                super.enemyChangeStrategy(new MercenaryAllyStrategy(configMap));
+                super.enemyChangeStrategy(new AllyStrategy(configMap, this.getEntityType()));
                 allyMovement(listOfEntities, player); 
             }
         } else {
@@ -129,7 +117,6 @@ public class Mercenary extends MovingEntity {
     }
 
     private void mercenaryReached(Player player, Map<Position, Position> prev, List<Entity> listOfEntities) {
-        // if the ally's next position is the player's position, the ally doesn't move ---> NEED FORUM RESPONSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         if (!(isAlly() && prev.get(getCurrentLocation()).equals(player.getCurrentLocation())))
             super.setCurrentLocation(prev.get(getCurrentLocation()));
     
@@ -191,5 +178,61 @@ public class Mercenary extends MovingEntity {
                       .forEach((ent) -> possiblePos.remove(possiblePos.indexOf(ent.getCurrentLocation())));
 
         return possiblePos;
+    }
+
+    public void bribery(Mercenary merc, Player player, Inventory inventory) throws InvalidActionException {
+        // Check player is within radius of mercenary.
+        int radius = Integer.parseInt(configMap.get("bribe_radius"));
+        if (Helper.getDistance(player.getCurrentLocation(), merc.getCurrentLocation()) > radius) {
+            throw new InvalidActionException("Mercenary is too far away to bribe.");
+        }
+
+        // Check player has sufficient gold - if so, deduct the right amount of gold from player.
+        ArrayList<Entity> inventList = inventory.getInventory();
+        List<Entity> treasure = inventList.stream().filter(e -> e.getEntityType().equals("treasure")).collect(Collectors.toList());
+
+        int bribe = checkBribeAmount(treasure);
+        // Remove gold from inventory.
+        for (int i = 0; i < bribe; i++) {
+            inventory.removeItem(treasure.get(i));
+        } 
+
+        becomeAlly(merc, player);
+    }
+
+    // Make mercenary into ally.
+    public void becomeAlly(Mercenary merc, Player player) {
+        merc.setAlly(true);
+        player.addAlly();
+        merc.setInteractable(false); // according to the spec
+    }
+
+    public int checkBribeAmount(List<Entity> treasure) throws InvalidActionException {
+        if (treasure.size() < bribe) {
+            throw new InvalidActionException("Player lacks the requisite funds to bribe.");
+        }
+
+        return bribe;
+    }
+
+    /* Getters & Setters */
+    public boolean isNeighbour() {
+        return isNeighbour;
+    }
+
+    public void setNeighbour(boolean isNeighbour) {
+        this.isNeighbour = isNeighbour;
+    }
+
+    public HashMap<String, String> getConfigMap() {
+        return configMap;
+    }
+
+    public void setConfigMap(HashMap<String, String> configMap) {
+        this.configMap = configMap;
+    }
+
+    public void setBribe(int bribe) {
+        this.bribe = bribe;
     }
 }

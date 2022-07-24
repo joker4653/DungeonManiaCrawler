@@ -301,7 +301,6 @@ public class Helper {
         List<Entity> entitiesHere = listOfEntities.stream().filter(e -> e.getCurrentLocation().equals(player.getCurrentLocation()) && !e.getEntityType().equals("player")).collect(Collectors.toList());
 
         List<Entity> monstersHere = entitiesHere.stream().filter(e -> e.isMovingEntity() && !((MovingEntity)e).isAlly()).collect(Collectors.toList());
-
         return monstersHere;
     }
 
@@ -314,39 +313,11 @@ public class Helper {
                     .forEach((ent) -> ((ZombieToastSpawner)ent).spawnZombie(listOfEntities, configMap));
     }
 
-    public static void bribery(Mercenary merc, Player player, HashMap<String, String> configMap, Inventory inventory) throws InvalidActionException {
-
-        // Check player is within radius of mercenary.
-        int radius = Integer.parseInt(configMap.get("bribe_radius"));
-        if (getDistance(player.getCurrentLocation(), merc.getCurrentLocation()) > radius) {
-            throw new InvalidActionException("Mercenary is too far away to bribe.");
-        }
-
-        // Check player has sufficient gold - if so, deduct the right amount of gold from player.
-        ArrayList<Entity> inventList = inventory.getInventory();
-        List<Entity> treasure = inventList.stream().filter(e -> e.getEntityType().equals("treasure")).collect(Collectors.toList());
-
-        int bribe = Integer.parseInt(configMap.get("bribe_amount"));
-        if (treasure.size() < bribe) {
-            throw new InvalidActionException("Player lacks the requisite funds to bribe.");
-        }
-
-        // Remove gold from inventory.
-        for (int i = 0; i < bribe; i++) {
-            inventory.removeItem(treasure.get(i));
-        } 
-
-        // Make mercenary into ally.
-        merc.setAlly(true);
-        player.addAlly();
-        merc.setInteractable(false); // according to the spec
-    }
-
     /*
      * @returns int distance, indicating the distance between the two x coordinates, or y
      * coordinates, depending on which is larger.
      */
-    private static int getDistance(Position a, Position b) {
+    public static int getDistance(Position a, Position b) {
         int x_diff = Math.abs(a.getX() - b.getX());
         int y_diff = Math.abs(a.getY() - b.getY());
         if (x_diff > y_diff) {
