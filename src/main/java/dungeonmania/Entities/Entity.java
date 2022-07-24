@@ -12,8 +12,17 @@ public abstract class Entity implements Serializable {
     private boolean isInteractable;
     private boolean isMovingEntity;
     private boolean isCollectableEntity;
+    private boolean isConsumable;
 
     /* Getters and Setters */
+
+    public boolean isConsumable() {
+        return isConsumable;
+    }
+
+    public void setConsumable(boolean isConsumable) {
+        this.isConsumable = isConsumable;
+    }
 
     public String getEntityID() {
         return entityID;

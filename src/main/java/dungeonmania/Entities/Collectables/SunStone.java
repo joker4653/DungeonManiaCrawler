@@ -13,4 +13,5 @@ public class SunStone extends CollectableEntity {
         super.setCurrentLocation(new Position(x, y));
         super.setCollectableEntity(true);
     }
+
 }

@@ -20,6 +20,7 @@ import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 import dungeonmania.Entities.Collectables.Akey;
 import dungeonmania.Entities.Collectables.Bomb;
+import dungeonmania.Entities.Collectables.SunStone;
 import dungeonmania.Entities.Collectables.Sword;
 import dungeonmania.Entities.Collectables.Treasure;
 import dungeonmania.Entities.Collectables.Wood;
@@ -147,6 +148,8 @@ public class Helper {
             return new Hydra(x, y, configMap);
         } else if (type.equalsIgnoreCase("assassin")) {
             return new Assassin(x, y, configMap);
+        } else if (type.equalsIgnoreCase("sun_stone")) {
+            return new SunStone(x, y);
         }
         
         return null;
