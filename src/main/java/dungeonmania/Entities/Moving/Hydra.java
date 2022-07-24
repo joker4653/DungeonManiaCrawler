@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.UUID;
 
 import dungeonmania.Statistics;
+import dungeonmania.Battling.EnemyBattleStrategy.HydraBattlingStrategy;
+import dungeonmania.Battling.EnemyBattleStrategy.StandardBattlingStrategy;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 import dungeonmania.util.Direction;
@@ -20,6 +22,8 @@ public class Hydra extends MovingEntity {
         super.setAlly(false);
         super.setCanStepOn("hydra");
         super.setCurrentLocation(new Position(x, y));
+        super.enemyChangeStrategy(new HydraBattlingStrategy(configMap));
+        super.setMovementFactor(configMap.get("movement_factor") != null ? Integer.parseInt(configMap.get("movement_factor")) : 0);
     }
 
     @Override

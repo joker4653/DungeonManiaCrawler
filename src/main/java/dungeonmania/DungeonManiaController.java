@@ -4,6 +4,7 @@ import dungeonmania.Battling.Battle;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 import dungeonmania.Entities.Collectables.Bomb;
+import dungeonmania.Entities.Moving.Assassin;
 import dungeonmania.Entities.Moving.Mercenary;
 import dungeonmania.Entities.Moving.MovingEntity;
 import dungeonmania.Entities.Moving.Player;
@@ -188,45 +189,26 @@ public class DungeonManiaController implements Serializable{
         
         Optional<Entity> itemInInv = inventory.getInventory().stream().filter(e -> e.getEntityID().startsWith(itemUsedId)).findFirst();
         // exception cases
-            if (itemInInv.isEmpty()) {
-                throw new InvalidActionException(itemUsedId);
-            } else if (!itemInInv.get().isConsumable()) {
-                throw new IllegalArgumentException("itemUsed must be one of bomb, invincibility_potion, invisibility_potion");
-            }
-
-            Entity item = itemInInv.get();
-
-            // remove item from inventory
-            inventory.removeItem(item);
-
-            if (item.getEntityType().equalsIgnoreCase("bomb")) {
-                Bomb b = (Bomb) item;
-                b.use(getPlayer(), listOfEntities, inventory);
-            }
-
-            Helper.checkBombs(listOfEntities, getPlayer());
-
-        setTickCount(getTickCount() + 1);
-        int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
-        int xZomb = Integer.parseInt(configMap.get("zombie_spawn_rate"));
-
-        Spider newSpider = Helper.spawnASpider(xSpi, getTickCount(), getPlayer(), mapOfMinAndMaxValues, listOfEntities, configMap);
-        for (Entity currEntity : listOfEntities) {
-            if (currEntity.getEntityType().equalsIgnoreCase("player") || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID())))
-                continue;
-
-            if (currEntity.isMovingEntity()) {
-                ((MovingEntity) currEntity).move(listOfEntities,null, getPlayer(), inventory, statistics);
-            }
+        if (itemInInv.isEmpty()) {
+            throw new InvalidActionException(itemUsedId);
+        } else if (!itemInInv.get().isConsumable()) {
+            throw new IllegalArgumentException("itemUsed must be one of bomb, invincibility_potion, invisibility_potion");
         }
 
-        if (xZomb != 0 && getTickCount() % xZomb == 0)
-            Helper.processZombieSpawner(listOfEntities, configMap);
+        Entity item = itemInInv.get();
 
-        // Process any battles.
-        Helper.checkBattles(getPlayer(), configMap, inventory, listOfBattles, listOfEntities, statistics);
+        // remove item from inventory
+        inventory.removeItem(item);
+
+        if (item.getEntityType().equalsIgnoreCase("bomb")) {
+            Bomb b = (Bomb) item;
+            b.use(getPlayer(), listOfEntities, inventory);
+        }
 
         Helper.checkBombs(listOfEntities, getPlayer());
+        setTickCount(getTickCount() + 1);
+        Helper.moveEnemy(configMap, getPlayer(), mapOfMinAndMaxValues, listOfEntities, null,
+        inventory, statistics, listOfBattles, tickCount);
 
         return createDungeonResponse();
     }
@@ -236,8 +218,6 @@ public class DungeonManiaController implements Serializable{
      */
     public DungeonResponse tick(Direction movementDirection) {
         setTickCount(getTickCount() + 1);
-        int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
-        int xZomb = Integer.parseInt(configMap.get("zombie_spawn_rate"));
 
         // Move player.
         Player player = getPlayer();
@@ -247,23 +227,9 @@ public class DungeonManiaController implements Serializable{
         Helper.boulderCheck(listOfEntities, statistics);
         Helper.checkBattles(player, configMap, inventory, listOfBattles, listOfEntities, statistics);
         Helper.portalCheck(listOfEntities, player);
-        Spider newSpider = Helper.spawnASpider(xSpi, getTickCount(), player, mapOfMinAndMaxValues, listOfEntities, configMap);
-        for (Entity currEntity : listOfEntities) {
-            if (currEntity.getEntityType().equalsIgnoreCase("player") || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID())))
-                continue;
 
-            if (currEntity.isMovingEntity()) {
-                ((MovingEntity) currEntity).move(listOfEntities, movementDirection, getPlayer(), inventory, statistics);
-            }
-        }
-
-        if (xZomb != 0 && getTickCount() % xZomb == 0)
-            Helper.processZombieSpawner(listOfEntities, configMap);
-
-        // Process any battles.
-        Helper.checkBattles(player, configMap, inventory, listOfBattles, listOfEntities, statistics);
-
-        Helper.checkBombs(listOfEntities, player);
+        Helper.moveEnemy(configMap, player, mapOfMinAndMaxValues, listOfEntities, movementDirection, inventory, statistics, 
+        listOfBattles, tickCount);
 
         return createDungeonResponse();
     }
@@ -318,9 +284,9 @@ public class DungeonManiaController implements Serializable{
 
         Player player = getPlayer();
 
-        if (entity.getEntityType() == "mercenary") {
-            Helper.bribery((Mercenary) entity, player, configMap, inventory);
-        } else if (entity.getEntityType() == "zombie_toast_spawner") {
+        if (entity.getEntityType().equalsIgnoreCase("mercenary") || entity.getEntityType().equalsIgnoreCase("assassin")) {
+            ((Mercenary) entity).bribery((Mercenary) entity, player, inventory);
+        } else if (entity.getEntityType().equalsIgnoreCase("zombie_toast_spawner")) {
             Helper.destroySpawner((ZombieToastSpawner) entity, player, inventory, listOfEntities, statistics);
         }
 
@@ -408,29 +374,29 @@ public class DungeonManiaController implements Serializable{
 
 
     private void reintialisefields() {
-    tickCount = 0;
-    listOfEntities = new ArrayList<>();
-    configMap = new HashMap<>();
-    dungeonId = null;
-    dungeonName = null;
-    mapOfMinAndMaxValues = new HashMap<>();
-    listOfBattles = new ArrayList<>();
-    buildables = new ArrayList<>();
-    inventory = new Inventory();
-    statistics = null;
+        tickCount = 0;
+        listOfEntities = new ArrayList<>();
+        configMap = new HashMap<>();
+        dungeonId = null;
+        dungeonName = null;
+        mapOfMinAndMaxValues = new HashMap<>();
+        listOfBattles = new ArrayList<>();
+        buildables = new ArrayList<>();
+        inventory = new Inventory();
+        statistics = null;
     }
 
     private void reintialisefields(DungeonManiaController LoadedDMC) {
-    tickCount = LoadedDMC.getTickCount();
-    listOfEntities = LoadedDMC.getListOfEntities();
-    configMap = LoadedDMC.getConfigMap();
-    dungeonId = LoadedDMC.getDungeonId();
-    dungeonName = LoadedDMC.getDungeonName();
-    mapOfMinAndMaxValues = LoadedDMC.getMapOfMinAndMaxValues();
-    listOfBattles = LoadedDMC.getListOfBattles();
-    buildables = LoadedDMC.getBuildables();
-    inventory = LoadedDMC.getInventory();
-    statistics = LoadedDMC.getStatistics();
+        tickCount = LoadedDMC.getTickCount();
+        listOfEntities = LoadedDMC.getListOfEntities();
+        configMap = LoadedDMC.getConfigMap();
+        dungeonId = LoadedDMC.getDungeonId();
+        dungeonName = LoadedDMC.getDungeonName();
+        mapOfMinAndMaxValues = LoadedDMC.getMapOfMinAndMaxValues();
+        listOfBattles = LoadedDMC.getListOfBattles();
+        buildables = LoadedDMC.getBuildables();
+        inventory = LoadedDMC.getInventory();
+        statistics = LoadedDMC.getStatistics();
     }
 
 }

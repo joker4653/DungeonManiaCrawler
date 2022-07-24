@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -36,6 +37,7 @@ import dungeonmania.Entities.Static.Door;
 import dungeonmania.Entities.Static.Exit;
 import dungeonmania.Entities.Static.FloorSwitch;
 import dungeonmania.Entities.Static.Portal;
+import dungeonmania.Entities.Static.SwampTile;
 import dungeonmania.Entities.Static.Wall;
 import dungeonmania.Entities.Static.ZombieToastSpawner;
 import dungeonmania.exceptions.InvalidActionException;
@@ -150,6 +152,8 @@ public class Helper {
             return new Assassin(x, y, configMap);
         } else if (type.equalsIgnoreCase("sun_stone")) {
             return new SunStone(x, y);
+        } else if (type.equalsIgnoreCase("swamp_tile")) {
+            return new SwampTile(x, y, configMap);
         }
         
         return null;
@@ -297,7 +301,6 @@ public class Helper {
         List<Entity> entitiesHere = listOfEntities.stream().filter(e -> e.getCurrentLocation().equals(player.getCurrentLocation()) && !e.getEntityType().equals("player")).collect(Collectors.toList());
 
         List<Entity> monstersHere = entitiesHere.stream().filter(e -> e.isMovingEntity() && !((MovingEntity)e).isAlly()).collect(Collectors.toList());
-
         return monstersHere;
     }
 
@@ -310,39 +313,11 @@ public class Helper {
                     .forEach((ent) -> ((ZombieToastSpawner)ent).spawnZombie(listOfEntities, configMap));
     }
 
-    public static void bribery(Mercenary merc, Player player, HashMap<String, String> configMap, Inventory inventory) throws InvalidActionException {
-
-        // Check player is within radius of mercenary.
-        int radius = Integer.parseInt(configMap.get("bribe_radius"));
-        if (getDistance(player.getCurrentLocation(), merc.getCurrentLocation()) > radius) {
-            throw new InvalidActionException("Mercenary is too far away to bribe.");
-        }
-
-        // Check player has sufficient gold - if so, deduct the right amount of gold from player.
-        ArrayList<Entity> inventList = inventory.getInventory();
-        List<Entity> treasure = inventList.stream().filter(e -> e.getEntityType().equals("treasure")).collect(Collectors.toList());
-
-        int bribe = Integer.parseInt(configMap.get("bribe_amount"));
-        if (treasure.size() < bribe) {
-            throw new InvalidActionException("Player lacks the requisite funds to bribe.");
-        }
-
-        // Remove gold from inventory.
-        for (int i = 0; i < bribe; i++) {
-            inventory.removeItem(treasure.get(i));
-        } 
-
-        // Make mercenary into ally.
-        merc.setAlly(true);
-        player.addAlly();
-        merc.setInteractable(false); // according to the spec
-    }
-
     /*
      * @returns int distance, indicating the distance between the two x coordinates, or y
      * coordinates, depending on which is larger.
      */
-    private static int getDistance(Position a, Position b) {
+    public static int getDistance(Position a, Position b) {
         int x_diff = Math.abs(a.getX() - b.getX());
         int y_diff = Math.abs(a.getY() - b.getY());
         if (x_diff > y_diff) {
@@ -422,5 +397,30 @@ public class Helper {
 
         listOfEntities.remove(spawner);
         statistics.addSpawnerDestroyed();
+    }
+
+    public static void moveEnemy(HashMap<String, String> configMap, Player player, HashMap<String, Integer> mapOfMinAndMaxValues,
+    List<Entity> listOfEntities, Direction movementDirection, Inventory inventory, Statistics statistics, List<Battle> listOfBattles,
+    int tickCount) {
+        int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
+        int xZomb = Integer.parseInt(configMap.get("zombie_spawn_rate"));
+
+        Spider newSpider = Helper.spawnASpider(xSpi, tickCount, player, mapOfMinAndMaxValues, listOfEntities, configMap);
+        for (Entity currEntity : listOfEntities) {
+            if (currEntity.getEntityType().equalsIgnoreCase("player") || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID())))
+                continue;
+
+            if (currEntity.isMovingEntity()) {
+                ((MovingEntity) currEntity).move(listOfEntities, movementDirection, player, inventory, statistics);
+            }
+        }
+
+        if (xZomb != 0 && (tickCount % xZomb == 0))
+            Helper.processZombieSpawner(listOfEntities, configMap);
+
+        // Process any battles.
+        Helper.checkBattles(player, configMap, inventory, listOfBattles, listOfEntities, statistics);
+
+        Helper.checkBombs(listOfEntities, player);
     }
 }

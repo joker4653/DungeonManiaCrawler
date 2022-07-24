@@ -32,6 +32,7 @@ public class Player extends MovingEntity {
         setPrevPos(new Position(x, y));
         super.setPlayerHealth(Double.parseDouble(configMap.get("player_health")));
         super.setAlly(true);
+        super.setMovementFactor(0);
     }
 
     public int getAllies() {
