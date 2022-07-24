@@ -206,28 +206,9 @@ public class DungeonManiaController implements Serializable{
         }
 
         Helper.checkBombs(listOfEntities, getPlayer());
-
         setTickCount(getTickCount() + 1);
-        int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
-        int xZomb = Integer.parseInt(configMap.get("zombie_spawn_rate"));
-
-        Spider newSpider = Helper.spawnASpider(xSpi, getTickCount(), getPlayer(), mapOfMinAndMaxValues, listOfEntities, configMap);
-        for (Entity currEntity : listOfEntities) {
-            if (currEntity.getEntityType().equalsIgnoreCase("player") || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID())))
-                continue;
-
-            if (currEntity.isMovingEntity()) {
-                ((MovingEntity) currEntity).move(listOfEntities,null, getPlayer(), inventory, statistics);
-            }
-        }
-
-        if (xZomb != 0 && getTickCount() % xZomb == 0)
-            Helper.processZombieSpawner(listOfEntities, configMap);
-
-        // Process any battles.
-        Helper.checkBattles(getPlayer(), configMap, inventory, listOfBattles, listOfEntities, statistics);
-
-        Helper.checkBombs(listOfEntities, getPlayer());
+        Helper.moveEnemy(configMap, getPlayer(), mapOfMinAndMaxValues, listOfEntities, null,
+        inventory, statistics, listOfBattles, tickCount);
 
         return createDungeonResponse();
     }
@@ -237,8 +218,6 @@ public class DungeonManiaController implements Serializable{
      */
     public DungeonResponse tick(Direction movementDirection) {
         setTickCount(getTickCount() + 1);
-        int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
-        int xZomb = Integer.parseInt(configMap.get("zombie_spawn_rate"));
 
         // Move player.
         Player player = getPlayer();
@@ -248,23 +227,9 @@ public class DungeonManiaController implements Serializable{
         Helper.boulderCheck(listOfEntities, statistics);
         Helper.checkBattles(player, configMap, inventory, listOfBattles, listOfEntities, statistics);
         Helper.portalCheck(listOfEntities, player);
-        Spider newSpider = Helper.spawnASpider(xSpi, getTickCount(), player, mapOfMinAndMaxValues, listOfEntities, configMap);
-        for (Entity currEntity : listOfEntities) {
-            if (currEntity.getEntityType().equalsIgnoreCase("player") || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID())))
-                continue;
 
-            if (currEntity.isMovingEntity()) {
-                ((MovingEntity) currEntity).move(listOfEntities, movementDirection, getPlayer(), inventory, statistics);
-            }
-        }
-
-        if (xZomb != 0 && getTickCount() % xZomb == 0)
-            Helper.processZombieSpawner(listOfEntities, configMap);
-
-        // Process any battles.
-        Helper.checkBattles(player, configMap, inventory, listOfBattles, listOfEntities, statistics);
-
-        Helper.checkBombs(listOfEntities, player);
+        Helper.moveEnemy(configMap, player, mapOfMinAndMaxValues, listOfEntities, movementDirection, inventory, statistics, 
+        listOfBattles, tickCount);
 
         return createDungeonResponse();
     }

@@ -395,4 +395,29 @@ public class Helper {
         listOfEntities.remove(spawner);
         statistics.addSpawnerDestroyed();
     }
+
+    public static void moveEnemy(HashMap<String, String> configMap, Player player, HashMap<String, Integer> mapOfMinAndMaxValues,
+    List<Entity> listOfEntities, Direction movementDirection, Inventory inventory, Statistics statistics, List<Battle> listOfBattles,
+    int tickCount) {
+        int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
+        int xZomb = Integer.parseInt(configMap.get("zombie_spawn_rate"));
+
+        Spider newSpider = Helper.spawnASpider(xSpi, tickCount, player, mapOfMinAndMaxValues, listOfEntities, configMap);
+        for (Entity currEntity : listOfEntities) {
+            if (currEntity.getEntityType().equalsIgnoreCase("player") || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID())))
+                continue;
+
+            if (currEntity.isMovingEntity()) {
+                ((MovingEntity) currEntity).move(listOfEntities, movementDirection, player, inventory, statistics);
+            }
+        }
+
+        if (xZomb != 0 && (tickCount % xZomb == 0))
+            Helper.processZombieSpawner(listOfEntities, configMap);
+
+        // Process any battles.
+        Helper.checkBattles(player, configMap, inventory, listOfBattles, listOfEntities, statistics);
+
+        Helper.checkBombs(listOfEntities, player);
+    }
 }
