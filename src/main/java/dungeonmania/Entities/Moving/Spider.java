@@ -69,10 +69,9 @@ public class Spider extends MovingEntity {
     }
 
     public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
-        if (super.getTickCountOnSwampTile() > 0) {
-            swampAffectEnemyMovement(listOfEntities);
+        swampAffectEnemyMovement(listOfEntities);
+        if (super.getTickCountOnSwampTile() > 0)
             return;
-        }
 
         // Get the next position and check if it's a boulder. If so, change direction and move. Otherwise, move normally.
         Position nextPosition = getNextPosition();

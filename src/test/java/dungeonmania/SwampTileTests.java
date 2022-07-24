@@ -153,20 +153,22 @@ public class SwampTileTests {
         int movementFactor = Integer.parseInt(getValueFromConfigFile("movement_factor", "c_swampTileTest_zombieSpawnOn"));
        
         res = dmc.tick(Direction.DOWN);
-        Position expected = new Position(1, 2);
+        Position expected = new Position(1, 3);
 
         for (int i = 0; i < movementFactor; i++) {
             res = dmc.tick(Direction.DOWN);
             Position actualHydraPosition = getEntities(res, "hydra").get(0).getPosition();
-            Position actualAssassinPosition = getEntities(res, "hydra").get(0).getPosition();
+            Position actualAssassinPosition = getEntities(res, "assassin").get(0).getPosition();
             assertEquals(expected, actualHydraPosition);
             assertEquals(expected, actualAssassinPosition);
         }
      
         res = dmc.tick(Direction.DOWN);
         Position hydraPosition = getEntities(res, "hydra").get(0).getPosition();
-        Position assassinPosition = getEntities(res, "hydra").get(0).getPosition();
+        Position assassinPosition = getEntities(res, "assassin").get(0).getPosition();
         assertNotEquals(expected, hydraPosition);
         assertNotEquals(expected, assassinPosition);
     }
+
+    
 }

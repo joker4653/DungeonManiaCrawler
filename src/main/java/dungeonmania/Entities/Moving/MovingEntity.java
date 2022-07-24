@@ -133,10 +133,10 @@ public abstract class MovingEntity extends Entity {
     }
 
     public void moveRandomly(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
-        if (tickCountOnSwampTile > 0) {
-            swampAffectEnemyMovement(listOfEntities);
+        // before the entity moves, the entity may be already stuck on the swamp tile
+        swampAffectEnemyMovement(listOfEntities);
+        if (tickCountOnSwampTile > 0) // if the entity is stuck on the swamp tile, they can't move, so return early.
             return;
-        }
 
         List<Position> moveLocations = createListOfCardinalPos(getCurrentLocation());
         updateAvailablePosList(listOfEntities, moveLocations);
@@ -144,7 +144,8 @@ public abstract class MovingEntity extends Entity {
         // update this entity's position in the listOfEntities
         Position newPosition = getRandPos(moveLocations);
         updatePosAfterMove(listOfEntities, newPosition, getEntityID());
-        
+
+        // after the entity moves, they may end up on a swamp tile.
         swampAffectEnemyMovement(listOfEntities);
     }
 
@@ -159,7 +160,7 @@ public abstract class MovingEntity extends Entity {
 
     // swamp tiles affect enemy movement
     public void swampAffectEnemyMovement(List<Entity> listOfEntities) {
-        if (tickCountOnSwampTile >= 0 && tickCountOnSwampTile <= movementFactor + 1 && isEnemyOnSwamp(listOfEntities)) {
+        if (tickCountOnSwampTile >= 0 && tickCountOnSwampTile <= movementFactor && isEnemyOnSwamp(listOfEntities)) {
             tickCountOnSwampTile++;
         } else {
             tickCountOnSwampTile = 0; // the enemy is off the swamp tile.
