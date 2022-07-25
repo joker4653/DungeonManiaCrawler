@@ -246,17 +246,21 @@ public class BattleTests {
     */
 
     @Test
-    @DisplayName("Test player attack & defence with ally bonuses.")
-    public void TestPlayerBattleAlly() {
+    @DisplayName("Test player attack & defence with ally bonuses - mercenary.")
+    public void TestPlayerBattleAllyMerc() {
+        TestPlayerBattleAlly("d_battleTest_allyBackup", "c_battleTest_allyBackup", "mercenary");
+    }
+
+    public void TestPlayerBattleAlly(String dungeonFilePath, String configFilePath, String type) {
         // Test player attack w/ ally
         DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_battleTest_allyBackup", "c_battleTest_allyBackup");
+        DungeonResponse res = dmc.newGame(dungeonFilePath, configFilePath);
 
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.RIGHT);
 
-        EntityResponse merc = getEntities(res, "mercenary").get(0);
+        EntityResponse merc = getEntities(res, type).get(0);
 
         assertDoesNotThrow(() -> {
             dmc.interact(merc.getId());
@@ -273,12 +277,12 @@ public class BattleTests {
 
         DungeonResponse postBattleResponse = res;
 
-        double playerAttack = Double.parseDouble(getValueFromConfigFile("player_attack", "c_battleTest_allyBackup"));
-        double allyAtkBonus = Double.parseDouble(getValueFromConfigFile("ally_attack", "c_battleTest_allyBackup"));
+        double playerAttack = Double.parseDouble(getValueFromConfigFile("player_attack", configFilePath));
+        double allyAtkBonus = Double.parseDouble(getValueFromConfigFile("ally_attack", configFilePath));
         playerAttack += allyAtkBonus;
 
-        double enemyAttack = Double.parseDouble(getValueFromConfigFile("zombie_attack", "c_battleTest_allyBackup"));
-        double allyDefBonus = Double.parseDouble(getValueFromConfigFile("ally_defence", "c_battleTest_allyBackup"));
+        double enemyAttack = Double.parseDouble(getValueFromConfigFile("zombie_attack", configFilePath));
+        double allyDefBonus = Double.parseDouble(getValueFromConfigFile("ally_defence", configFilePath));
         enemyAttack -= allyDefBonus;
 
         BattleResponse battle = postBattleResponse.getBattles().get(0);
@@ -498,7 +502,7 @@ public class BattleTests {
     }
 
     // Assassin battle tests
-    
+
     // Helper function taken and modified from ExampleTests.java. All credit goes to the COMP2511 team who wrote ExampleTests.java.
     private static DungeonResponse genericAssassinSequence(DungeonManiaController controller, String configFile) {
         //
@@ -532,5 +536,10 @@ public class BattleTests {
        assertBattleCalculations("assassin", battle, true, "c_battleTests_basicAssassinAssassinDies");
     }
 
+    @Test
+    @DisplayName("Test player attack & defence with ally bonuses - assassin.")
+    public void TestPlayerBattleAllyAssassin() {
+        TestPlayerBattleAlly("d_battleTest_allyAssassinBackup", "c_battleTest_allyAssassinBackup", "assassin");
+    }
 
 }
