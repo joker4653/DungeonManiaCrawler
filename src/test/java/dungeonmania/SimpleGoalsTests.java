@@ -15,7 +15,7 @@ import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 
-public class StatisticsTests {
+public class SimpleGoalsTests {
 
     @Test
     @DisplayName("Test response when no goals have been completed.")
