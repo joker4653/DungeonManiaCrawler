@@ -189,4 +189,9 @@ public abstract class MovingEntity extends Entity {
     public void setMovementFactor(int movementFactor) {
         this.movementFactor = movementFactor;
     }
+
+    public EnemyBattlingStrategy getEnemyStrategy() {
+        return enemyStrategy;
+    }
+
 }

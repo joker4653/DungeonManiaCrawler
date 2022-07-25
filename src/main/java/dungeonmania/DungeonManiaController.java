@@ -271,7 +271,7 @@ public class DungeonManiaController implements Serializable{
         Player player = getPlayer();
 
         if (entity.getEntityType().equalsIgnoreCase("mercenary") || entity.getEntityType().equalsIgnoreCase("assassin")) {
-            ((Mercenary) entity).bribery((Mercenary) entity, player, inventory);
+            ((Mercenary) entity).bribery((Mercenary) entity, player, inventory, configMap);
         } else if (entity.getEntityType().equalsIgnoreCase("zombie_toast_spawner")) {
             Helper.destroySpawner((ZombieToastSpawner) entity, player, inventory, listOfEntities, statistics);
         }
