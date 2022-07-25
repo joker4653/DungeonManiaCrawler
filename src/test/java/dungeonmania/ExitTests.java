@@ -16,6 +16,8 @@ import static dungeonmania.TestUtils.getValueFromConfigFile;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import dungeonmania.Entities.Entity;
+import dungeonmania.Entities.Static.Exit;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
@@ -59,8 +61,6 @@ public class ExitTests {
         // Exit State should now be true as player is at exit.
         assertEquals(getExitStateHelper(dmc), true);
     }
-
-    // TODO: Test when goals has been implemented.
 
     public boolean getExitStateHelper(DungeonManiaController dmc) {
         List<Entity> list = dmc.getListOfEntities();

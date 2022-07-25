@@ -86,7 +86,7 @@ public class BattleTests {
         assertBattleCalculations("zombie", battle, true, "c_battleTests_basicZombieZombieDies");
     } 
 
-/*  TODO --> UNCOMMENT THIS WHEN DOOR/KEY HAVE BEEN IMPLEMENTED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/*  TODO UNCOMMENT THIS WHEN DOOR/KEY HAVE BEEN IMPLEMENTED
     @Test
     @DisplayName("Test zombie walk through the open door and wins the battle")
     public void testZombieWalkThroughOpenDoor() {
@@ -183,7 +183,7 @@ public class BattleTests {
         assertEquals(-playerAttack / 5, round1.getDeltaEnemyHealth());
     }
 
-    /* // TODO Finish these tests once appropriate entities have been made!!!!!!
+    /* // TODO Finish these tests once appropriate entities have been made
     @Test
     @DisplayName("Test player attack with bow bonus.") {
         DungeonManiaController controller = new DungeonManiaController();
@@ -290,7 +290,7 @@ public class BattleTests {
     }
 
     /* System level test.
-    The test below involves the following:
+    Tests the following:
     1. player gets 3 coins
     2. player bribes the mercenary
     3. player battles and wins against one zombie
@@ -323,6 +323,8 @@ public class BattleTests {
         res = dmc.tick(Direction.RIGHT);
         // player exits
         assertEquals(new Position(6, 8), getPlayer(res).get().getPosition());
+        String goals = getGoals(res); 
+        assertFalse(goals.contains(":exit")); // completed goal has been removed
     }    
 
     private DungeonResponse testMercenary(DungeonManiaController dmc, DungeonResponse res) {
@@ -359,4 +361,53 @@ public class BattleTests {
         assertEquals(new Position(4, 6), newPos);
         return res;
     }
+
+    // Hydra battle tests
+
+    @Test
+    @DisplayName("Test hydra's health never increases when hydra_health_increase_rate = 0. Hydra loses.")
+    public void testHydraHpNeverIncreases() {
+        //  exit   wall      wall                   wall
+        //         player    hydra                  boulder
+        //  wall   wall      zombie_toast_spawner   wall
+        DungeonManiaController controller = new DungeonManiaController();
+        DungeonResponse initialResponse = controller.newGame("d_battleTest_basicHydra", "c_battleTest_hydraNeverIncrease");
+        DungeonResponse postBattleResponse = genericEnemySequence(initialResponse, controller, "hydra");
+        BattleResponse battle = postBattleResponse.getBattles().get(0);
+        assertBattleCalculations("hydra", battle, true, "c_battleTest_hydraNeverIncrease");
+    }
+
+    @Test
+    @DisplayName("Test hydra's health always increases when hydra_health_increase_rate = 1. Hydra wins.")
+    public void testHydraHpAlwaysIncreases() {
+        //  exit   wall      wall                   wall
+        //         player    hydra                  boulder
+        //  wall   wall      zombie_toast_spawner   wall
+        DungeonManiaController controller = new DungeonManiaController();
+        DungeonResponse initialResponse = controller.newGame("d_battleTest_basicHydra", "c_battleTest_hydraAlwaysIncrease");
+        DungeonResponse postBattleResponse = genericEnemySequence(initialResponse, controller, "hydra");
+        BattleResponse battle = postBattleResponse.getBattles().get(0);
+        assertHydraIncreasesHealthAlways("hydra", battle, false, "c_battleTest_hydraAlwaysIncrease");
+    }
+
+    private void assertHydraIncreasesHealthAlways(String enemyType, BattleResponse battle, boolean enemyDies, String configFilePath) {
+        List<RoundResponse> rounds = battle.getRounds();
+        double playerHealth = Double.parseDouble(getValueFromConfigFile("player_health", configFilePath));
+        double enemyHealth = Double.parseDouble(getValueFromConfigFile(enemyType + "_health", configFilePath));
+        double enemyAttack = Double.parseDouble(getValueFromConfigFile(enemyType + "_attack", configFilePath));
+
+        for (RoundResponse round : rounds) {
+            assertEquals(round.getDeltaCharacterHealth(), -enemyAttack / 10);
+            assertEquals(round.getDeltaEnemyHealth(), Double.parseDouble(getValueFromConfigFile("hydra_health_increase_amount", configFilePath)));
+            enemyHealth += round.getDeltaEnemyHealth();
+            playerHealth += round.getDeltaCharacterHealth();
+        }
+
+        if (enemyDies) {
+            assertTrue(enemyHealth <= 0);
+        } else {
+            assertTrue(playerHealth <= 0);
+        }
+    }
+
 }

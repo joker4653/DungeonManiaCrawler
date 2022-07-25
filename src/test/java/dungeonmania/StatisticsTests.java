@@ -111,6 +111,39 @@ public class StatisticsTests {
         assertTrue(goals.contains(":boulders"));
     }
 
+    @Test
+    @DisplayName("Test response when multiple boulders goal has been completed.")
+    public void testMultiBouldersGoalCompleted() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_statsTest_boulderMultiGoal", "c_statsTest_noGoalsCompleted");
+
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.LEFT);
+        res = dmc.tick(Direction.DOWN);
+
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.LEFT);
+        res = dmc.tick(Direction.DOWN);
+
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.LEFT);
+        res = dmc.tick(Direction.DOWN);
+
+        res = dmc.tick(Direction.RIGHT);
+
+        // Boulder goal should be complete.
+        String goals = getGoals(res); 
+
+        assertFalse(goals.contains(":boulders"));
+
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+
+        // After moving again, boulder goal should once again be incomplete.
+        goals = getGoals(res); 
+
+        assertTrue(goals.contains(":boulders"));
+    }
 
     @Test
     @DisplayName("Test response when exit goal has been completed.")

@@ -1,0 +1,27 @@
+{
+    "entities": [
+        {
+            "type" : "hydra",
+            "x" : 1,
+            "y" : 1
+        }, {
+            "type" : "player",
+            "x" : 15,
+            "y" : 15
+        },
+        {
+            "type": "exit",
+            "x": 0,
+            "y": 0
+        }, {
+            "type" : "hydra",
+            "x" : 3,
+            "y" : 3
+        }, {
+            "type" : "switch",
+            "x" : 2,
+            "y" : 2
+        }
+    ],
+    "goal-condition": {"goal": "exit"}
+}
