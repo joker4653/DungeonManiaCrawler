@@ -146,7 +146,7 @@ public class Battle implements Serializable {
         }
 
         int allies = player.getAllies();
-        double ally_defense = Double.parseDouble(configMap.get("ally_attack"));
+        double ally_defense = Double.parseDouble(configMap.get("ally_defence"));
         for (int i = 0; i < allies; i++) {
             def += ally_defense;
         }
