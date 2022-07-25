@@ -55,7 +55,7 @@ public class Mercenary extends MovingEntity {
         if (!super.isAlly()) {
             enemyMovementDS(listOfEntities, player);
         } else {
-            super.enemyChangeStrategy(new AllyStrategy(configMap, "mercenary"));
+            super.enemyChangeStrategy(new AllyStrategy(configMap, this.getEntityType()));
             allyMovement(listOfEntities, player); 
         }
         
@@ -197,7 +197,7 @@ public class Mercenary extends MovingEntity {
         return possiblePos;
     }
 
-    public void bribery(Mercenary merc, Player player, Inventory inventory) throws InvalidActionException {
+    public void bribery(Mercenary merc, Player player, Inventory inventory, HashMap<String, String> configMap) throws InvalidActionException {
         // Check player is within radius of mercenary.
         int radius = Integer.parseInt(configMap.get("bribe_radius"));
         if (Helper.getDistance(player.getCurrentLocation(), merc.getCurrentLocation()) > radius) {
@@ -214,11 +214,11 @@ public class Mercenary extends MovingEntity {
             inventory.removeItem(treasure.get(i));
         } 
 
-        becomeAlly(merc, player);
+        becomeAlly(merc, player, configMap);
     }
 
     // Make mercenary into ally.
-    public void becomeAlly(Mercenary merc, Player player) {
+    public void becomeAlly(Mercenary merc, Player player, HashMap<String, String> configMap) {
         merc.setAlly(true);
         player.addAlly();
         merc.setInteractable(false); // according to the spec
