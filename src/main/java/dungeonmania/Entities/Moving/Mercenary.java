@@ -55,7 +55,6 @@ public class Mercenary extends MovingEntity {
         if (!super.isAlly()) {
             enemyMovementDS(listOfEntities, player);
         } else {
-            super.enemyChangeStrategy(new AllyStrategy(configMap, this.getEntityType()));
             allyMovement(listOfEntities, player); 
         }
         
@@ -222,6 +221,7 @@ public class Mercenary extends MovingEntity {
         merc.setAlly(true);
         player.addAlly();
         merc.setInteractable(false); // according to the spec
+        super.enemyChangeStrategy(new AllyStrategy(configMap, this.getEntityType()));
     }
 
     public int checkBribeAmount(List<Entity> treasure) throws InvalidActionException {
