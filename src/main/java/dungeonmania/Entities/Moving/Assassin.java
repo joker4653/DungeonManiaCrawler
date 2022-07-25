@@ -26,9 +26,10 @@ public class Assassin extends Mercenary {
     }
     
     @Override
-    public void becomeAlly(Mercenary merc, Player player, HashMap<String, String> configMap) {
-        if (new Random().nextDouble() <= (1 - Double.parseDouble(getConfigMap().get("assassin_bribe_fail_rate")))) {
-            super.becomeAlly(this, player, configMap);
+    public void becomeAlly(Mercenary merc, Player player) {
+        HashMap<String, String> configMap = getConfigMap();
+        if (new Random().nextDouble() <= (1 - Double.parseDouble(configMap.get("assassin_bribe_fail_rate")))) {
+            super.becomeAlly(this, player);
             super.enemyChangeStrategy(new AllyStrategy(configMap, "assassin"));
         }
     }
