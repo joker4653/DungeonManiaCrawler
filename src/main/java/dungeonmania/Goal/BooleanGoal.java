@@ -1,5 +1,8 @@
 package dungeonmania.Goal;
 
+import java.io.Serializable;
+
+
 public abstract class BooleanGoal implements Serializable {
 
     public abstract boolean isComplete();
