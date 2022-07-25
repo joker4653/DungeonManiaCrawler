@@ -319,8 +319,10 @@ public class DungeonManiaController {
                     ((FloorSwitch) currSwitch).trigger(listOfEntities);
                     statistics.addFloorSwitch();
                 } else {
-                    ((FloorSwitch) currSwitch).untrigger(listOfEntities);
-                    statistics.removeFloorSwitch();
+                    if (((FloorSwitch) currSwitch).getState().equals(((FloorSwitch) currSwitch).getDepressedState())) {
+                        ((FloorSwitch) currSwitch).untrigger(listOfEntities);
+                        statistics.removeFloorSwitch();
+                    }
                 }
             }
         }

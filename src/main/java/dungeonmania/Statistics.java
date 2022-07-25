@@ -25,6 +25,7 @@ public class Statistics {
 
     public Statistics(HashMap<String, Boolean> goals, List<Entity> listOfEntities, HashMap<String, String> configMap) {
         this.goals = goals;
+        this.floorSwitchesCreated = listOfEntities.stream().filter(e -> e.getEntityType().equals("switch")).collect(Collectors.toList()).size();
         this.spawnersCreated = listOfEntities.stream().filter(e -> e.getEntityType().equals("zombie_toast_spawner")).collect(Collectors.toList()).size();
 
         this.enemiesGoal = Integer.parseInt(configMap.get("enemy_goal"));
