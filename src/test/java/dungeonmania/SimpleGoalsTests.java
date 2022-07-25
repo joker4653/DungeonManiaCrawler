@@ -24,8 +24,7 @@ public class SimpleGoalsTests {
         DungeonResponse res = dmc.newGame("d_playerTest_basicMovement", "c_statsTest_noGoalsCompleted");
 
         String goals = getGoals(res); 
-
-        assertTrue(goals.contains(":exit"));
+        assertTrue(goals.equals(":exit"));
     }
 
     @Test
@@ -33,6 +32,8 @@ public class SimpleGoalsTests {
     public void testEnemiesGoalCompleted() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_statsTest_enemiesComplete", "c_statsTest_enemiesCompleted");
+        String goals = getGoals(res); 
+        assertTrue(goals.equals(":enemies"));
 
         assertEquals(1, countEntityOfType(res, "player"));
         assertEquals(1, countEntityOfType(res, "spider"));
@@ -42,9 +43,8 @@ public class SimpleGoalsTests {
         assertEquals(1, countEntityOfType(res, "player"));
         assertEquals(0, countEntityOfType(res, "spider"));
 
-        String goals = getGoals(res); 
-
-        assertFalse(goals.contains(":enemies"));
+        goals = getGoals(res); 
+        assertTrue(goals.equals(""));
     }
 
     @Test
@@ -53,15 +53,15 @@ public class SimpleGoalsTests {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_statsTest_enemySpawnerComplete", "c_statsTest_enemySpawnerComplete");
 
+        String goals = getGoals(res); 
+        assertTrue(goals.equals(":enemies"));
         assertEquals(1, countEntityOfType(res, "player"));
         assertEquals(1, countEntityOfType(res, "zombie_toast"));
 
         res = dmc.tick(Direction.RIGHT);
 
         assertEquals(0, countEntityOfType(res, "zombie_toast"));
-
         EntityResponse spawner = getEntities(res, "zombie_toast_spawner").get(0);
-
         assertDoesNotThrow(() -> {
             dmc.interact(spawner.getId());
         });
@@ -70,9 +70,9 @@ public class SimpleGoalsTests {
 
         assertEquals(0, countEntityOfType(res, "zombie_toast_spawner"));
 
-        String goals = getGoals(res); 
+        goals = getGoals(res); 
+        assertTrue(goals.equals(""));
 
-        assertFalse(goals.contains(":enemies"));
     }
 
 
@@ -81,11 +81,12 @@ public class SimpleGoalsTests {
     public void testTreasureGoalCompleted() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_statsTest_treasureComplete", "c_statsTest_basicTreasure");
+        String goals = getGoals(res); 
+        assertTrue(goals.equals(":treasure"));
         res = dmc.tick(Direction.RIGHT);
 
-        String goals = getGoals(res); 
-
-        assertFalse(goals.contains(":treasure"));
+        goals = getGoals(res); 
+        assertTrue(goals.equals(""));
     }
 
 
@@ -95,20 +96,22 @@ public class SimpleGoalsTests {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_statsTest_boulderGoal", "c_statsTest_noGoalsCompleted");
 
+        String goals = getGoals(res); 
+        assertTrue(goals.equals(":boulders"));
+
         res = dmc.tick(Direction.RIGHT);
 
         // Boulder goal should be complete.
-        String goals = getGoals(res); 
+        goals = getGoals(res); 
 
-        assertFalse(goals.contains(":boulders"));
+        assertTrue(goals.equals(""));
 
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.RIGHT);
 
         // After moving again, boulder goal should once again be incomplete.
         goals = getGoals(res); 
-
-        assertTrue(goals.contains(":boulders"));
+        assertTrue(goals.equals(":boulders"));
     }
 
     @Test
@@ -116,6 +119,8 @@ public class SimpleGoalsTests {
     public void testMultiBouldersGoalCompleted() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_statsTest_boulderMultiGoal", "c_statsTest_noGoalsCompleted");
+        String goals = getGoals(res); 
+        assertTrue(goals.equals(":boulders"));
 
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.LEFT);
@@ -132,17 +137,16 @@ public class SimpleGoalsTests {
         res = dmc.tick(Direction.RIGHT);
 
         // Boulder goal should be complete.
-        String goals = getGoals(res); 
+        goals = getGoals(res); 
 
-        assertFalse(goals.contains(":boulders"));
+        assertTrue(goals.equals(""));
 
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.RIGHT);
 
         // After moving again, boulder goal should once again be incomplete.
         goals = getGoals(res); 
-
-        assertTrue(goals.contains(":boulders"));
+        assertTrue(goals.equals(":boulders"));
     }
 
     @Test
@@ -151,12 +155,14 @@ public class SimpleGoalsTests {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_statsTest_exit", "c_statsTest_noGoalsCompleted");
 
-        res = dmc.tick(Direction.DOWN);
-        res = dmc.tick(Direction.DOWN);
-
         String goals = getGoals(res); 
+        assertTrue(goals.equals(":exit"));
 
-        assertFalse(goals.contains(":exit"));
+        res = dmc.tick(Direction.DOWN);
+        res = dmc.tick(Direction.DOWN);
+
+        goals = getGoals(res); 
+        assertTrue(goals.equals(""));
     }
 
     @Test
@@ -164,21 +170,22 @@ public class SimpleGoalsTests {
     public void testLargeTreasureGoalCompleted() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_statsTest_treasureComplete", "c_statsTest_largeTreasure");
+        String goals = getGoals(res); 
+        assertTrue(goals.equals(":treasure"));
+
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.RIGHT);
 
         // Treasure goal should not yet be completed
-        String goals = getGoals(res); 
-
-        assertTrue(goals.contains(":treasure"));
+        goals = getGoals(res); 
+        assertTrue(goals.equals(":treasure"));
         
         res = dmc.tick(Direction.RIGHT);
 
         // Treasure should now be complete.
         goals = getGoals(res); 
-
-        assertFalse(goals.contains(":treasure"));
+        assertTrue(goals.equals(""));
     }
 }
 

@@ -141,13 +141,9 @@ public class DungeonManiaController implements Serializable{
             JsonObject dungeonJsonObj = JsonParser.parseString(dungeonJSONString).getAsJsonObject();
             List<EntityResponse> listOfEntityResponses = Helper.createListOfEntsAndResp(dungeonJsonObj, configMap, listOfEntities);
 
-            JsonElement jsonGoal = dungeonJsonObj.get("goal-condition");
-            JsonObject jsonObj = jsonGoal.getAsJsonObject();
-            // TODO this will change when we implement complex goals.
-            HashMap<String, Boolean> goals = new HashMap<String, Boolean>();
-            String goal = ":" + jsonObj.get("goal").getAsString();
-            goals.put(goal, false);
-            statistics = new Statistics(goals, listOfEntities, configMap);
+            JsonElement jsonObj = dungeonJsonObj.get("goal-condition");
+            JsonObject jsonGoals = jsonObj.getAsJsonObject();
+            statistics = new Statistics(jsonGoals, listOfEntities, configMap);
  
             // TODO replace "buildables" with your actual buildables lists.
             this.dungeonId = UUID.randomUUID().toString();
@@ -164,18 +160,7 @@ public class DungeonManiaController implements Serializable{
     }
 
     private String getGoalsResponse() {
-        // TODO this will change when complex goals is implemented.
-        HashMap<String, Boolean> goals = statistics.getGoals();
-        String incomplete = "";
-        if (goals.size() > 0) {
-            for (String key : goals.keySet()) {
-                if (!goals.get(key)) {
-                    incomplete = incomplete + key + " ";
-                }
-            }
-        }
-
-        return incomplete;
+        return statistics.getGoals();
     }
 
     /**
@@ -237,95 +222,13 @@ public class DungeonManiaController implements Serializable{
         return createDungeonResponse();
     }
 
-    // Checks all floor switches if they have a boulder on them. If they do, it updates the state of the switch to trigger it. It they don't it updates
-    // the switch to untrigger.
-    private void boulderCheck() {
-        for (Entity currSwitch : listOfEntities) {
-            if (currSwitch.getEntityType() != "switch") {
-                continue;
-            }
-
-            for (Entity currBoulder : listOfEntities) {
-                if (currBoulder.getEntityType() != "boulder") {
-                    continue;
-                }
-
-                if (currSwitch.getCurrentLocation().equals(currBoulder.getCurrentLocation())) {
-                    ((FloorSwitch) currSwitch).trigger(listOfEntities);
-                    statistics.addFloorSwitch();
-                } else {
-                    if (((FloorSwitch) currSwitch).getState().equals(((FloorSwitch) currSwitch).getDepressedState())) {
-                        ((FloorSwitch) currSwitch).untrigger(listOfEntities);
-                        statistics.removeFloorSwitch();
-                    }
-                }
-            }
-        }
-    }
-
-
-    private void playerMovesBoulder(Direction movementDirection, Player player) {
-        for (Entity currEntity : listOfEntities) {
-            if (currEntity.getEntityType().equals("boulder")) {
-                ((Boulder) currEntity).move(listOfEntities, movementDirection, player);
-            }
-        }
-    }
-
-    // Spawns a spider within the specified box (from minX to maxX and from minY to maxY)
-    private Spider spawnASpider(int xSpi, Player player) {
-        Spider newSpider = null;
-        if (xSpi != 0 && getTickCount() % xSpi == 0) {
-            newSpider = new Spider(mapOfMinAndMaxValues.get("minX"), mapOfMinAndMaxValues.get("maxX"),
-                            mapOfMinAndMaxValues.get("minY"), mapOfMinAndMaxValues.get("maxY"), configMap);
-            newSpider.spawn(listOfEntities, player);
-        }
-
-        return newSpider;
-    }
-
-    // Spawner creates a new zombie
-    private void processZombieSpawner() {
-        List<Entity> originalList = new ArrayList<>(listOfEntities);
-
-        originalList.stream()
-                    .filter(currEntity -> currEntity.getEntityType().equalsIgnoreCase("zombie_toast_spawner"))
-                    .forEach((ent) -> ((ZombieToastSpawner)ent).spawnZombie(listOfEntities, configMap));
-    }
-
-    /*
-     * Find and fulfill all burgeoning battles.
-     */
-    private void checkBattles() {
-        Player player = getPlayer();
-        List<Entity> monstersHere = Helper.getMonstersHere(player, listOfEntities);
-
-        for (Entity monster : monstersHere) {
-            Battle battle = new Battle(player, monster);
-            boolean alive = battle.doBattle(configMap, inventory);
-
-            listOfBattles.add(battle);
-
-            if (!alive) {
-                // TODO Player Death?!
-                listOfEntities.remove(player);
-                break;
-            } else {
-                // Monster died.
-                statistics.addEnemyDestroyed();
-                listOfEntities.remove(monster);
-            }
-        }
-    }
-
     // Helper function that creates a new DungeonResponse because some entities can change positions. This new information needs to
     // be included in the listOfEntities and DungeonResponse.
     private DungeonResponse createDungeonResponse() {
         List<EntityResponse> entities = new ArrayList<>();
         listOfEntities.forEach((currEntity) -> entities.add(new EntityResponse(currEntity.getEntityID(), currEntity.getEntityType(), currEntity.getCurrentLocation(), currEntity.isInteractable())));
 
-        DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, entities, Helper.getInventoryResponse(inventory), Helper.getBattleResponse(listOfBattles), buildables, getGoalsResponse());
-        return dungeonResp;
+        return new DungeonResponse(dungeonId, dungeonName, entities, Helper.getInventoryResponse(inventory), Helper.getBattleResponse(listOfBattles), buildables, getGoalsResponse());
     }
 
 

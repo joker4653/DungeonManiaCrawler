@@ -43,17 +43,17 @@ public class ComplexGoalsTests {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_complexGoalsTest_basicAND", "c_complexGoalsTest_basic");
         String goal = getGoals(res); 
-        assertTrue(goal.contains("(:treasure AND :exit)"));
+        assertTrue(goal.equals("(:treasure AND :exit)"));
 
         res = dmc.tick(Direction.RIGHT);
 
         goal = getGoals(res); 
-        assertTrue(goal.contains("(:treasure AND :exit)"));
+        assertEquals(":exit", goal);
 
         res = dmc.tick(Direction.RIGHT);
 
         goal = getGoals(res); 
-        assertFalse(goal.contains("(:treasure AND :exit)"));
+        assertTrue(goal.equals(""));
     }
 
     @Test
@@ -66,17 +66,12 @@ public class ComplexGoalsTests {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_complexGoalsTest_basicOR_A", "c_complexGoalsTest_basic");
         String goal = getGoals(res); 
-        assertTrue(goal.contains("(:treasure OR :exit)"));
+        assertTrue(goal.equals("(:treasure OR :exit)"));
 
         res = dmc.tick(Direction.RIGHT);
 
         goal = getGoals(res); 
-        assertFalse(goal.contains("(:treasure OR :exit)"));
-
-        res = dmc.tick(Direction.RIGHT);
-
-        goal = getGoals(res); 
-        assertFalse(goal.contains("(:treasure OR :exit)"));
+        assertTrue(goal.equals(""));
     }
 
     @Test
@@ -89,17 +84,12 @@ public class ComplexGoalsTests {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_complexGoalsTest_basicOR_B", "c_complexGoalsTest_basic");
         String goal = getGoals(res); 
-        assertTrue(goal.contains("(:treasure OR :exit)"));
+        assertTrue(goal.equals("(:treasure OR :exit)"));
 
         res = dmc.tick(Direction.RIGHT);
 
         goal = getGoals(res); 
-        assertFalse(goal.contains("(:treasure OR :exit)"));
-
-        res = dmc.tick(Direction.RIGHT);
-
-        goal = getGoals(res); 
-        assertFalse(goal.contains("(:treasure OR :exit)"));
+        assertTrue(goal.equals(""));
     }
 
 
@@ -113,16 +103,22 @@ public class ComplexGoalsTests {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_complexGoalsTest_ANDExitFirst", "c_complexGoalsTest_basic");
         String goal = getGoals(res); 
-        assertTrue(goal.contains("(:treasure AND :exit)"));
+        assertTrue(goal.equals("(:treasure AND :exit)"));
 
         res = dmc.tick(Direction.RIGHT);
 
         goal = getGoals(res); 
-        assertTrue(goal.contains("(:treasure AND :exit)"));
+        assertEquals("(:treasure AND :exit)", goal);
 
-        // Player should have left dungeon.
-        assertEquals(0, countEntityOfType(res, "player"));
+        res = dmc.tick(Direction.RIGHT);
 
+        goal = getGoals(res); 
+        assertTrue(goal.equals(":exit"));
+
+        res = dmc.tick(Direction.LEFT);
+
+        goal = getGoals(res); 
+        assertTrue(goal.equals(""));
     }
 
     @Test
@@ -136,27 +132,26 @@ public class ComplexGoalsTests {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_complexGoalsTest_nestedANDGoal", "c_complexGoalsTest_nested");
         String goal = getGoals(res); 
-        assertTrue(goal.contains("(:treasure AND (:boulders AND :exit))"));
+        assertTrue(goal.equals("(:treasure AND (:boulders AND :exit))"));
 
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.LEFT);
 
         // Boulders complete.
         goal = getGoals(res); 
-        assertTrue(goal.contains("(:treasure AND (:boulders AND :exit))"));
+        assertEquals("(:treasure AND :exit)", goal);
 
         res = dmc.tick(Direction.DOWN);
 
         // Treasure complete.
         goal = getGoals(res); 
-        assertTrue(goal.contains("(:treasure AND (:boulders AND :exit))"));
+        assertTrue(goal.equals(":exit"));
 
         res = dmc.tick(Direction.RIGHT);
 
         // Exit complete, complex goal should be complete.
         goal = getGoals(res); 
-        assertFalse(goal.contains("(:treasure AND (:boulders AND :exit))"));
-
+        assertTrue(goal.equals(""));
     }
 
     @Test
@@ -170,26 +165,26 @@ public class ComplexGoalsTests {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_complexGoalsTest_nestedANDThenORGoal", "c_complexGoalsTest_nested");
         String goal = getGoals(res); 
-        assertTrue(goal.contains("(:exit AND (:boulders OR :treasure))"));
+        assertTrue(goal.equals("(:exit AND (:boulders OR :treasure))"));
 
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.LEFT);
 
         // Boulders complete.
         goal = getGoals(res); 
-        assertTrue(goal.contains("(:exit AND (:boulders OR :treasure))"));
+        assertEquals(":exit", goal);
 
         res = dmc.tick(Direction.DOWN);
 
         // Treasure complete.
         goal = getGoals(res); 
-        assertTrue(goal.contains("(:exit AND (:boulders OR :treasure))"));
+        assertTrue(goal.equals(":exit"));
 
         res = dmc.tick(Direction.RIGHT);
 
         // Exit complete, complex goal should be complete.
         goal = getGoals(res); 
-        assertFalse(goal.contains("(:exit AND (:boulders OR :treasure))"));
+        assertTrue(goal.equals(""));
     }
 
     @Test
@@ -203,19 +198,19 @@ public class ComplexGoalsTests {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_complexGoalsTest_nestedANDThenORGoal", "c_complexGoalsTest_nested");
         String goal = getGoals(res); 
-        assertTrue(goal.contains("(:exit AND (:boulders OR :treasure))"));
+        assertTrue(goal.equals("(:exit AND (:boulders OR :treasure))"));
 
         res = dmc.tick(Direction.DOWN);
 
         // Treasure complete.
         goal = getGoals(res); 
-        assertTrue(goal.contains("(:exit AND (:boulders OR :treasure))"));
+        assertTrue(goal.equals(":exit"));
 
         res = dmc.tick(Direction.RIGHT);
 
         // Exit complete, complex goal should be complete.
         goal = getGoals(res); 
-        assertFalse(goal.contains("(:exit AND (:boulders OR :treasure))"));
+        assertTrue(goal.equals(""));
     }
 
     @Test
@@ -229,20 +224,20 @@ public class ComplexGoalsTests {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_complexGoalsTest_nestedORThenANDGoal", "c_complexGoalsTest_nested");
         String goal = getGoals(res); 
-        assertTrue(goal.contains("(:exit OR (:boulders AND :treasure))"));
+        assertTrue(goal.equals("(:exit OR (:boulders AND :treasure))"));
 
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.LEFT);
 
         // Boulders complete.
         goal = getGoals(res); 
-        assertTrue(goal.contains("(:exit AND (:boulders OR :treasure))"));
+        assertTrue(goal.equals("(:exit OR :treasure)"));
 
         res = dmc.tick(Direction.DOWN);
 
         // Treasure complete.
         goal = getGoals(res); 
-        assertFalse(goal.contains("(:exit OR (:boulders AND :treasure))"));
+        assertTrue(goal.equals(""));
     }
 
 

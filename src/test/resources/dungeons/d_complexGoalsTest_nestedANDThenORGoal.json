@@ -17,7 +17,7 @@
             "x" : 1,
             "y" : 2
         },{
-            "type" : "switch",
+            "type" : "exit",
             "x" : 2,
             "y" : 2
         }
