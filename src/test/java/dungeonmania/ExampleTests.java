@@ -132,7 +132,7 @@ public class ExampleTests {
         assertEquals(1, getEntities(res, "player").size());
     }
     
-    /*@Test
+    @Test
     @DisplayName("Testing a map with 4 conjunction goal")
     public void andAll() {
         DungeonManiaController dmc;
@@ -168,7 +168,7 @@ public class ExampleTests {
         // move to exit
         res = dmc.tick(Direction.DOWN);
         assertEquals("", getGoals(res));
-    }*/
+    }
 
     private static DungeonResponse genericMercenarySequence(DungeonManiaController controller, String configFile) {
         //
