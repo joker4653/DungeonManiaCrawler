@@ -15,10 +15,14 @@ import static dungeonmania.TestUtils.getValueFromConfigFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import dungeonmania.Battling.EnemyBattleStrategy.EnemyBattlingStrategy;
+import dungeonmania.Battling.EnemyBattleStrategy.HydraBattlingStrategy;
+import dungeonmania.Entities.Moving.Hydra;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
@@ -410,4 +414,86 @@ public class BattleTests {
         }
     }
 
+    // Test hydra’s health when hydra_health_increase_rate = 0.72142, hydra_health = 100, hydra_attack = 1, hydra_health_increase_amount = 100, player_health = 5 and player_attack = 1, resulting in the hydra winning.
+    @Test
+    @DisplayName("Test hydra's health increases when hydra_health_increase_rate = 0.72142. Hydra wins.")
+    public void testHydraWins() {
+        //  exit   wall      wall                   wall
+        //         player    hydra                  boulder
+        //  wall   wall      zombie_toast_spawner   wall
+        DungeonManiaController controller = new DungeonManiaController();
+        DungeonResponse initialResponse = controller.newGame("d_battleTest_basicHydra", "c_battleTest_hydraWins");
+        DungeonResponse postBattleResponse = genericEnemySequence(initialResponse, controller, "hydra");
+        BattleResponse battle = postBattleResponse.getBattles().get(0);
+        String hydraID = getEntities(initialResponse, "hydra").get(0).getId();
+        Hydra hydra = (Hydra)controller.getListOfEntities().stream()
+                        .filter(e -> e.getEntityID().equals(hydraID))
+                        .findFirst()
+                        .get();
+        EnemyBattlingStrategy battleStrategy = hydra.getEnemyStrategy();
+        long seed = ((HydraBattlingStrategy)(battleStrategy)).getSeed();
+        Random random = new Random(seed);
+
+        assertHydraIncreasesHealth(random, "hydra", battle, false, "c_battleTest_hydraWins");
+    }
+
+    private void assertHydraIncreasesHealth(Random random, String enemyType, BattleResponse battle, boolean enemyDies, String configFilePath) {
+        List<RoundResponse> rounds = battle.getRounds();
+        double playerHealth = Double.parseDouble(getValueFromConfigFile("player_health", configFilePath));
+        double playerAttack = Double.parseDouble(getValueFromConfigFile("player_attack", configFilePath));
+        double enemyHealth = Double.parseDouble(getValueFromConfigFile(enemyType + "_health", configFilePath));
+        double enemyAttack = Double.parseDouble(getValueFromConfigFile(enemyType + "_attack", configFilePath));
+        double hydra_health_increase_rate = Double.parseDouble(getValueFromConfigFile("hydra_health_increase_rate", configFilePath));
+
+        double enemyPrevHealth = enemyHealth;
+       
+        for (RoundResponse round : rounds) {
+            assertEquals(round.getDeltaCharacterHealth(), -enemyAttack / 10);
+            if (random.nextDouble() <= hydra_health_increase_rate)
+                assertEquals(round.getDeltaEnemyHealth(), Double.parseDouble(getValueFromConfigFile("hydra_health_increase_amount", configFilePath)));
+            else
+                assertEquals(round.getDeltaEnemyHealth(), -playerAttack / 5);
+            enemyHealth += round.getDeltaEnemyHealth();
+            playerHealth += round.getDeltaCharacterHealth();
+        }
+        assertTrue(enemyHealth > enemyPrevHealth);
+        if (enemyDies) {
+            assertTrue(enemyHealth <= 0);
+        } else {
+            assertTrue(playerHealth <= 0);
+        }
+    }
+
+    //test hydra’s health never changes when hydra_health_increase_amount = 0, and hydra_health_increase_rate is anything. Here, the hydra loses against the player.
+    @Test
+    @DisplayName("Test hydra's health never changes when hydra_health_increase_amount = 0. The hydra loses against the player.")
+    public void testHydraLost() {
+        //  exit   wall      wall                   wall
+        //         player    hydra                  boulder
+        //  wall   wall      zombie_toast_spawner   wall
+        DungeonManiaController controller = new DungeonManiaController();
+        DungeonResponse initialResponse = controller.newGame("d_battleTest_basicHydra", "c_battleTest_hydraLoses");
+        DungeonResponse postBattleResponse = genericEnemySequence(initialResponse, controller, "hydra");
+        BattleResponse battle = postBattleResponse.getBattles().get(0);
+        assertHydraIncreasesHealth0("hydra", battle, true, "c_battleTest_hydraLoses");
+    }
+    private void assertHydraIncreasesHealth0(String enemyType, BattleResponse battle, boolean enemyDies, String configFilePath) {
+        List<RoundResponse> rounds = battle.getRounds();
+        double playerHealth = Double.parseDouble(getValueFromConfigFile("player_health", configFilePath));
+        double enemyHealth = Double.parseDouble(getValueFromConfigFile(enemyType + "_health", configFilePath));
+        double enemyAttack = Double.parseDouble(getValueFromConfigFile(enemyType + "_attack", configFilePath));
+       
+        for (RoundResponse round : rounds) {
+            assertEquals(round.getDeltaCharacterHealth(), -enemyAttack / 10);
+            assertTrue(round.getDeltaEnemyHealth() <= 0);
+            enemyHealth += round.getDeltaEnemyHealth();
+            playerHealth += round.getDeltaCharacterHealth();
+        }
+     
+        if (enemyDies) {
+            assertTrue(enemyHealth <= 0);
+        } else {
+            assertTrue(playerHealth <= 0);
+        }
+    }
 }
