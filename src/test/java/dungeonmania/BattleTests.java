@@ -541,5 +541,4 @@ public class BattleTests {
     public void TestPlayerBattleAllyAssassin() {
         TestPlayerBattleAlly("d_battleTest_allyAssassinBackup", "c_battleTest_allyAssassinBackup", "assassin");
     }
-
 }
