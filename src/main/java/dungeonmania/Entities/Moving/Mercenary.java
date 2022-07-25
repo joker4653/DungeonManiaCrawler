@@ -213,11 +213,11 @@ public class Mercenary extends MovingEntity {
             inventory.removeItem(treasure.get(i));
         } 
 
-        becomeAlly(merc, player, configMap);
+        becomeAlly(merc, player);
     }
 
     // Make mercenary into ally.
-    public void becomeAlly(Mercenary merc, Player player, HashMap<String, String> configMap) {
+    public void becomeAlly(Mercenary merc, Player player) {
         merc.setAlly(true);
         player.addAlly();
         merc.setInteractable(false); // according to the spec
