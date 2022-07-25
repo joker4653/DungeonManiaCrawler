@@ -10,6 +10,8 @@ import dungeonmania.Entities.Moving.MovingEntity;
 import dungeonmania.Entities.Moving.Player;
 import dungeonmania.Entities.Moving.Spider;
 import dungeonmania.Entities.Static.ZombieToastSpawner;
+import dungeonmania.Entities.Static.FloorSwitch;
+import dungeonmania.Entities.Static.Boulder;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
@@ -19,6 +21,7 @@ import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 import dungeonmania.util.Position;
+import dungeonmania.Helper;
 import javassist.bytecode.stackmap.BasicBlock.Catch;
 
 import java.io.File;
@@ -234,6 +237,86 @@ public class DungeonManiaController implements Serializable{
         return createDungeonResponse();
     }
 
+    // Checks all floor switches if they have a boulder on them. If they do, it updates the state of the switch to trigger it. It they don't it updates
+    // the switch to untrigger.
+    private void boulderCheck() {
+        for (Entity currSwitch : listOfEntities) {
+            if (currSwitch.getEntityType() != "switch") {
+                continue;
+            }
+
+            for (Entity currBoulder : listOfEntities) {
+                if (currBoulder.getEntityType() != "boulder") {
+                    continue;
+                }
+
+                if (currSwitch.getCurrentLocation().equals(currBoulder.getCurrentLocation())) {
+                    ((FloorSwitch) currSwitch).trigger(listOfEntities);
+                    statistics.addFloorSwitch();
+                } else {
+                    if (((FloorSwitch) currSwitch).getState().equals(((FloorSwitch) currSwitch).getDepressedState())) {
+                        ((FloorSwitch) currSwitch).untrigger(listOfEntities);
+                        statistics.removeFloorSwitch();
+                    }
+                }
+            }
+        }
+    }
+
+
+    private void playerMovesBoulder(Direction movementDirection, Player player) {
+        for (Entity currEntity : listOfEntities) {
+            if (currEntity.getEntityType().equals("boulder")) {
+                ((Boulder) currEntity).move(listOfEntities, movementDirection, player);
+            }
+        }
+    }
+
+    // Spawns a spider within the specified box (from minX to maxX and from minY to maxY)
+    private Spider spawnASpider(int xSpi, Player player) {
+        Spider newSpider = null;
+        if (xSpi != 0 && getTickCount() % xSpi == 0) {
+            newSpider = new Spider(mapOfMinAndMaxValues.get("minX"), mapOfMinAndMaxValues.get("maxX"),
+                            mapOfMinAndMaxValues.get("minY"), mapOfMinAndMaxValues.get("maxY"), configMap);
+            newSpider.spawn(listOfEntities, player);
+        }
+
+        return newSpider;
+    }
+
+    // Spawner creates a new zombie
+    private void processZombieSpawner() {
+        List<Entity> originalList = new ArrayList<>(listOfEntities);
+
+        originalList.stream()
+                    .filter(currEntity -> currEntity.getEntityType().equalsIgnoreCase("zombie_toast_spawner"))
+                    .forEach((ent) -> ((ZombieToastSpawner)ent).spawnZombie(listOfEntities, configMap));
+    }
+
+    /*
+     * Find and fulfill all burgeoning battles.
+     */
+    private void checkBattles() {
+        Player player = getPlayer();
+        List<Entity> monstersHere = Helper.getMonstersHere(player, listOfEntities);
+
+        for (Entity monster : monstersHere) {
+            Battle battle = new Battle(player, monster);
+            boolean alive = battle.doBattle(configMap, inventory);
+
+            listOfBattles.add(battle);
+
+            if (!alive) {
+                // TODO Player Death?!
+                listOfEntities.remove(player);
+                break;
+            } else {
+                // Monster died.
+                statistics.addEnemyDestroyed();
+                listOfEntities.remove(monster);
+            }
+        }
+    }
 
     // Helper function that creates a new DungeonResponse because some entities can change positions. This new information needs to
     // be included in the listOfEntities and DungeonResponse.

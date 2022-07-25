@@ -218,23 +218,33 @@ public class Helper {
     * the switch to untrigger.
     */
     public static void boulderCheck(List<Entity> listOfEntities, Statistics statistics) {
-        for (Entity currSwitch : listOfEntities) {
-            if (currSwitch.getEntityType() != "switch") {
+        for (Entity curr : listOfEntities) {
+            if (curr.getEntityType() != "switch") {
                 continue;
             }
 
+            FloorSwitch currSwitch = (FloorSwitch) curr;
+
+            boolean pressed = false;
             for (Entity currBoulder : listOfEntities) {
                 if (currBoulder.getEntityType() != "boulder") {
                     continue;
                 }
 
-                if (currSwitch.getCurrentLocation().equals(currBoulder.getCurrentLocation())) {
-                    ((FloorSwitch) currSwitch).trigger(listOfEntities);
+                boolean location = currSwitch.getCurrentLocation().equals(currBoulder.getCurrentLocation());
+
+                if (location && !currSwitch.isTriggered()) {
+                    currSwitch.trigger(listOfEntities);
                     statistics.addFloorSwitch();
-                } else {
-                    ((FloorSwitch) currSwitch).untrigger(listOfEntities);
-                    statistics.removeFloorSwitch();
+                    pressed = true;
+                } else if (location) {
+                    pressed = true;
                 }
+            }
+
+            if (currSwitch.isTriggered() && !pressed) {
+                currSwitch.untrigger(listOfEntities);
+                statistics.removeFloorSwitch();
             }
         }
     }
