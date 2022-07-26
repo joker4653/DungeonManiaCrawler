@@ -36,17 +36,45 @@ public class Portal extends StaticEntity {
                     List<Position> currentAdj = this.getCurrentLocation().getAdjacentPositions();
                     List<Position> otherAdj = p.getCurrentLocation().getAdjacentPositions();
 
-                    if (player.getPrevPos().equals(currentAdj.get(7))) {
-                        player.setCurrentLocation(otherAdj.get(3));
-                    } else if (player.getPrevPos().equals(currentAdj.get(3))) {
-                        player.setCurrentLocation(otherAdj.get(7));
-                    } else if (player.getPrevPos().equals(currentAdj.get(1))) {
-                        player.setCurrentLocation(otherAdj.get(5));
-                    } else if (player.getPrevPos().equals(currentAdj.get(5))) {
-                        player.setCurrentLocation(otherAdj.get(1));
+                    // Maybe just check if theres a wall in otherAdj and then if there is 
+                    // make a new large else branch below with the walls removed from otherAdj via a helper function
+                    // and then just set player position to the first available position in that new modified list.
+                    if (wallCheck(listOfEntities, otherAdj) == false) {
+                        if (player.getPrevPos().equals(currentAdj.get(7))) {
+                            player.setCurrentLocation(otherAdj.get(3));
+                        } else if (player.getPrevPos().equals(currentAdj.get(3))) {
+                            player.setCurrentLocation(otherAdj.get(7));
+                        } else if (player.getPrevPos().equals(currentAdj.get(1))) {
+                            player.setCurrentLocation(otherAdj.get(5));
+                        } else if (player.getPrevPos().equals(currentAdj.get(5))) {
+                            player.setCurrentLocation(otherAdj.get(1));
+                        }
+                    } else if (wallCheck(listOfEntities, otherAdj)) {
+                        player.setCurrentLocation(findFreePos(otherAdj));
                     }
                 }
             }
         }
+    }
+
+    public boolean wallCheck(List<Entity> listOfEntities, List<Position> otherAdj) {
+        for (Entity e : listOfEntities) {
+            if (otherAdj.contains(e.getCurrentLocation()) && e.getEntityType().equals("wall")) {
+                otherAdj.remove(e.getCurrentLocation());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Loops through adjacent positions around second portal if wallCheck returns true and finds free position.
+    // Returns free position if one is available. If it isn't it returns null.
+    public Position findFreePos(List<Position> otherAdj) {
+        otherAdj.remove(0);
+        otherAdj.remove(2);
+        otherAdj.remove(4);
+        otherAdj.remove(6);
+
+        return otherAdj.get(0);
     }
 }
