@@ -179,7 +179,7 @@ public class DungeonManiaController implements Serializable{
         // exception cases
         if (itemInInv.isEmpty()) {
             throw new InvalidActionException(itemUsedId);
-        } else if (!itemInInv.get().getEntityType().equalsIgnoreCase("bomb")) {
+        } else if (!itemInInv.get().isConsumable()) {
             throw new IllegalArgumentException("itemUsed must be one of bomb, invincibility_potion, invisibility_potion");
         }
 

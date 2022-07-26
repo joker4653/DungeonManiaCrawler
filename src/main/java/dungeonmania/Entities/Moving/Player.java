@@ -87,7 +87,7 @@ public class Player extends MovingEntity {
             inventory.addItem(curr);
             listOfEntities.remove(curr);
             
-            if (curr.getEntityType().equals("treasure")) {
+            if (curr.getEntityType().equals("treasure") || curr.getEntityType().equals("sun_stone")) {
                 statistics.addTreasureCollected();
             }
         }

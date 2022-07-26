@@ -21,6 +21,7 @@ import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 import dungeonmania.Entities.Collectables.Akey;
 import dungeonmania.Entities.Collectables.Bomb;
+import dungeonmania.Entities.Collectables.SunStone;
 import dungeonmania.Entities.Collectables.Sword;
 import dungeonmania.Entities.Collectables.Treasure;
 import dungeonmania.Entities.Collectables.Wood;
@@ -149,8 +150,8 @@ public class Helper {
             return new Hydra(x, y, configMap);
         } else if (type.equalsIgnoreCase("assassin")) {
             return new Assassin(x, y, configMap);
-        } else if (type.equalsIgnoreCase("assassin")) {
-            return new Assassin(x, y, configMap);
+        } else if (type.equalsIgnoreCase("sun_stone")) {
+            return new SunStone(x, y);
         } else if (type.equalsIgnoreCase("swamp_tile")) {
             return new SwampTile(x, y, configMap);
         }
@@ -222,7 +223,7 @@ public class Helper {
     */
     public static void boulderCheck(List<Entity> listOfEntities, Statistics statistics) {
         for (Entity curr : listOfEntities) {
-            if (curr.getEntityType() != "switch") {
+            if (!curr.getEntityType().equals("switch")) {
                 continue;
             }
 
@@ -230,7 +231,7 @@ public class Helper {
 
             boolean pressed = false;
             for (Entity currBoulder : listOfEntities) {
-                if (currBoulder.getEntityType() != "boulder") {
+                if (!currBoulder.getEntityType().equals("boulder")) {
                     continue;
                 }
 
@@ -342,14 +343,10 @@ public class Helper {
      *
      */
     public static void checkBombs(List<Entity> listOfEntities, Player play) {
-        List<Entity> bombs = listOfEntities.stream().filter(e -> e.getEntityType().equals("bomb")).collect(Collectors.toList());
-
-        for (Entity b : bombs) {
-            Bomb bo = (Bomb) b;
-            if (bo.isUsed()) {
-                bo.checkBombStatus(listOfEntities, play);
-            }
-        }
+        listOfEntities.stream().filter(e -> e.getEntityType().equals("bomb"))
+                               .forEach(b -> { 
+                                            if (( (Bomb) b ).isUsed()) ( (Bomb) b ).checkBombStatus(listOfEntities, play);}
+                                        );    
     }
 
     public static void setZombAndSpiderSpawnFields(Save save, DungeonManiaController dmc) {
