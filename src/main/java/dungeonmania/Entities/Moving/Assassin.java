@@ -19,7 +19,7 @@ public class Assassin extends Mercenary {
         super.setEntityID(UUID.randomUUID().toString());
         super.setInteractable(true);
         super.setEntityType("assassin");
-        super.setEnemyHealth(configMap.get("assassin_health") != null ? Double.parseDouble(configMap.get("assassin_health")) : 0.0);
+        super.setEnemyHealth(configMap.get("assassin_health") != null ? Double.parseDouble(configMap.get("assassin_health")) : 0);
         super.setNeighbour(false);
         super.setConfigMap(configMap);
         super.setCanStepOn("assassin");
@@ -27,6 +27,7 @@ public class Assassin extends Mercenary {
         super.enemyChangeStrategy(new StandardBattlingStrategy(configMap, "assassin"));
         this.random = new Random();
         this.failRate = configMap.get("assassin_bribe_fail_rate") != null ? Double.parseDouble(configMap.get("assassin_bribe_fail_rate")) : 0;
+        super.setEnemyHealth(configMap.get("assassin_attack") != null ? Double.parseDouble(configMap.get("assassin_attack")) : 0);
     }
     
     @Override
