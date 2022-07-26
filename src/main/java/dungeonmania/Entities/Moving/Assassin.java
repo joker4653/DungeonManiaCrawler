@@ -39,6 +39,8 @@ public class Assassin extends Mercenary {
         }
     }
 
+    /* Getters & Setters */
+    
     public Random getRandom() {
         return random;
     }

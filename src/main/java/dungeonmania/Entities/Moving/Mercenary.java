@@ -236,6 +236,17 @@ public class Mercenary extends MovingEntity {
         return bribe;
     }
 
+    @Override
+    public double getEnemyDamage() {
+        return isAlly() ? 0 : super.getEnemyDamage();
+    }
+
+    @Override
+    public double getDeltaEnemyHealth(double playerAttack) {
+        // an ally's health doesnt decrease
+        return isAlly() ? getEnemyHealth() : super.getDeltaEnemyHealth(playerAttack);
+    }
+
     /* Getters & Setters */
     public boolean isNeighbour() {
         return isNeighbour;
