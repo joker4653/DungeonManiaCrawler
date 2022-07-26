@@ -23,7 +23,7 @@ public class Bomb extends CollectableEntity {
         super.setEntityType("bomb");
         super.setCurrentLocation(new Position(x, y));
         super.setCollectableEntity(true);
-        super.setIsConsumable(true);
+        super.setConsumable(true);
 
         this.radius = radius;
     }
@@ -78,7 +78,7 @@ public class Bomb extends CollectableEntity {
             return super.getCurrentLocation().getAdjacentPositions();
         } else { 
             for (int x = super.getCurrentLocation().getX() - radius; x <= super.getCurrentLocation().getX() + radius; x++) {
-                for (int y = super.getCurrentLocation().getY() - radius; y <= super.getCurrentLocation().getY() + radius; y++) {
+                for (int y = super.getCurrentLocation().getY() - radius; y <= super.getCurrentLocation().getX() + radius; y++) {
                     positions.add(new Position(x, y));
                 }
             }

@@ -1,22 +1,16 @@
 package dungeonmania;
 
 import java.util.List;
-import java.util.HashMap;
-import java.util.stream.Collectors;
 import java.io.Serializable;
+import java.util.HashMap;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import java.util.stream.Collectors;
 
 import dungeonmania.Entities.Entity;
 
-import dungeonmania.Goal.BooleanGoal;
-import dungeonmania.Goal.SimpleGoal;
-import dungeonmania.Goal.ComplexGoal;
-
 public class Statistics implements Serializable {
 
-    private BooleanGoal goal;
+    private HashMap<String, Boolean> goals;
 
     private boolean reachedAnExit = false;
 
@@ -32,20 +26,16 @@ public class Statistics implements Serializable {
     private int treasureCollected = 0;
     private int treasureGoal;
 
-    public Statistics(JsonObject jsonGoals, List<Entity> listOfEntities, HashMap<String, String> configMap) {
-        
-        this.goal = generateGoals(jsonGoals);
-
-        this.floorSwitchesCreated = listOfEntities.stream().filter(e -> e.getEntityType().equals("switch")).collect(Collectors.toList()).size();
+    public Statistics(HashMap<String, Boolean> goals, List<Entity> listOfEntities, HashMap<String, String> configMap) {
+        this.goals = goals;
         this.spawnersCreated = listOfEntities.stream().filter(e -> e.getEntityType().equals("zombie_toast_spawner")).collect(Collectors.toList()).size();
 
         this.enemiesGoal = Integer.parseInt(configMap.get("enemy_goal"));
         this.treasureGoal = Integer.parseInt(configMap.get("treasure_goal"));
     }
 
-
-    public String getGoals() {
-        return goal.prettyPrint(); // False cos not called within BooleanGoal to child goal.
+    public HashMap<String, Boolean> getGoals() {
+        return this.goals;
     }
 
     public void addEnemyDestroyed() {
@@ -78,17 +68,16 @@ public class Statistics implements Serializable {
         checkExitGoal();
     }
 
-    public void notOnExit() {
-        reachedAnExit = false;
-        checkExitGoal();
+    private void addGoal(String goal) {
+        if (goals.containsKey(goal)) {
+            goals.replace(goal, false);
+        }
     }
 
-    private void addGoal(String goalStr) {
-        goal.makeIncomplete(goalStr);
-    }
-
-    private void removeGoal(String goalStr) {
-        goal.makeComplete(goalStr);
+    private void removeGoal(String goal) {
+        if (goals.containsKey(goal)) {
+            goals.replace(goal, true);
+        }
     }
 
     private void checkEnemiesGoal() {
@@ -114,41 +103,7 @@ public class Statistics implements Serializable {
     private void checkExitGoal() {
         if (reachedAnExit) {
             removeGoal(":exit");
-            
-            // If exit is not the final goal, we should not set it yet.
-            if (!goal.isComplete()) {
-                addGoal(":exit");
-            }
-        } else {
-            addGoal(":exit");
         }
-    }
-
-    private BooleanGoal generateGoals(JsonObject jsonGoals) {
-        String goalType = jsonGoals.get("goal").getAsString();
-
-        BooleanGoal goal = null;
-
-        if (goalType.equals("AND") || goalType.equals("OR")) {
-            // Create complex goal.
-            JsonArray subGoals = (JsonArray) jsonGoals.get("subgoals");
-
-            JsonObject subGoalObj1 = (JsonObject) subGoals.get(0);
-            JsonObject subGoalObj2 = (JsonObject) subGoals.get(1);
-
-            BooleanGoal subGoal1 = generateGoals(subGoalObj1);
-            BooleanGoal subGoal2 = generateGoals(subGoalObj2);
-
-            if (subGoal1 != null && subGoal2 != null) {
-                goal = new ComplexGoal(goalType, subGoal1, subGoal2);
-            }
-        } else {
-            // Create simple goal.
-            String name = ":" + goalType;
-            goal = new SimpleGoal(name);
-        }
-
-        return goal;
     }
 }
 

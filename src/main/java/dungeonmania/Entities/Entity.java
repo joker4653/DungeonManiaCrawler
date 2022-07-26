@@ -12,8 +12,7 @@ public abstract class Entity implements Serializable {
     private boolean isInteractable;
     private boolean isMovingEntity;
     private boolean isCollectableEntity;
-    private boolean isConsumable;
-    private int cost = 1;
+    private boolean isConsumable = false;
 
     /* Getters and Setters */
 
@@ -71,13 +70,5 @@ public abstract class Entity implements Serializable {
 
     public void setMovingEntity(boolean isMovingEntity) {
         this.isMovingEntity = isMovingEntity;
-    }
-
-    public int getCost() {
-        return cost;
-    }
-
-    public void setCost(int cost) {
-        this.cost = cost;
     }
 }

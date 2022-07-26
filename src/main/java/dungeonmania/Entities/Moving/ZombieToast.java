@@ -14,6 +14,7 @@ import dungeonmania.util.Position;
 public class ZombieToast extends MovingEntity {
     private transient Position spawnLocation;
     private transient Position spawnerLocation;
+    private HashMap<String, String> configMap;
     
     public ZombieToast(int x, int y, HashMap<String, String> configMap) {
         super();
@@ -36,7 +37,7 @@ public class ZombieToast extends MovingEntity {
         super.setEnemyHealth(Double.parseDouble(configMap.get("zombie_health")));
         super.setAlly(false);
         super.setCanStepOn("zombie_toast");
-        super.setMovementFactor(configMap.get("movement_factor") != null ? Integer.parseInt(configMap.get("movement_factor")) : 0);
+        this.configMap = configMap;
     }
 
     public void spawn(List<Entity> listOfEntities) {
@@ -51,8 +52,6 @@ public class ZombieToast extends MovingEntity {
         Position spawnLocation = super.getRandPos(spawnablePositions); 
         setSpawnLocation(spawnLocation);
         listOfEntities.add(this);
-
-        swampAffectEnemyMovement(listOfEntities);
     }
 
     @Override

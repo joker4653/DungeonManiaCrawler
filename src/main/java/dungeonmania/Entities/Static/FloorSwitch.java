@@ -36,14 +36,6 @@ public class FloorSwitch extends StaticEntity {
         return state;
     }
 
-    public boolean isTriggered() {
-        if (state.equals(pressedState)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     public void setState(State state) {
         this.state = state;
     }
