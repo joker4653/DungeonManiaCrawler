@@ -26,7 +26,7 @@ import dungeonmania.Entities.Static.ZombieToastSpawner;
 
 public class EntityFactory {
 
-    public static Entity createEntity(String type, int x, int y, int key, String colour, HashMap<String, String> configMap) {
+    public static Entity createEntity(String type, int x, int y, int key, String colour, HashMap<String, String> configMap, int movementFactor) {
         if (type.equalsIgnoreCase("Player")) {
             return new Player(x, y, configMap);
         } else if (type.equalsIgnoreCase("Spider")) {
@@ -66,7 +66,7 @@ public class EntityFactory {
         } else if (type.equalsIgnoreCase("assassin")) {
             return new Assassin(x, y, configMap);
         } else if (type.equalsIgnoreCase("swamp_tile")) {
-            return new SwampTile(x, y, configMap);
+            return new SwampTile(x, y, configMap, movementFactor);
         } else if (type.equalsIgnoreCase("sun_stone")) {
             return new SunStone(x, y);
         }

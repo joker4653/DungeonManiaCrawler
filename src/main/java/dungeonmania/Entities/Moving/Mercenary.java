@@ -40,7 +40,6 @@ public class Mercenary extends MovingEntity {
         this.configMap = configMap;
         super.setCanStepOn("mercenary");
         this.bribe = Integer.parseInt(configMap.get("bribe_amount"));
-        super.setMovementFactor(configMap.get("movement_factor") != null ? Integer.parseInt(configMap.get("movement_factor")) : 0);
         super.setEnemyDamage(Double.parseDouble(configMap.get("mercenary_attack")));
     }
 

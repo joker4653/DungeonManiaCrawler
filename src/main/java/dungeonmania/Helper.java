@@ -93,11 +93,13 @@ public class Helper {
             int x = jsonObjElement.get("x").getAsInt();
             int y = jsonObjElement.get("y").getAsInt();
             int key = Integer.MAX_VALUE;
+            int movementFactor = -1;
             String colour = " ";
             if (jsonObjElement.get("key") != null) key = jsonObjElement.get("key").getAsInt();
             if (jsonObjElement.get("colour") != null) colour = jsonObjElement.get("colour").getAsString();
+            if (jsonObjElement.get("movement_factor") != null) movementFactor = jsonObjElement.get("movement_factor").getAsInt();
 
-            Entity entityCreated = EntityFactory.createEntity(type, x, y, key, colour, configMap);
+            Entity entityCreated = EntityFactory.createEntity(type, x, y, key, colour, configMap, movementFactor);
             if (entityCreated != null) {
                 listOfEntities.add(entityCreated);
                 listOfEntityResponses.add(new EntityResponse(entityCreated.getEntityID(), entityCreated.getEntityType(), entityCreated.getCurrentLocation(), entityCreated.isInteractable()));
