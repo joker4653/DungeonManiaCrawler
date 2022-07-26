@@ -22,6 +22,5 @@
     "treasure_goal": 1,
     "zombie_attack": 1,
     "zombie_health": 5,
-    "zombie_spawn_rate": 1,
-    "movement_factor" : 3
+    "zombie_spawn_rate": 1
   }

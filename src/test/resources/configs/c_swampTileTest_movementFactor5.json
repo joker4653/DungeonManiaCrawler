@@ -23,7 +23,6 @@
     "zombie_attack": 1,
     "zombie_health": 5,
     "zombie_spawn_rate": 1,
-    "movement_factor" : 5,
     "assassin_attack": 1,
     "assassin_bribe_amount": 1,
     "assassin_bribe_fail_rate": 0,
