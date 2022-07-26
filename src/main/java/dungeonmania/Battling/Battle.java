@@ -62,7 +62,7 @@ public class Battle implements Serializable {
     public boolean doRound(HashMap<String, String> configMap, ArrayList<Entity> weaponryUsed, Inventory inventory) {
         double player_attack = getPlayerAttack(configMap, weaponryUsed, inventory);
         double player_defence = getPlayerDefence(configMap, inventory);
-        double enemy_attack = enemy.enemyAttackModifier();
+        double enemy_attack = enemy.getEnemyDamage();
 
         double delta_player_health = - (enemy_attack - player_defence) / 10;    
         double delta_enemy_health = - enemy.calculateDeltaEnemyHealth(player_attack);  

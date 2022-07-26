@@ -23,8 +23,8 @@ public class Hydra extends MovingEntity {
         super.setAlly(false);
         super.setCanStepOn("hydra");
         super.setCurrentLocation(new Position(x, y));
-        super.enemyChangeStrategy(new HydraBattlingStrategy(configMap));
         super.setMovementFactor(configMap.get("movement_factor") != null ? Integer.parseInt(configMap.get("movement_factor")) : 0);
+        super.setEnemyDamage(configMap.get("hydra_attack") != null ? Double.parseDouble(configMap.get("hydra_attack")) : 0);
     }
 
     @Override

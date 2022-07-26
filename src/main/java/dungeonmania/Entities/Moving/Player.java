@@ -33,6 +33,7 @@ public class Player extends MovingEntity {
         super.setPlayerHealth(Double.parseDouble(configMap.get("player_health")));
         super.setAlly(true);
         super.setMovementFactor(0);
+        super.setEnemyDamage(Double.parseDouble(configMap.get("player_attack")));
     }
 
     public int getAllies() {

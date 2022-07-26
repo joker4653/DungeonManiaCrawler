@@ -32,11 +32,11 @@ public class ZombieToast extends MovingEntity {
         super.setEntityID(UUID.randomUUID().toString());
         super.setInteractable(false);
         super.setEntityType("zombie_toast");
-        super.enemyChangeStrategy(new StandardBattlingStrategy(configMap, "zombie"));
         super.setEnemyHealth(Double.parseDouble(configMap.get("zombie_health")));
         super.setAlly(false);
         super.setCanStepOn("zombie_toast");
         super.setMovementFactor(configMap.get("movement_factor") != null ? Integer.parseInt(configMap.get("movement_factor")) : 0);
+        super.setEnemyDamage(Double.parseDouble(configMap.get("zombie_attack")));
     }
 
     public void spawn(List<Entity> listOfEntities) {
