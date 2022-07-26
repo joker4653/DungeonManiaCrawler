@@ -2,7 +2,6 @@ package dungeonmania.Entities.Moving;
 
 import dungeonmania.util.Position;
 import dungeonmania.Statistics;
-import dungeonmania.Battling.EnemyBattleStrategy.StandardBattlingStrategy;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 import dungeonmania.util.Direction;
