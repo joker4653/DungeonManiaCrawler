@@ -10,6 +10,8 @@ import dungeonmania.Entities.Moving.MovingEntity;
 import dungeonmania.Entities.Moving.Player;
 import dungeonmania.Entities.Moving.Spider;
 import dungeonmania.Entities.Static.ZombieToastSpawner;
+import dungeonmania.Entities.Static.FloorSwitch;
+import dungeonmania.Entities.Static.Boulder;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
@@ -19,6 +21,7 @@ import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 import dungeonmania.util.Position;
+import dungeonmania.Helper;
 import javassist.bytecode.stackmap.BasicBlock.Catch;
 
 import java.io.File;
@@ -138,13 +141,9 @@ public class DungeonManiaController implements Serializable{
             JsonObject dungeonJsonObj = JsonParser.parseString(dungeonJSONString).getAsJsonObject();
             List<EntityResponse> listOfEntityResponses = Helper.createListOfEntsAndResp(dungeonJsonObj, configMap, listOfEntities);
 
-            JsonElement jsonGoal = dungeonJsonObj.get("goal-condition");
-            JsonObject jsonObj = jsonGoal.getAsJsonObject();
-            // TODO this will change when we implement complex goals.
-            HashMap<String, Boolean> goals = new HashMap<String, Boolean>();
-            String goal = ":" + jsonObj.get("goal").getAsString();
-            goals.put(goal, false);
-            statistics = new Statistics(goals, listOfEntities, configMap);
+            JsonElement jsonObj = dungeonJsonObj.get("goal-condition");
+            JsonObject jsonGoals = jsonObj.getAsJsonObject();
+            statistics = new Statistics(jsonGoals, listOfEntities, configMap);
  
             // TODO replace "buildables" with your actual buildables lists.
             this.dungeonId = UUID.randomUUID().toString();
@@ -161,18 +160,7 @@ public class DungeonManiaController implements Serializable{
     }
 
     private String getGoalsResponse() {
-        // TODO this will change when complex goals is implemented.
-        HashMap<String, Boolean> goals = statistics.getGoals();
-        String incomplete = "";
-        if (goals.size() > 0) {
-            for (String key : goals.keySet()) {
-                if (!goals.get(key)) {
-                    incomplete = incomplete + key + " ";
-                }
-            }
-        }
-
-        return incomplete;
+        return statistics.getGoals();
     }
 
     /**
@@ -234,15 +222,13 @@ public class DungeonManiaController implements Serializable{
         return createDungeonResponse();
     }
 
-
     // Helper function that creates a new DungeonResponse because some entities can change positions. This new information needs to
     // be included in the listOfEntities and DungeonResponse.
     private DungeonResponse createDungeonResponse() {
         List<EntityResponse> entities = new ArrayList<>();
         listOfEntities.forEach((currEntity) -> entities.add(new EntityResponse(currEntity.getEntityID(), currEntity.getEntityType(), currEntity.getCurrentLocation(), currEntity.isInteractable())));
 
-        DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, entities, Helper.getInventoryResponse(inventory), Helper.getBattleResponse(listOfBattles), buildables, getGoalsResponse());
-        return dungeonResp;
+        return new DungeonResponse(dungeonId, dungeonName, entities, Helper.getInventoryResponse(inventory), Helper.getBattleResponse(listOfBattles), buildables, getGoalsResponse());
     }
 
 
@@ -285,7 +271,7 @@ public class DungeonManiaController implements Serializable{
         Player player = getPlayer();
 
         if (entity.getEntityType().equalsIgnoreCase("mercenary") || entity.getEntityType().equalsIgnoreCase("assassin")) {
-            ((Mercenary) entity).bribery((Mercenary) entity, player, inventory);
+            ((Mercenary) entity).bribery((Mercenary) entity, player, inventory, configMap);
         } else if (entity.getEntityType().equalsIgnoreCase("zombie_toast_spawner")) {
             Helper.destroySpawner((ZombieToastSpawner) entity, player, inventory, listOfEntities, statistics);
         }
@@ -320,7 +306,7 @@ public class DungeonManiaController implements Serializable{
         if (!allGames().contains(name)) {
             throw new IllegalArgumentException();
         }
-        Save UnSerailizedData;
+        Save UnSerializedData;
 
         String path = "src/main/java/dungeonmania/saves/" + name + ".ser";
 
@@ -328,7 +314,7 @@ public class DungeonManiaController implements Serializable{
         try {
             FileInputStream fIn = new FileInputStream(path);
             ObjectInputStream In = new ObjectInputStream(fIn);
-            UnSerailizedData = (Save) In.readObject();
+            UnSerializedData = (Save) In.readObject();
             In.close();
             fIn.close();
         } catch (IOException excep) {
@@ -339,11 +325,11 @@ public class DungeonManiaController implements Serializable{
             return null;
         }
 
-        DungeonManiaController LoadedDMC = UnSerailizedData.getDmc();
-        HashMap<String, ArrayList<Integer>> positions = UnSerailizedData.getEntityPositions();
+        DungeonManiaController LoadedDMC = UnSerializedData.getDmc();
+        HashMap<String, ArrayList<Integer>> positions = UnSerializedData.getEntityPositions();
         List<Entity> Entities = LoadedDMC.getListOfEntities();
 
-        Helper.setZombAndSpiderSpawnFields(UnSerailizedData, LoadedDMC);
+        Helper.setZombAndSpiderSpawnFields(UnSerializedData, LoadedDMC);
 
         LoadedDMC.getPlayer().setPrevPos(new Position(positions.get("PrevPlayerPos").get(0), positions.get("PrevPlayerPos").get(1)));
         for (Entity e : Entities) {

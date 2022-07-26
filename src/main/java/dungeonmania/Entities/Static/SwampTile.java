@@ -13,6 +13,6 @@ public class SwampTile extends StaticEntity {
         super.setEntityType("swamp_tile");
         super.setCurrentLocation(new Position(x, y));
         this.setCanBlockPlayerMovement(false);
-        super.setCost(Integer.parseInt(configMap.get("movement_factor") + 1)); // DOUBLE CHECKKKKKKKK!!!!!!!!!!!!!!!
+        super.setCost(configMap.get("movement_factor") != null ? Integer.parseInt(configMap.get("movement_factor") + 1) : 0); // DOUBLE CHECKKKKKKKK!!!!!!!!!!!!!!!
     }
 }

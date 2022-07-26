@@ -75,6 +75,9 @@ public class Player extends MovingEntity {
                 } else {
                     items.add(currEntity);
                 } 
+            } else {
+                // Player can step here and is not on exit.
+                statistics.notOnExit();
             }
 
         }

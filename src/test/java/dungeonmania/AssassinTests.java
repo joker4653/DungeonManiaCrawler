@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import dungeonmania.Entities.Moving.Assassin;
 import dungeonmania.exceptions.InvalidActionException;
 
 import static dungeonmania.TestUtils.getPlayer;
@@ -19,6 +20,7 @@ import static dungeonmania.TestUtils.getValueFromConfigFile;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.DisplayName;
@@ -227,4 +229,26 @@ public class AssassinTests {
     }
 
 
+    @Test
+    @DisplayName("Test assassin has been bribed successfully when assassin_bribe_fail_rate = 0.332.")
+    public void testAssassinBriberySuccess() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_assassinTest_followPlayer", "c_assassinTest_briberySuccess");
+        String assassinID = getEntities(res, "assassin").get(0).getId();
+
+        Assassin assassin = (Assassin)dmc.getListOfEntities().stream()
+                                                             .filter(e -> e.getEntityID().equals(assassinID))
+                                                             .findFirst()
+                                                             .get();
+        // 8000 always ensures that assassin has been bribed successfully
+        Random random = new Random(8000);
+        assassin.setRandom(random);
+
+        res = dmc.tick(Direction.RIGHT);
+           
+        assertDoesNotThrow(() -> {
+            dmc.interact(assassinID);
+        });
+        assertEquals(assassin.isInteractable(), false); // since the assassin is an ally, isInteractable is false.
+    }
 }
