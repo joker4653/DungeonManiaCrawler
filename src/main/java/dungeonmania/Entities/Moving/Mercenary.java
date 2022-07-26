@@ -17,9 +17,6 @@ import java.util.stream.Collectors;
 
 import dungeonmania.Helper;
 import dungeonmania.Statistics;
-import dungeonmania.Battling.EnemyBattleStrategy.AllyStrategy;
-import dungeonmania.Battling.EnemyBattleStrategy.EnemyBattlingStrategy;
-import dungeonmania.Battling.EnemyBattleStrategy.StandardBattlingStrategy;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 import dungeonmania.exceptions.InvalidActionException;
@@ -27,8 +24,6 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Mercenary extends MovingEntity {
-    private EnemyBattlingStrategy enemyStrategy;
-
     private boolean isNeighbour;
     private HashMap<String, String> configMap;
     private int bribe;
@@ -41,7 +36,6 @@ public class Mercenary extends MovingEntity {
         super.setInteractable(true);
         super.setEntityType("mercenary");
         super.setEnemyHealth(Double.parseDouble(configMap.get("mercenary_health")));
-        this.enemyChangeStrategy(new StandardBattlingStrategy(configMap, "mercenary"));
         this.isNeighbour = false;
         this.configMap = configMap;
         super.setCanStepOn("mercenary");
@@ -225,7 +219,6 @@ public class Mercenary extends MovingEntity {
         merc.setAlly(true);
         player.addAlly();
         merc.setInteractable(false); // according to the spec
-        this.enemyChangeStrategy(new AllyStrategy(configMap, this.getEntityType()));
     }
 
     public int checkBribeAmount(List<Entity> treasure) throws InvalidActionException {
@@ -266,21 +259,5 @@ public class Mercenary extends MovingEntity {
 
     public void setBribe(int bribe) {
         this.bribe = bribe;
-    }
-
-    public double enemyAttackModifier() {
-        return enemyStrategy.attackModifier();
-    }
-
-    public double calculateDeltaEnemyHealth(double playerDmg) {
-        return enemyStrategy.calculateDeltaEnemyHealth(playerDmg);
-    }
-
-    public void enemyChangeStrategy(EnemyBattlingStrategy newStrategy) {
-        this.enemyStrategy = newStrategy;
-    }
-
-    public EnemyBattlingStrategy getEnemyStrategy() {
-        return enemyStrategy;
     }
 }

@@ -6,9 +6,6 @@ import java.util.Random;
 import java.util.UUID;
 
 import dungeonmania.Statistics;
-import dungeonmania.Battling.EnemyBattleStrategy.EnemyBattlingStrategy;
-import dungeonmania.Battling.EnemyBattleStrategy.HydraBattlingStrategy;
-import dungeonmania.Battling.EnemyBattleStrategy.StandardBattlingStrategy;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 import dungeonmania.util.Direction;
@@ -54,7 +51,7 @@ public class Hydra extends MovingEntity {
     }
 
     /* Getters & Setters */
-    
+
     public long getSeed() {
         return seed;
     }

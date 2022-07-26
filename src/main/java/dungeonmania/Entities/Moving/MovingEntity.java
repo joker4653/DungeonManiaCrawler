@@ -8,8 +8,6 @@ import java.util.Arrays;
 import dungeonmania.util.Position;
 import dungeonmania.Statistics;
 import dungeonmania.StepOnJson;
-import dungeonmania.Battling.EnemyBattleStrategy.EnemyBattlingStrategy;
-import dungeonmania.Battling.EnemyBattleStrategy.NoBattlingStrategy;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 import dungeonmania.util.Direction;

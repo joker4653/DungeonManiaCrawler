@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.UUID;
 
-import dungeonmania.Battling.EnemyBattleStrategy.AllyStrategy;
-import dungeonmania.Battling.EnemyBattleStrategy.StandardBattlingStrategy;
 import dungeonmania.util.Position;
 
 public class Assassin extends Mercenary {
@@ -24,7 +22,6 @@ public class Assassin extends Mercenary {
         super.setConfigMap(configMap);
         super.setCanStepOn("assassin");
         super.setBribe(configMap.get("assassin_bribe_amount") != null ? Integer.parseInt(configMap.get("assassin_bribe_amount")) : 0);
-        super.enemyChangeStrategy(new StandardBattlingStrategy(configMap, "assassin"));
         this.random = new Random();
         this.failRate = configMap.get("assassin_bribe_fail_rate") != null ? Double.parseDouble(configMap.get("assassin_bribe_fail_rate")) : 0;
         super.setEnemyHealth(configMap.get("assassin_attack") != null ? Double.parseDouble(configMap.get("assassin_attack")) : 0);
@@ -32,15 +29,13 @@ public class Assassin extends Mercenary {
     
     @Override
     public void becomeAlly(Mercenary merc, Player player) {
-        HashMap<String, String> configMap = getConfigMap();
         if (random.nextDouble() <= (1 - failRate)) {
             super.becomeAlly(this, player);
-            super.enemyChangeStrategy(new AllyStrategy(configMap, "assassin"));
         }
     }
 
     /* Getters & Setters */
-    
+
     public Random getRandom() {
         return random;
     }
