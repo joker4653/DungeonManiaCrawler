@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.eclipse.jetty.xml.XmlParser;
-
 import dungeonmania.util.Position;
 import dungeonmania.Statistics;
 import dungeonmania.Entities.Entity;
@@ -18,16 +16,7 @@ import dungeonmania.util.Direction;
 
 public class Player extends MovingEntity {
 
-    private List<HashMap<String, Integer>> activeStates = new ArrayList<HashMap<String, Integer>>();
-    public List<HashMap<String, Integer>> getActiveStates() {
-        return activeStates;
-    }
-
-    public void setActiveStates(List<HashMap<String, Integer>> activeStates) {
-        this.activeStates = activeStates;
-    }
-
-    private List<Observer> observers = new ArrayList<Observer>();
+    private HashMap<String, Integer> activeStates = new HashMap<String, Integer>();
 
     private transient Position prevPos;
     private int allies = 0;
@@ -39,20 +28,11 @@ public class Player extends MovingEntity {
         super.setEntityType("player");
         super.setCurrentLocation(new Position(x, y));
         super.setCanStepOn("player");
-        new PlayerObserver(this);
 
         setPrevPos(new Position(x, y));
         super.setPlayerHealth(Double.parseDouble(configMap.get("player_health")));
         super.setAlly(true);
-    }
-
-    public String getCurrentPotion() {
-        return super.getCurrentPlayerPotion();
-    }
-
-    public void setCurrentPotion(String currentPotion, List<Entity> listofEntities) {
-        super.setCurrentPlayerPotion(getCurrentPotionState());
-        notifyAllObservers(listofEntities);
+        super.setMovementFactor(0);
     }
 
     public int getAllies() {
@@ -81,7 +61,7 @@ public class Player extends MovingEntity {
         for (Entity currEntity : entitiesHere) {
             if (!super.canStep(currEntity.getEntityType())) {
                 return false;
-            } else if (currEntity.getEntityType() == "exit") {
+            } else if (currEntity.getEntityType().equals("exit")) {
                 statistics.reachedExit();
                 ((Exit) currEntity).setExitState(true);
             } else if (currEntity.isCollectableEntity()) {
@@ -95,15 +75,19 @@ public class Player extends MovingEntity {
                 } else {
                     items.add(currEntity);
                 } 
+            } else {
+                // Player can step here and is not on exit.
+                statistics.notOnExit();
             }
 
         }
 
+        
         for (Entity curr : items) {
             inventory.addItem(curr);
             listOfEntities.remove(curr);
             
-            if (curr.getEntityType() == "treasure") {
+            if (curr.getEntityType().equals("treasure") || curr.getEntityType().equals("sun_stone")) {
                 statistics.addTreasureCollected();
             }
         }
@@ -118,53 +102,6 @@ public class Player extends MovingEntity {
     public void setPrevPos(Position prevPos) {
         this.prevPos = prevPos;
     }
-
-    /**
-     * Adds potions to the player queue
-     * @param PotionType
-     * @param PotionDuration
-     */
-    public void addtoPotionQueue(String PotionType, int PotionDuration) {
-        HashMap<String, Integer> potion = new HashMap<String, Integer>();
-        potion.put(PotionType, PotionDuration);
-
-        activeStates.add(potion);
-    }
-
-    /**
-     * 
-     * @return the type of potion currently active or null if no potion active
-     */
-    public String getCurrentPotionState() {
-        if (activeStates.isEmpty()) {
-            return "not";
-        }
-
-        return activeStates.get(0).keySet().stream().findFirst().get();
-    }
-
-    public void decrementCurrentPotion(List<Entity> listofEntities) {
-        int counter = activeStates.get(0).get(this.getCurrentPotionState());
-
-        activeStates.get(0).put(this.getCurrentPotionState(), counter - 1);
-
-        if (counter - 1 <= 0) {
-            activeStates.remove(0);
-            this.setCurrentPotion(getCurrentPotionState(), listofEntities);
-        }
-    }
-
-    public void attach(Observer o) {
-        observers.add(o);		
-     }
-  
-     public void notifyAllObservers(List<Entity> listOfEntities) {
-        for (Observer o : observers) {
-           o.update(getCurrentPotion(), listOfEntities);
-        }
-     } 
 }
-
-
 
 

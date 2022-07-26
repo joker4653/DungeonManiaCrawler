@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 import dungeonmania.Helper;
 import dungeonmania.Statistics;
-import dungeonmania.Battling.EnemyBattleStrategy.NoBattlingStrategy;
 import dungeonmania.Battling.EnemyBattleStrategy.AllyStrategy;
 import dungeonmania.Battling.EnemyBattleStrategy.StandardBattlingStrategy;
 import dungeonmania.Entities.Entity;
@@ -44,21 +43,22 @@ public class Mercenary extends MovingEntity {
         this.configMap = configMap;
         super.setCanStepOn("mercenary");
         this.bribe = Integer.parseInt(configMap.get("bribe_amount"));
+        super.setMovementFactor(configMap.get("movement_factor") != null ? Integer.parseInt(configMap.get("movement_factor")) : 0);
     }
 
     @Override
     public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
-        if (player.getCurrentPlayerPotion().equals("not")) {
-            if (!super.isAlly()) {
-                super.enemyChangeStrategy(new StandardBattlingStrategy(configMap, this.getEntityType()));
-                enemyMovementDS(listOfEntities, player);
-            } else {
-                super.enemyChangeStrategy(new AllyStrategy(configMap, this.getEntityType()));
-                allyMovement(listOfEntities, player); 
-            }
+        swampAffectEnemyMovement(listOfEntities);
+        if (super.getTickCountOnSwampTile() > 0)
+            return;
+
+        if (!super.isAlly()) {
+            enemyMovementDS(listOfEntities, player);
         } else {
-            super.moveRandomly(listOfEntities, dir, player, inventory, statistics);
+            allyMovement(listOfEntities, player); 
         }
+        
+        swampAffectEnemyMovement(listOfEntities);
     }
 
     // If the ally is in any of the player's neighbouring positions, they move to the player's previous position.
@@ -99,8 +99,8 @@ public class Mercenary extends MovingEntity {
         boolean mercFound = false;
         List<Position> uAdjList = getAdjacentPosInDist(u, listOfEntities, dist);
         for (Position v : uAdjList) {
-            if (!visited.contains(v) && dist.get(u) + 1 < dist.get(v)) {
-                dist.put(v, dist.get(u) + 1);
+            if (!visited.contains(v) && dist.get(u) + getMaxCostOfPos(v, listOfEntities) < dist.get(v)) {
+                dist.put(v, dist.get(u) + getMaxCostOfPos(v, listOfEntities));
                 prev.put(v, u);
                 visited.add(v);
             }
@@ -114,6 +114,22 @@ public class Mercenary extends MovingEntity {
         }
         
         return mercFound;
+    }
+
+    // Gets the maximum cost of all entities at position v on the map.
+    private int getMaxCostOfPos(Position v, List<Entity> listOfEntities) {
+        List<Entity> entitiesAtPosV = listOfEntities.stream()
+                                                    .filter(e -> e.getCurrentLocation().equals(v))
+                                                    .collect(Collectors.toList());
+
+        if (entitiesAtPosV.size() == 0)
+            return 1;
+        
+        List<Integer> costsAtPosV = entitiesAtPosV.stream()
+                                                  .map(Entity::getCost)
+                                                  .collect(Collectors.toList());
+
+        return Collections.max(costsAtPosV);
     }
 
     private void mercenaryReached(Player player, Map<Position, Position> prev, List<Entity> listOfEntities) {
@@ -180,7 +196,7 @@ public class Mercenary extends MovingEntity {
         return possiblePos;
     }
 
-    public void bribery(Mercenary merc, Player player, Inventory inventory) throws InvalidActionException {
+    public void bribery(Mercenary merc, Player player, Inventory inventory, HashMap<String, String> configMap) throws InvalidActionException {
         // Check player is within radius of mercenary.
         int radius = Integer.parseInt(configMap.get("bribe_radius"));
         if (Helper.getDistance(player.getCurrentLocation(), merc.getCurrentLocation()) > radius) {
@@ -205,6 +221,7 @@ public class Mercenary extends MovingEntity {
         merc.setAlly(true);
         player.addAlly();
         merc.setInteractable(false); // according to the spec
+        super.enemyChangeStrategy(new AllyStrategy(configMap, this.getEntityType()));
     }
 
     public int checkBribeAmount(List<Entity> treasure) throws InvalidActionException {

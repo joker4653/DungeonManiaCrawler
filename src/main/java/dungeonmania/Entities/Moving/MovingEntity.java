@@ -15,15 +15,18 @@ import dungeonmania.Entities.Inventory;
 import dungeonmania.util.Direction;
 
 public abstract class MovingEntity extends Entity {
-    private String CurrentPlayerPotion = "not";
+
     private ArrayList<String> canStepOn;
     private EnemyBattlingStrategy enemyStrategy;
     private double playerHealth;
     private double enemyHealth;
     private boolean isAlly;
+    private int tickCountOnSwampTile;
+    private int movementFactor;
 
     public MovingEntity() {
         super.setMovingEntity(true);
+        this.tickCountOnSwampTile = 0; // 0 means the entity is not on the tile. 1+ means it is on the tile.
     }
 
     public abstract void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics);
@@ -130,12 +133,20 @@ public abstract class MovingEntity extends Entity {
     }
 
     public void moveRandomly(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
+        // before the entity moves, the entity may be already stuck on the swamp tile
+        swampAffectEnemyMovement(listOfEntities);
+        if (tickCountOnSwampTile > 0) // if the entity is stuck on the swamp tile, they can't move, so return early.
+            return;
+
         List<Position> moveLocations = createListOfCardinalPos(getCurrentLocation());
         updateAvailablePosList(listOfEntities, moveLocations);
 
         // update this entity's position in the listOfEntities
         Position newPosition = getRandPos(moveLocations);
         updatePosAfterMove(listOfEntities, newPosition, getEntityID());
+
+        // after the entity moves, they may end up on a swamp tile.
+        swampAffectEnemyMovement(listOfEntities);
     }
 
     // updates a list of positions that moving entities (e.g. zombies and hydras) can be on
@@ -147,14 +158,40 @@ public abstract class MovingEntity extends Entity {
         }
     }
 
-    public String getCurrentPlayerPotion() {
-        return CurrentPlayerPotion;
-    }
-
-    public void setCurrentPlayerPotion(String currentPlayerPotion) {
-        CurrentPlayerPotion = currentPlayerPotion;
-        if (currentPlayerPotion.equals("invisibility_potion")) {
-            enemyChangeStrategy(new NoBattlingStrategy());
+    // swamp tiles affect enemy movement
+    public void swampAffectEnemyMovement(List<Entity> listOfEntities) {
+        if (tickCountOnSwampTile >= 0 && tickCountOnSwampTile <= movementFactor && isEnemyOnSwamp(listOfEntities)) {
+            tickCountOnSwampTile++;
+        } else {
+            tickCountOnSwampTile = 0; // the enemy is off the swamp tile.
         }
     }
+
+    private boolean isEnemyOnSwamp(List<Entity> listOfEntities) {
+        Position currEnemyPos = getCurrentLocation();
+
+        return listOfEntities.stream()
+                             .anyMatch(e -> e.getCurrentLocation().equals(currEnemyPos) && e.getEntityType().equalsIgnoreCase("swamp_tile"));
+    }
+
+    public int getTickCountOnSwampTile() {
+        return tickCountOnSwampTile;
+    }
+
+    public void setTickCountOnSwampTile(int tickCountOnSwampTile) {
+        this.tickCountOnSwampTile = tickCountOnSwampTile;
+    }
+
+    public int getMovementFactor() {
+        return movementFactor;
+    }
+
+    public void setMovementFactor(int movementFactor) {
+        this.movementFactor = movementFactor;
+    }
+
+    public EnemyBattlingStrategy getEnemyStrategy() {
+        return enemyStrategy;
+    }
+
 }

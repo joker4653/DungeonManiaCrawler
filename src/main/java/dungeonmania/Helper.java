@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -20,7 +21,7 @@ import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 import dungeonmania.Entities.Collectables.Akey;
 import dungeonmania.Entities.Collectables.Bomb;
-import dungeonmania.Entities.Collectables.InvisibilityPotion;
+import dungeonmania.Entities.Collectables.SunStone;
 import dungeonmania.Entities.Collectables.Sword;
 import dungeonmania.Entities.Collectables.Treasure;
 import dungeonmania.Entities.Collectables.Wood;
@@ -36,6 +37,7 @@ import dungeonmania.Entities.Static.Door;
 import dungeonmania.Entities.Static.Exit;
 import dungeonmania.Entities.Static.FloorSwitch;
 import dungeonmania.Entities.Static.Portal;
+import dungeonmania.Entities.Static.SwampTile;
 import dungeonmania.Entities.Static.Wall;
 import dungeonmania.Entities.Static.ZombieToastSpawner;
 import dungeonmania.exceptions.InvalidActionException;
@@ -95,7 +97,7 @@ public class Helper {
             if (jsonObjElement.get("key") != null) key = jsonObjElement.get("key").getAsInt();
             if (jsonObjElement.get("colour") != null) colour = jsonObjElement.get("colour").getAsString();
 
-            Entity entityCreated = createEntity(type, x, y, key, colour, configMap);
+            Entity entityCreated = EntityFactory.createEntity(type, x, y, key, colour, configMap);
             if (entityCreated != null) {
                 listOfEntities.add(entityCreated);
                 listOfEntityResponses.add(new EntityResponse(entityCreated.getEntityID(), entityCreated.getEntityType(), entityCreated.getCurrentLocation(), entityCreated.isInteractable()));
@@ -104,55 +106,6 @@ public class Helper {
         }
 
         return listOfEntityResponses;
-    }
-
-    /**
-     * helper function that creates entities, which will later be stored in the list of entities
-     */
-    public static Entity createEntity(String type, int x, int y, int key, String colour, HashMap<String, String> configMap) {
-        if (type.equalsIgnoreCase("Player")) {
-            return new Player(x, y, configMap);
-        } else if (type.equalsIgnoreCase("Spider")) {
-            return new Spider(x, y, configMap);
-        } else if (type.equalsIgnoreCase("Boulder")) {
-            return new Boulder(x, y);
-        } else if (type.equalsIgnoreCase("Treasure")) {
-            return new Treasure(x, y);
-        } else if (type.equalsIgnoreCase("zombie_toast_spawner")) {
-            return new ZombieToastSpawner(x, y);
-        } else if (type.equalsIgnoreCase("wall")) {
-            return new Wall(x, y);
-        } else if (type.equalsIgnoreCase("door")) {
-            return new Door(x, y, key);
-        } else if (type.equalsIgnoreCase("zombie_toast")) {
-            return new ZombieToast(x, y, configMap);
-        } else if (type.equalsIgnoreCase("mercenary")) {
-            return new Mercenary(x, y, configMap);
-        } else if (type.equalsIgnoreCase("Treasure")) {
-            return new Treasure(x, y);
-        } else if (type.equalsIgnoreCase("sword")) {
-            return new Sword(x, y, Integer.parseInt(configMap.get("sword_durability")), Integer.parseInt(configMap.get("sword_attack")));
-        } else if (type.equalsIgnoreCase("switch")) {
-            return new FloorSwitch(x, y);
-        } else if (type.equalsIgnoreCase("wood")) {
-            return new Wood(x, y);
-        } else if (type.equalsIgnoreCase("bomb")) {
-            return new Bomb(x, y, Integer.parseInt(configMap.get("bomb_radius")));
-        } else if (type.equalsIgnoreCase("key")) {
-            return new Akey(x, y, key);
-        } else if (type.equalsIgnoreCase("exit")) {
-            return new Exit(x, y);
-        } else if (type.equalsIgnoreCase("portal")) {
-            return new Portal(x, y, colour);
-        } else if (type.equalsIgnoreCase("hydra")) {
-            return new Hydra(x, y, configMap);
-        } else if (type.equalsIgnoreCase("invisibility_potion")) {
-            return new InvisibilityPotion(x, y, Integer.parseInt(configMap.get("invisibility_potion_duration")));
-        } else if (type.equalsIgnoreCase("assassin")) {
-            return new Assassin(x, y, configMap);
-        }
-        
-        return null;
     }
 
     /**
@@ -206,10 +159,11 @@ public class Helper {
      */
     public static void portalCheck(List<Entity> listOfEntities, Player player) {
         for (Entity currEntity: listOfEntities) {
-            if (currEntity.getEntityType() == "portal" && currEntity.getCurrentLocation().equals(player.getCurrentLocation())) {
+            if (currEntity.getEntityType().equals("portal") && currEntity.getCurrentLocation().equals(player.getCurrentLocation())) {
                 ((Portal) currEntity).teleport(listOfEntities, player);
             }
-        }
+        } 
+        //listOfEntities.stream().filter(e -> (e.getEntityType() == "portal" && e.getCurrentLocation().equals(player.getCurrentLocation()))).forEach(e -> {((Portal) e).teleport(listOfEntities, player);});
     }
 
     /** 
@@ -217,23 +171,33 @@ public class Helper {
     * the switch to untrigger.
     */
     public static void boulderCheck(List<Entity> listOfEntities, Statistics statistics) {
-        for (Entity currSwitch : listOfEntities) {
-            if (currSwitch.getEntityType() != "switch") {
+        for (Entity curr : listOfEntities) {
+            if (!curr.getEntityType().equals("switch")) {
                 continue;
             }
 
+            FloorSwitch currSwitch = (FloorSwitch) curr;
+
+            boolean pressed = false;
             for (Entity currBoulder : listOfEntities) {
-                if (currBoulder.getEntityType() != "boulder") {
+                if (!currBoulder.getEntityType().equals("boulder")) {
                     continue;
                 }
 
-                if (currSwitch.getCurrentLocation().equals(currBoulder.getCurrentLocation())) {
-                    ((FloorSwitch) currSwitch).trigger(listOfEntities);
+                boolean location = currSwitch.getCurrentLocation().equals(currBoulder.getCurrentLocation());
+
+                if (location && !currSwitch.isTriggered()) {
+                    currSwitch.trigger(listOfEntities);
                     statistics.addFloorSwitch();
-                } else {
-                    ((FloorSwitch) currSwitch).untrigger(listOfEntities);
-                    statistics.removeFloorSwitch();
+                    pressed = true;
+                } else if (location) {
+                    pressed = true;
                 }
+            }
+
+            if (currSwitch.isTriggered() && !pressed) {
+                currSwitch.untrigger(listOfEntities);
+                statistics.removeFloorSwitch();
             }
         }
     }
@@ -272,10 +236,6 @@ public class Helper {
      * @param statistics 
      */
     public static void checkBattles(Player play, HashMap<String, String> configMap, Inventory inventory, List<Battle> listOfBattles, List<Entity> listOfEntities, Statistics statistics) {
-        // skip battles
-        if (play.getCurrentPlayerPotion().equals("invisibility_potion")) {
-            return;
-        }
         List<Entity> monstersHere = Helper.getMonstersHere(play, listOfEntities);
         Player player = play;
 
@@ -332,14 +292,10 @@ public class Helper {
      *
      */
     public static void checkBombs(List<Entity> listOfEntities, Player play) {
-        List<Entity> bombs = listOfEntities.stream().filter(e -> e.getEntityType().equals("bomb")).collect(Collectors.toList());
-
-        for (Entity b : bombs) {
-            Bomb bo = (Bomb) b;
-            if (bo.isUsed()) {
-                bo.checkBombStatus(listOfEntities, play);
-            }
-        }
+        listOfEntities.stream().filter(e -> e.getEntityType().equals("bomb"))
+                               .forEach(b -> { 
+                                            if (( (Bomb) b ).isUsed()) ( (Bomb) b ).checkBombStatus(listOfEntities, play);}
+                                        );    
     }
 
     public static void setZombAndSpiderSpawnFields(Save save, DungeonManiaController dmc) {
@@ -399,29 +355,28 @@ public class Helper {
         statistics.addSpawnerDestroyed();
     }
 
-    /**
-     * For the tick a potion is used
-     * @param player
-     * @param bool
-     */
-    public static void checkPotionStatus(Player player, boolean bool, List<Entity> listofEntities) {
-        if (bool == true) {
-            // alert observers of change
-            player.setCurrentPotion(player.getCurrentPotion(), listofEntities);
-            return;
-        }
-        return;
-    }
+    public static void moveEnemy(HashMap<String, String> configMap, Player player, HashMap<String, Integer> mapOfMinAndMaxValues,
+    List<Entity> listOfEntities, Direction movementDirection, Inventory inventory, Statistics statistics, List<Battle> listOfBattles,
+    int tickCount) {
+        int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
+        int xZomb = Integer.parseInt(configMap.get("zombie_spawn_rate"));
 
-    /**
-     * For use any other time
-     * @param player
-     */
-    public static void checkPotionStatus(Player player, List<Entity> listofEntities) {
-        if (player.getCurrentPotionState() == "not") {
-            return;
+        Spider newSpider = Helper.spawnASpider(xSpi, tickCount, player, mapOfMinAndMaxValues, listOfEntities, configMap);
+        for (Entity currEntity : listOfEntities) {
+            if (currEntity.getEntityType().equalsIgnoreCase("player") || (newSpider != null && currEntity.getEntityID().equalsIgnoreCase(newSpider.getEntityID())))
+                continue;
+
+            if (currEntity.isMovingEntity()) {
+                ((MovingEntity) currEntity).move(listOfEntities, movementDirection, player, inventory, statistics);
+            }
         }
-        
-        player.decrementCurrentPotion(listofEntities);
+
+        if (xZomb != 0 && (tickCount % xZomb == 0))
+            Helper.processZombieSpawner(listOfEntities, configMap);
+
+        // Process any battles.
+        Helper.checkBattles(player, configMap, inventory, listOfBattles, listOfEntities, statistics);
+
+        Helper.checkBombs(listOfEntities, player);
     }
 }
