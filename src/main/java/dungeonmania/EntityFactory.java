@@ -8,6 +8,7 @@ import dungeonmania.Entities.Collectables.Bomb;
 import dungeonmania.Entities.Collectables.Sword;
 import dungeonmania.Entities.Collectables.Treasure;
 import dungeonmania.Entities.Collectables.Wood;
+import dungeonmania.Entities.Collectables.SunStone;
 import dungeonmania.Entities.Moving.Assassin;
 import dungeonmania.Entities.Moving.Hydra;
 import dungeonmania.Entities.Moving.Mercenary;
@@ -66,6 +67,8 @@ public class EntityFactory {
             return new Assassin(x, y, configMap);
         } else if (type.equalsIgnoreCase("swamp_tile")) {
             return new SwampTile(x, y, configMap);
+        } else if (type.equalsIgnoreCase("sun_stone")) {
+            return new SunStone(x, y);
         }
         
         return null;
