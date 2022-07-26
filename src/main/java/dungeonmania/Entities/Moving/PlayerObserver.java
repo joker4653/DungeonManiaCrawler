@@ -23,6 +23,7 @@ public class PlayerObserver implements Observer, Serializable {
                                                                             e.getEntityType().equals("spider")        
                                                                             )).collect(Collectors.toList());
 
+                                                                            
 
         for (Entity e : MovingEntities) {
             MovingEntity ent = (MovingEntity) e;
