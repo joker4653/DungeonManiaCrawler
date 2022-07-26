@@ -6,6 +6,11 @@
             "y" : 1
         },
         {
+            "type": "assassin",
+            "x": 2,
+            "y": 1
+        },
+        {
             "type": "exit",
             "x": 0,
             "y": 0
@@ -49,11 +54,6 @@
             "type": "wall",
             "x": 0,
             "y": 2
-        },
-        {
-            "type": "invisibility_potion",
-            "x" : 1,
-            "y" : 1
         }
     ],
     "goal-condition": {"goal": "exit"}

@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import dungeonmania.Entities.Moving.Assassin;
 import dungeonmania.exceptions.InvalidActionException;
 
 import static dungeonmania.TestUtils.getPlayer;
@@ -19,6 +20,7 @@ import static dungeonmania.TestUtils.getValueFromConfigFile;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.DisplayName;
@@ -119,7 +121,7 @@ public class AssassinTests {
     }*/
 
 
-    /*// Assassin ally movement tests:
+    // Assassin ally movement tests:
     @Test
     @DisplayName("Test the movement of a bribed assassin")
     public void testAssassinAllyMovement() {
@@ -152,5 +154,101 @@ public class AssassinTests {
         playerPrevPos = getPlayer(res).get().getPosition();
         res = dmc.tick(Direction.RIGHT);
         assertTrue(getEntities(res, "assassin").get(0).getPosition().equals(playerPrevPos));
-    }*/
+    }
+
+    // Assassin bribing tests:
+    @Test
+    @DisplayName("Test invalid id given to assassin bribery function.")
+    public void testAssassinInvalidID() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_assassinTest_followPlayer", "c_assassinTest_followPlayer");
+
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            dmc.interact("haim");
+        });
+    }
+
+    @Test
+    @DisplayName("Test assassin bribery too far away.")
+    public void testAssassinBriberyOutsideRadius() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_assassinTest_followPlayer", "c_assassinTest_followPlayer");
+
+        res = dmc.tick(Direction.RIGHT);
+
+        EntityResponse assassin = getEntities(res, "assassin").get(0);
+
+        assertThrows(InvalidActionException.class, () -> {
+            dmc.interact(assassin.getId());
+        });
+    }
+
+    @Test
+    @DisplayName("Test bribery insufficient gold.")
+    public void testAssassinBriberyInsufficientGold() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_assassinTest_noGold", "c_assassinTest_followPlayer");
+
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+
+        EntityResponse assassin = getEntities(res, "assassin").get(0);
+
+        assertThrows(InvalidActionException.class, () -> {
+            dmc.interact(assassin.getId());
+        });
+    }
+
+    @Test
+    @DisplayName("Test player fails to bribe the assassin.")
+    public void testAssassinBriberyFail() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_assassinTest_followPlayer", "c_assassinTest_failed");
+        EntityResponse assassin = getEntities(res, "assassin").get(0);
+
+        for (int i = 1; i <= 3; i++) {
+            res = dmc.tick(Direction.RIGHT);
+            
+            assertDoesNotThrow(() -> {
+                dmc.interact(assassin.getId());
+            });
+            assertTrue(assassin.isInteractable()); // since the assassin is NOT an ally, isInteractable is still true.
+        }
+
+        // since the player ran out of treasure, an exception should be raised when they try to bribe the assassin again.
+        assertThrows(InvalidActionException.class, () -> {
+            dmc.interact(assassin.getId());
+        });
+
+        assertTrue(assassin.isInteractable()); // since the assassin is NOT an ally, isInteractable is still true.
+    }
+
+
+    @Test
+    @DisplayName("Test assassin has been bribed successfully when assassin_bribe_fail_rate = 0.332.")
+    public void testAssassinBriberySuccess() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_assassinTest_followPlayer", "c_assassinTest_briberySuccess");
+        String assassinID = getEntities(res, "assassin").get(0).getId();
+
+        Assassin assassin = (Assassin)dmc.getListOfEntities().stream()
+                                                             .filter(e -> e.getEntityID().equals(assassinID))
+                                                             .findFirst()
+                                                             .get();
+        // 8000 always ensures that assassin has been bribed successfully
+        Random random = new Random(8000);
+        assassin.setRandom(random);
+
+        res = dmc.tick(Direction.RIGHT);
+           
+        assertDoesNotThrow(() -> {
+            dmc.interact(assassinID);
+        });
+        assertEquals(assassin.isInteractable(), false); // since the assassin is an ally, isInteractable is false.
+    }
 }

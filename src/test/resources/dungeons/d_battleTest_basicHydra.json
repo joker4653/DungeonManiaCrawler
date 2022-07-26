@@ -2,7 +2,7 @@
     "entities": [
         {
             "type" : "player",
-            "x" : 0,
+            "x" : 1,
             "y" : 1
         },
         {
@@ -26,7 +26,7 @@
             "y": 0
         },
         {
-            "type": "wall",
+            "type": "boulder",
             "x": 3,
             "y": 1
         },
@@ -36,7 +36,7 @@
             "y": 2
         },
         {
-            "type": "wall",
+            "type": "zombie_toast_spawner",
             "x": 2,
             "y": 2
         },
@@ -49,11 +49,10 @@
             "type": "wall",
             "x": 0,
             "y": 2
-        },
-        {
-            "type": "invisibility_potion",
-            "x" : 1,
-            "y" : 1
+        },         {
+            "type": "hydra",
+            "x": 2,
+            "y": 1
         }
     ],
     "goal-condition": {"goal": "exit"}

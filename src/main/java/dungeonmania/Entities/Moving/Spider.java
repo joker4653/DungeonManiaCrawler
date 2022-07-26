@@ -2,7 +2,7 @@ package dungeonmania.Entities.Moving;
 
 import dungeonmania.util.Position;
 import dungeonmania.Statistics;
-import dungeonmania.Battling.EnemyBattleStrategy.SpiderBattlingStrategy;
+import dungeonmania.Battling.EnemyBattleStrategy.StandardBattlingStrategy;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 import dungeonmania.util.Direction;
@@ -41,9 +41,10 @@ public class Spider extends MovingEntity {
         super.setInteractable(false);
         super.setEntityType("spider");
         super.setEnemyHealth(Double.parseDouble(configMap.get("spider_health")));
-        super.enemyChangeStrategy(new SpiderBattlingStrategy(configMap));
+        super.enemyChangeStrategy(new StandardBattlingStrategy(configMap, "spider"));
         super.setAlly(false);
         super.setCanStepOn("spider");
+        super.setMovementFactor(configMap.get("movement_factor") != null ? Integer.parseInt(configMap.get("movement_factor")) : 0);
     }
 
     public void spawn(List<Entity> listOfEntities, Player player) {
@@ -64,9 +65,14 @@ public class Spider extends MovingEntity {
         setSpawnLocation(spawnLocation);
         listOfEntities.add(this);
 
+        swampAffectEnemyMovement(listOfEntities);
     }
 
     public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
+        swampAffectEnemyMovement(listOfEntities);
+        if (super.getTickCountOnSwampTile() > 0)
+            return;
+
         // Get the next position and check if it's a boulder. If so, change direction and move. Otherwise, move normally.
         Position nextPosition = getNextPosition();
         if (checkIfNextPositionIsAllowed(nextPosition, listOfEntities)) {
@@ -77,6 +83,8 @@ public class Spider extends MovingEntity {
             if (checkIfNextPositionIsAllowed(nextPosition, listOfEntities))
                 super.setCurrentLocation(nextPosition);
         }
+
+        swampAffectEnemyMovement(listOfEntities);
     }
 
 
