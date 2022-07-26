@@ -7,8 +7,8 @@ public class AllyStrategy extends EnemyBattlingStrategy {
     private double allyDefence;
 
     public AllyStrategy(HashMap<String, String> configMap, String type) {
-        super.setDamage(Double.parseDouble(configMap.get(type + "_attack")));
-        super.setHealth(Double.parseDouble(configMap.get(type + "_health")));
+        super.setDamage(configMap.get(type + "_attack") != null ? Double.parseDouble(configMap.get(type + "_attack")) : 0);
+        super.setHealth(configMap.get(type + "_health") != null? Double.parseDouble(configMap.get(type + "_health")) : 0);
 
         this.allyAttack = configMap.get("ally_attack") != null ? Double.parseDouble(configMap.get("ally_attack")) : 0;
         this.allyDefence =  configMap.get("ally_defence") != null ? Double.parseDouble(configMap.get("ally_defence")) : 0;

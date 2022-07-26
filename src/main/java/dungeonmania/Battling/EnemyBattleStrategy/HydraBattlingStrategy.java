@@ -10,10 +10,10 @@ public class HydraBattlingStrategy extends EnemyBattlingStrategy {
     private Random random;
 
     public HydraBattlingStrategy(HashMap<String, String> configMap) {
-        super.setDamage(Double.parseDouble(configMap.get("hydra_attack")));
-        super.setHealth(Double.parseDouble(configMap.get("hydra_health")));
-        this.hydraRate = Double.parseDouble(configMap.get("hydra_health_increase_rate"));
-        this.hydraAmt = Double.parseDouble(configMap.get("hydra_health_increase_amount"));
+        super.setDamage(configMap.get("hydra_attack") != null ? Double.parseDouble(configMap.get("hydra_attack")) : 0);
+        super.setHealth(configMap.get("hydra_health") != null ? Double.parseDouble(configMap.get("hydra_health")) : 0);
+        this.hydraRate = configMap.get("hydra_health_increase_rate") != null ? Double.parseDouble(configMap.get("hydra_health_increase_rate")) : 0;
+        this.hydraAmt = configMap.get("hydra_health_increase_amount") != null ? Double.parseDouble(configMap.get("hydra_health_increase_amount")) : 0;
         this.seed = System.currentTimeMillis();
         this.random = new Random(seed);
     }
