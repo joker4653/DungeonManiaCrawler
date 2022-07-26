@@ -82,6 +82,7 @@ public class Player extends MovingEntity {
 
         }
 
+        
         for (Entity curr : items) {
             inventory.addItem(curr);
             listOfEntities.remove(curr);
