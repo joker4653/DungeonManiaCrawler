@@ -178,11 +178,17 @@ public abstract class MovingEntity extends Entity {
         this.movementFactor = movementFactor;
     }
 
+    // returns enemy's attack
     public double getEnemyDamage() {
         return enemyDamage;
     }
 
     public void setEnemyDamage(double enemyDamage) {
         this.enemyDamage = enemyDamage;
+    }
+
+    // returns enemy's DELTA health
+    public double getDeltaEnemyHealth(double playerAttack) {
+        return playerAttack / 5;
     }
 }

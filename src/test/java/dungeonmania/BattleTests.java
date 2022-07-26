@@ -434,8 +434,7 @@ public class BattleTests {
                                                            .filter(e -> e.getEntityID().equals(hydraID))
                                                            .findFirst()
                                                            .get();
-        EnemyBattlingStrategy battleStrategy = hydra.getEnemyStrategy();
-        long seed = ((HydraBattlingStrategy)(battleStrategy)).getSeed();
+        long seed = hydra.getSeed();
         Random random = new Random(seed);
 
         assertHydraIncreasesHealth(random, "hydra", battle, false, "c_battleTest_hydraWins");
