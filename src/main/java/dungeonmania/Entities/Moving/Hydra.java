@@ -19,7 +19,7 @@ public class Hydra extends MovingEntity {
         super.setEntityID(UUID.randomUUID().toString());
         super.setInteractable(false);
         super.setEntityType("hydra");
-        super.setEnemyHealth(Double.parseDouble(configMap.get("hydra_health")));
+        super.setEnemyHealth(configMap.get("hydra_health") != null ? Double.parseDouble(configMap.get("hydra_health")) : 0);
         super.setAlly(false);
         super.setCanStepOn("hydra");
         super.setCurrentLocation(new Position(x, y));
