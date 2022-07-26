@@ -209,10 +209,11 @@ public class Helper {
      */
     public static void portalCheck(List<Entity> listOfEntities, Player player) {
         for (Entity currEntity: listOfEntities) {
-            if (currEntity.getEntityType() == "portal" && currEntity.getCurrentLocation().equals(player.getCurrentLocation())) {
+            if (currEntity.getEntityType().equals("portal") && currEntity.getCurrentLocation().equals(player.getCurrentLocation())) {
                 ((Portal) currEntity).teleport(listOfEntities, player);
             }
-        }
+        } 
+        //listOfEntities.stream().filter(e -> (e.getEntityType() == "portal" && e.getCurrentLocation().equals(player.getCurrentLocation()))).forEach(e -> {((Portal) e).teleport(listOfEntities, player);});
     }
 
     /** 
