@@ -61,7 +61,7 @@ public class Player extends MovingEntity {
         for (Entity currEntity : entitiesHere) {
             if (!super.canStep(currEntity.getEntityType())) {
                 return false;
-            } else if (currEntity.getEntityType() == "exit") {
+            } else if (currEntity.getEntityType().equals("exit")) {
                 statistics.reachedExit();
                 ((Exit) currEntity).setExitState(true);
             } else if (currEntity.isCollectableEntity()) {
@@ -82,11 +82,12 @@ public class Player extends MovingEntity {
 
         }
 
+        
         for (Entity curr : items) {
             inventory.addItem(curr);
             listOfEntities.remove(curr);
             
-            if (curr.getEntityType() == "treasure") {
+            if (curr.getEntityType().equals("treasure") || curr.getEntityType().equals("sun_stone")) {
                 statistics.addTreasureCollected();
             }
         }
