@@ -96,7 +96,7 @@ public class Helper {
             if (jsonObjElement.get("key") != null) key = jsonObjElement.get("key").getAsInt();
             if (jsonObjElement.get("colour") != null) colour = jsonObjElement.get("colour").getAsString();
 
-            Entity entityCreated = createEntity(type, x, y, key, colour, configMap);
+            Entity entityCreated = EntityFactory.createEntity(type, x, y, key, colour, configMap);
             if (entityCreated != null) {
                 listOfEntities.add(entityCreated);
                 listOfEntityResponses.add(new EntityResponse(entityCreated.getEntityID(), entityCreated.getEntityType(), entityCreated.getCurrentLocation(), entityCreated.isInteractable()));
@@ -105,55 +105,6 @@ public class Helper {
         }
 
         return listOfEntityResponses;
-    }
-
-    /**
-     * helper function that creates entities, which will later be stored in the list of entities
-     */
-    public static Entity createEntity(String type, int x, int y, int key, String colour, HashMap<String, String> configMap) {
-        if (type.equalsIgnoreCase("Player")) {
-            return new Player(x, y, configMap);
-        } else if (type.equalsIgnoreCase("Spider")) {
-            return new Spider(x, y, configMap);
-        } else if (type.equalsIgnoreCase("Boulder")) {
-            return new Boulder(x, y);
-        } else if (type.equalsIgnoreCase("Treasure")) {
-            return new Treasure(x, y);
-        } else if (type.equalsIgnoreCase("zombie_toast_spawner")) {
-            return new ZombieToastSpawner(x, y);
-        } else if (type.equalsIgnoreCase("wall")) {
-            return new Wall(x, y);
-        } else if (type.equalsIgnoreCase("door")) {
-            return new Door(x, y, key);
-        } else if (type.equalsIgnoreCase("zombie_toast")) {
-            return new ZombieToast(x, y, configMap);
-        } else if (type.equalsIgnoreCase("mercenary")) {
-            return new Mercenary(x, y, configMap);
-        } else if (type.equalsIgnoreCase("Treasure")) {
-            return new Treasure(x, y);
-        } else if (type.equalsIgnoreCase("sword")) {
-            return new Sword(x, y, Integer.parseInt(configMap.get("sword_durability")), Integer.parseInt(configMap.get("sword_attack")));
-        } else if (type.equalsIgnoreCase("switch")) {
-            return new FloorSwitch(x, y);
-        } else if (type.equalsIgnoreCase("wood")) {
-            return new Wood(x, y);
-        } else if (type.equalsIgnoreCase("bomb")) {
-            return new Bomb(x, y, Integer.parseInt(configMap.get("bomb_radius")));
-        } else if (type.equalsIgnoreCase("key")) {
-            return new Akey(x, y, key);
-        } else if (type.equalsIgnoreCase("exit")) {
-            return new Exit(x, y);
-        } else if (type.equalsIgnoreCase("portal")) {
-            return new Portal(x, y, colour);
-        } else if (type.equalsIgnoreCase("hydra")) {
-            return new Hydra(x, y, configMap);
-        } else if (type.equalsIgnoreCase("assassin")) {
-            return new Assassin(x, y, configMap);
-        } else if (type.equalsIgnoreCase("swamp_tile")) {
-            return new SwampTile(x, y, configMap);
-        }
-        
-        return null;
     }
 
     /**
