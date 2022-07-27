@@ -1,5 +1,6 @@
 package dungeonmania;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -48,9 +49,7 @@ import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Helper {
-    // Put your helper functions in here
-
+public class Helper implements Serializable {
     /** 
      *  finds minX, maxX, minY and maxY based on the Dungeon map's coordinates.
      */
@@ -71,43 +70,6 @@ public class Helper {
         mapOfMinAndMaxValues.put("maxY", Collections.max(listOfYPositions));
 
         return mapOfMinAndMaxValues;
-    }
-
-    /**
-     * Reading Config file 
-     */
-    public static void generateConfigMap(String configJSONString, HashMap<String, String> configMap) {
-        JsonObject configJsonObj = JsonParser.parseString(configJSONString).getAsJsonObject();
-        Set<String> configKeySet = configJsonObj.keySet();
-        configKeySet.forEach((key) -> configMap.put(key, configJsonObj.get(key).toString()));
-    }
-    
-
-    public static List<EntityResponse> createListOfEntsAndResp(JsonObject dungeonJsonObj, HashMap<String, String> configMap, List<Entity> listOfEntities) {
-        JsonArray jsonEntities = dungeonJsonObj.get("entities").getAsJsonArray();
-        List<EntityResponse> listOfEntityResponses = new ArrayList<>();
-
-        for (JsonElement currElement : jsonEntities) {
-            JsonObject jsonObjElement = currElement.getAsJsonObject();
-            String type = jsonObjElement.get("type").getAsString();
-            int x = jsonObjElement.get("x").getAsInt();
-            int y = jsonObjElement.get("y").getAsInt();
-            int key = Integer.MAX_VALUE;
-            int movementFactor = -1;
-            String colour = " ";
-            if (jsonObjElement.get("key") != null) key = jsonObjElement.get("key").getAsInt();
-            if (jsonObjElement.get("colour") != null) colour = jsonObjElement.get("colour").getAsString();
-            if (jsonObjElement.get("movement_factor") != null) movementFactor = jsonObjElement.get("movement_factor").getAsInt();
-
-            Entity entityCreated = EntityFactory.createEntity(type, x, y, key, colour, configMap, movementFactor);
-            if (entityCreated != null) {
-                listOfEntities.add(entityCreated);
-                listOfEntityResponses.add(new EntityResponse(entityCreated.getEntityID(), entityCreated.getEntityType(), entityCreated.getCurrentLocation(), entityCreated.isInteractable()));
-            } else
-                listOfEntityResponses.add(new EntityResponse(UUID.randomUUID().toString(), type, new Position(x, y), false));
-        }
-
-        return listOfEntityResponses;
     }
 
     /**
