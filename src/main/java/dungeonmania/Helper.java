@@ -49,8 +49,6 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Helper {
-    // Put your helper functions in here
-
     /** 
      *  finds minX, maxX, minY and maxY based on the Dungeon map's coordinates.
      */
@@ -72,42 +70,6 @@ public class Helper {
 
         return mapOfMinAndMaxValues;
     }
-
-    /*
-    //
-    // Reading Config file 
-    //
-    public static void generateConfigMap(String configJSONString, HashMap<String, String> configMap) {
-        JsonObject configJsonObj = JsonParser.parseString(configJSONString).getAsJsonObject();
-        Set<String> configKeySet = configJsonObj.keySet();
-        configKeySet.forEach((key) -> configMap.put(key, configJsonObj.get(key).toString()));
-    }*/
-    
-
-    /*public static List<EntityResponse> createListOfEntsAndResp(JsonObject dungeonJsonObj, HashMap<String, String> configMap, List<Entity> listOfEntities) {
-        JsonArray jsonEntities = dungeonJsonObj.get("entities").getAsJsonArray();
-        List<EntityResponse> listOfEntityResponses = new ArrayList<>();
-
-        for (JsonElement currElement : jsonEntities) {
-            JsonObject jsonObjElement = currElement.getAsJsonObject();
-            String type = jsonObjElement.get("type").getAsString();
-            int x = jsonObjElement.get("x").getAsInt();
-            int y = jsonObjElement.get("y").getAsInt();
-            int key = Integer.MAX_VALUE;
-            String colour = " ";
-            if (jsonObjElement.get("key") != null) key = jsonObjElement.get("key").getAsInt();
-            if (jsonObjElement.get("colour") != null) colour = jsonObjElement.get("colour").getAsString();
-
-            Entity entityCreated = EntityFactory.createEntity(type, x, y, key, colour, configMap);
-            if (entityCreated != null) {
-                listOfEntities.add(entityCreated);
-                listOfEntityResponses.add(new EntityResponse(entityCreated.getEntityID(), entityCreated.getEntityType(), entityCreated.getCurrentLocation(), entityCreated.isInteractable()));
-            } else
-                listOfEntityResponses.add(new EntityResponse(UUID.randomUUID().toString(), type, new Position(x, y), false));
-        }
-
-        return listOfEntityResponses;
-    }*/
 
     /**
      * getBattleResponse
