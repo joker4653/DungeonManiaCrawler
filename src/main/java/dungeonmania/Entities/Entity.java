@@ -6,6 +6,7 @@ import dungeonmania.util.Position;
 
 public abstract class Entity implements Serializable {
 
+    private String CurrPlayerPotion = "";
     private transient Position currentLocation;
     private String entityID;
     private String entityType;
@@ -79,5 +80,13 @@ public abstract class Entity implements Serializable {
 
     public void setCost(int cost) {
         this.cost = cost;
+    }
+
+    public String getCurrPlayerPotion() {
+        return CurrPlayerPotion;
+    }
+
+    public void setCurrPlayerPotion(String currPlayerPotion) {
+        CurrPlayerPotion = currPlayerPotion;
     }
 }

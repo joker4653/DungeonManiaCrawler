@@ -46,14 +46,15 @@ public class Mercenary extends MovingEntity {
     @Override
     public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
         swampAffectEnemyMovement(listOfEntities);
-        if (super.getTickCountOnSwampTile() > 0)
-            return;
 
-        if (!super.isAlly()) {
-            enemyMovementDS(listOfEntities, player);
+        if (super.getTickCountOnSwampTile() > 0) return;
+
+        if (super.getCurrPlayerPotion().equals("invisibility_potion")) { 
+            super.moveRandomly(listOfEntities, dir, player, inventory, statistics);
         } else {
-            allyMovement(listOfEntities, player); 
+            if (!super.isAlly()) enemyMovementDS(listOfEntities, player); else allyMovement(listOfEntities, player);
         }
+
         
         swampAffectEnemyMovement(listOfEntities);
     }

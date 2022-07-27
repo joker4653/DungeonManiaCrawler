@@ -4,6 +4,7 @@ import dungeonmania.Battling.Battle;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 import dungeonmania.Entities.Collectables.Bomb;
+import dungeonmania.Entities.Collectables.InvisibilityPotion;
 import dungeonmania.Entities.Moving.Assassin;
 import dungeonmania.Entities.Moving.Mercenary;
 import dungeonmania.Entities.Moving.MovingEntity;
@@ -140,6 +141,8 @@ public class DungeonManiaController implements Serializable{
             /* Reading Dungeon JSON file */
             JsonObject dungeonJsonObj = JsonParser.parseString(dungeonJSONString).getAsJsonObject();
             List<EntityResponse> listOfEntityResponses = Helper.createListOfEntsAndResp(dungeonJsonObj, configMap, listOfEntities);
+            // add player to every moving entity to be used for observers
+            
 
             JsonElement jsonObj = dungeonJsonObj.get("goal-condition");
             JsonObject jsonGoals = jsonObj.getAsJsonObject();
@@ -180,6 +183,7 @@ public class DungeonManiaController implements Serializable{
         if (itemInInv.isEmpty()) {
             throw new InvalidActionException(itemUsedId);
         } else if (!itemInInv.get().isConsumable()) {
+            System.out.println(itemInInv.get().isConsumable());
             throw new IllegalArgumentException("itemUsed must be one of bomb, invincibility_potion, invisibility_potion");
         }
 
@@ -189,14 +193,17 @@ public class DungeonManiaController implements Serializable{
         inventory.removeItem(item);
 
         if (item.getEntityType().equalsIgnoreCase("bomb")) {
-            Bomb b = (Bomb) item;
-            b.use(getPlayer(), listOfEntities, inventory);
+            ((Bomb) item).use(getPlayer(), listOfEntities, inventory);
+        } else if (item.getEntityType().equalsIgnoreCase("invisibility_potion")) {
+            ((InvisibilityPotion) item).use(getPlayer());
+            Helper.checkPotionStatus(getPlayer(), true, listOfEntities);
         }
 
         Helper.checkBombs(listOfEntities, getPlayer());
         setTickCount(getTickCount() + 1);
         Helper.moveEnemy(configMap, getPlayer(), mapOfMinAndMaxValues, listOfEntities, null,
         inventory, statistics, listOfBattles, tickCount);
+        Helper.checkPotionStatus(getPlayer(), listOfEntities);
 
         return createDungeonResponse();
     }

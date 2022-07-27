@@ -5,6 +5,7 @@ import java.util.HashMap;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Collectables.Akey;
 import dungeonmania.Entities.Collectables.Bomb;
+import dungeonmania.Entities.Collectables.InvisibilityPotion;
 import dungeonmania.Entities.Collectables.Sword;
 import dungeonmania.Entities.Collectables.Treasure;
 import dungeonmania.Entities.Collectables.Wood;
@@ -69,6 +70,8 @@ public class EntityFactory {
             return new SwampTile(x, y, configMap, movementFactor);
         } else if (type.equalsIgnoreCase("sun_stone")) {
             return new SunStone(x, y);
+        } else if (type.equalsIgnoreCase("invisibility_potion")) {
+            return new InvisibilityPotion(x, y, Integer.parseInt(configMap.get("invisibility_potion_duration")));
         }
         
         return null;

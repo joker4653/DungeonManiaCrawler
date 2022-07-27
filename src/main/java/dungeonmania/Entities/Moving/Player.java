@@ -16,8 +16,8 @@ import dungeonmania.util.Direction;
 
 public class Player extends MovingEntity {
 
-    private HashMap<String, Integer> activeStates = new HashMap<String, Integer>();
-
+    private List<Observer> observers = new ArrayList<Observer>();
+    private List<HashMap<String, Integer>> activeStates = new ArrayList<HashMap<String, Integer>>();
     private transient Position prevPos;
     private int allies = 0;
 
@@ -41,6 +41,14 @@ public class Player extends MovingEntity {
 
     public void addAlly() {
         this.allies += 1;
+    }
+
+    public List<HashMap<String, Integer>> getActiveStates() {
+        return activeStates;
+    }
+
+    public void setActiveStates(List<HashMap<String, Integer>> activeStates) {
+        this.activeStates = activeStates;
     }
 
     public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
@@ -102,6 +110,55 @@ public class Player extends MovingEntity {
     public void setPrevPos(Position prevPos) {
         this.prevPos = prevPos;
     }
+
+    public void addtoPotionQueue(String PotionType, int PotionDuration) {
+        HashMap<String, Integer> potion = new HashMap<String, Integer>();
+        potion.put(PotionType, PotionDuration);
+
+        activeStates.add(potion);
+    }
+
+    public String getCurrentPotionState() {
+        if (activeStates.isEmpty()) {
+            return "";
+        }
+
+        return activeStates.get(0).keySet().stream().findFirst().get();
+    }
+
+    public void decrementCurrentPotion(List<Entity> listofEntities) {
+        int counter = activeStates.get(0).get(this.getCurrentPotionState());
+
+        activeStates.get(0).put(this.getCurrentPotionState(), counter - 1);
+        System.out.println(counter);
+
+        if (counter - 1 <= 0) {
+            activeStates.remove(0);
+            setCurrentPotion();
+        }
+    }
+
+    public String getCurrentPotion() {
+        return super.getCurrPlayerPotion();
+    }
+
+    public void setCurrentPotion() {
+        super.setCurrPlayerPotion(getCurrentPotionState());
+        notifyAllObservers();
+    }
+
+
+    public void attach(Observer o) {
+        observers.add(o);		
+     }
+  
+     public void notifyAllObservers() {
+        for (Observer o : observers) {
+           o.update(getCurrentPotionState());
+        }
+     } 
+
+
 }
 
 

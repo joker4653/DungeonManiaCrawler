@@ -241,6 +241,9 @@ public class Helper {
         List<Entity> monstersHere = Helper.getMonstersHere(play, listOfEntities);
         Player player = play;
 
+        // if player under effects of invis potion
+        if (player.getCurrentPotionState().equals("invisibility_potion")) return;
+
         for (Entity monster : monstersHere) {
             Battle battle = new Battle(player, monster);
             boolean alive = battle.doBattle(configMap, inventory);
@@ -381,4 +384,31 @@ public class Helper {
 
         Helper.checkBombs(listOfEntities, player);
     }
+
+    /**
+     * For the tick a potion is used
+     * @param player
+     * @param bool
+     */
+    public static void checkPotionStatus(Player player, boolean bool, List<Entity> listofEntities) {
+        if (bool == true) {
+            // alert observers of change
+            player.setCurrentPotion();
+            return;
+        }
+        return;
+    }
+
+    /**
+     * For use any other time
+     * @param player
+     */
+    public static void checkPotionStatus(Player player, List<Entity> listofEntities) {
+        if (player.getCurrentPotionState().equals("")) {
+            return;
+        }
+        
+        player.decrementCurrentPotion(listofEntities);
+    }
+
 }
