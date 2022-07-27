@@ -42,7 +42,6 @@ public class Spider extends MovingEntity {
         super.setEnemyHealth(Double.parseDouble(configMap.get("spider_health")));
         super.setAlly(false);
         super.setCanStepOn("spider");
-        super.setMovementFactor(configMap.get("movement_factor") != null ? Integer.parseInt(configMap.get("movement_factor")) : 0);
         super.setEnemyDamage(Double.parseDouble(configMap.get("spider_attack")));
     }
 

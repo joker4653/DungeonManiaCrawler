@@ -10,6 +10,7 @@ import dungeonmania.Statistics;
 import dungeonmania.StepOnJson;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
+import dungeonmania.Entities.Static.SwampTile;
 import dungeonmania.util.Direction;
 
 public abstract class MovingEntity extends Entity {
@@ -19,7 +20,6 @@ public abstract class MovingEntity extends Entity {
     private double enemyHealth;
     private boolean isAlly;
     private int tickCountOnSwampTile;
-    private int movementFactor;
     private double enemyDamage;
 
     public MovingEntity() {
@@ -146,18 +146,22 @@ public abstract class MovingEntity extends Entity {
 
     // swamp tiles affect enemy movement
     public void swampAffectEnemyMovement(List<Entity> listOfEntities) {
-        if (tickCountOnSwampTile >= 0 && tickCountOnSwampTile <= movementFactor && isEnemyOnSwamp(listOfEntities)) {
+        if (tickCountOnSwampTile >= 0 && tickCountOnSwampTile <= getMovementFactor(listOfEntities)) {
             tickCountOnSwampTile++;
         } else {
             tickCountOnSwampTile = 0; // the enemy is off the swamp tile.
         }
     }
 
-    private boolean isEnemyOnSwamp(List<Entity> listOfEntities) {
+    private int getMovementFactor(List<Entity> listOfEntities) {
         Position currEnemyPos = getCurrentLocation();
+        for (Entity currEntity : listOfEntities) {
+            if (currEntity.getCurrentLocation().equals(currEnemyPos) && currEntity.getEntityType().equalsIgnoreCase("swamp_tile"))
+                return ((SwampTile)currEntity).getMovementFactor();
+        }
 
-        return listOfEntities.stream()
-                             .anyMatch(e -> e.getCurrentLocation().equals(currEnemyPos) && e.getEntityType().equalsIgnoreCase("swamp_tile"));
+        // if there is no swamp tile at enemy position, there is no movement factor.
+        return -1;
     }
 
     public int getTickCountOnSwampTile() {
@@ -166,14 +170,6 @@ public abstract class MovingEntity extends Entity {
 
     public void setTickCountOnSwampTile(int tickCountOnSwampTile) {
         this.tickCountOnSwampTile = tickCountOnSwampTile;
-    }
-
-    public int getMovementFactor() {
-        return movementFactor;
-    }
-
-    public void setMovementFactor(int movementFactor) {
-        this.movementFactor = movementFactor;
     }
 
     // returns enemy's attack
