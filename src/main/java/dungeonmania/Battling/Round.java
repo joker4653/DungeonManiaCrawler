@@ -2,15 +2,16 @@ package dungeonmania.Battling;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.HashMap;
 
 import dungeonmania.Entities.Entity;
 
 public class Round implements Serializable {
     private double deltaPlayerHealth;
     private double deltaEnemyHealth;
-    private List<Entity> weaponryUsed;
+    private List<HashMap<String, String>> weaponryUsed;
 
-    public Round(double deltaPlayerHealth, double deltaEnemyHealth, List<Entity> weaponryUsed)
+    public Round(double deltaPlayerHealth, double deltaEnemyHealth, List<HashMap<String, String>> weaponryUsed)
     {
         this.deltaPlayerHealth = deltaPlayerHealth;
         this.deltaEnemyHealth = deltaEnemyHealth;
@@ -25,7 +26,7 @@ public class Round implements Serializable {
         return deltaEnemyHealth;
     }
 
-    public List<Entity> getWeaponryUsed() {
+    public List<HashMap<String, String>> getWeaponryUsed() {
         return weaponryUsed;
     }
 }

@@ -50,7 +50,7 @@ public class Battle implements Serializable {
      * @returns true if player alive after battle, false otherwise.
      */
     public boolean doBattle(HashMap<String, String> configMap, Inventory inventory) {
-        ArrayList<Entity> weaponryUsed = getWeaponry(inventory);
+        ArrayList<HashMap<String, String>> weaponryUsed = getWeaponry(inventory);
         boolean result = doRound(configMap, weaponryUsed, inventory); 
 
         return result;
@@ -59,7 +59,7 @@ public class Battle implements Serializable {
     /*
      * @returns true if player alive after round, false otherwise.
      */
-    public boolean doRound(HashMap<String, String> configMap, ArrayList<Entity> weaponryUsed, Inventory inventory) {
+    public boolean doRound(HashMap<String, String> configMap, ArrayList<HashMap<String, String>> weaponryUsed, Inventory inventory) {
         double player_attack = getPlayerAttack(configMap, weaponryUsed, inventory);
         double player_defence = getPlayerDefence(configMap, inventory);
         double enemy_attack = enemy.getEnemyDamage();
@@ -85,12 +85,15 @@ public class Battle implements Serializable {
         }
     }
 
-    private ArrayList<Entity> getWeaponry(Inventory inventory) {
-        ArrayList<Entity> weaponryUsed = new ArrayList<Entity>();
+    private ArrayList<HashMap<String, String>> getWeaponry(Inventory inventory) {
+        ArrayList<HashMap<String, String>> weaponryUsed = new ArrayList<HashMap<String, String>>();
 
         Entity item = inventory.getItem("sword");
         if (item != null) {
-            weaponryUsed.add(item);
+            HashMap<String, String> itemInfo = new HashMap<>();
+            itemInfo.put("id", item.getEntityID());
+            itemInfo.put("type", item.getEntityType());
+            weaponryUsed.add(itemInfo);
             Sword sword = (Sword) item;
             sword.reduceDurability();
             if (sword.isDestroyed()) {
@@ -113,7 +116,7 @@ public class Battle implements Serializable {
         return weaponryUsed;
     }
 
-    private double getPlayerAttack(HashMap<String, String> configMap, ArrayList<Entity> weaponryUsed, Inventory inventory) {
+    private double getPlayerAttack(HashMap<String, String> configMap, ArrayList<HashMap<String, String>> weaponryUsed, Inventory inventory) {
         boolean swordExists = itemExists(weaponryUsed, "sword");
         boolean bowExists = itemExists(weaponryUsed, "bow");
         int allies = player.getAllies();
@@ -154,9 +157,9 @@ public class Battle implements Serializable {
         return def;
     }
 
-    private boolean itemExists(ArrayList<Entity> entities, String type) {
-        for (Entity entity : entities) {
-            if (entity.getEntityType().equalsIgnoreCase(type)) {
+    private boolean itemExists(ArrayList<HashMap<String, String>> weaponry, String type) {
+        for (HashMap<String, String> weapon : weaponry) {
+            if (weapon.get("type").equalsIgnoreCase(type)) {
                 return true;
             }
         }
