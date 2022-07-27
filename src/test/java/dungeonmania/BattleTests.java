@@ -20,8 +20,6 @@ import java.util.Random;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import dungeonmania.Battling.EnemyBattleStrategy.EnemyBattlingStrategy;
-import dungeonmania.Battling.EnemyBattleStrategy.HydraBattlingStrategy;
 import dungeonmania.Entities.Moving.Hydra;
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
@@ -434,8 +432,7 @@ public class BattleTests {
                                                            .filter(e -> e.getEntityID().equals(hydraID))
                                                            .findFirst()
                                                            .get();
-        EnemyBattlingStrategy battleStrategy = hydra.getEnemyStrategy();
-        long seed = ((HydraBattlingStrategy)(battleStrategy)).getSeed();
+        long seed = hydra.getSeed();
         Random random = new Random(seed);
 
         assertHydraIncreasesHealth(random, "hydra", battle, false, "c_battleTest_hydraWins");

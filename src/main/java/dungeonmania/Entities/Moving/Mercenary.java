@@ -17,8 +17,6 @@ import java.util.stream.Collectors;
 
 import dungeonmania.Helper;
 import dungeonmania.Statistics;
-import dungeonmania.Battling.EnemyBattleStrategy.AllyStrategy;
-import dungeonmania.Battling.EnemyBattleStrategy.StandardBattlingStrategy;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 import dungeonmania.exceptions.InvalidActionException;
@@ -38,12 +36,12 @@ public class Mercenary extends MovingEntity {
         super.setInteractable(true);
         super.setEntityType("mercenary");
         super.setEnemyHealth(Double.parseDouble(configMap.get("mercenary_health")));
-        super.enemyChangeStrategy(new StandardBattlingStrategy(configMap, "mercenary"));
         this.isNeighbour = false;
         this.configMap = configMap;
         super.setCanStepOn("mercenary");
         this.bribe = Integer.parseInt(configMap.get("bribe_amount"));
         super.setMovementFactor(configMap.get("movement_factor") != null ? Integer.parseInt(configMap.get("movement_factor")) : 0);
+        super.setEnemyDamage(Double.parseDouble(configMap.get("mercenary_attack")));
     }
 
     @Override
@@ -221,7 +219,6 @@ public class Mercenary extends MovingEntity {
         merc.setAlly(true);
         player.addAlly();
         merc.setInteractable(false); // according to the spec
-        super.enemyChangeStrategy(new AllyStrategy(configMap, this.getEntityType()));
     }
 
     public int checkBribeAmount(List<Entity> treasure) throws InvalidActionException {
@@ -230,6 +227,17 @@ public class Mercenary extends MovingEntity {
         }
 
         return bribe;
+    }
+
+    @Override
+    public double getEnemyDamage() {
+        return isAlly() ? 0 : super.getEnemyDamage();
+    }
+
+    @Override
+    public double getDeltaEnemyHealth(double playerAttack) {
+        // an ally's health doesnt decrease
+        return isAlly() ? getEnemyHealth() : super.getDeltaEnemyHealth(playerAttack);
     }
 
     /* Getters & Setters */

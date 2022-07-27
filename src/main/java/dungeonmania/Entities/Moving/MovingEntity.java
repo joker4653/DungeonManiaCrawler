@@ -8,8 +8,6 @@ import java.util.Arrays;
 import dungeonmania.util.Position;
 import dungeonmania.Statistics;
 import dungeonmania.StepOnJson;
-import dungeonmania.Battling.EnemyBattleStrategy.EnemyBattlingStrategy;
-import dungeonmania.Battling.EnemyBattleStrategy.NoBattlingStrategy;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 import dungeonmania.util.Direction;
@@ -17,16 +15,16 @@ import dungeonmania.util.Direction;
 public abstract class MovingEntity extends Entity {
 
     private ArrayList<String> canStepOn;
-    private EnemyBattlingStrategy enemyStrategy;
     private double playerHealth;
     private double enemyHealth;
     private boolean isAlly;
     private int tickCountOnSwampTile;
     private int movementFactor;
+    private double enemyDamage;
 
     public MovingEntity() {
         super.setMovingEntity(true);
-        this.tickCountOnSwampTile = 0; // 0 means the entity is not on the tile. 1+ means it is on the tile.
+        this.tickCountOnSwampTile = 0; // 0 means the entity is not on the tile. If count is 1+, it means it is on the tile.
     }
 
     public abstract void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics);
@@ -59,18 +57,6 @@ public abstract class MovingEntity extends Entity {
         }
         
         return false;
-    }
-
-    public double enemyAttackModifier() {
-        return enemyStrategy.attackModifier();
-    }
-
-    public double calculateDeltaEnemyHealth(double playerDmg) {
-        return enemyStrategy.calculateDeltaEnemyHealth(playerDmg);
-    }
-
-    public void enemyChangeStrategy(EnemyBattlingStrategy newStrategy) {
-        this.enemyStrategy = newStrategy;
     }
 
     public double getPlayerHealth() {
@@ -190,8 +176,17 @@ public abstract class MovingEntity extends Entity {
         this.movementFactor = movementFactor;
     }
 
-    public EnemyBattlingStrategy getEnemyStrategy() {
-        return enemyStrategy;
+    // returns enemy's attack
+    public double getEnemyDamage() {
+        return enemyDamage;
     }
 
+    public void setEnemyDamage(double enemyDamage) {
+        this.enemyDamage = enemyDamage;
+    }
+
+    // returns enemy's DELTA health
+    public double getDeltaEnemyHealth(double playerAttack) {
+        return playerAttack / 5;
+    }
 }
