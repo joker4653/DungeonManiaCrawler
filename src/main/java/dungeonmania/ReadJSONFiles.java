@@ -1,6 +1,7 @@
 package dungeonmania;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +19,7 @@ import dungeonmania.Entities.Entity;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 
-public class ReadJSONFiles {
+public class ReadJSONFiles implements Serializable {
 
     // Reading Config File
     public static HashMap<String, String> readConfigFile(String configName) {
