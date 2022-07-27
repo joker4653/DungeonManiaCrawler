@@ -1,5 +1,6 @@
 package dungeonmania;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import dungeonmania.Entities.Entity;
@@ -24,7 +25,7 @@ import dungeonmania.Entities.Static.SwampTile;
 import dungeonmania.Entities.Static.Wall;
 import dungeonmania.Entities.Static.ZombieToastSpawner;
 
-public class EntityFactory {
+public class EntityFactory implements Serializable {
 
     public static Entity createEntity(String type, int x, int y, int key, String colour, HashMap<String, String> configMap, int movementFactor) {
         if (type.equalsIgnoreCase("Player")) {

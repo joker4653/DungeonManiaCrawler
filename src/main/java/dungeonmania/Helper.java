@@ -1,5 +1,6 @@
 package dungeonmania;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -48,7 +49,7 @@ import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
-public class Helper {
+public class Helper implements Serializable {
     /** 
      *  finds minX, maxX, minY and maxY based on the Dungeon map's coordinates.
      */
