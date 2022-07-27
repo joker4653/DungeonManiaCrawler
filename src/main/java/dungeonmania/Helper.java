@@ -93,8 +93,8 @@ public class Helper implements Serializable {
 
         for (Round round : rounds) {
             ArrayList<ItemResponse> items = new ArrayList<>();
-            for (Entity weapon : round.getWeaponryUsed()) {
-                items.add(new ItemResponse(weapon.getEntityID(), weapon.getEntityType()));
+            for (HashMap<String, String> weaponInfo : round.getWeaponryUsed()) {
+                items.add(new ItemResponse(weaponInfo.get("id"), weaponInfo.get("type")));
             }
 
             roundRespList.add(new RoundResponse(round.getDeltaCharacterHealth(), round.getDeltaEnemyHealth(), items));
@@ -220,9 +220,10 @@ public class Helper implements Serializable {
         }
     }
 
-    public static List<Entity> getMonstersHere(Player play, Collection<Entity> listOfEntities) {
-        Player player = play;
-        List<Entity> entitiesHere = listOfEntities.stream().filter(e -> e.getCurrentLocation().equals(player.getCurrentLocation()) && !e.getEntityType().equals("player")).collect(Collectors.toList());
+    public static List<Entity> getMonstersHere(Player player, Collection<Entity> listOfEntities) {
+        List<Entity> entitiesHere = listOfEntities.stream().filter(e -> e.getCurrentLocation().equals(player.getCurrentLocation())).collect(Collectors.toList());
+
+        entitiesHere.remove(player);
 
         List<Entity> monstersHere = entitiesHere.stream().filter(e -> e.isMovingEntity() && !((MovingEntity)e).isAlly()).collect(Collectors.toList());
         return monstersHere;
