@@ -36,7 +36,7 @@ public class ReadJSONFiles {
     }
 
     // Reading Dungeon JSON file
-    public static Statistics readDungeonFile(String dungeonName, HashMap<String, String> configMap,
+    public static Statistics readDungeonFileAndGetStats(String dungeonName, HashMap<String, String> configMap,
     List<Entity> listOfEntities, List<EntityResponse> listOfEntityResponses) {
         String dungeonJSONString;
         try {
