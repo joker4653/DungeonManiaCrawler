@@ -73,17 +73,18 @@ public class Helper {
         return mapOfMinAndMaxValues;
     }
 
-    /**
-     * Reading Config file 
-     */
+    /*
+    //
+    // Reading Config file 
+    //
     public static void generateConfigMap(String configJSONString, HashMap<String, String> configMap) {
         JsonObject configJsonObj = JsonParser.parseString(configJSONString).getAsJsonObject();
         Set<String> configKeySet = configJsonObj.keySet();
         configKeySet.forEach((key) -> configMap.put(key, configJsonObj.get(key).toString()));
-    }
+    }*/
     
 
-    public static List<EntityResponse> createListOfEntsAndResp(JsonObject dungeonJsonObj, HashMap<String, String> configMap, List<Entity> listOfEntities) {
+    /*public static List<EntityResponse> createListOfEntsAndResp(JsonObject dungeonJsonObj, HashMap<String, String> configMap, List<Entity> listOfEntities) {
         JsonArray jsonEntities = dungeonJsonObj.get("entities").getAsJsonArray();
         List<EntityResponse> listOfEntityResponses = new ArrayList<>();
 
@@ -106,7 +107,7 @@ public class Helper {
         }
 
         return listOfEntityResponses;
-    }
+    }*/
 
     /**
      * getBattleResponse

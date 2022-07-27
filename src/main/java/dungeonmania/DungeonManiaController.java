@@ -132,31 +132,19 @@ public class DungeonManiaController implements Serializable{
      */
     public DungeonResponse newGame(String dungeonName, String configName) throws IllegalArgumentException {
         reintialisefields();
-        try {
-            String dungeonJSONString = FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json");
-            String configJSONString = FileLoader.loadResourceFile("/configs/" + configName + ".json");
-            Helper.generateConfigMap(configJSONString, configMap);
+        List<EntityResponse> listOfEntityResponses = new ArrayList<>();
 
-            /* Reading Dungeon JSON file */
-            JsonObject dungeonJsonObj = JsonParser.parseString(dungeonJSONString).getAsJsonObject();
-            List<EntityResponse> listOfEntityResponses = Helper.createListOfEntsAndResp(dungeonJsonObj, configMap, listOfEntities);
+        this.configMap = ReadLoadFile.readConfigFile(configName);
+        this.statistics = ReadLoadFile.readDungeonFile(dungeonName, configMap, listOfEntities, listOfEntityResponses);
 
-            JsonElement jsonObj = dungeonJsonObj.get("goal-condition");
-            JsonObject jsonGoals = jsonObj.getAsJsonObject();
-            statistics = new Statistics(jsonGoals, listOfEntities, configMap);
- 
-            // TODO replace "buildables" with your actual buildables lists.
-            this.dungeonId = UUID.randomUUID().toString();
-            this.dungeonName = dungeonName;
-            DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, listOfEntityResponses, Helper.getInventoryResponse(inventory), Helper.getBattleResponse(listOfBattles), buildables, getGoalsResponse());
-            mapOfMinAndMaxValues = Helper.findMinAndMaxValues(listOfEntities);
-
-            return dungeonResp;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // TODO replace "buildables" with your actual buildables lists.
+        this.dungeonId = UUID.randomUUID().toString();
+        this.dungeonName = dungeonName;
+        DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, listOfEntityResponses,
+        Helper.getInventoryResponse(inventory), Helper.getBattleResponse(listOfBattles), buildables, getGoalsResponse());
+        mapOfMinAndMaxValues = Helper.findMinAndMaxValues(listOfEntities);
         
-        return null;
+        return dungeonResp;
     }
 
     private String getGoalsResponse() {
