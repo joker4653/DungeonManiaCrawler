@@ -18,7 +18,7 @@ import dungeonmania.Entities.Entity;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 
-public class ReadLoadFile {
+public class ReadJSONFiles {
 
     // Reading Config File
     public static HashMap<String, String> readConfigFile(String configName) {

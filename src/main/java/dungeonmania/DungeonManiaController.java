@@ -134,8 +134,8 @@ public class DungeonManiaController implements Serializable{
         reintialisefields();
         List<EntityResponse> listOfEntityResponses = new ArrayList<>();
 
-        this.configMap = ReadLoadFile.readConfigFile(configName);
-        this.statistics = ReadLoadFile.readDungeonFile(dungeonName, configMap, listOfEntities, listOfEntityResponses);
+        this.configMap = ReadJSONFiles.readConfigFile(configName);
+        this.statistics = ReadJSONFiles.readDungeonFile(dungeonName, configMap, listOfEntities, listOfEntityResponses);
 
         // TODO replace "buildables" with your actual buildables lists.
         this.dungeonId = UUID.randomUUID().toString();
