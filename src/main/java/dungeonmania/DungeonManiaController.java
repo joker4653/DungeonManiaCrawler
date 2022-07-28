@@ -211,6 +211,7 @@ public class DungeonManiaController implements Serializable{
         Player player = getPlayer();
         player.setPrevPos(player.getCurrentLocation()); // a bribed mercenary occupies the player's previous position
         Helper.playerMovesBoulder(movementDirection, player, listOfEntities);
+        Helper.checkDoors(listOfEntities, movementDirection, inventory, player);
         player.move(listOfEntities, movementDirection, player, inventory, statistics); 
         Helper.boulderCheck(listOfEntities, statistics);
         Helper.checkBattles(player, configMap, inventory, listOfBattles, listOfEntities, statistics);

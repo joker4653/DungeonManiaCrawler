@@ -381,4 +381,30 @@ public class Helper {
 
         Helper.checkBombs(listOfEntities, player);
     }
+
+    public static void checkDoors(List<Entity> listOfEntities, Direction movementDirection, Inventory inventory, Player player) {
+        List<Entity> keys = inventory.getInventory().stream().filter(e -> e.getEntityType().equals("key")).collect(Collectors.toList());
+
+        List<Entity> Doors = listOfEntities.stream().filter(e -> (e.getEntityType().equals("door") && 
+                                                                e.getCurrentLocation().equals(player.getCurrentLocation().translateBy(movementDirection))))
+                                                                .collect(Collectors.toList());
+
+        List<Entity> sunStones = inventory.getInventory().stream().filter(e -> e.getEntityType().equals("sun_stone")).collect(Collectors.toList());
+
+
+        for (Entity d : Doors) {
+            // if player has a sunstone always unlock door otherwise check if player has the key
+            if (!sunStones.isEmpty()) { 
+                ((Door) d).setLocked(false);
+            } else {
+                for (Entity k : keys) {
+                    if (((Door) d).getKey().equals(((Akey) k).getKey())) {
+                        ((Door) d).setLocked(false);
+                        inventory.removeItem(k);
+                    }
+
+                }
+            }
+        }
+    }
 }

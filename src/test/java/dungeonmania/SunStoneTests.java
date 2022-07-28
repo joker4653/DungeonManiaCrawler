@@ -15,6 +15,7 @@ import static dungeonmania.TestUtils.getValueFromConfigFile;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.reflections.vfs.Vfs.Dir;
 
 import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
@@ -47,5 +48,31 @@ public class SunStoneTests {
         res = dmc.tick(Direction.RIGHT);
 
         assertFalse(getInventory(res, "sun_stone").isEmpty());
+    }
+
+    @Test
+    @DisplayName("Using Sun Stone as key to a door")
+    public void StoneAsKey() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_sunStoneTest_askey", "c_treasureTest_basicSpawn");
+
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+
+        assertFalse(getEntities(res, "door").isEmpty());
+    }
+
+    @Test
+    @DisplayName("Using Sun Stone as key to a door while having the corresponding key in inv too")
+    public void StoneAsKeyWhileHoldingKey() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_sunStoneTest_askey", "c_treasureTest_basicSpawn");
+
+        res = dmc.tick(Direction.UP);
+        res = dmc.tick(Direction.DOWN);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+
+        assertFalse(getInventory(res, "key").isEmpty());
     }
 }
