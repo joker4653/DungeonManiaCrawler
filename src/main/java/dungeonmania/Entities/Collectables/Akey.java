@@ -17,7 +17,7 @@ public class Akey extends CollectableEntity {
         pairNum = k;
     }
 
-    public int getKey() {
+    public Integer getKey() {
         return pairNum;
     }
 }

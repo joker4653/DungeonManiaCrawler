@@ -10,7 +10,9 @@ import dungeonmania.util.Position;
 import dungeonmania.Statistics;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
+import dungeonmania.Entities.Collectables.Akey;
 import dungeonmania.Entities.Collectables.Bomb;
+import dungeonmania.Entities.Static.Door;
 import dungeonmania.Entities.Static.Exit;
 import dungeonmania.util.Direction;
 
@@ -47,13 +49,13 @@ public class Player extends MovingEntity {
         Position curr = super.getCurrentLocation();
         Position next = curr.translateBy(dir);
 
-        if (legalMove(listOfEntities, next, inventory, statistics)) {
+        if (legalMove(listOfEntities, next, inventory, statistics, player)) {
             super.setCurrentLocation(next);
         }
         
     }
 
-    private boolean legalMove(List<Entity> listOfEntities, Position next, Inventory inventory, Statistics statistics) {
+    private boolean legalMove(List<Entity> listOfEntities, Position next, Inventory inventory, Statistics statistics, Player player) {
 
         List<Entity> entitiesHere = listOfEntities.stream().filter(e -> e.getCurrentLocation().equals(next)).collect(Collectors.toList());
 

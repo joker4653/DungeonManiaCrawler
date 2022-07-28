@@ -8,7 +8,7 @@ public class Door extends StaticEntity {
     private boolean isLocked;
 
     // remove!!!!!!!!!!!!!!!
-    private int key;
+    private Integer key;
 
     public Door(int x, int y, int key) {
         super();
@@ -31,6 +31,10 @@ public class Door extends StaticEntity {
         }
 
         this.isLocked = isLocked;
+    }
+
+    public Integer getKey() {
+        return key;
     }
 
 }
