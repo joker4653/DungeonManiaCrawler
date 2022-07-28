@@ -67,21 +67,6 @@ public class Portal extends StaticEntity {
         }
     }
 
-    // public void chainTeleport(List<Entity> listOfEntities, Player player) {
-
-    // }
-
-    // Checks if any given position is a portal.
-    // public boolean portalCheck(Position p, List<Entity> listOfEntities) {
-    //     for (Entity e : listOfEntities) {
-    //         if (e.getCurrentLocation().equals(p) && e.getEntityType().equals("portal")) {
-    //             return true;
-    //         }
-    //     }
-
-    //     return false;
-    // }   
-
     // Checks if any given position is a wall.
     public boolean wallCheck(Position p, List<Entity> listOfEntities) {
         for (Entity e : listOfEntities) {
