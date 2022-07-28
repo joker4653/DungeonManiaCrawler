@@ -1,0 +1,604 @@
+Final Result = 234.0/450.0
+Automark = 71.0% (24.849999999999998 / 35), CR
+1. Player Movement
+
+Test 1-1: Test the player can move down
+SUCCESS DONE
+
+Test 1-2: Test the player can move up
+SUCCESS DONE
+
+Test 1-3: Test the player can move left
+SUCCESS DONE
+
+Test 1-4: Test the player can move right
+SUCCESS DONE
+
+2. Interface Methods
+
+Test 2-1: Testing newGame interface method normal operation
+SUCCESS DONE
+
+Test 2-2: Testing newGame on a nonexistent dungeon
+InterfaceTest > Testing newGame on a nonexistent dungeon FAILED org.opentest4j.AssertionFailedError: Unexpected exception type thrown ==> expected: <java.lang.IllegalArgumentException> but was: <java.lang.NullPointerException> at app//org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:65) at app//org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:37) at app//org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3082) at app//dungeonmania.automarking.InterfaceTest.testNewGameInterfaceDungeonNotFound(InterfaceTest.java:37) Caused by: java.lang.NullPointerException at dungeonmania.util.FileLoader.loadResourceFile(FileLoader.java:25) at dungeonmania.ReadJSONFiles.readConfigFile(ReadJSONFiles.java:30) at dungeonmania.DungeonManiaController.newGame(DungeonManiaController.java:137) at dungeonmania.automarking.InterfaceTest.lambda$testNewGameInterfaceDungeonNotFound$0(InterfaceTest.java:38) at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:55) ... 3 more FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 14s
+
+Test 2-3: Testing tick interface method normal operation
+SUCCESS DONE
+
+Test 2-4: Testing tick with an unusable item in the inventory
+InterfaceTest > TickInterfaceTest > Testing tick with an unusable item in the inventory FAILED org.opentest4j.AssertionFailedError: Unexpected exception type thrown ==> expected: <java.lang.IllegalArgumentException> but was: <java.lang.IndexOutOfBoundsException> at app//org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:65) at app//org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:37) at app//org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3082) at app//dungeonmania.automarking.InterfaceTest$TickInterfaceTest.testTickInterfaceInvalidItem(InterfaceTest.java:64) Caused by: java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0 at java.base/jdk.internal.util.Preconditions.outOfBounds(Preconditions.java:64) at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Preconditions.java:70) at java.base/jdk.internal.util.Preconditions.checkIndex(Preconditions.java:248) at java.base/java.util.Objects.checkIndex(Objects.java:372) at java.base/java.util.ArrayList.get(ArrayList.java:459) at dungeonmania.automarking.TestHelpers.getFirstItemId(TestHelpers.java:27) at dungeonmania.automarking.InterfaceTest$TickInterfaceTest.lambda$testTickInterfaceInvalidItem$1(InterfaceTest.java:66) at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:55) ... 3 more FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test 2-5: Testing tick with an item that is not in the player's inventory
+SUCCESS DONE
+
+3. Boulders
+
+Test 3-1: Test pushing a boulder
+SUCCESS DONE
+
+Test 3-2: Test attempting to push a boulder into a wall
+BouldersTest > Test attempting to push a boulder into a wall FAILED org.opentest4j.AssertionFailedError: expected: <Position [x=0, y=0, z=0]> but was: <Position [x=1, y=0, z=0]> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:182) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:177) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1141) at app//dungeonmania.automarking.BouldersTest.pushBoulderWall(BouldersTest.java:50) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 3-3: Test the player is unable to push two boulders
+BouldersTest > Test the player is unable to push two boulders FAILED org.opentest4j.AssertionFailedError: expected: <Position [x=0, y=0, z=0]> but was: <Position [x=1, y=0, z=0]> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:182) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:177) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1141) at app//dungeonmania.automarking.BouldersTest.twoBoulders(BouldersTest.java:68) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+4. Doors & Keys
+
+Test 4-1: Test player cannot walk through a closed door
+SUCCESS DONE
+
+Test 4-2: Test player can pick up a key and add to inventory
+SUCCESS DONE
+
+Test 4-3: Test player can use a key to open and walk through a door
+DoorsKeysTest > Test player can use a key to open and walk through a door FAILED org.opentest4j.AssertionFailedError: expected: <0> but was: <1> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarking.DoorsKeysTest.useKeyWalkThroughOpenDoor(DoorsKeysTest.java:62) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 4-4: Test player cannot pickup two keys at the same time
+DoorsKeysTest > Test player cannot pickup two keys at the same time FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <2> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarking.DoorsKeysTest.cannotPickupTwoKeys(DoorsKeysTest.java:84) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test 4-5: Test player can pick up a second key after using the first
+DoorsKeysTest > Test player can pick up a second key after using the first FAILED org.opentest4j.AssertionFailedError: expected: <0> but was: <1> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarking.DoorsKeysTest.canPickupSecondKeyAfterFirstUse(DoorsKeysTest.java:105) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test 4-6: Test player cannot open a door with the wrong key
+SUCCESS DONE
+
+Test 4-7: Test doors remain open and the player can move through the door without a key
+DoorsKeysTest > Test doors remain open and the player can move through the door without a key FAILED org.opentest4j.AssertionFailedError: expected: <0> but was: <1> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarking.DoorsKeysTest.doorRemainsOpen(DoorsKeysTest.java:148) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+5. Buildable Entities
+
+Test 5-1: Test IllegalArgumentException is raised when attempting to build an unknown entity - sword
+BuildablesTest > Test IllegalArgumentException is raised when attempting to build an unknown entity - sword FAILED org.opentest4j.AssertionFailedError: Expected java.lang.IllegalArgumentException to be thrown, but nothing was thrown. at app//org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:71) at app//org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:37) at app//org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3082) at app//dungeonmania.automarking.BuildablesTest.BuildSwordIllegalArgumentException(BuildablesTest.java:25) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test 5-2: Test InvalidActionException is raised when the player does not have sufficient items to build a bow or shield
+BuildablesTest > Test InvalidActionException is raised when the player does not have sufficient items to build a bow or shield FAILED org.opentest4j.AssertionFailedError: Expected dungeonmania.exceptions.InvalidActionException to be thrown, but nothing was thrown. at app//org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:71) at app//org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:37) at app//org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3082) at app//dungeonmania.automarking.BuildablesTest.BuildInvalidActionException(BuildablesTest.java:37) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 15s
+
+Test 5-3: Test building a bow
+BuildablesTest > Test building a bow FAILED org.opentest4j.AssertionFailedError: expected: <3> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarking.BuildablesTest.BuildBow(BuildablesTest.java:65) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 5-4: Test building a shield with a key
+BuildablesTest > Test building a shield with a key FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarking.BuildablesTest.BuildShieldWithKey(BuildablesTest.java:100) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 5-5: Test building a shield with treasure
+BuildablesTest > Test building a shield with treasure FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarking.BuildablesTest.BuildShieldWithTreasure(BuildablesTest.java:129) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 5-6: Test DungeonResponse buildables parameter is a list of buildable item types that the player can build with their current inventory
+BuildablesTest > Test DungeonResponse buildables parameter is a list of buildable item types that the player can build with their current inventory FAILED org.opentest4j.AssertionFailedError: expected: <[bow]> but was: <[]> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:182) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:177) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1141) at app//dungeonmania.automarking.BuildablesTest.DungeonResponseBuildables(BuildablesTest.java:155) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+6. Potions
+
+Test 6-1: Test invincibility potion can be picked up and consumed
+PotionsTest > Test invincibility potion can be picked up and consumed FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarking.PotionsTest.invincibilityPotion(PotionsTest.java:31) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 6-2: Test invisibility potion can be picked up and consumed
+PotionsTest > Test invisibility potion can be picked up and consumed FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarking.PotionsTest.invisibilityPotion(PotionsTest.java:52) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 6-3: Test the effects of the invincibility potion only last for a limited time
+PotionsTest > Test the effects of the invincibility potion only last for a limited time FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarking.PotionsTest.invincibilityDuration(PotionsTest.java:80) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test 6-4: Test the effects of the invisibility potion only last for a limited time
+PotionsTest > Test the effects of the invisibility potion only last for a limited time FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarking.PotionsTest.invisibilityDuration(PotionsTest.java:125) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test 6-5: Test invincibility potions do not change spider movement
+PotionsTest > Test invincibility potions do not change spider movement FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarking.PotionsTest.invincibilitySpiderMovement(PotionsTest.java:164) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test 6-6: Test invincibility potions cause zombies to run away
+PotionsTest > Test invincibility potions cause zombies to run away FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarking.PotionsTest.invincibilityZombieMovement(PotionsTest.java:196) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test 6-7: Test invincibility potions cause mercenaries to run away
+PotionsTest > Test invincibility potions cause mercenaries to run away FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarking.PotionsTest.invincibilityMercenaryMovement(PotionsTest.java:229) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test 6-8: Test when the effects of a second potion are 'queued' and will take place the tick following the previous potion wearing off
+PotionsTest > Test when the effects of a second potion are 'queued' and will take place the tick following the previous potion wearing off FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarking.PotionsTest.potionQueuing(PotionsTest.java:269) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+7. Portals
+
+Test 7-1: Test portals work both ways
+SUCCESS DONE
+
+Test 7-2: Test player cannot teleport into a wall
+PortalsTest > Test player cannot teleport when the exit portal is surrounded by walls FAILED org.opentest4j.AssertionFailedError: expected: not equal but was: <1> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:39) at app//org.junit.jupiter.api.AssertNotEquals.failEqual(AssertNotEquals.java:276) at app//org.junit.jupiter.api.AssertNotEquals.assertNotEquals(AssertNotEquals.java:96) at app//org.junit.jupiter.api.AssertNotEquals.assertNotEquals(AssertNotEquals.java:88) at app//org.junit.jupiter.api.Assertions.assertNotEquals(Assertions.java:1977) at app//dungeonmania.automarking.PortalsTest.testCannotTeleportIntoWall(PortalsTest.java:62) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test 7-3: Test portal has no affect on spiders
+SUCCESS DONE
+
+Test 7-4: Test portal has no affect on zombies
+SUCCESS DONE
+
+Test 7-5: Test portal matching when there are multiple portals
+SUCCESS DONE
+
+Test 7-6: Test chain teleporting between multiple portals
+PortalsTest > Test chain teleporting between multiple portals FAILED org.opentest4j.AssertionFailedError: expected: <true> but was: <false> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:40) at app//org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:35) at app//org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:179) at app//dungeonmania.automarking.PortalsTest.testMultiplePortalsChain(PortalsTest.java:133) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+8. Bombs
+
+Test 8-1: Test picking up a bomb removes the bomb from the map and adds the bomb to the inventory
+SUCCESS DONE
+
+Test 8-2: Test placing a bomb removes it from the inventory and places it on the map at the character's location
+SUCCESS DONE
+
+Test 8-3: Test placing a bomb on a map diagonally adjacent to an active switch will not cause the bomb to detonate
+SUCCESS DONE
+
+Test 8-4: Test placing a bomb on a map cardinally adjacent to an active switch causes the bomb to detonate removing surrounding entities except for the player
+SUCCESS DONE
+
+Test 8-5: Test placing a bomb on a map cardinally adjacent to an inactive switch and then activating the switch causes the bomb to detonate removing surrounding entities except for the player
+BombTest > Test placing a bomb on a map cardinally adjacent to an inactive switch, and then activating the switch, causes the bomb to detonate, removing surrounding entities except for the player FAILED java.util.ConcurrentModificationException at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1661) at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484) at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474) at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150) at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173) at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234) at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:497) at dungeonmania.Helper.checkBombs(Helper.java:261) at dungeonmania.Helper.moveEnemy(Helper.java:345) at dungeonmania.DungeonManiaController.tick(DungeonManiaController.java:207) at dungeonmania.automarking.BombTest.placeCardinallyActivated(BombTest.java:136) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 8-6: Test placing a bomb cardinally adjacent to an inactive switch does not cause the bomb to explode
+SUCCESS DONE
+
+Test 8-7: Test surrounding entities are removed when placing a bomb next to an active switch with config file bomb radius set to 2
+SUCCESS DONE
+
+Test 8-8: Test surrounding entities are removed when placing a bomb next to an active switch with config file bomb radius set to 10
+SUCCESS DONE
+
+9. Spiders
+
+Test 9-1: Test basic movement of spiders
+SUCCESS DONE
+
+Test 9-2: Test spiders can traverse through walls
+SUCCESS DONE
+
+Test 9-3: Test spiders can traverse through switches doors and exits
+SUCCESS DONE
+
+Test 9-4: Test spiders cannot move through boulders and reverses direction
+SUCCESS DONE
+
+Test 9-5: Test spider_spawn_rate = 0 in config file
+SUCCESS DONE
+
+Test 9-6: Test spider_spawn_rate = 1 5 10 in config file
+SUCCESS DONE
+
+10. Zombies
+
+Test 10-1: Testing zombies movement
+SUCCESS DONE
+
+Test 10-2: Testing zombies cannot move through doors and walls
+SUCCESS DONE
+
+Test 10-3: Testing zombie spawners spawn zombies every x ticks
+SUCCESS DONE
+
+Test 10-4: Testing that a dungeon with 2 spawners spawns 2 zombies at a time
+SUCCESS DONE
+
+Test 10-5: Testing zombie toast spawners spawn zombies in cardinally adjacent open squares
+SUCCESS DONE
+
+Test 10-6: Testing zombie toast spawners won't spawn zombies if there are no cardinally adjacent open squares
+SUCCESS DONE
+
+Test 10-7: Testing destroying a zombie toast spawner
+SUCCESS DONE
+
+11. Battles
+
+Test 11-1: Test player battles spider and player dies
+SUCCESS DONE
+
+Test 11-2: Test player battles spider and spider dies
+SUCCESS DONE
+
+Test 11-3: Test player battles zombie and player dies
+SUCCESS DONE
+
+Test 11-4: Test player battles zombie and zombie dies
+SUCCESS DONE
+
+Test 11-5: Test player battles mercenary and player dies
+SUCCESS DONE
+
+Test 11-6: Test player battles mercenary and mercenary dies
+SUCCESS DONE
+
+Test 11-7: Test player wins a battle against a spider with an invinicibility potion
+BattleTest > Test player wins a battle against a spider with an invinicibility potion FAILED java.util.NoSuchElementException: No value present at java.base/java.util.Optional.get(Optional.java:148) at dungeonmania.automarking.BattleTest.testPlayerWinsSpiderBattleWithInvincibilityPotion(BattleTest.java:134) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test 11-8: Test player wins a battle against a zombie with an invincibility potion
+BattleTest > Test player wins a battle against a zombie with an invincibility potion FAILED java.util.NoSuchElementException: No value present at java.base/java.util.Optional.get(Optional.java:148) at dungeonmania.automarking.BattleTest.testPlayerWinsZombieBattleWithInvincibilityPotion(BattleTest.java:166) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test 11-9: Test a player wins a battle against a mercenary with an invincibility potion
+BattleTest > Test a player wins a battle against a mercenary with an invincibility potion FAILED java.util.NoSuchElementException: No value present at java.base/java.util.Optional.get(Optional.java:148) at dungeonmania.automarking.BattleTest.testPlayerWinsMercenaryBattleWithInvincibilityPotion(BattleTest.java:198) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test 11-10: Test the player battles three enemies consecutively and defeats them
+SUCCESS DONE
+
+Test 11-11: Test basic health calculations spider - player wins
+SUCCESS DONE
+
+Test 11-12: Test basic health calculations zombie - player wins
+SUCCESS DONE
+
+Test 11-13: Test basic health calculations mercenary - player wins
+SUCCESS DONE
+
+Test 11-14: Test basic health calculations spider - player loses
+SUCCESS DONE
+
+Test 11-15: Test basic health calculations zombie - player loses
+SUCCESS DONE
+
+Test 11-16: Test basic health calculations mercenary - player loses
+SUCCESS DONE
+
+Test 11-17: Test attack twice with bow - spider
+BattleTest > Test attack twice with bow - spider FAILED org.opentest4j.AssertionFailedError: expected: <2.0> but was: <1.0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:86) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:81) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1010) at app//dungeonmania.automarking.BattleTest.testBowAttackTwiceSpider(BattleTest.java:345) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 11-18: Test shield reduces enemy attack
+BattleTest > Test shield reduces enemy attack FAILED org.opentest4j.AssertionFailedError: expected: <1.0> but was: <1.2> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:86) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:81) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1010) at app//dungeonmania.automarking.BattleTest.testShieldReducesEnemyAttack(BattleTest.java:384) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 11-19: Test bow durability
+BattleTest > Test bow durability FAILED org.opentest4j.AssertionFailedError: expected: not equal but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:39) at app//org.junit.jupiter.api.AssertNotEquals.failEqual(AssertNotEquals.java:276) at app//org.junit.jupiter.api.AssertNotEquals.assertNotEquals(AssertNotEquals.java:96) at app//org.junit.jupiter.api.AssertNotEquals.assertNotEquals(AssertNotEquals.java:88) at app//org.junit.jupiter.api.Assertions.assertNotEquals(Assertions.java:1977) at app//dungeonmania.automarking.BattleTest.testBowDurability(BattleTest.java:422) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 11-20: Test shield durability
+BattleTest > Test shield durability FAILED org.opentest4j.AssertionFailedError: expected: not equal but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:39) at app//org.junit.jupiter.api.AssertNotEquals.failEqual(AssertNotEquals.java:276) at app//org.junit.jupiter.api.AssertNotEquals.assertNotEquals(AssertNotEquals.java:96) at app//org.junit.jupiter.api.AssertNotEquals.assertNotEquals(AssertNotEquals.java:88) at app//org.junit.jupiter.api.Assertions.assertNotEquals(Assertions.java:1977) at app//dungeonmania.automarking.BattleTest.testShieldDurability(BattleTest.java:482) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test 11-21: Test sword increases attack damage
+SUCCESS DONE
+
+Test 11-22: Test sword durability
+SUCCESS DONE
+
+12. Mercenaries
+
+Test 12-1: Test mercenary in line with Player moves towards them
+SUCCESS DONE
+
+Test 12-2: Test mercenary stops if they cannot move any closer to the player
+SUCCESS DONE
+
+Test 12-3: Test mercenaries can not move through closed doors
+SUCCESS DONE
+
+Test 12-4: Test mercenary moves around a wall to get to the player
+SUCCESS DONE
+
+Test 12-5: Testing a mercenary can be bribed with a certain amount
+SUCCESS DONE
+
+Test 12-6: Testing a mercenary can be bribed within a radius
+SUCCESS DONE
+
+Test 12-7: Testing an allied mercenary does not battle the player
+SUCCESS DONE
+
+Test 12-8: Testing an allied mercenary follows the Player around occupying the square the player was previously in
+SUCCESS DONE
+
+13. Basic Goals
+
+Test 13-1: Test achieving a basic exit goal
+SUCCESS DONE
+
+Test 13-2: Test achieving a basic enemy goal
+SUCCESS DONE
+
+Test 13-3: Test achieving a basic enemy goal with spawners
+SUCCESS DONE
+
+Test 13-4: Test achieving a basic boulders goal
+SUCCESS DONE
+
+Test 13-5: Test achieving a boulders goal where there are five switches
+SUCCESS DONE
+
+Test 13-6: Test achieving a basic treasure goal
+SUCCESS DONE
+
+14. Complex Goals
+
+Test 14-1: Testing a map with 4 conjunction goal
+SUCCESS DONE
+
+Test 14-2: Testing a map with 4 disjunction goal
+SUCCESS DONE
+
+Test 14-3: Testing a map with mixed conjunction/disjunction goal
+SUCCESS DONE
+
+Test 14-4: Testing that the exit goal must be achieved last in EXIT and TREASURE
+SUCCESS DONE
+
+Test 14-5: Testing that the exit goal must be achieved last in ENEMIES and EXIT and TREASURE
+SUCCESS DONE
+
+Test 14-6: Testing a switch goal can be achieved and then become unachieved
+SUCCESS DONE
+
+15. Bosses
+
+Test 15-1: Testing an assassin in line with Player moves towards them
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test 15-5: Testing fail to bribe an assassin and no refund
+BossTest > Testing fail to bribe an assassin, and no refund FAILED org.opentest4j.AssertionFailedError: expected: <0> but was: <1> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarkingM3.BossTest.testAssassinBribeFailNoRefund(BossTest.java:134) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 15-6: Testing assassin will keep moving to the player in its recon radius
+BossTest > Testing assassin will keep moving to the player in its recon radius FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarkingM3.BossTest.testAssassinMovesTowardsInvisiblePlayer(BossTest.java:165) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test 15-6: Testing basic movement for hydra
+BossTest > Testing assassin will keep moving to the player in its recon radius FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarkingM3.BossTest.testAssassinMovesTowardsInvisiblePlayer(BossTest.java:165) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+16. Swamp Tiles & Pathfinding
+
+Test 16-1: Testing mercenary gets stuck in swamp
+SUCCESS DONE
+
+Test 16-2: Testing Assassin gets stuck in swamp
+SUCCESS DONE
+
+Test 16-3: Testing if mercenaries take into account movement factor when pathfinding
+SUCCESS DONE
+
+Test 16-4: Testing player does not get slowed by swamp tile
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test 16-8: Test mercenary moves towards the player following the shortest path
+DijkstraMovementTest > Test mercenary moves towards the player following the shortest path FAILED org.opentest4j.AssertionFailedError: expected: <Position [x=1, y=4, z=0]> but was: <Position [x=1, y=3, z=0]> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:182) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:177) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1141) at app//dungeonmania.automarkingM3.DijkstraMovementTest.simpleMercMovement(DijkstraMovementTest.java:32) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 16-9: Test mercenary moves towards the player using portals
+DijkstraMovementTest > Test mercenary moves towards the player using portals FAILED org.opentest4j.AssertionFailedError: expected: <Position [x=3, y=1, z=0]> but was: <Position [x=5, y=1, z=0]> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:182) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:177) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1141) at app//dungeonmania.automarkingM3.DijkstraMovementTest.mercWithPortals(DijkstraMovementTest.java:60) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test 16-10: Test mercenary moves towards the player using swamp tiles
+SUCCESS DONE
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+17. Milestone 3 Buildables
+
+Test 17-1: (arrows x2) + (key x1) + (sun stone x1) => (sceptre x1)
+BuildablesM3Test > (arrows x2) + (key x1) + (sun stone x1) => (sceptre x1) FAILED org.opentest4j.AssertionFailedError: expected: <2> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarkingM3.BuildablesM3Test.testBuildSceptre1(BuildablesM3Test.java:37) FAILURE DONE 2 tests completed, 1 failed, 1 skipped FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test 17-4: (arrows x2) + (treasure x1) => (sceptre x0) + InvalidActionException
+BuildablesM3Test > (arrows x2) + (treasure x1) => (sceptre x0) + InvalidActionException FAILED org.opentest4j.AssertionFailedError: expected: <2> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarkingM3.BuildablesM3Test.testBuildSceptreInsufficientItems2(BuildablesM3Test.java:185) FAILURE DONE 2 tests completed, 1 failed, 1 skipped FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test 17-7: (sun stone x1) + (zombie x0) => (midnight armour x0) + InvalidActionException
+BuildablesM3Test > (sun stone x1) + (zombie x0) => (midnight armour x0) + InvalidActionException FAILED org.opentest4j.AssertionFailedError: Expected dungeonmania.exceptions.InvalidActionException to be thrown, but nothing was thrown. at app//org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:71) at app//org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:37) at app//org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3082) at app//dungeonmania.automarkingM3.BuildablesM3Test.testBuildMidnightInsufficientItems(BuildablesM3Test.java:317) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test 17-8: Using sceptre to mind control a mercenary
+BuildablesM3Test > Using sceptre to mind control a mercenary FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarkingM3.BuildablesM3Test.testSceptreMindControlMercenary(BuildablesM3Test.java:357) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test 17-10: Test for mind control duration
+BuildablesM3Test > Test for mind control duration FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarkingM3.BuildablesM3Test.testSceptreMindControlDuration(BuildablesM3Test.java:443) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+18. Persistence
+
+Test 18-1: Test saving and loading a simple maze map
+SUCCESS DONE
+
+Test 18-2: Test saving and loading a map with boulders
+SUCCESS DONE
+
+Test 18-3: Test saving and loading a map with enemies and collectables
+SaveLoadTest > Test saving and loading a map with enemies and collectables FAILED java.lang.NullPointerException at dungeonmania.automarking.ControllerTestUtil.lambda$entityListEqual$2(ControllerTestUtil.java:31) at java.base/java.util.stream.MatchOps$1MatchSink.accept(MatchOps.java:90) at java.base/java.util.ArrayList$ArrayListSpliterator.tryAdvance(ArrayList.java:1632) at java.base/java.util.stream.ReferencePipeline.forEachWithCancel(ReferencePipeline.java:127) at java.base/java.util.stream.AbstractPipeline.copyIntoWithCancel(AbstractPipeline.java:502) at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:488) at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474) at java.base/java.util.stream.MatchOps$MatchOp.evaluateSequential(MatchOps.java:230) at java.base/java.util.stream.MatchOps$MatchOp.evaluateSequential(MatchOps.java:196) at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234) at java.base/java.util.stream.ReferencePipeline.allMatch(ReferencePipeline.java:533) at dungeonmania.automarking.ControllerTestUtil.entityListEqual(ControllerTestUtil.java:31) at dungeonmania.automarking.ControllerTestUtil.dungeonResponseEqual(ControllerTestUtil.java:52) at dungeonmania.automarkingM3.SaveLoadTest.testAdvancedSave(SaveLoadTest.java:76) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 18-4: Test saving on a map containing all types of entities
+SaveLoadTest > Test saving on a map containing all types of entities FAILED java.lang.NullPointerException at dungeonmania.Save.CreateZombieAndSpiderPositions(Save.java:56) at dungeonmania.Save.CreateEntityPositions(Save.java:46) at dungeonmania.Save.<init>(Save.java:20) at dungeonmania.DungeonManiaController.saveGame(DungeonManiaController.java:275) at dungeonmania.automarkingM3.SaveLoadTest.testSaveAllEntities(SaveLoadTest.java:85) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+19. Time Travel
+
+Test 19-1: Testing rewinding fails with illegal ticks
+TimeTravelTest > Testing rewinding fails with illegal ticks FAILED org.opentest4j.AssertionFailedError: Unexpected exception type thrown ==> expected: <java.lang.IllegalArgumentException> but was: <java.lang.RuntimeException> at app//org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:65) at app//org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:37) at app//org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3082) at app//dungeonmania.automarkingM3.TimeTravelTest.testRewindMethod(TimeTravelTest.java:48) Caused by: java.lang.RuntimeException: rewind(int) doesn't exist at dungeonmania.automarkingM3.TimeTravelTest.attemptRewind(TimeTravelTest.java:27) at dungeonmania.automarkingM3.TimeTravelTest.lambda$testRewindMethod$0(TimeTravelTest.java:49) at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:55) ... 3 more FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 19-2: Test picking up a time turner adds to inventory
+TimeTravelTest > Test picking up a time turner adds to inventory FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarkingM3.TimeTravelTest.testPickUpTimeTurner(TimeTravelTest.java:66) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 19-3: Test using a time turner 1 tick back
+TimeTravelTest > Test using a time turner, 1 tick back FAILED java.lang.RuntimeException: rewind(int) doesn't exist at dungeonmania.automarkingM3.TimeTravelTest.attemptRewind(TimeTravelTest.java:27) at dungeonmania.automarkingM3.TimeTravelTest.testUseTimeTurnerOneTick(TimeTravelTest.java:86) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test 19-4: Test using a time turner 5 ticks back
+TimeTravelTest > Test using a time turner, 5 ticks back FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarkingM3.TimeTravelTest.testUseTimeTurnerFiveTicks(TimeTravelTest.java:106) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test 19-5: Test time travel portals less than 30 ticks takes game back to beginning state
+TimeTravelTest > Test time travel portals less than 30 ticks takes game back to beginning state FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarkingM3.TimeTravelTest.testTimeTravellingPortalLessThan30Ticks(TimeTravelTest.java:149) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 19-6: Test time travel portals more than 30 ticks takes game back 30 ticks
+TimeTravelTest > Test time travel portals more than 30 ticks takes game back 30 ticks FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:166) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:161) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:628) at app//dungeonmania.automarkingM3.TimeTravelTest.testTimeTravellingPortalMoreThan30Ticks(TimeTravelTest.java:169) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test 19-8: Test older self is present when time travelling through portal
+TimeTravelTest > Test older self is present when time travelling through portal FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarkingM3.TimeTravelTest.testOlderSelfTimeTravellingPortal(TimeTravelTest.java:254) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+20. Logical Switches
+
+Test 20-1: Test turning on a light bulb
+LogicGatesTest > Test turning on a light bulb FAILED org.opentest4j.AssertionFailedError: expected: <1> but was: <0> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarkingM3.LogicGatesTest.TurnOnLightBulb(LogicGatesTest.java:43) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test 20-2: Test activating a wire and exploding a bomb
+LogicGatesTest > Test activating a wire and exploding a bomb FAILED org.opentest4j.AssertionFailedError: expected: <0> but was: <1> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:150) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:145) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:527) at app//dungeonmania.automarkingM3.LogicGatesTest.ActivateWireAndExplodeBomb(LogicGatesTest.java:73) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test 20-6: Test opening a switch door
+LogicGatesTest > Test opening a switch door FAILED org.opentest4j.AssertionFailedError: expected: <Position [x=2, y=2, z=0]> but was: <Position [x=3, y=2, z=0]> at app//org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:55) at app//org.junit.jupiter.api.AssertionUtils.failNotEqual(AssertionUtils.java:62) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:182) at app//org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:177) at app//org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1141) at app//dungeonmania.automarkingM3.LogicGatesTest.SwitchDoor(LogicGatesTest.java:160) FAILURE DONE 1 test completed, 1 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+21. Dungeon Generation
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test 21-2: Testing dungeon generation creates reasonable proportion of walls
+GenerateTest > Testing dungeon generation creates reasonable proportion of walls > dungeonmania.automarkingM3.GenerateTest.testGenerateDungeon(int, int, int, int)[1] FAILED java.lang.RuntimeException: generateDungeon(int, int, int, int, string) doesn't exist at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:47) at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:34) at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:55) at dungeonmania.automarkingM3.GenerateTest.testGenerateDungeon(GenerateTest.java:70) GenerateTest > Testing dungeon generation creates reasonable proportion of walls > dungeonmania.automarkingM3.GenerateTest.testGenerateDungeon(int, int, int, int)[2] FAILED java.lang.RuntimeException: generateDungeon(int, int, int, int, string) doesn't exist at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:47) at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:34) at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:55) at dungeonmania.automarkingM3.GenerateTest.testGenerateDungeon(GenerateTest.java:70) GenerateTest > Testing dungeon generation creates reasonable proportion of walls > dungeonmania.automarkingM3.GenerateTest.testGenerateDungeon(int, int, int, int)[3] FAILED java.lang.RuntimeException: generateDungeon(int, int, int, int, string) doesn't exist at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:47) at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:34) at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:55) at dungeonmania.automarkingM3.GenerateTest.testGenerateDungeon(GenerateTest.java:70) FAILURE DONE 3 tests completed, 3 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 3s
+
+Test 21-3: Testing generated dungeons are solvable
+GenerateTest > Testing generated dungeons are solvable > dungeonmania.automarkingM3.GenerateTest.testGeneratedDungeonPath(int, int, int, int)[1] FAILED java.lang.RuntimeException: generateDungeon(int, int, int, int, string) doesn't exist at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:47) at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:34) at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:55) at dungeonmania.automarkingM3.GenerateTest.testGeneratedDungeonPath(GenerateTest.java:97) GenerateTest > Testing generated dungeons are solvable > dungeonmania.automarkingM3.GenerateTest.testGeneratedDungeonPath(int, int, int, int)[2] FAILED java.lang.RuntimeException: generateDungeon(int, int, int, int, string) doesn't exist at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:47) at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:34) at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:55) at dungeonmania.automarkingM3.GenerateTest.testGeneratedDungeonPath(GenerateTest.java:97) GenerateTest > Testing generated dungeons are solvable > dungeonmania.automarkingM3.GenerateTest.testGeneratedDungeonPath(int, int, int, int)[3] FAILED java.lang.RuntimeException: generateDungeon(int, int, int, int, string) doesn't exist at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:47) at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:34) at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:55) at dungeonmania.automarkingM3.GenerateTest.testGeneratedDungeonPath(GenerateTest.java:97) FAILURE DONE 3 tests completed, 3 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test 21-4: Testing all non-wall grids are reachable
+GenerateTest > Testing all non-wall grids are reachable > dungeonmania.automarkingM3.GenerateTest.testGeneratedDungeonReachable(int, int, int, int)[1] FAILED java.lang.RuntimeException: generateDungeon(int, int, int, int, string) doesn't exist at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:47) at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:34) at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:55) at dungeonmania.automarkingM3.GenerateTest.testGeneratedDungeonReachable(GenerateTest.java:109) GenerateTest > Testing all non-wall grids are reachable > dungeonmania.automarkingM3.GenerateTest.testGeneratedDungeonReachable(int, int, int, int)[2] FAILED java.lang.RuntimeException: generateDungeon(int, int, int, int, string) doesn't exist at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:47) at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:34) at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:55) at dungeonmania.automarkingM3.GenerateTest.testGeneratedDungeonReachable(GenerateTest.java:109) GenerateTest > Testing all non-wall grids are reachable > dungeonmania.automarkingM3.GenerateTest.testGeneratedDungeonReachable(int, int, int, int)[3] FAILED java.lang.RuntimeException: generateDungeon(int, int, int, int, string) doesn't exist at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:47) at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:34) at dungeonmania.automarkingM3.GenerateTest.genDungeon(GenerateTest.java:55) at dungeonmania.automarkingM3.GenerateTest.testGeneratedDungeonReachable(GenerateTest.java:109) FAILURE DONE 3 tests completed, 3 failed FAILURE: Build failed with an exception. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf What went wrong: Execution failed for task ':test'. > There were failing tests. See the report at: file:///T09A_BROWNIE/build/reports/tests/test/index.html FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Try: > Run with --stacktrace option to get the stack trace. > Run with --info or --debug option to get more log output. > Run with --scan to get full insights. FRONTEND.md README.md SETUP.md assumptions.pdf build build.gradle config_template.json credits.md design.pdf extract_coverage.sh gradle gradlew gradlew.bat images planning.pdf project setup src testing.pdf Get more help at https://help.gradle.org BUILD FAILED in 2s
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+22. Hidden Tests
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test: Hidden Test
+SUCCESS DONE
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+FAILED - Test output redacted
+
+Test: Hidden Test
+FAILED - Test output redacted
+
