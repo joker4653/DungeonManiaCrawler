@@ -16,16 +16,12 @@
             "colour" : "blue"
         },{
             "type" : "wall",
-            "x" : 10,
+            "x" : 8,
             "y" : 2
         },{
             "type" : "wall",
             "x" : 9,
             "y" : 3
-        },{
-            "type" : "wall",
-            "x" : 9,
-            "y" : 1
         },{
             "type" : "portal",
             "x" : 1,
