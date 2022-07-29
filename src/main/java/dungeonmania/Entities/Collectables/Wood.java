@@ -13,6 +13,5 @@ public class Wood extends CollectableEntity {
         super.setEntityType("wood");
         super.setCurrentLocation(new Position(x, y));
         super.setCollectableEntity(true);
-        super.setIsConsumable(false);
     }
 }
