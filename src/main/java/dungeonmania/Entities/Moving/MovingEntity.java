@@ -104,7 +104,8 @@ public abstract class MovingEntity extends Entity {
         Position left = new Position(currPos.getX() - 1, currPos.getY());
         Position right = new Position(currPos.getX() + 1, currPos.getY());
 
-        return new ArrayList<>(Arrays.asList(left, right, up, down));
+        // add positions in the order in which I initialised the grid
+        return new ArrayList<>(Arrays.asList(left, up, down, right));
     }
 
     // after a moving entity moves, update its position in listOfEntities
