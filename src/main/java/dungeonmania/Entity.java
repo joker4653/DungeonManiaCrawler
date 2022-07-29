@@ -91,6 +91,12 @@ public abstract class Entity {
         this.canMercBeOnThisEntity = canMercBeOnThisEntity;
     }
 
+    public boolean isBuildable(Inventory inventory,String item) {
+        BuildableEntity itemTobuild = new BuildableEntity();
+        return itemTobuild.isMakable(inventory, item);   
+    }
+
+
     public void BuildItem(List<Entity> listOfEntities, Inventory inventory,Entity entity) {
         BuildableEntity itemTobuild = new BuildableEntity();
         itemTobuild.Build(listOfEntities, inventory, entity);

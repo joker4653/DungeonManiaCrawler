@@ -278,6 +278,7 @@ public class DungeonManiaController {
      */
     public DungeonResponse tick(Direction movementDirection) {
         setTickCount(getTickCount() + 1);
+        setBuildables();
         int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
         int xZomb = Integer.parseInt(configMap.get("zombie_spawn_rate"));
 
@@ -473,20 +474,27 @@ public class DungeonManiaController {
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
         Inventory inventory = getInventory();
         int key = Integer.MAX_VALUE;
-        if (buildable == "shield") {
+        if (buildable == "shield" && this.buildables.contains("shield")) {
             Entity sh = createEntity("shield", 0, 0, key,"gunmetal");
             sh.BuildItem(listOfEntities,inventory, sh);
-            if (inventory.itemExists(sh)) {
-                listOfEntities.add(sh);
-            }
-        } else if (buildable == "bow") {
+        } else if (buildable == "bow" && this.buildables.contains("bow")) {
             Entity newBow = createEntity("bow", 0, 0, key,"pine");
             newBow.BuildItem(listOfEntities, inventory, newBow);
-            if (inventory.itemExists(newBow)) {
-                listOfEntities.add(newBow);
-            }
         }
+        tick(Direction.STILL);
         return createDungeonResponse();
+    }
+
+    public void setBuildables() {
+        int key = Integer.MAX_VALUE;
+        Entity useFunctions = createEntity("shield", 0, 0, key,"gunmetal");
+        this.buildables.removeAll(this.buildables);
+        if (useFunctions.isBuildable(inventory, "shield")) {
+            this.buildables.add("shield");
+        }
+        if (useFunctions.isBuildable(inventory, "bow")) {
+            this.buildables.add("bow");
+        }
     }
 
 

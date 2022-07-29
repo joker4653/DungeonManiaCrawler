@@ -18,6 +18,8 @@ public class Shield extends BuildableEntity{
         super.setEntityType("shield");
         super.setEntityID(UUID.randomUUID().toString());
         super.setInteractable(false);
+        this.Components = getComponents();
+        this.Components2 = getComponents2();
     }
     
     //player.inventory.stream().filter((t) -> t.getEntityType() ==  )

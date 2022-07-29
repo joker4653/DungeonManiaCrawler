@@ -50,20 +50,22 @@ public class ShieldTest {
         Wood wood2 = new Wood(0,1);
         Treasure tre = new Treasure(0,2);
         Wood wood3 = new Wood(0,3);
-        List<Entity> entities = dmc.getListOfEntities();
         dmc.inventory.addItem(wood);
-        entities.add(wood);
+        dmc.tick(Direction.STILL);
         dmc.inventory.addItem(wood2);
-        entities.add(wood2);
+        dmc.tick(Direction.STILL);
         dmc.inventory.addItem(wood3);
-        entities.add(wood3);
+        dmc.tick(Direction.STILL);
         dmc.inventory.addItem(tre);
-        entities.add(tre);
+        dmc.tick(Direction.STILL);
         //System.out.println(inventory);
         assertEquals(true, shield.isBuildable(shield.shieldMaterialsTreasure(), dmc.inventory));
+        assertEquals(true, dmc.buildables.contains("shield"));
+        dmc.tick(Direction.STILL);
         dmc.build("shield");
         assertEquals(true, dmc.inventory.itemExists("shield"));
         assertEquals(false, shield.isBuildable(shield.shieldMaterialsTreasure(), dmc.inventory));
+        assertEquals(false, dmc.buildables.contains("shield"));
     }
     @Test
     @DisplayName("Testing determining viability of build function")
@@ -78,18 +80,20 @@ public class ShieldTest {
         Wood wood3 = new Wood(0,3);
         List<Entity> entities = dmc.getListOfEntities();
         dmc.inventory.addItem(wood);
-        entities.add(wood);
+        dmc.tick(Direction.STILL);
         dmc.inventory.addItem(wood2);
-        entities.add(wood2);
+        dmc.tick(Direction.STILL);
         dmc.inventory.addItem(wood3);
-        entities.add(wood3);
+        dmc.tick(Direction.STILL);
         dmc.inventory.addItem(key);
-        entities.add(key);
+        dmc.tick(Direction.STILL);
         //System.out.println(inventory);
         assertEquals(true, shield.isBuildable(shield.shieldMaterialsKey(), dmc.inventory));
+        assertEquals(true, dmc.buildables.contains("shield"));
         dmc.build("shield");
         assertEquals(true, dmc.inventory.itemExists("shield"));
         assertEquals(false, shield.isBuildable(shield.shieldMaterialsKey(), dmc.inventory));
+        assertEquals(false, dmc.buildables.contains("shield"));
     }
 
 }

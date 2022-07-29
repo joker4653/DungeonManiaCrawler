@@ -15,6 +15,7 @@ public class Bow extends BuildableEntity{
         super.setEntityID(UUID.randomUUID().toString());
         super.setInteractable(false);
         super.setEntityType("bow");
+        this.Components = getComponents();
     }
 
     public void BuildBow(List<Entity> listOfEntities, Inventory inventory, Bow bow) {

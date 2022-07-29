@@ -49,13 +49,20 @@ public class BowTests {
         Arrow arrow3 = new Arrow(0,2);
         Wood wood = new Wood(0,0);
         dmc.inventory.addItem(arrow1);
+        dmc.tick(Direction.STILL);
         dmc.inventory.addItem(arrow2);
+        dmc.tick(Direction.STILL);
         dmc.inventory.addItem(arrow3);
+        dmc.tick(Direction.STILL);
         dmc.inventory.addItem(wood);
+        dmc.tick(Direction.STILL);
         assertEquals(true, bow.isBuildable(bow.bowMaterials(), dmc.inventory));
+        assertEquals(true, dmc.buildables.contains("bow"));
         dmc.build("bow");
         assertEquals(true, dmc.inventory.itemExists("bow"));
         assertEquals(false, bow.isBuildable(bow.bowMaterials(), dmc.inventory));
+        assertEquals(true, dmc.inventory.itemExists("bow"));
+        assertEquals(false, dmc.buildables.contains("bow"));
     } 
 
 }

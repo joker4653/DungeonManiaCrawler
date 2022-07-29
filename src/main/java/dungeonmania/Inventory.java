@@ -75,7 +75,7 @@ public class Inventory {
 
     //For removing item of certain type from inventory
     public void RemovingItemOfType(List<Entity> listOfEntities, String type) {
-        ArrayList<Entity> del= new ArrayList<>();;
+        ArrayList<Entity> del= new ArrayList<>();
         if(this.itemExists(type)) {
             for (Entity entity : inventory) {
                 if (entity.getEntityType().equalsIgnoreCase(type)) {

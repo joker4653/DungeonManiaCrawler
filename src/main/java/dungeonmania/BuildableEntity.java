@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 
 public class BuildableEntity extends Entity{
-   
+    
 
 
 
@@ -29,6 +29,38 @@ public boolean isBuildable(ArrayList<HowMany> components,Inventory inventory) {
     }
     return true;
 
+}
+
+public boolean isMakable(Inventory inventory,String item) {
+    if(item == "shield") {
+        Shield sh = new Shield(4, 4);
+        if (isBuildable(sh.Components, inventory) || isBuildable(sh.Components2, inventory)) {
+            return true;
+        }
+    }
+    if (item == "bow") {
+        Bow bow = new Bow(4);
+        if (isBuildable(bow.Components,inventory)) {
+            return true;
+        }    
+    }
+    return false;
+}
+
+ 
+public ArrayList<String> getBuilables(Inventory inventory) {
+    ArrayList<String> buildables = new ArrayList<String>();
+    Shield sh = new Shield(4, 4);
+    Bow bow = new Bow(4);
+    if (sh.isBuildable(sh.getComponents(), inventory)) {
+        buildables.add("shield");
+    } else if (sh.isBuildable(sh.getComponents2(), inventory)) {
+        buildables.add("shield");
+    }   
+    if (bow.isBuildable(bow.Components, inventory)) {
+        buildables.add("bow");    
+    }
+    return buildables;
 }
 
 public void Build(List<Entity> listOfEntities, Inventory inventory,Entity buildable) {
