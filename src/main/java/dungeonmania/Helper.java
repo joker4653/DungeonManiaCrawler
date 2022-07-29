@@ -257,10 +257,14 @@ public class Helper implements Serializable {
      *
      */
     public static void checkBombs(List<Entity> listOfEntities, Player play) {
-        listOfEntities.stream().filter(e -> e.getEntityType().equals("bomb"))
-                               .forEach(b -> { 
-                                            if (( (Bomb) b ).isUsed()) ( (Bomb) b ).checkBombStatus(listOfEntities, play);}
-                                        );    
+        List<Entity> bombs = listOfEntities.stream().filter(e -> e.getEntityType().equals("bomb")).collect(Collectors.toList());
+
+        for (Entity b : bombs) {
+            Bomb bo = (Bomb) b;
+            if (bo.isUsed()) {
+                bo.checkBombStatus(listOfEntities, play);
+            }
+        }
     }
 
     public static void setZombAndSpiderSpawnFields(Save save, DungeonManiaController dmc) {
