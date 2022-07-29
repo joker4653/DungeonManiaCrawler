@@ -3,6 +3,8 @@ import dungeonmania.util.HowMany;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.UUID;
+import dungeonmania.Entities.Inventory;
+import dungeonmania.Entities.Entity;
 
 
 public class Shield extends BuildableEntity{

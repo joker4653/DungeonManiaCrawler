@@ -2,8 +2,9 @@ package dungeonmania;
 import java.util.List;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.util.HowMany;
-
+import dungeonmania.Entities.Entity;
 import java.util.ArrayList;
+import dungeonmania.Entities.Inventory;
 //import dungeonmania.util.Position;
 
 
@@ -16,9 +17,7 @@ public BuildableEntity() {
     super.setMovingEntity(false);
 
     // NEED TO WAIT FOR TUTOR RESPONSE FROM FORUM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Probably as well for builables but doesn't really matter
-    super.setCanSpiderBeOnThisEntity(true);
-    super.setCanZombieBeOnThisEntity(true);
-    super.setCanMercBeOnThisEntity(true);
+    
 }
 
 public boolean isBuildable(ArrayList<HowMany> components,Inventory inventory) {

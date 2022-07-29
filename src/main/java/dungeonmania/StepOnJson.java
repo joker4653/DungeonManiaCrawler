@@ -5,8 +5,9 @@ import java.util.Scanner;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 
-public class StepOnJson {
+public class StepOnJson implements Serializable {
     public static ArrayList<String> getStepLogic(String type) {
         try {
             String path = "src/main/java/dungeonmania/data/" + type + ".txt";

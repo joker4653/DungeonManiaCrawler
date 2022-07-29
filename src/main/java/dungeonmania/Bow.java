@@ -3,6 +3,9 @@ import dungeonmania.util.HowMany;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.UUID;
+import dungeonmania.Entities.Entity;
+import dungeonmania.Entities.Inventory;
+
 
 public class Bow extends BuildableEntity{
 
