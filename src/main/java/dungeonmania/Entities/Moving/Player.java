@@ -59,6 +59,8 @@ public class Player extends MovingEntity {
 
         List<Entity> entitiesHere = listOfEntities.stream().filter(e -> e.getCurrentLocation().equals(next)).collect(Collectors.toList());
 
+        List<Entity> inv = inventory.getInventory().stream().filter(e -> e.getEntityType().equals("key")).collect(Collectors.toList());
+
         ArrayList<Entity> items = new ArrayList<Entity>();
         for (Entity currEntity : entitiesHere) {
             if (!super.canStep(currEntity.getEntityType())) {
@@ -67,16 +69,20 @@ public class Player extends MovingEntity {
                 statistics.reachedExit();
                 ((Exit) currEntity).setExitState(true);
             } else if (currEntity.isCollectableEntity()) {
-                if (currEntity.getEntityType().startsWith("bomb")) {
-                    Bomb entity = (Bomb) currEntity;
-                    if (entity.isUsed()) {
-                        continue;
+                if (currEntity.getEntityType().equals("key") && !inv.isEmpty()) {
+                    
+                } else {
+                    if (currEntity.getEntityType().startsWith("bomb")) {
+                        Bomb entity = (Bomb) currEntity;
+                        if (entity.isUsed()) {
+                            continue;
+                        } else {
+                            items.add(currEntity);
+                        }
                     } else {
                         items.add(currEntity);
-                    }
-                } else {
-                    items.add(currEntity);
-                } 
+                    } 
+                }
             } else {
                 // Player can step here and is not on exit.
                 statistics.notOnExit();
