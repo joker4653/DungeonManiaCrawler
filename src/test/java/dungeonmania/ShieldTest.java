@@ -77,7 +77,7 @@ public class ShieldTest {
         Wood wood2 = new Wood(0,1);
         Akey key = new Akey(0, 2, 4);
         Wood wood3 = new Wood(0,3);
-        List<Entity> entities = dmc.getListOfEntities();
+        //List<Entity> entities = dmc.getListOfEntities();
         dmc.getInventory().addItem(wood);
         dmc.setTickCount(dmc.getTickCount() + 1);
         dmc.getInventory().addItem(wood2);

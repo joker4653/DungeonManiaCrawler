@@ -54,6 +54,15 @@ public class EntityFactory implements Serializable {
             return new Sword(x, y, Integer.parseInt(configMap.get("sword_durability")), Integer.parseInt(configMap.get("sword_attack")));
         } else if (type.equalsIgnoreCase("switch")) {
             return new FloorSwitch(x, y);
+        } else if(type.equalsIgnoreCase("shield")) {
+            return new Shield(Integer.parseInt(configMap.get("shield_durability")), Integer.parseInt(configMap.get("shield_defence")));
+        } else if(type.equalsIgnoreCase("bow")) {
+            return new Bow(Integer.parseInt(configMap.get("bow_durability")));
+        } else if(type.equalsIgnoreCase("midnight_armour")) {
+            MidnightArmour armour = new MidnightArmour(
+                Integer.parseInt(configMap.get("midnight_armour_defence")), 
+                Integer.parseInt(configMap.get("midnight_armour_attack")));
+            return armour;
         } else if (type.equalsIgnoreCase("wood")) {
             return new Wood(x, y);
         } else if (type.equalsIgnoreCase("bomb")) {

@@ -1,5 +1,5 @@
 package dungeonmania;
-
+import dungeonmania.EntityFactory;
 import dungeonmania.Battling.Battle;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
@@ -150,7 +150,7 @@ public class DungeonManiaController implements Serializable {
         
     }
 
-
+    /* 
     // helper function that creates entities, which will later be stored in the list of entities
     private Entity createEntity(String type, int x, int y, int key, String colour){
         if (type.equalsIgnoreCase("Player")) {
@@ -199,6 +199,7 @@ public class DungeonManiaController implements Serializable {
         }
         return null;
     }
+    */
     private String getGoalsResponse() {
         return statistics.getGoals();
     }
@@ -312,13 +313,13 @@ public class DungeonManiaController implements Serializable {
         Inventory inventory = getInventory();
         int key = Integer.MAX_VALUE;
         if (buildable == "shield" && this.buildables.contains("shield")) {
-            Entity sh = createEntity("shield", 0, 0, key,"gunmetal");
+            Entity sh = EntityFactory.createEntity("shield", 0, 0, key,"gunmetal",configMap,0);
             sh.BuildItem(listOfEntities,inventory, sh);
         } else if (buildable == "bow" && this.buildables.contains("bow")) {
-            Entity newBow = createEntity("bow", 0, 0, key,"pine");
+            Entity newBow = EntityFactory.createEntity("bow", 0, 0, key,"pine",configMap,0);
             newBow.BuildItem(listOfEntities, inventory, newBow);
         } else if (buildable == "midnight_armour" && this.buildables.contains("midnight_armour")) {
-            Entity armour = createEntity("midnight_armour", 0, 0, key, "raven");
+            Entity armour = EntityFactory.createEntity("midnight_armour", 0, 0, key, "raven",configMap,0);
             System.out.println("problem is with Building");
             armour.BuildItem(listOfEntities, inventory, armour);
         }
@@ -328,7 +329,7 @@ public class DungeonManiaController implements Serializable {
 
     public void setBuildables() {
         int key = Integer.MAX_VALUE;
-        Entity useFunctions = createEntity("shield", 0, 0, key,"gunmetal");
+        Entity useFunctions = EntityFactory.createEntity("shield", 0, 0, key,"gunmetal",configMap,0);
         this.buildables.removeAll(this.buildables);
         if (useFunctions.isBuildable(this.inventory, "shield")) {
             this.buildables.add("shield");
