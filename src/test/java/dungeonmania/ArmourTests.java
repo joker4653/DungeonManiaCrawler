@@ -37,7 +37,7 @@ public class ArmourTests {
     @Test
     @DisplayName("Testing determining viability of building")
     public void isBuildableArmour() throws InvalidActionException {
-        System.out.println("Starting");
+        
         MidnightArmour armour = new MidnightArmour(1, 1);
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_swordTest_basicSpawn", "c_swordTest_basicSpawn");
@@ -60,7 +60,7 @@ public class ArmourTests {
     @Test
     @DisplayName("Testing zombie prevents building")
     public void CannotbuildWithZombie() throws InvalidActionException {
-        System.out.println("Starting");
+       
         MidnightArmour armour = new MidnightArmour(1, 1);
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_armourTest_zombieexists", "c_swordTest_basicSpawn");

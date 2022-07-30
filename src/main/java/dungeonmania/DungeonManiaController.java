@@ -153,7 +153,6 @@ public class DungeonManiaController implements Serializable {
 
     // helper function that creates entities, which will later be stored in the list of entities
     private Entity createEntity(String type, int x, int y, int key, String colour){
-        System.out.println("issue is with input string");
         if (type.equalsIgnoreCase("Player")) {
             return new Player(x, y, configMap);
         } else if (type.equalsIgnoreCase("Spider")) {
@@ -183,9 +182,6 @@ public class DungeonManiaController implements Serializable {
         } else if(type.equalsIgnoreCase("bow")) {
             return new Bow(Integer.parseInt(configMap.get("bow_durability")));
         } else if(type.equalsIgnoreCase("midnight_armour")) {
-            for (String k : configMap.keySet()) {
-                System.out.println(k + "=" + configMap.get(k));
-            }
             MidnightArmour armour = new MidnightArmour(
                 Integer.parseInt(configMap.get("midnight_armour_defence")), 
                 Integer.parseInt(configMap.get("midnight_armour_attack")));
