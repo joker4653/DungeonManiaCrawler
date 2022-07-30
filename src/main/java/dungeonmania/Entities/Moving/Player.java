@@ -14,6 +14,7 @@ import dungeonmania.Entities.Collectables.Akey;
 import dungeonmania.Entities.Collectables.Bomb;
 import dungeonmania.Entities.Static.Door;
 import dungeonmania.Entities.Static.Exit;
+import dungeonmania.Entities.Static.StaticEntity;
 import dungeonmania.util.Direction;
 
 public class Player extends MovingEntity {
@@ -81,13 +82,16 @@ public class Player extends MovingEntity {
                         }
                     } else {
                         items.add(currEntity);
-                    } 
+                    }
+                } 
+            } else if (currEntity instanceof StaticEntity) {
+                if (((StaticEntity) currEntity).isCanBlockPlayerMovement()) {
+                    return false;
                 }
             } else {
                 // Player can step here and is not on exit.
                 statistics.notOnExit();
             }
-
         }
 
         

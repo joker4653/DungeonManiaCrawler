@@ -189,7 +189,7 @@ public class Helper implements Serializable {
      */
     public static void playerMovesBoulder(Direction movementDirection, Player player, List<Entity> listOfEntities) {
         for (Entity currEntity : listOfEntities) {
-            if (currEntity.getEntityType().equals("boulder")) {
+            if (currEntity.getEntityType().equals("boulder") && currEntity.getCurrentLocation().equals(player.getCurrentLocation().translateBy(movementDirection))) {
                 ((Boulder) currEntity).move(listOfEntities, movementDirection, player);
             }
         }
