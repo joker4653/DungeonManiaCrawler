@@ -152,7 +152,7 @@ public class DungeonManiaController implements Serializable{
 
 
     // helper function that creates entities, which will later be stored in the list of entities
-    private Entity createEntity(String type, int x, int y, int key, String colour) {
+    private Entity createEntity(String type, int x, int y, int key, String colour){
         System.out.println("issue is with input string");
         if (type.equalsIgnoreCase("Player")) {
             return new Player(x, y, configMap);
@@ -183,8 +183,13 @@ public class DungeonManiaController implements Serializable{
         } else if(type.equalsIgnoreCase("bow")) {
             return new Bow(Integer.parseInt(configMap.get("bow_durability")));
         } else if(type.equalsIgnoreCase("midnight_armour")) {
-            System.out.println("issue is with parse-int");
-            return new MidnightArmour(Integer.parseInt(configMap.get("midnight_armour_defence")), Integer.parseInt(configMap.get("midnight_armour_attack")));
+            for (String k : configMap.keySet()) {
+                System.out.println(k + "=" + configMap.get(k));
+            }
+            MidnightArmour armour = new MidnightArmour(
+                Integer.parseInt(configMap.get("midnight_armour_defence")), 
+                Integer.parseInt(configMap.get("midnight_armour_attack")));
+            return armour;
         } else if (type.equalsIgnoreCase("wood")) {
             return new Wood(x, y);
         } else if (type.equalsIgnoreCase("bomb")) {
@@ -318,6 +323,7 @@ public class DungeonManiaController implements Serializable{
             newBow.BuildItem(listOfEntities, inventory, newBow);
         } else if (buildable == "midnight_armour" && this.buildables.contains("midnight_armour")) {
             Entity armour = createEntity("midnight_armour", 0, 0, key, "raven");
+            System.out.println("problem is with Building");
             armour.BuildItem(listOfEntities, inventory, armour);
         }
         this.setTickCount(getTickCount());
