@@ -1,31 +1,17 @@
 package dungeonmania;
-import dungeonmania.EntityFactory;
 import dungeonmania.Battling.Battle;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 import dungeonmania.Entities.Collectables.Bomb;
-import dungeonmania.Entities.Collectables.*;
-import dungeonmania.Entities.Static.*;
-import dungeonmania.Entities.Moving.*;
-import dungeonmania.Entities.Moving.Assassin;
 import dungeonmania.Entities.Moving.Mercenary;
-import dungeonmania.Entities.Moving.MovingEntity;
 import dungeonmania.Entities.Moving.Player;
-import dungeonmania.Entities.Moving.Spider;
 import dungeonmania.Entities.Static.ZombieToastSpawner;
-import dungeonmania.Entities.Static.FloorSwitch;
-import dungeonmania.Entities.Static.Boulder;
 import dungeonmania.exceptions.InvalidActionException;
-import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
-import dungeonmania.response.models.ItemResponse;
-import dungeonmania.response.models.RoundResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 import dungeonmania.util.Position;
-import dungeonmania.Helper;
-import javassist.bytecode.stackmap.BasicBlock.Catch;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,22 +20,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 public class DungeonManiaController implements Serializable {
     private int tickCount;
@@ -270,7 +246,6 @@ public class DungeonManiaController implements Serializable {
             newBow.BuildItem(listOfEntities, inventory, newBow);
         } else if (buildable == "midnight_armour" && this.buildables.contains("midnight_armour")) {
             Entity armour = EntityFactory.createEntity("midnight_armour", 0, 0, key, "raven",configMap,0);
-            System.out.println("problem is with Building");
             armour.BuildItem(listOfEntities, inventory, armour);
         }
         this.setTickCount(getTickCount());

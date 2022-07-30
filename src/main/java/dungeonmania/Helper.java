@@ -1,21 +1,13 @@
 package dungeonmania;
 
 import java.io.Serializable;
-import java.util.Arrays;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import dungeonmania.Battling.Battle;
 import dungeonmania.Battling.Round;
@@ -23,28 +15,18 @@ import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 import dungeonmania.Entities.Collectables.Akey;
 import dungeonmania.Entities.Collectables.Bomb;
-import dungeonmania.Entities.Collectables.SunStone;
-import dungeonmania.Entities.Collectables.Sword;
-import dungeonmania.Entities.Collectables.Treasure;
-import dungeonmania.Entities.Collectables.Wood;
-import dungeonmania.Entities.Moving.Hydra;
-import dungeonmania.Entities.Moving.Assassin;
-import dungeonmania.Entities.Moving.Mercenary;
 import dungeonmania.Entities.Moving.MovingEntity;
 import dungeonmania.Entities.Moving.Player;
 import dungeonmania.Entities.Moving.Spider;
 import dungeonmania.Entities.Moving.ZombieToast;
 import dungeonmania.Entities.Static.Boulder;
 import dungeonmania.Entities.Static.Door;
-import dungeonmania.Entities.Static.Exit;
+
 import dungeonmania.Entities.Static.FloorSwitch;
 import dungeonmania.Entities.Static.Portal;
-import dungeonmania.Entities.Static.SwampTile;
-import dungeonmania.Entities.Static.Wall;
 import dungeonmania.Entities.Static.ZombieToastSpawner;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.BattleResponse;
-import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.response.models.RoundResponse;
 import dungeonmania.response.models.AnimationQueue;

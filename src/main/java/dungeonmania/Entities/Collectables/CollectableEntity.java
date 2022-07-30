@@ -1,7 +1,5 @@
 package dungeonmania.Entities.Collectables;
 
-import java.util.List;
-
 import dungeonmania.Entities.Entity;
 import dungeonmania.util.Position;
 

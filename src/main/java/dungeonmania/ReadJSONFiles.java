@@ -2,7 +2,6 @@ package dungeonmania;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -16,7 +15,6 @@ import com.google.gson.JsonParser;
 import dungeonmania.util.FileLoader;
 import dungeonmania.util.Position;
 import dungeonmania.Entities.Entity;
-import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 
 public class ReadJSONFiles implements Serializable {

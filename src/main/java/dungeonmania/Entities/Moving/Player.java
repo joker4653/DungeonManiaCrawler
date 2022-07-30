@@ -10,9 +10,7 @@ import dungeonmania.util.Position;
 import dungeonmania.Statistics;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
-import dungeonmania.Entities.Collectables.Akey;
 import dungeonmania.Entities.Collectables.Bomb;
-import dungeonmania.Entities.Static.Door;
 import dungeonmania.Entities.Static.Exit;
 import dungeonmania.util.Direction;
 

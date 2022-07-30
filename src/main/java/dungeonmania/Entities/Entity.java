@@ -1,8 +1,6 @@
 package dungeonmania.Entities;
 
 import java.io.Serializable;
-
-import dungeonmania.util.HowMany;
 import dungeonmania.util.Position;
 import dungeonmania.BuildableEntity;
 import java.util.List;
