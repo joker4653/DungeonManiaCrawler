@@ -1,6 +1,7 @@
 package dungeonmania;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -46,6 +47,7 @@ import dungeonmania.response.models.BattleResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.response.models.RoundResponse;
+import dungeonmania.response.models.AnimationQueue;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
@@ -166,6 +168,22 @@ public class Helper implements Serializable {
         }
     }
 
+
+    /*
+     * Creates animation queue for all coins rotating.
+     */
+    public static ArrayList<AnimationQueue> getAnimations(List<Entity> listOfEntities) {
+        ArrayList<AnimationQueue> animations = new ArrayList<AnimationQueue>();
+        for (Entity entity : listOfEntities) {
+            if (entity.getEntityType().equals("treasure")) {
+                //animations.add(new AnimationQueue("PostTick", entity.getEntityID(), Arrays.asList("sprite treasure_00", "rotate 0, over 1s", "sprite treasure_03", "rotate 0, over 1s"), true, 10));
+            }
+        }
+        return animations;
+    }
+
+
+
     /**
      * helper method to move a boulder
      */
@@ -257,10 +275,14 @@ public class Helper implements Serializable {
      *
      */
     public static void checkBombs(List<Entity> listOfEntities, Player play) {
-        listOfEntities.stream().filter(e -> e.getEntityType().equals("bomb"))
-                               .forEach(b -> { 
-                                            if (( (Bomb) b ).isUsed()) ( (Bomb) b ).checkBombStatus(listOfEntities, play);}
-                                        );    
+        List<Entity> bombs = listOfEntities.stream().filter(e -> e.getEntityType().equals("bomb")).collect(Collectors.toList());
+
+        for (Entity b : bombs) {
+            Bomb bo = (Bomb) b;
+            if (bo.isUsed()) {
+                bo.checkBombStatus(listOfEntities, play);
+            }
+        }
     }
 
     public static void setZombAndSpiderSpawnFields(Save save, DungeonManiaController dmc) {

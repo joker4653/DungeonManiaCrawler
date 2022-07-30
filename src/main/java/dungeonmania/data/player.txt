@@ -16,3 +16,5 @@ wood
 key
 sun_stone
 swamp_tile
+invisibility_potion
+invincibility_potion

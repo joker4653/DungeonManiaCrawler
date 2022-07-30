@@ -51,7 +51,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-public class DungeonManiaController implements Serializable{
+public class DungeonManiaController implements Serializable {
     private int tickCount;
     private List<Entity> listOfEntities = new ArrayList<>();
     private HashMap<String, String> configMap = new HashMap<>();
@@ -110,7 +110,7 @@ public class DungeonManiaController implements Serializable{
 
 
     public String getSkin() {
-        return "default";
+        return "brownie";
     }
 
     public String getLocalisation() {
@@ -275,7 +275,7 @@ public class DungeonManiaController implements Serializable{
         List<EntityResponse> entities = new ArrayList<>();
         listOfEntities.forEach((currEntity) -> entities.add(new EntityResponse(currEntity.getEntityID(), currEntity.getEntityType(), currEntity.getCurrentLocation(), currEntity.isInteractable())));
 
-        return new DungeonResponse(dungeonId, dungeonName, entities, Helper.getInventoryResponse(inventory), Helper.getBattleResponse(listOfBattles), buildables, getGoalsResponse());
+        return new DungeonResponse(dungeonId, dungeonName, entities, Helper.getInventoryResponse(inventory), Helper.getBattleResponse(listOfBattles), buildables, getGoalsResponse(), Helper.getAnimations(listOfEntities));
     }
 
 

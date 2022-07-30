@@ -4,14 +4,15 @@ import java.util.UUID;
 
 import dungeonmania.util.Position;
 
-public class Wood extends CollectableEntity {
+public class InvisibilityPotion extends CollectableEntity {
+    Integer PotionDur;
 
-
-    public Wood(int x, int y) {
+    public InvisibilityPotion(int x, int y) {
         super();
         super.setEntityID(UUID.randomUUID().toString());
-        super.setEntityType("wood");
+        super.setEntityType("invisibility_potion");
         super.setCurrentLocation(new Position(x, y));
         super.setCollectableEntity(true);
+        super.setConsumable(true);
     }
 }
