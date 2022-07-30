@@ -51,20 +51,25 @@ public class BoulderTests {
     }  
 
 
-//     @Test
-//     @DisplayName("Basic boulder push up")
-//     public void basicBoulderPush() {
-//         DungeonManiaController dmc = new DungeonManiaController();
-//         DungeonResponse res = dmc.newGame("d_boulderTest_pushUp", "c_playerTest_basicMovement");
+    @Test
+    @DisplayName("Basic boulder push up")
+    public void basicBoulderPush() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_boulderTest_pushUp", "c_playerTest_basicMovement");
 
-//         res = dmc.tick(Direction.UP);
+        Position expectedBoulderPos = new Position(1, 3);
+        Position actualBoulderPos = getEntities(res, "boulder").get(0).getPosition();
+        Position expectedPlayerPos = new Position(1, 2);
+        Position actualPlayerPos = getEntities(res, "player").get(0).getPosition();
+        assertEquals(expectedBoulderPos, actualBoulderPos);    
+        assertEquals(expectedPlayerPos, actualPlayerPos);
 
-//         Position expectedBoulderPos = new Position(1, 4);
-//         Position actualBoulderPos = getEntities(res, "boulder").get(0).getPosition();
-//         Position expectedPlayerPos = new Position(1, 3);
-//         Position actualPlayerPos = getEntities(res, "player").get(0).getPosition();
-//         assertEquals(expectedBoulderPos, actualBoulderPos);    
-//         assertEquals(expectedPlayerPos, actualPlayerPos);
-// 
-//     }
+        res = dmc.tick(Direction.UP);
+        expectedBoulderPos = new Position(1, 4);
+        actualBoulderPos = getEntities(res, "boulder").get(0).getPosition();
+        expectedPlayerPos = new Position(1, 3);
+        assertEquals(expectedBoulderPos, actualBoulderPos);    
+        assertEquals(expectedPlayerPos, actualPlayerPos);
+
+    }
 }
