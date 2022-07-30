@@ -14,6 +14,8 @@
   "player_health": 10,
   "shield_defence": 1,
   "shield_durability": 1,
+  "midnight_armour_attack": 1,
+  "midnight_armour_defence": 1,
   "spider_attack": 1,
   "spider_health": 5,
   "spider_spawn_rate": 0,

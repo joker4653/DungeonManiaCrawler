@@ -1,6 +1,6 @@
 package dungeonmania;
 import java.util.List;
-import dungeonmania.DungeonManiaController;
+
 import dungeonmania.util.HowMany;
 import dungeonmania.Entities.Entity;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public boolean isBuildable(ArrayList<HowMany> components,Inventory inventory) {
 public boolean isMakable(Inventory inventory,String item) {
     if(item == "shield") {
         Shield sh = new Shield(4, 4);
-        if (isBuildable(sh.Components, inventory) || isBuildable(sh.Components2, inventory)) {
+        if (sh.isBuildableshield(inventory)) {
             return true;
         }
     }
@@ -43,6 +43,12 @@ public boolean isMakable(Inventory inventory,String item) {
             return true;
         }    
     }
+    if (item == "midnight_armour") {
+        MidnightArmour midnightArmour = new MidnightArmour(2, 2);
+        if (isBuildable(midnightArmour.Components,inventory)) {
+            return true;
+        }    
+    } 
     return false;
 }
 
@@ -69,6 +75,9 @@ public void Build(List<Entity> listOfEntities, Inventory inventory,Entity builda
     } else if (buildable.getEntityType() == "bow") {
         Bow bow = new Bow(4);
         bow.BuildBow(listOfEntities,inventory, bow);
+    } else if (buildable.getEntityType() == "midnight_armour") {
+        MidnightArmour midnightArmour = new MidnightArmour(2, 2);
+        midnightArmour.BuildArmour(listOfEntities, inventory, midnightArmour); 
     }
     return;
 }

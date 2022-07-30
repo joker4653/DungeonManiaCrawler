@@ -137,23 +137,23 @@ public class DungeonManiaController implements Serializable{
     public DungeonResponse newGame(String dungeonName, String configName) throws IllegalArgumentException {
         reintialisefields();
         List<EntityResponse> listOfEntityResponses = new ArrayList<>();
-
         this.configMap = ReadJSONFiles.readConfigFile(configName);
         this.statistics = ReadJSONFiles.readDungeonFileAndGetStats(dungeonName, configMap, listOfEntities, listOfEntityResponses);
-
-        
         this.dungeonId = UUID.randomUUID().toString();
         this.dungeonName = dungeonName;
-        DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, listOfEntityResponses,
-        Helper.getInventoryResponse(inventory), Helper.getBattleResponse(listOfBattles), buildables, getGoalsResponse());
-        mapOfMinAndMaxValues = Helper.findMinAndMaxValues(listOfEntities);
         this.setBuildables();
+        DungeonResponse dungeonResp = new DungeonResponse(dungeonId, dungeonName, listOfEntityResponses,
+        Helper.getInventoryResponse(inventory), Helper.getBattleResponse(listOfBattles), this.getBuildables(), getGoalsResponse());
+        mapOfMinAndMaxValues = Helper.findMinAndMaxValues(listOfEntities);
         return dungeonResp;
+
+        
     }
 
 
     // helper function that creates entities, which will later be stored in the list of entities
     private Entity createEntity(String type, int x, int y, int key, String colour) {
+        System.out.println("issue is with input string");
         if (type.equalsIgnoreCase("Player")) {
             return new Player(x, y, configMap);
         } else if (type.equalsIgnoreCase("Spider")) {
@@ -182,6 +182,9 @@ public class DungeonManiaController implements Serializable{
             return new Shield(Integer.parseInt(configMap.get("shield_durability")), Integer.parseInt(configMap.get("shield_defence")));
         } else if(type.equalsIgnoreCase("bow")) {
             return new Bow(Integer.parseInt(configMap.get("bow_durability")));
+        } else if(type.equalsIgnoreCase("midnight_armour")) {
+            System.out.println("issue is with parse-int");
+            return new MidnightArmour(Integer.parseInt(configMap.get("midnight_armour_defence")), Integer.parseInt(configMap.get("midnight_armour_attack")));
         } else if (type.equalsIgnoreCase("wood")) {
             return new Wood(x, y);
         } else if (type.equalsIgnoreCase("bomb")) {
@@ -243,8 +246,7 @@ public class DungeonManiaController implements Serializable{
     public DungeonResponse tick(Direction movementDirection) {
         setTickCount(getTickCount() + 1);
         
-        int xSpi = Integer.parseInt(configMap.get("spider_spawn_rate"));
-        int xZomb = Integer.parseInt(configMap.get("zombie_spawn_rate"));
+        
 
         // Move player.
         Player player = getPlayer();
@@ -314,6 +316,9 @@ public class DungeonManiaController implements Serializable{
         } else if (buildable == "bow" && this.buildables.contains("bow")) {
             Entity newBow = createEntity("bow", 0, 0, key,"pine");
             newBow.BuildItem(listOfEntities, inventory, newBow);
+        } else if (buildable == "midnight_armour" && this.buildables.contains("midnight_armour")) {
+            Entity armour = createEntity("midnight_armour", 0, 0, key, "raven");
+            armour.BuildItem(listOfEntities, inventory, armour);
         }
         this.setTickCount(getTickCount());
         return createDungeonResponse();
@@ -323,12 +328,27 @@ public class DungeonManiaController implements Serializable{
         int key = Integer.MAX_VALUE;
         Entity useFunctions = createEntity("shield", 0, 0, key,"gunmetal");
         this.buildables.removeAll(this.buildables);
-        if (useFunctions.isBuildable(inventory, "shield")) {
+        if (useFunctions.isBuildable(this.inventory, "shield")) {
             this.buildables.add("shield");
         }
-        if (useFunctions.isBuildable(inventory, "bow")) {
+        if (useFunctions.isBuildable(this.inventory, "bow")) {
             this.buildables.add("bow");
         }
+        if (useFunctions.isBuildable(this.inventory, "midnight_armour") && !entityExists("zombie_toast")) {
+            this.buildables.add("midnight_armour");
+        }
+        return;
+    }
+
+    // For checking if a certain type of entity (e.g. a sword) exists.
+    public boolean entityExists(String type) {
+        for (Entity entity : this.listOfEntities) {
+            if (entity.getEntityType().equalsIgnoreCase(type)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
