@@ -208,7 +208,7 @@ public class Mercenary extends MovingEntity {
     }
 
     // Make mercenary into ally.
-    public void becomeAlly(Mercenary merc, Player player) {
+    public void becomeAlly(Mercenary merc, Player player){
         merc.setAlly(true);
         player.addAlly();
         merc.setInteractable(false); // according to the spec

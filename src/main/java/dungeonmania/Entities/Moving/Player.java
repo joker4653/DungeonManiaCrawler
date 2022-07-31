@@ -43,6 +43,7 @@ public class Player extends MovingEntity {
     public void addAlly() {
         this.allies += 1;
     }
+    
     /* 
     public void removeAlly() {
         this.allies -= 1;

@@ -7,6 +7,7 @@ import java.util.UUID;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Inventory;
 
+
 public class Sceptre extends BuildableEntity{
     int mind_control_duration;
     ArrayList<HowMany> Components1 = new ArrayList<HowMany>();
@@ -95,51 +96,105 @@ public class Sceptre extends BuildableEntity{
     }
 
     public void BuildSceptre(List<Entity> listOfEntities, Inventory inventory, Entity sceptre) {
-        for (HowMany component: Components1) {
-            if(inventory.numitemExists(component.getType(), component.getAmount())) {
-                inventory.RemovingnumItemOfType(listOfEntities,component.getAmount(), component.getType());
-                inventory.addItem(sceptre);
-                return;
-            }
-        }
         
-        for (HowMany component: Components2) {
-            if(inventory.numitemExists(component.getType(), component.getAmount())) {
-                inventory.RemovingnumItemOfType(listOfEntities,component.getAmount(), component.getType());
-                inventory.addItem(sceptre);
-                return;
+        if (isBuildableSceptre1(inventory)) {
+            for (HowMany component: Components1) {
+                if(inventory.numitemExists(component.getType(), component.getAmount())) {
+                    inventory.RemovingnumItemOfType(listOfEntities,component.getAmount(), component.getType());
+                    inventory.addItem(sceptre);
+                }
             }
-        }
-        
-        for (HowMany component: Components3) {
-            if(inventory.numitemExists(component.getType(), component.getAmount())) {
-                inventory.RemovingnumItemOfType(listOfEntities,component.getAmount(), component.getType());
-                inventory.addItem(sceptre);
-                return;
-            }
+            inventory.addItem(sceptre);
+            return;
         }
 
-       
-        for (HowMany component: Components4) {
-            if(inventory.numitemExists(component.getType(), component.getAmount())) {
-                inventory.RemovingnumItemOfType(listOfEntities,component.getAmount(), component.getType());
-                inventory.addItem(sceptre);
-                return;
+        if (isBuildableSceptre2(inventory)) {
+            for (HowMany component: Components2) {
+                if(inventory.numitemExists(component.getType(), component.getAmount())) {
+                    inventory.RemovingnumItemOfType(listOfEntities,component.getAmount(), component.getType());
+                   
+                }
             }
+            inventory.addItem(sceptre);
+            return;
         }
-
+        
+        if (isBuildableSceptre3(inventory)) {
+            for (HowMany component: Components3) {
+                if(inventory.numitemExists(component.getType(), component.getAmount())) {
+                    inventory.RemovingnumItemOfType(listOfEntities,component.getAmount(), component.getType());
+                    inventory.addItem(sceptre);
+                    
+                }
+            }
+            inventory.addItem(sceptre);
+            return;
+        }
+        
+        if (isBuildableSceptre4(inventory)) {
+            for (HowMany component: Components4) {
+                if(inventory.numitemExists(component.getType(), component.getAmount())) {
+                    inventory.RemovingnumItemOfType(listOfEntities,component.getAmount(), component.getType());
+                    inventory.addItem(sceptre);
+                    
+                }
+            }
+            inventory.addItem(sceptre);
+            return;
+        }
 
         return;
         
     }
 
     public boolean isBuilableSceptre(Inventory inventory) {
-        if (isBuildable(getComponents1(), inventory) || isBuildable(getComponents2(), inventory)) {
+        if (isBuildableSceptre1(inventory) || isBuildableSceptre2(inventory)) {
             return true;
-        } else if (isBuildable(getComponents3(), inventory) || isBuildable(getComponents4(), inventory)){
+        } else if (isBuildableSceptre4(inventory) || isBuildableSceptre4(inventory)){
             return true;
         }
         return false;
+    }
+
+
+    public boolean isBuildableSceptre1(Inventory inventory) {
+        for (HowMany component: Components1) {
+            if(!inventory.numitemExists(component.getType(), component.getAmount())) {
+                return false;
+            }
+        }
+        return true;
+    
+    }
+
+    public boolean isBuildableSceptre2(Inventory inventory) {
+        for (HowMany component: Components2) {
+            if(!inventory.numitemExists(component.getType(), component.getAmount())) {
+                return false;
+            }
+        }
+        return true;
+    
+    }
+
+    public boolean isBuildableSceptre3(Inventory inventory) {
+        for (HowMany component: Components3) {
+            if(!inventory.numitemExists(component.getType(), component.getAmount())) {
+                return false;
+            }
+        }
+        return true;
+    
+    }
+
+    public boolean isBuildableSceptre4(Inventory inventory) {
+        for (HowMany component: Components4) {
+            if(!inventory.numitemExists(component.getType(), component.getAmount())) {
+                return false;
+            }
+        }
+        return true;
+    
     }
 
     public int getDuration() {

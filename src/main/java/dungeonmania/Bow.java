@@ -26,10 +26,12 @@ public class Bow extends BuildableEntity{
         for (HowMany component: Components) {
             if(inventory.numitemExists(component.getType(), component.getAmount())) {
                 inventory.RemovingnumItemOfType(listOfEntities,component.getAmount(), component.getType());
-                inventory.addItem(bow);
-                return;
+                
+                
             }
         }
+        inventory.addItem(bow);
+        return;
         
     }
 

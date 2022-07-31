@@ -12,6 +12,7 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 import dungeonmania.util.Position;
+//import dungeonmania.util.HypnoServant;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,9 +35,9 @@ public class DungeonManiaController implements Serializable {
     private String dungeonId;
     private String dungeonName;
     private HashMap<String, Integer> mapOfMinAndMaxValues = new HashMap<>();
+    //private List<HypnoServant> unwittingVictimsofMagicalTyranny = new ArrayList<>();
     private List<Battle> listOfBattles = new ArrayList<>();
     private List<String> buildables = new ArrayList<>();
-    ///private List<String> unwillingVictimsofMagicalTyranny = new ArrayList<>();
     private Inventory inventory = new Inventory();
     private Statistics statistics;
 
@@ -80,9 +81,23 @@ public class DungeonManiaController implements Serializable {
         return tickCount;
     }
 
+    /* 
+    public List<HypnoServant> getunwittingVictimsofMagicalTyranny() {
+        return this.unwittingVictimsofMagicalTyranny;
+    }
+    */
+
+
     public void setTickCount(int tickCount) {
         this.tickCount = tickCount;
-        setBuildables();
+        this.setBuildables();
+        
+        /* 
+        if(this.getInventory().itemExists("sceptre")) {
+            this.Trancewearsoff();
+        }
+        */
+        
     }
 
 
@@ -225,29 +240,25 @@ public class DungeonManiaController implements Serializable {
     /**
      * /game/build
      */
-    public String getShielddefence() {
-        return configMap.get("shield_defence");
-    }
-
-    public String getShielddurability() {
-        return configMap.get("shield_durability");
-    }
-
-
-
-
+    
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
+        System.out.println("DMC BUILD");
         Inventory inventory = getInventory();
         int key = Integer.MAX_VALUE;
-        if (buildable == "shield" && this.buildables.contains("shield")) {
+        if (buildable.equals("shield") && this.buildables.contains("shield")) {
             Entity sh = EntityFactory.createEntity("shield", 0, 0, key,"gunmetal",configMap,0);
             sh.BuildItem(listOfEntities,inventory, sh);
-        } else if (buildable == "bow" && this.buildables.contains("bow")) {
+        } else if (buildable.equals("bow") && this.buildables.contains("bow")) {
             Entity newBow = EntityFactory.createEntity("bow", 0, 0, key,"pine",configMap,0);
             newBow.BuildItem(listOfEntities, inventory, newBow);
-        } else if (buildable == "midnight_armour" && this.buildables.contains("midnight_armour")) {
+        } else if (buildable.equals("midnight_armour")  && this.buildables.contains("midnight_armour")) {
             Entity armour = EntityFactory.createEntity("midnight_armour", 0, 0, key, "raven",configMap,0);
             armour.BuildItem(listOfEntities, inventory, armour);
+        /* 
+        } else if (buildable.equals("sceptre")  && this.buildables.contains("sceptre")) {
+            Entity sceptre = EntityFactory.createEntity("sceptre", 0, 0, key,"pine",configMap,0);
+            sceptre.BuildItem(listOfEntities, inventory, sceptre);
+        */
         }
         this.setTickCount(getTickCount());
         return createDungeonResponse();
@@ -266,6 +277,12 @@ public class DungeonManiaController implements Serializable {
         if (useFunctions.isBuildable(this.inventory, "midnight_armour") && !entityExists("zombie_toast")) {
             this.buildables.add("midnight_armour");
         }
+        /*
+        if (useFunctions.isBuildable(this.inventory, "sceptre")) {
+            this.buildables.add("sceptre");
+        } 
+        */
+        
         return;
     }
 
@@ -280,6 +297,13 @@ public class DungeonManiaController implements Serializable {
         return false;
     }
 
+    /* 
+    public void Trancewearsoff() {
+        for (HypnoServant hypnoServant : this.unwittingVictimsofMagicalTyranny) {
+            hypnoServant.DisenchantingProgress(getPlayer(),unwittingVictimsofMagicalTyranny);
+        }
+    }
+    */
 
     
     /**
@@ -293,6 +317,13 @@ public class DungeonManiaController implements Serializable {
         }
 
         Player player = getPlayer();
+        /* 
+        if (entity.getEntityType().equalsIgnoreCase("mercenary") || entity.getEntityType().equalsIgnoreCase("assassin") && getInventory().itemExists("sceptre")) {
+            //Todo make time-bewitched take from jsonmap
+            HypnoServant UnpaidGun = new HypnoServant((Mercenary) entity,Integer.parseInt(configMap.get("mind_control_duration")),getPlayer());
+            this.unwittingVictimsofMagicalTyranny.add(UnpaidGun);
+        }
+        */
 
         if (entity.getEntityType().equalsIgnoreCase("mercenary") || entity.getEntityType().equalsIgnoreCase("assassin")) {
             ((Mercenary) entity).bribery((Mercenary) entity, player, inventory, configMap);

@@ -17,9 +17,8 @@ public class ShieldTest {
     @Test
     @DisplayName("Testing determining viability of build function")
     public void BuildTestTreasure() throws InvalidActionException{
-        Shield shield = new Shield(4, 4);
         DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_swordTest_basicSpawn", "c_swordTest_basicSpawn");
+        dmc.newGame("d_swordTest_basicSpawn", "c_swordTest_basicSpawn");
         Wood wood = new Wood(0,0);
         Wood wood2 = new Wood(0,1);
         Treasure tre = new Treasure(0,2);
@@ -42,9 +41,9 @@ public class ShieldTest {
     @Test
     @DisplayName("Testing determining viability of build function")
     public void BuildTestKey() throws InvalidActionException{
-        Shield shield = new Shield(4, 4);
+        
         DungeonManiaController dmc = new DungeonManiaController();
-        DungeonResponse res = dmc.newGame("d_swordTest_basicSpawn", "c_swordTest_basicSpawn");
+        dmc.newGame("d_swordTest_basicSpawn", "c_swordTest_basicSpawn");
         Wood wood = new Wood(0,0);
         Wood wood2 = new Wood(0,1);
         Akey key = new Akey(0, 2, 4);

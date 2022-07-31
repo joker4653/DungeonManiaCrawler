@@ -20,37 +20,34 @@ public BuildableEntity() {
     
 }
 
-/* 
-public boolean isBuildable(ArrayList<HowMany> components,Inventory inventory) {
-    for (HowMany component: components) {
-        if(!inventory.numitemExists(component.getType(), component.getAmount())) {
-            return false;
-        }
-    }
-    return true;
-
-}
-*/
 
 public boolean isMakable(Inventory inventory,String item) {
-    if(item == "shield") {
+    if(item.equals("shield")) {
         Shield sh = new Shield(4, 4);
         if (sh.isBuildableshield(inventory)) {
             return true;
         }
     }
-    if (item == "bow") {
+    if (item.equals("bow")) {
         Bow bow = new Bow(4);
         if (bow.isBuildableBow(inventory)) {
             return true;
         }    
     }
-    if (item == "midnight_armour") {
+    if (item.equals("midnight_armour")) {
         MidnightArmour midnightArmour = new MidnightArmour(2, 2);
         if (midnightArmour.isBuildableArmour(inventory)) {
             return true;
         }    
+    }
+    /* 
+    if (item.equals("sceptre")) {
+        Sceptre sceptre = new Sceptre(4);
+        if (sceptre.isBuilableSceptre(inventory)) {
+            return true;
+        }    
     } 
+    */
     return false;
 }
 
@@ -69,15 +66,21 @@ public ArrayList<String> getBuilables(Inventory inventory) {
 }
 
 public void Build(List<Entity> listOfEntities, Inventory inventory,Entity buildable) {
-    if(buildable.getEntityType() == "shield") {
+    if(buildable.getEntityType().equals("shield")) {
         Shield sh = new Shield(4, 4);
         sh.BuildShield(listOfEntities, inventory, buildable);
-    } else if (buildable.getEntityType() == "bow") {
+    } else if (buildable.getEntityType().equals("bow")) {
         Bow bow = new Bow(4);
         bow.BuildBow(listOfEntities,inventory, bow);
-    } else if (buildable.getEntityType() == "midnight_armour") {
+    } else if (buildable.getEntityType().equals("midnight_armour")) {
         MidnightArmour midnightArmour = new MidnightArmour(2, 2);
         midnightArmour.BuildArmour(listOfEntities, inventory, midnightArmour); 
+    /* 
+    } else if (buildable.getEntityType().equals("sceptre")) {
+        Sceptre sceptre = new Sceptre(4);
+        sceptre.BuildSceptre(listOfEntities, inventory, sceptre);
+    }
+    */
     }
     return;
 }

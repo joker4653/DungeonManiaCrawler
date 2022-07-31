@@ -18,7 +18,6 @@ public class BowTests {
     @Test
     @DisplayName("Testing determining viability of building")
     public void isBuildableBow() throws InvalidActionException{
-        Bow bow = new Bow(4);
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_swordTest_basicSpawn", "c_swordTest_basicSpawn");
         Arrow arrow1 = new Arrow(0,0);

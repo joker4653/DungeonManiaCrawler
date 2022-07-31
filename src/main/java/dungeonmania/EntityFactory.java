@@ -65,6 +65,10 @@ public class EntityFactory implements Serializable {
             return armour;
         } else if (type.equalsIgnoreCase("wood")) {
             return new Wood(x, y);
+        /* 
+        } else if(type.equalsIgnoreCase("sceptre")) {
+            return new Sceptre(Integer.parseInt(configMap.get("mind_control_duration")));
+        */
         } else if (type.equalsIgnoreCase("bomb")) {
             return new Bomb(x, y, Integer.parseInt(configMap.get("bomb_radius")));
         } else if (type.equalsIgnoreCase("key")) {

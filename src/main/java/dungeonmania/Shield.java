@@ -54,23 +54,30 @@ public class Shield extends BuildableEntity{
 
     public void BuildShield(List<Entity> listOfEntities, Inventory inventory, Entity shield) {
         Components = getComponents();
-        for (HowMany component: Components) {
-            if(inventory.numitemExists(component.getType(), component.getAmount())) {
-                inventory.RemovingnumItemOfType(listOfEntities,component.getAmount(), component.getType());
-                inventory.addItem(shield);
-                return;
+        if (isBuildableshieldTreasure(inventory)) {
+            for (HowMany component: Components) {
+                if(inventory.numitemExists(component.getType(), component.getAmount())) {
+                    inventory.RemovingnumItemOfType(listOfEntities,component.getAmount(), component.getType());
+                    
+                    
+                }
             }
+            inventory.addItem(shield);
+            return;
         }
-        Components2 = getComponents2();
-        for (HowMany component: Components2) {
-            if(inventory.numitemExists(component.getType(), component.getAmount())) {
-                inventory.RemovingnumItemOfType(listOfEntities,component.getAmount(), component.getType());
-                inventory.addItem(shield);
-                return;
+        if (isBuildableshieldKey(inventory)) {
+            Components2 = getComponents2();
+            for (HowMany component: Components2) {
+                if(inventory.numitemExists(component.getType(), component.getAmount())) {
+                    inventory.RemovingnumItemOfType(listOfEntities,component.getAmount(), component.getType());
+                    
+                    
+                }
             }
+            inventory.addItem(shield);
+            return;
         }
         return;
-        
     }
 
     
