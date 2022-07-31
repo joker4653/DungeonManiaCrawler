@@ -214,6 +214,8 @@ public class Mercenary extends MovingEntity {
         merc.setInteractable(false); // according to the spec
     }
 
+    
+
     public int checkBribeAmount(List<Entity> treasure) throws InvalidActionException {
         if (treasure.size() < bribe) {
             throw new InvalidActionException("Player lacks the requisite funds to bribe.");

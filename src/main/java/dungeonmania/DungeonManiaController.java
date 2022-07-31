@@ -36,6 +36,7 @@ public class DungeonManiaController implements Serializable {
     private HashMap<String, Integer> mapOfMinAndMaxValues = new HashMap<>();
     private List<Battle> listOfBattles = new ArrayList<>();
     private List<String> buildables = new ArrayList<>();
+    ///private List<String> unwillingVictimsofMagicalTyranny = new ArrayList<>();
     private Inventory inventory = new Inventory();
     private Statistics statistics;
 

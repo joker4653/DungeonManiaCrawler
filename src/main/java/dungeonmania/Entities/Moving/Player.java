@@ -42,7 +42,12 @@ public class Player extends MovingEntity {
     public void addAlly() {
         this.allies += 1;
     }
-
+    /* 
+    public void removeAlly() {
+        this.allies -= 1;
+    }
+    */
+    
     public void move(List<Entity> listOfEntities, Direction dir, Player player, Inventory inventory, Statistics statistics) {
         Position curr = super.getCurrentLocation();
         Position next = curr.translateBy(dir);
