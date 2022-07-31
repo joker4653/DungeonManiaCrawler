@@ -1,11 +1,14 @@
 package dungeonmania.Entities.Static;
 
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import dungeonmania.util.Position;
 import dungeonmania.Entities.Entity;
 import dungeonmania.Entities.Moving.Player;
 import dungeonmania.util.Direction;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Boulder extends StaticEntity {
@@ -19,40 +22,27 @@ public class Boulder extends StaticEntity {
         this.setCanBlockPlayerMovement(false);
     }
 
-    // public boolean legalMove(List<Entity> listOfEntities, Direction dir, Player player) {
-    //     for (Entity currEntity : listOfEntities) {
-    //         if (currEntity.getEntityType().equals("wall")) {
-    //             List<Position> positions = currEntity.getCurrentLocation().getAdjacentPositions();
-    //             if (positions.get(1).equals(this.getCurrentLocation()) && dir.equals(Direction.DOWN)) {
-    //                 return false;
-    //             } else if (positions.get(3).equals(this.getCurrentLocation()) && dir.equals(Direction.LEFT)) {
-    //                 return false;
-    //             } else if (positions.get(5).equals(this.getCurrentLocation()) && dir.equals(Direction.UP)) {
-    //                 return false;
-    //             } else if (positions.get(7).equals(this.getCurrentLocation()) && dir.equals(Direction.RIGHT)) {
-    //                return false;
-    //             }
-    //         }
-    //     }    
-        
-    //     return true;
-    // }
+    public void move(List<Entity> listOfEntities, Direction movementDirection, Player player) {
+        Position current = this.getCurrentLocation();
+        Position next = current.translateBy(movementDirection);
+       
+        if (legalMove(listOfEntities, next)) {
+            this.setCurrentLocation(next);
+        }
+    }
 
+    public boolean legalMove(List<Entity> listOfEntities, Position next) {
+        List<Entity> entitiesHere = listOfEntities.stream().filter(e -> e.getCurrentLocation().equals(next)).collect(Collectors.toList());
 
-    public void move(List<Entity> listOfEntities, Direction dir, Player player) {
-        for (Entity currEntity : listOfEntities) {
-            if (currEntity.getEntityType().equals("boulder")) {
-                List<Position> positions = currEntity.getCurrentLocation().getAdjacentPositions();
-                if (positions.get(1).equals(player.getCurrentLocation()) && dir.equals(Direction.DOWN)) {
-                    currEntity.setCurrentLocation(currEntity.getCurrentLocation().translateBy(Direction.DOWN));
-                } else if (positions.get(3).equals(player.getCurrentLocation()) && dir.equals(Direction.LEFT)) {
-                    currEntity.setCurrentLocation(currEntity.getCurrentLocation().translateBy(Direction.LEFT));
-                } else if (positions.get(5).equals(player.getCurrentLocation()) && dir.equals(Direction.UP)) {
-                    currEntity.setCurrentLocation(currEntity.getCurrentLocation().translateBy(Direction.UP));
-                } else if (positions.get(7).equals(player.getCurrentLocation()) && dir.equals(Direction.RIGHT)) {
-                    currEntity.setCurrentLocation(currEntity.getCurrentLocation().translateBy(Direction.RIGHT));
-                }
+        for (Entity e : entitiesHere) {
+            if (e.getEntityType().equals("wall") || e.getEntityType().equals("boulder")) {
+                this.setCanBlockPlayerMovement(true);
+                return false;
+            } else {
+                this.setCanBlockPlayerMovement(false);
             }
         }
+
+        return true;
     }
 }
