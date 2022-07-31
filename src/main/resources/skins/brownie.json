@@ -61,7 +61,6 @@
         "enemies": "images/tileset/items/sword_silver.png",
         "hydra": "images/tileset/entities/hydra.png",
         "assassin": "images/tileset/entities/assassin.png",
-        "swamp_tile": "images/tileset/entities/swamp_tile.png",
-        "sun_stone":"images/tileset/entities/sun_stone.png"
+        "swamp_tile": "images/tileset/entities/swamp_tile.png"
     }
 }
