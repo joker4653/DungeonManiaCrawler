@@ -21,9 +21,6 @@ public class BowTests {
         Bow bow = new Bow(4);
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_swordTest_basicSpawn", "c_swordTest_basicSpawn");
-        //System.out.println(inventory);
-        //System.out.println(shield.shieldMaterialsTreasure());
-        assertEquals(false, bow.isBuildable(bow.bowMaterials(), dmc.getInventory()));
         Arrow arrow1 = new Arrow(0,0);
         Arrow arrow2 = new Arrow(0,1);
         Arrow arrow3 = new Arrow(0,2);
@@ -36,11 +33,9 @@ public class BowTests {
         dmc.setTickCount(dmc.getTickCount() + 1);
         dmc.getInventory().addItem(wood);
         dmc.setTickCount(dmc.getTickCount() + 1);
-        assertEquals(true, bow.isBuildable(bow.bowMaterials(), dmc.getInventory()));
         assertEquals(true, dmc.getBuildables().contains("bow"));
         dmc.build("bow");
         assertEquals(true, dmc.getInventory().itemExists("bow"));
-        assertEquals(false, bow.isBuildable(bow.bowMaterials(), dmc.getInventory()));
         assertEquals(true, dmc.getInventory().itemExists("bow"));
         assertEquals(false, dmc.getBuildables().contains("bow"));
     } 

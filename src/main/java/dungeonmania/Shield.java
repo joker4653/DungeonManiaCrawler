@@ -75,9 +75,28 @@ public class Shield extends BuildableEntity{
 
     
     public boolean isBuildableshield(Inventory inventory) {
-        return (this.isBuildable(Components, inventory) || this.isBuildable(Components2, inventory));
+        return (this.isBuildableshieldTreasure(inventory) || this.isBuildableshieldKey(inventory));
     }
 
+    public boolean isBuildableshieldKey(Inventory inventory) {
+        
+        for (HowMany component: Components2) {
+            if(!inventory.numitemExists(component.getType(), component.getAmount())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isBuildableshieldTreasure(Inventory inventory) {
+        
+        for (HowMany component: Components) {
+            if(!inventory.numitemExists(component.getType(), component.getAmount())) {
+                return false;
+            }
+        }
+        return true;
+    }
     
     public ArrayList<HowMany> getComponents() {
         return shieldMaterialsTreasure();

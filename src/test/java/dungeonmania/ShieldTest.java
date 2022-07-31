@@ -20,7 +20,6 @@ public class ShieldTest {
         Shield shield = new Shield(4, 4);
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_swordTest_basicSpawn", "c_swordTest_basicSpawn");
-        assertEquals(false, shield.isBuildable(shield.shieldMaterialsTreasure(), dmc.getInventory()));
         Wood wood = new Wood(0,0);
         Wood wood2 = new Wood(0,1);
         Treasure tre = new Treasure(0,2);
@@ -34,12 +33,10 @@ public class ShieldTest {
         dmc.getInventory().addItem(tre);
         dmc.setTickCount(dmc.getTickCount() + 1);
         //System.out.println(inventory);
-        assertEquals(true, shield.isBuildable(shield.shieldMaterialsTreasure(), dmc.getInventory()));
         assertEquals(true, dmc.getBuildables().contains("shield"));
         dmc.setTickCount(dmc.getTickCount() + 1);
         dmc.build("shield");
         assertEquals(true, dmc.getInventory().itemExists("shield"));
-        assertEquals(false, shield.isBuildable(shield.shieldMaterialsTreasure(), dmc.getInventory()));
         assertEquals(false, dmc.getBuildables().contains("shield"));
     }
     @Test
@@ -48,7 +45,6 @@ public class ShieldTest {
         Shield shield = new Shield(4, 4);
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_swordTest_basicSpawn", "c_swordTest_basicSpawn");
-        assertEquals(false, shield.isBuildable(shield.shieldMaterialsTreasure(), dmc.getInventory()));
         Wood wood = new Wood(0,0);
         Wood wood2 = new Wood(0,1);
         Akey key = new Akey(0, 2, 4);
@@ -63,11 +59,9 @@ public class ShieldTest {
         dmc.getInventory().addItem(key);
         dmc.setTickCount(dmc.getTickCount() + 1);
         //System.out.println(inventory);
-        assertEquals(true, shield.isBuildable(shield.shieldMaterialsKey(), dmc.getInventory()));
         assertEquals(true, dmc.getBuildables().contains("shield"));
         dmc.build("shield");
         assertEquals(true, dmc.getInventory().itemExists("shield"));
-        assertEquals(false, shield.isBuildable(shield.shieldMaterialsKey(), dmc.getInventory()));
         assertEquals(false, dmc.getBuildables().contains("shield"));
     }
 

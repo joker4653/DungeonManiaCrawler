@@ -30,6 +30,16 @@ public class MidnightArmour extends BuildableEntity{
         
     }
 
+    public boolean isBuildableArmour(Inventory inventory) {
+        for (HowMany component: Components) {
+            if(!inventory.numitemExists(component.getType(), component.getAmount())) {
+                return false;
+            }
+        }
+        return true;
+    
+    }
+
     public void BuildArmour(List<Entity> listOfEntities, Inventory inventory, MidnightArmour midnightArmour) {
         Components = getComponents();
         for (HowMany component: Components) {

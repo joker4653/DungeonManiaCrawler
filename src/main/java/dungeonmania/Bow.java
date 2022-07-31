@@ -46,6 +46,16 @@ public class Bow extends BuildableEntity{
         return stuff;
     }
 
+    public boolean isBuildableBow(Inventory inventory) {
+        for (HowMany component: Components) {
+            if(!inventory.numitemExists(component.getType(), component.getAmount())) {
+                return false;
+            }
+        }
+        return true;
+    
+    }
+
     public void setComponents(ArrayList<HowMany> components) {
         Components = components;
     }

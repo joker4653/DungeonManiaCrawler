@@ -20,6 +20,7 @@ public BuildableEntity() {
     
 }
 
+/* 
 public boolean isBuildable(ArrayList<HowMany> components,Inventory inventory) {
     for (HowMany component: components) {
         if(!inventory.numitemExists(component.getType(), component.getAmount())) {
@@ -29,6 +30,7 @@ public boolean isBuildable(ArrayList<HowMany> components,Inventory inventory) {
     return true;
 
 }
+*/
 
 public boolean isMakable(Inventory inventory,String item) {
     if(item == "shield") {
@@ -39,13 +41,13 @@ public boolean isMakable(Inventory inventory,String item) {
     }
     if (item == "bow") {
         Bow bow = new Bow(4);
-        if (isBuildable(bow.Components,inventory)) {
+        if (bow.isBuildableBow(inventory)) {
             return true;
         }    
     }
     if (item == "midnight_armour") {
         MidnightArmour midnightArmour = new MidnightArmour(2, 2);
-        if (isBuildable(midnightArmour.Components,inventory)) {
+        if (midnightArmour.isBuildableArmour(inventory)) {
             return true;
         }    
     } 
@@ -57,12 +59,10 @@ public ArrayList<String> getBuilables(Inventory inventory) {
     ArrayList<String> buildables = new ArrayList<String>();
     Shield sh = new Shield(4, 4);
     Bow bow = new Bow(4);
-    if (sh.isBuildable(sh.getComponents(), inventory)) {
+    if (sh.isBuildableshield(inventory)) {
         buildables.add("shield");
-    } else if (sh.isBuildable(sh.getComponents2(), inventory)) {
-        buildables.add("shield");
-    }   
-    if (bow.isBuildable(bow.Components, inventory)) {
+    }
+    if (bow.isBuildableBow(inventory)) {
         buildables.add("bow");    
     }
     return buildables;
