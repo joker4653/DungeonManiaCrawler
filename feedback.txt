@@ -1,0 +1,30 @@
+Usability
+No major issues with game usability
+Some customisations made to the game to the game experience (e.g music & skins)
+
+Modelling of Entities
+UML all looks good & correctly formatted
+
+Coupling & Cohesion
+Most classes are kept relatively concise
+Generally, a nice delegation of logic between classes
+
+Design Patterns
+All patterns seem to make sense and be well used 
+Some patterns are not fully implemented within the code'
+
+Evolution of Design 
+Nice job refactoring many of the elements of the design from M2
+M3 functionalities were not fully completed but those that were are integrated well into the existing code
+
+Testing 
+Testing pdf has been updated for M3 functionalities
+Tests are all well-commented and readable
+
+Code Quality
+Code all looks nice and consistent & variables + functions seem meaningfully named.
+Try and get rid of all your unused imports/variables to avoid cluttering files
+Some functions e.g. legalMove in player have quite a lot of complexity to them & could be further modularised
+
+Ticket Lifecycle & Planning
+Planning & ticket lifecycle all looks good
